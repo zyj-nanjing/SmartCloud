@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorPrototypeMapper">
+    <resultMap id="MonitorPrototype" type="MonitorPrototypeDO">
+        <result property="id" column="id"/>
+        <result property="typeName" column="type_name"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isEffective" column="is_effective"/>
+        <result property="orderSort" column="order_sort"/>
+    </resultMap>
+
+    <sql id="TYPE_QUERY">
+        select id,type_name,creator,create_time,updater,update_time,is_effective,order_sort from   monitor_prototype
+    </sql>
+
+    <insert id="save"  parameterType="MonitorPrototypeDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert  into monitor_prototype
+        (
+         type_name,
+         creator,
+         create_time,
+         is_effective,
+         order_sort
+        )
+        values (
+            #{typeName},
+            #{creator},
+            #{createTime},
+                true,
+        <if test="orderSort != null">#{orderSort}</if>
+        <if test="orderSort == null">0</if>
+        )
+    </insert>
+
+    <update id="update" parameterType="MonitorPrototypeDO">
+        UPDATE monitor_prototype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeName != null and typeName != ''">
+                type_name = #{typeName},
+            </if>
+            <if test="updater != null and updater != ''">
+                updater = #{updater},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="orderSort != null">
+                order_sort = #{orderSort},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE monitor_prototype SET
+            is_effective = 0
+        where id = #{id}
+    </update>
+
+    <insert id="addPrototypeLink" parameterType="int">
+        insert into proto_type_item (type_id,item_id) values(#{typeId},#{itemId});
+    </insert>
+
+    <select id="selectPrototypeBySort" resultMap="MonitorPrototype">
+        <include refid="TYPE_QUERY"/>
+        order by order_sort
+        <where>
+            <if test="typeName != null and typeName !=''">
+                and type_name =#{typeName}
+            </if>
+        </where>
+        and is_effective =1
+    </select>
+
+    <select id="selectPrototypeById" resultMap="MonitorPrototype">
+        <include refid="TYPE_QUERY"/>
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.AlertParamMapper">
+    <resultMap type="AlertParamDO" id="AlertParam">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="alertName"    column="alert_name"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="period"    column="period"    />
+        <result property="paramNo"    column="param_no"    />
+        <result property="formulas"    column="formulas"    />
+        <result property="color"    column="color"    />
+    </resultMap>
+
+    <sql id="selectAlertParamVo">
+        select id, template_id,last_time,period, alert_name, param_no, formulas, color from sys_alert_param
+    </sql>
+
+    <select id="selectAlertParamBySort" parameterType="AlertParamDO" resultMap="AlertParam">
+        <include refid="selectAlertParamVo"/>
+        <where>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="alertName != null  and alertName != ''"> and alert_name like concat('%', #{alertName}, '%')</if>
+            <if test="paramNo != null "> and param_no = #{paramNo}</if>
+            <if test="color != null  and color != ''"> and color = #{color}</if>
+        </where>
+    </select>
+
+    <select id="selectSysAlertParamById" parameterType="int" resultMap="AlertParam">
+        <include refid="selectAlertParamVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="saveParam" parameterType="AlertParamDO" keyProperty="id" useGeneratedKeys="true">
+        insert into sys_alert_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="templateId != null">template_id,</if>
+            <if test="alertName != null and alertName != '' ">alert_name,</if>
+            <if test="paramNo != null">param_no,</if>
+            <if test="lastTime!= null and  lastTime != ''">last_time,</if>
+            <if test="period != null and  period != ''">period,</if>
+            <if test="formulas != null and  formulas != ''">formulas,</if>
+            <if test="color != null and  color != ''">color,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="templateId != null">#{templateId},</if>
+            <if test="alertName != null and alertName != '' ">#{alertName},</if>
+            <if test="paramNo != null">#{paramNo},</if>
+            <if test="lastTime!= null and  lastTime != ''">#{lastTime},</if>
+            <if test="period != null and  period != ''">#{period},</if>
+            <if test="formulas != null and  formulas != ''">#{formulas},</if>
+            <if test="color != null and  color != ''">#{color},</if>
+        </trim>
+    </insert>
+
+    <update id="updateParam" parameterType="AlertParamDO">
+        update sys_alert_param
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="alertName != null and alertName != '' ">alert_name = #{alertName},</if>
+            <if test="paramNo != null">param_no = #{paramNo},</if>
+            <if test="formulas != null and  formulas != ''">formulas = #{formulas},</if>
+            <if test="color != null and  color != ''">color = #{color},</if>
+            <if test="lastTime!= null and  lastTime != ''">last_time=#{lastTime},</if>
+            <if test="period != null and  period != ''">period=#{period},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAlertParamById" parameterType="int">
+        delete from sys_alert_param where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAlertParamByIds" parameterType="String">
+        delete from sys_alert_param where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteParamByTempId">
+        delete from sys_alert_param where template_id = #{templateId}
+    </delete>
+</mapper>

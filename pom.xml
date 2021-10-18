@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>www.bwsensing.com</groupId>
+    <artifactId>SmartCloud</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>SmartCloud</name>
+    <description> CQRS project for Spring Boot</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <aliyun-spring-boot.version>1.0.0</aliyun-spring-boot.version>
+        <spring-boot.version>2.4.1</spring-boot.version>
+        <netty.version>4.1.66.Final</netty.version>
+        <protobuf.version>3.5.1</protobuf.version>
+        <power.mock.version>2.0.9</power.mock.version>
+    </properties>
+
+    <modules>
+        <module>SmartCloud-app</module>
+        <module>SmartCloud-client</module>
+        <module>SmartCloud-event</module>
+        <module>SmartCloud-adapter</module>
+        <module>SmartCloud-domain</module>
+        <module>SmartCloud-infrastructure</module>
+        <module>SmartCloud-start</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-test-container</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-statemachine</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-extension-starter</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-exception</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-dto</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-framework-archetype-web</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-framework-archetype-service</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-catchlog-starter</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-domain-starter</artifactId>
+                <version>4.0.1</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>top.dcenter</groupId>
+                <artifactId>justAuth-spring-security-starter</artifactId>
+                <version>1.1.23</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.1</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.4</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.72</version>
+                <type>jar</type>
+            </dependency>
+            <!-- druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.2.2</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.taobao.arthas</groupId>
+                <artifactId>arthas-spring-boot-starter</artifactId>
+                <version>3.4.8</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.4</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+                <type>jar</type>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+                <type>jar</type>
+            </dependency>
+
+
+            <!--测试Mock-->
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-core</artifactId>
+                <version>${power.mock.version}</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${power.mock.version}</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito2</artifactId>
+                <version>${power.mock.version}</version>
+                <type>jar</type>
+            </dependency>
+
+            <!-- httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.13</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.11.4</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.11.4</version>
+                <type>jar</type>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>AliYun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>AliYun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

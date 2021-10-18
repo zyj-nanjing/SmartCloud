@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper">
+    <resultMap id="MonitorItems" type="MonitorItemsDO">
+        <result column="id" property="id"/>
+        <result column="item_name" property="itemName"/>
+        <result column="data_id" property="dataId"/>
+        <result column="unit" property="unit"/>
+        <result column="ascii_index" property="asciiIndex"/>
+        <result column="hex_index" property="hexIndex"/>
+        <result column="ascii_prefix" property="asciiPrefix"/>
+        <result column="reduce_number" property="reduceNumber"/>
+        <result column="divide_number" property="divideNumber"/>
+    </resultMap>
+
+    <sql id="ITEMS_QUERY">
+        select  id,item_name,data_id,unit,ascii_index,hex_index,ascii_prefix,reduce_number,divide_number from monitor_items
+    </sql>
+
+    <insert id="save"  parameterType="MonitorItemsDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert  into monitor_items
+        (
+            item_name,
+            data_id,
+            unit,
+            ascii_index,
+            hex_index,
+            ascii_prefix,
+            reduce_number,
+            divide_number
+        )
+        values (
+                   #{itemName},
+                   #{dataId},
+                   #{unit},
+                   #{asciiIndex},
+                   #{hexIndex},
+                   #{asciiPrefix},
+                   #{reduceNumber},
+                   #{divideNumber}
+               )
+    </insert>
+
+    <update id="update" parameterType="MonitorItemsDO">
+        UPDATE monitor_items
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemName != null and itemName != ''">
+                item_name = #{itemName},
+            </if>
+            <if test="unit != null and unit != ''">
+                unit =#{unit}
+            </if>
+            <if test="asciiIndex != null ">
+                ascii_index = #{asciiIndex},
+            </if>
+            <if test="hexIndex != null">
+                hex_index =#{hexIndex},
+            </if>
+            <if test="unit != null and unit != ''">
+                unit =#{unit}
+            </if>
+            <if test="asciiPrefix != null and asciiPrefix != ''">
+                ascii_prefix =#{asciiPrefix}
+            </if>
+            <if test="reduceNumber != null ">
+                reduce_number =#{reduceNumber}
+            </if>
+            <if test="divideNumber != null ">
+                divide_number =#{divideNumber}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" >
+        delete  * from monitor_items
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTypeLinkById">
+        delete from proto_type_item where type_id = #{typeId}
+    </delete>
+
+    <select id="selectItems" resultMap="MonitorItems">
+        <include refid="ITEMS_QUERY"/>
+    </select>
+
+    <select id="selectItemsByTypeId" resultMap="MonitorItems">
+        <include refid="ITEMS_QUERY"/>
+        where id in (select  item_id from proto_type_item where type_id =#{typeId})
+    </select>
+
+    <select id="selectItemById" resultMap="MonitorItems">
+        <include refid="ITEMS_QUERY"/>
+        where id =#{id}
+    </select>
+
+    <select id="selectItemsByModelId" resultMap="MonitorItems">
+        select id,item_name,data_id,unit,ascii_index,hex_index,ascii_prefix,reduce_number,divide_number from monitor_items
+        where id in (select item_id from proto_type_item where type_id in (SELECT type_id from sensor_model_type where model_id =#{modelId}))
+    </select>
+</mapper>

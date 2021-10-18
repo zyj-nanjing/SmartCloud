@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper">
+    <resultMap id="MonitorProjectShow" type="MonitorProjectDO">
+        <id property="id" column="id"/>
+        <id property="name" column="name"/>
+        <id property="picture" column="picture"/>
+        <id property="ownerId" column="owner_id"/>
+        <id property="creator" column="creator"/>
+        <id property="createTime" column="create_time"/>
+        <id property="updateTime" column="update_time"/>
+        <collection property="memberArray" ofType="ProjectMember" column="id" select="selectProjectNumbersByPid"/>
+        <collection property="structureArray" ofType="MonitorStructure" column="id" select="selectStructureById"/>
+    </resultMap>
+
+    <resultMap id="MonitorProject" type="MonitorProjectDO">
+        <id property="id" column="id"/>
+        <id property="name" column="name"/>
+        <id property="picture" column="picture"/>
+        <id property="ownerId" column="owner_id"/>
+        <id property="creator" column="creator"/>
+        <id property="createTime" column="create_time"/>
+        <id property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap id="ProjectMember" type="ProjectMemberDO">
+        <id property="id" column="id"/>
+        <id property="projectId" column="project_id"/>
+        <id property="userId" column="user_id"/>
+        <id property="roleCode" column="role_code"/>
+        <id property="roleName" column="role_name"/>
+        <id property="accountName" column="account_name"/>
+        <id property="phoneNumber" column="phone_number"/>
+        <id property="userName" column="user_name"/>
+        <id property="joinTime" column="join_time"/>
+    </resultMap>
+
+    <resultMap id="MonitorStructure" type="MonitorStructureDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="modelId" column="model_id"/>
+        <result property="comment" column="comment"/>
+        <result property="currentVersion" column="current_version"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="positionList" ofType="MonitorPosition" column="id" select="selectMonitorPositionBySid"/>
+    </resultMap>
+
+    <resultMap id="MonitorPosition" type="MonitorPositionDO">
+        <result property="id" column="id"/>
+        <result property="structureId" column="structure_id"/>
+        <result property="sensorSn" column="sensor_sn"/>
+        <result property="name" column="name"/>
+        <result property="comment" column="comment"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="bindingStatus" column="binding_status"/>
+    </resultMap>
+
+
+    <select id="selectMonitorPositionBySid" parameterType="java.lang.Integer" resultMap="MonitorPosition">
+        select  id,structure_id,picture,sensor_sn,name,comment,order_sort,effective,binding_status from monitor_position where structure_id =#{sid}
+    </select>
+
+    <sql id="SELECT_MEMBER">
+        select member.id,project_id,role_code,role_name,user_name,member.account_name,user_id,join_time
+        from project_member as member INNER JOIN system_user as sys on member.user_id = sys.id
+    </sql>
+
+    <select id="selectProjectNumbersByPid" resultMap="ProjectMember" parameterType="java.lang.Integer">
+        select  project_id,role_code,user_id,role_name,project_member.account_name,mobile phone_number,user_name from project_member
+        inner join system_user where project_member.project_id = #{id} and project_member.account_name = system_user.account_name
+    </select>
+
+    <select id="selectStructureById" resultMap="MonitorStructure" parameterType="java.lang.Integer">
+        select  * from monitor_structure where project_id = #{id}
+    </select>
+
+    <sql id="SELECT_PROJECT">
+        select * from monitor_project
+    </sql>
+
+    <select id="selectMonitorProjectById" resultMap="MonitorProjectShow" parameterType="int">
+        <include refid="SELECT_PROJECT"/>
+        where id =#{id}
+    </select>
+
+    <select id="selectMonitorProject" resultMap="MonitorProject" parameterType="int">
+        <include refid="SELECT_PROJECT"/>
+        where owner_id = #{userId}
+        or  id in (select project_id from project_member where user_id =#{userId})
+    </select>
+
+    <select id="getProjectRoleByUserId" resultType="String" parameterType="int">
+        select  role_code from project_member where project_id =#{projectId} and user_id =#{userId}
+    </select>
+
+    <select id="selectMemberById" resultMap="ProjectMember"  parameterType="int">
+        select  * from project_member inner join system_user where id =#{id}
+    </select>
+
+    <select id="selectMemberByUserId" resultMap="ProjectMember" parameterType="int">
+        <include refid="SELECT_MEMBER"/>
+        where project_id =#{projectId} and user_id =#{userId}
+    </select>
+
+    <select id="countUserOwner" resultType="int">
+        select  count(id) from project_member where user_id =#{userId} and role_code = 'PROJECT_OWNER'
+    </select>
+
+    <select id="deleteProject" resultType="int" >
+        delete from monitor_project where id = #{projectId}
+    </select>
+
+    <insert id="save" parameterType="MonitorProjectDO" useGeneratedKeys="true" keyProperty="id" >
+        insert into monitor_project(
+           name,
+           picture,
+           owner_id,
+           creator,
+           create_time
+        ) values (
+           #{name},
+           #{picture},
+           #{ownerId},
+           #{creator},
+           #{createTime}
+        )
+    </insert>
+
+    <insert id="saveMember" parameterType="ProjectMemberDO" useGeneratedKeys="true" keyProperty="id">
+        insert into project_member(
+            project_id,
+            role_code,
+            role_name,
+            account_name,
+            user_id,
+            join_time
+        ) values (
+            #{projectId},
+            #{roleCode},
+            #{roleName},
+            #{accountName},
+            #{userId},
+            #{joinTime}
+        )
+    </insert>
+
+    <update id="updateMember" parameterType="ProjectMemberDO">
+        update  project_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleCode != null and roleCode != ''">
+                role_code = #{roleCode},
+            </if>
+            <if test="roleName != null and roleName !=''">
+                role_name=#{roleName},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMember" parameterType="int">
+        delete from project_member where project_id = #{pid} and  user_id =#{mid}
+    </delete>
+
+    <delete id="deleteMemberByUserId" parameterType="int">
+        delete from project_member where  user_id =#{userId}
+    </delete>
+
+    <delete id="deleteMemberByProjectId" parameterType="int">
+        delete from project_member where  project_id =#{projectId}
+    </delete>
+</mapper>

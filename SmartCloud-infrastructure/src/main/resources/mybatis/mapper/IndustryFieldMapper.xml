@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.IndustryFieldMapper">
+    <resultMap id="Industry" type="IndustryFieldDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="SELECT_INDUSTRY_FIELD">
+        select  id,name,code,create_time from sys_industry_field
+    </sql>
+
+    <select id="selectIndustryById" resultMap="Industry">
+        <include refid="SELECT_INDUSTRY_FIELD"/>
+        where id =#{id}
+    </select>
+
+    <select id="selectIndustryBySort" resultMap="Industry" parameterType="IndustryFieldDO">
+        <include refid="SELECT_INDUSTRY_FIELD"/>
+        <where>
+            <if test="name != null and name !=''">and name like concat('%',#{name},'%')</if>
+            <if test="code != null and code !=''">and code like concat('%',#{code},'%')</if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="IndustryFieldDO" keyProperty="id" useGeneratedKeys="true">
+        insert into sys_industry_field(
+                name,
+                code,
+                create_time
+        ) values (
+                 #{name} ,
+                 #{code},
+                 #{createTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="IndustryFieldDO">
+        update  sys_industry_field set name =#{name} where id =#{id}
+    </update>
+</mapper>

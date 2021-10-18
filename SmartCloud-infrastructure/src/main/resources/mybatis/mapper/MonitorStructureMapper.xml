@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorStructureMapper">
+    <resultMap id="MonitorStructure" type="MonitorStructureDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="structureName" column="structure_name"/>
+        <result property="projectId" column="project_id"/>
+        <result property="modelId" column="model_id"/>
+        <result property="comment" column="comment"/>
+        <result property="currentVersion" column="current_version"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="positionList" ofType="MonitorPosition" column="id" select="selectMonitorPositionBySid"/>
+    </resultMap>
+
+    <resultMap id="MonitorPosition" type="MonitorPositionDO">
+        <result property="id" column="id"/>
+        <result property="structureId" column="structure_id"/>
+        <result property="sensorSn" column="sensor_sn"/>
+        <result property="name" column="name"/>
+        <result property="comment" column="comment"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="bindingStatus" column="binding_status"/>
+    </resultMap>
+
+    <sql id="SELECT_STRUCTURE">
+        select  id,name,structure_name,model_id,comment,current_version,order_sort,
+                effective,creator,create_time,
+                updater,update_time from monitor_structure
+    </sql>
+
+    <select id="selectMonitorStructure" resultMap="MonitorStructure">
+        <include refid="SELECT_STRUCTURE"/>
+    </select>
+
+    <select id="selectStructureById" resultMap="MonitorStructure">
+        <include refid="SELECT_STRUCTURE"/>
+        where id =#{id}
+    </select>
+    <select id="selectStructureByProjectId" resultMap="MonitorStructure">
+        <include refid="SELECT_STRUCTURE"/>
+        where project_id =#{projectId}
+    </select>
+
+    <select id="selectMonitorPositionBySid" parameterType="int" resultMap="MonitorPosition">
+        select  id,structure_id,sensor_sn,name,comment,order_sort,effective,binding_status from monitor_position where structure_id =#{sid}
+    </select>
+
+    <insert id="save" parameterType="MonitorStructureDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into monitor_structure
+        (
+            name,
+            structure_name,
+            project_id,
+            model_id,
+            comment,
+            current_version,
+            order_sort,
+            effective,
+            creator,
+            create_time
+        )
+        values
+        (
+           #{name},
+           #{structureName},
+           #{projectId},
+           #{modelId},
+           #{comment},
+           #{currentVersion},
+        <if test="orderSort != null">#{orderSort},</if>
+        <if test="orderSort == null">0,</if>
+           1,
+           #{creator},
+           #{createTime}
+        )
+    </insert>
+
+    <delete id="deleteByProjectId" parameterType ="int">
+        delete from monitor_structure where project_id =#{projectId}
+    </delete>
+
+    <update id="update" parameterType="MonitorStructureDO">
+        update  monitor_structure
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="modelId != null">
+                model_id = #{modelId},
+            </if>
+            <if test="structureName != null and structureName !=''">
+                structure_name =#{structureName},
+            </if>
+            <if test="comment != null and comment !=''">
+                comment=#{comment},
+            </if>
+            <if test="currentVersion != null">
+                current_version=#{currentVersion}
+            </if>
+            <if test="updater != null and updater !=''">
+                updater = #{updater},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

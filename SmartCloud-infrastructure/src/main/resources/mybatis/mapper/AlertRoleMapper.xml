@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.AlertRoleMapper">
+
+    <resultMap type="AlertRoleDO" id="AlertRole">
+        <result property="id"    column="id"    />
+        <result property="alertName"    column="alert_name"    />
+        <result property="alertGroupId" column="alert_group_id"/>
+        <result property="name"    column="name"    />
+        <result property="operateGroupId" column="group_id"/>
+        <result property="templateId"    column="template_id"    />
+        <result property="paramId"    column="param_id"    />
+        <result property="sensorId" column="sensor_id"/>
+        <result property="formulas"    column="formulas"    />
+        <result property="forward"    column="forward"    />
+        <result property="label"    column="label"    />
+        <result property="summary"    column="summary"    />
+        <result property="alertStatus"    column="alert_status"    />
+        <result property="alertInfo"    column="alert_info"    />
+        <result property="stateSql"    column="state_sql"    />
+        <result property="templateSql"    column="template_sql"    />
+        <result property="expr"    column="expr"    />
+        <result property="color" column="color"/>
+        <result property="lastTime"    column="last_time"    />
+        <result property="checkPeriod"    column="check_period"    />
+    </resultMap>
+
+    <sql id="selectAlertRoleVo">
+        select id, name,alert_name,alert_group_id, template_id, param_id, group_id,sensor_id,color, formulas,
+               forward, label, summary, alert_status, alert_info, state_sql, template_sql, expr, last_time, check_period from sys_alert_role
+    </sql>
+
+    <select id="selectAlertRoleBySort" parameterType="AlertRoleDO" resultMap="AlertRole">
+        <include refid="selectAlertRoleVo"/>
+        <where>
+            <if test="alertName != null  and alertName != ''"> and alert_name like concat('%', #{alertName}, '%')</if>
+            <if test="operateGroupId !=null">and group_id=#{operateGroupId}</if>
+            <if test="alertGroupId !=null">and alert_group_id=#{alertGroupId}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="paramId != null "> and param_id = #{paramId}</if>
+            <if test="formulas != null  and formulas != ''"> and formulas = #{formulas}</if>
+            <if test="forward != null  and forward != ''"> and forward = #{forward}</if>
+            <if test="label != null  and label != ''"> and label = #{label}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="alertStatus != null "> and alert_status = #{alertStatus}</if>
+            <if test="alertInfo != null  and alertInfo != ''"> and alert_info = #{alertInfo}</if>
+            <if test="stateSql != null  and stateSql != ''"> and state_sql = #{stateSql}</if>
+            <if test="templateSql != null  and templateSql != ''"> and template_sql = #{templateSql}</if>
+            <if test="expr != null  and expr != ''"> and expr = #{expr}</if>
+            <if test="lastTime != null  and lastTime != ''"> and last_time = #{lastTime}</if>
+            <if test="checkPeriod != null  and checkPeriod != ''"> and check_period = #{checkPeriod}</if>
+        </where>
+    </select>
+
+    <select id="selectAlertRoleByGroupId" parameterType="int" resultMap="AlertRole">
+        <include refid="selectAlertRoleVo"/>
+        where  alert_group_id = #{alertGroupId}
+    </select>
+
+    <select id="getAlertRoleById" parameterType="Integer" resultMap="AlertRole">
+        <include refid="selectAlertRoleVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getAlertRoleByRoleName" parameterType="String" resultMap="AlertRole">
+        <include refid="selectAlertRoleVo"/>
+        where name = #{roleName}
+    </select>
+
+    <insert id="saveAlertRole" parameterType="AlertRoleDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_alert_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="alertName != null and alertName !=''">alert_name,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="operateGroupId !=null">group_id,</if>
+            <if test="alertGroupId != null">alert_group_id,</if>
+            <if test="paramId != null">param_id,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="formulas != null">formulas,</if>
+            <if test="forward != null">forward,</if>
+            <if test="label != null">label,</if>
+            <if test="summary != null">summary,</if>
+            <if test="alertStatus != null">alert_status,</if>
+            <if test="alertInfo != null">alert_info,</if>
+            <if test="stateSql != null">state_sql,</if>
+            <if test="templateSql != null">template_sql,</if>
+            <if test="expr != null">expr,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="checkPeriod != null">check_period,</if>
+            <if test="color != null and color !=''">color,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="alertName != null and alertName !=''">#{alertName},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="operateGroupId !=null">#{operateGroupId},</if>
+            <if test="alertGroupId != null">#{alertGroupId},</if>
+            <if test="paramId != null">#{paramId},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="formulas != null">#{formulas},</if>
+            <if test="forward != null">#{forward},</if>
+            <if test="label != null">#{label},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="alertStatus != null">#{alertStatus},</if>
+            <if test="alertInfo != null">#{alertInfo},</if>
+            <if test="stateSql != null">#{stateSql},</if>
+            <if test="templateSql != null">#{templateSql},</if>
+            <if test="expr != null">#{expr},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="checkPeriod != null">#{checkPeriod},</if>
+            <if test="color != null and color !=''">#{color},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAlertRole" parameterType="AlertRoleDO">
+        update sys_alert_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alertName != null and alertName !=''">alert_name=#{alertName},</if>
+            <if test="formulas != null">formulas = #{formulas},</if>
+            <if test="forward != null">forward = #{forward},</if>
+            <if test="label != null">label = #{label},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="alertStatus != null">alert_status = #{alertStatus},</if>
+            <if test="alertInfo != null">alert_info = #{alertInfo},</if>
+            <if test="stateSql != null">state_sql = #{stateSql},</if>
+            <if test="expr != null">expr = #{expr},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="checkPeriod != null">check_period = #{checkPeriod},</if>
+            <if test="color != null and color !=''">color=#{color},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAlertRoleById" parameterType="int">
+        delete from sys_alert_role where id = #{id}
+    </delete>
+
+    <delete id="deleteAlertRoleByIds" parameterType="String">
+        delete from sys_alert_role where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SensorHistoryMapper">
+
+    <sql id="SENSOR_HISTORY_SELECT">
+        SELECT
+            id,
+            ip_address,
+            channel_id,
+            sn_code,
+            online_time,
+            reline_time,
+            off_line_time,
+            refresh_time
+        FROM sensor_history
+    </sql>
+
+    <insert id="save" parameterType="www.bwsensing.com.gatewayimpl.database.dataobject.SensorHistoryDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sensor_history(
+            id,
+            ip_address,
+            channel_id,
+            sn_code,
+            online_time,
+            reline_time,
+            off_line_time,
+            refresh_time
+        ) VALUES(
+            default ,
+            #{ipAddress},
+            #{channelId},
+            #{snCode},
+            #{onlineTime},
+            #{relineTime},
+            #{offLineTime},
+            #{refreshTime}
+        )
+    </insert>
+
+
+    <delete id="delete" parameterType="www.bwsensing.com.gatewayimpl.database.dataobject.SensorHistoryDO">
+        delete from sensor_history
+        where id  = #{id}
+    </delete>
+
+</mapper>

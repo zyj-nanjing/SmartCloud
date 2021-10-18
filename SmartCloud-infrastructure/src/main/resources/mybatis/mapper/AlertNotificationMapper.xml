@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.AlertNotificationMapper">
+
+    <resultMap type="AlertNotificationDO" id="AlertNotification">
+        <result property="id"    column="id"    />
+        <result property="alertGroupId" column="alert_group_id"/>
+        <result property="groupId"    column="group_id"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="alertName"    column="alert_name"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="sn"    column="sn"    />
+        <result property="sensorName"    column="sensor_name"    />
+        <result property="sensorModel"    column="sensor_model"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="alertTime"    column="alert_time"    />
+        <result property="summary"    column="summary"    />
+        <result property="color"    column="color"    />
+    </resultMap>
+
+    <sql id="selectAlertNotificationVo">
+        select id, alert_group_id,group_id, group_name, alert_name, role_name, sensor_id, sn, sensor_name, sensor_model, model_id, alert_time, summary, color from sys_alert_notification
+    </sql>
+
+    <select id="selectNotificationBySort" parameterType="AlertNotificationDO" resultMap="AlertNotification">
+        <include refid="selectAlertNotificationVo"/>
+        <where>
+            <if test="alertGroupId != null "> and alert_group_id = #{alertGroupId}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="alertName != null  and alertName != ''"> and alert_name like concat('%', #{alertName}, '%')</if>
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="sensorId != null "> and sensor_id = #{sensorId}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="sensorName != null  and sensorName != ''"> and sensor_name like concat('%', #{sensorName}, '%')</if>
+            <if test="sensorModel != null  and sensorModel != ''"> and sensor_model = #{sensorModel}</if>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="alertTime != null "> and alert_time = #{alertTime}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="color != null  and color != ''"> and color = #{color}</if>
+        </where>
+        order  by alert_time desc
+    </select>
+
+    <select id="getNotificationById" parameterType="Integer" resultMap="AlertNotification">
+        <include refid="selectAlertNotificationVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTotalAlertsByUserId" parameterType="int" resultType="int">
+        select COUNT(id) from sys_alert_notification where  is_handle = 0
+        and alert_group_id IN (SELECT alert_group_id from sys_alert_notifaction_member where user_id = #{userId})
+    </select>
+
+    <insert id="saveNotification" parameterType="AlertNotificationDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_alert_notification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alertGroupId != null "> alert_group_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="groupName != null">group_name,</if>
+            <if test="alertName != null">alert_name,</if>
+            <if test="roleName != null">role_name,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="sn != null">sn,</if>
+            <if test="sensorName != null">sensor_name,</if>
+            <if test="sensorModel != null">sensor_model,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="alertTime != null">alert_time,</if>
+            <if test="summary != null">summary,</if>
+            <if test="color != null">color,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alertGroupId != null "> #{alertGroupId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="groupName != null">#{groupName},</if>
+            <if test="alertName != null">#{alertName},</if>
+            <if test="roleName != null">#{roleName},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="sensorName != null">#{sensorName},</if>
+            <if test="sensorModel != null">#{sensorModel},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="alertTime != null">#{alertTime},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="color != null">#{color},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteNotificationById" parameterType="Integer">
+        delete from sys_alert_notification where id = #{id}
+    </delete>
+
+    <delete id="deleteNotificationByIds" parameterType="String">
+        delete from sys_alert_notification where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

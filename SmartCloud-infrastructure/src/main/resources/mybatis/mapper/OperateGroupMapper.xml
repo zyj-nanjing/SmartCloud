@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.OperateGroupMapper">
+    <resultMap id="OperateGroup" type="OperateGroupDO">
+        <result column="id" property="id"/>
+        <result column="group_name" property="groupName"/>
+        <result column="group_code" property="groupCode"/>
+        <result column="person_number" property="personNumber"/>
+        <result column="is_inner" property="isInner"/>
+        <result column="company_name" property="companyName"/>
+        <result column="is_enabled" property="isEnabled"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <sql id="SELECT_ALL">
+        select id,group_name,group_code,person_number,is_inner,
+               company_name,company_name,is_enabled,created_time
+               from operate_group
+    </sql>
+
+    <select id="selectOperateGroups" resultMap="OperateGroup">
+        <include refid="SELECT_ALL"/>
+        where is_enabled =1
+    </select>
+
+    <select id="selectGroupById" resultMap="OperateGroup">
+        <include refid="SELECT_ALL"/>
+        where  id =#{id}
+    </select>
+
+    <select id="selectGroupCode" resultType="int">
+        select  count(*) from operate_group where group_code =#{groupCode} and is_enabled =1
+    </select>
+
+    <insert id="save" parameterType="OperateGroupDO"
+            keyProperty="id" useGeneratedKeys="true">
+        insert  into operate_group(
+                group_name,
+                group_code,
+                person_number,
+                is_inner,
+                company_name,
+                is_enabled,
+                created_time
+        ) values (
+                  #{groupName},
+                  #{groupCode},
+                  0,
+                  #{isInner},
+                  #{companyName},
+                  1,
+                  now()
+        )
+    </insert>
+
+    <update id="update" parameterType="OperateGroupDO">
+        UPDATE operate_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupName != null and groupName != ''">
+                group_name = #{groupName},
+            </if>
+            <if test="personNumber != null ">
+                person_number = #{personNumber},
+            </if>
+            <if test="isInner != null">
+                is_inner = #{isInner},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="delete">
+        update operate_group set is_enabled = 0 where id =#{id}
+    </update>
+</mapper>

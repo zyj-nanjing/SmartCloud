@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.AlertTemplateMapper">
+    <resultMap type="AlertTemplateDO" id="AlertTemplate">
+        <result property="id"    column="id"    />
+        <result property="modelNo"    column="model_no"    />
+        <result property="modelName" column="model_name" />
+        <result property="groupId"    column="group_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="namePrefix"    column="name_prefix"    />
+        <result property="summaryModel"    column="summary_model"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="creator"    column="creator"    />
+        <result property="updater"    column="updater"    />
+    </resultMap>
+
+    <resultMap type="AlertTemplateDO" id="AlertTemplateInfo">
+        <result property="id"    column="id"    />
+        <result property="modelNo"    column="model_no"    />
+        <result property="modelName" column="model_name" />
+        <result property="groupId"    column="group_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="namePrefix"    column="name_prefix"    />
+        <result property="summaryModel"    column="summary_model"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="creator"    column="creator"    />
+        <result property="updater"    column="updater"    />
+        <collection property="alertParams"  ofType="AlertParam" column="id" select="selectAlertParamsById"/>
+    </resultMap>
+
+    <resultMap type="AlertParamDO" id="AlertParam">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="alertName"    column="alert_name"    />
+        <result property="paramNo"    column="param_no"    />
+        <result property="formulas"    column="formulas"    />
+        <result property="color"    column="color"    />
+    </resultMap>
+
+    <sql id="selectAlertTemplateVo">
+        select temp.id, temp.model_no,md.model_name ,group_id, template_name, name_prefix, summary_model, temp.create_time, temp.update_time, temp.creator,
+               temp.updater from sys_alert_template temp inner join  sensor_model md where temp.model_no =  md.id
+    </sql>
+
+    <select id="selectTemplatesBySort" parameterType="AlertTemplateDO" resultMap="AlertTemplate">
+        <include refid="selectAlertTemplateVo"/>
+        <if test="modelNo != null "> and temp.model_no = #{modelNo}</if>
+        <if test="groupId != null "> and temp.group_id = #{groupId}</if>
+        <if test="modelName != null  and modelName != ''"> and md.modelName like concat('%', #{modelName}, '%')</if>
+        <if test="templateName != null  and templateName != ''"> and temp.template_name like concat('%', #{templateName}, '%')</if>
+        <if test="namePrefix != null  and namePrefix != ''"> and temp.name_prefix like concat('%', #{namePrefix}, '%')</if>
+        <if test="creator != null  and creator != ''"> and temp.creator = #{creator}</if>
+        <if test="updater != null  and updater != ''"> and temp.updater = #{updater}</if>
+    </select>
+
+    <select id="selectTemplateById" parameterType="int" resultMap="AlertTemplateInfo">
+        <include refid="selectAlertTemplateVo"/>
+        and temp.id = #{id}
+    </select>
+
+    <insert id="saveTemplate" parameterType="AlertTemplateDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_alert_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelNo != null">model_no,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="templateName != null">template_name,</if>
+            <if test="namePrefix != null">name_prefix,</if>
+            <if test="summaryModel != null">summary_model,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="creator != null">creator,</if>
+            <if test="updater != null">updater,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelNo != null">#{modelNo},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="templateName != null">#{templateName},</if>
+            <if test="namePrefix != null">#{namePrefix},</if>
+            <if test="summaryModel != null">#{summaryModel},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="updater != null">#{updater},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTemplate" parameterType="AlertTemplateDO">
+        update sys_alert_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelNo != null">model_no = #{modelNo},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="templateName != null">template_name = #{templateName},</if>
+            <if test="namePrefix != null">name_prefix = #{namePrefix},</if>
+            <if test="summaryModel != null">summary_model = #{summaryModel},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="updater != null">updater = #{updater},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="String">
+        delete from sys_alert_template where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from sys_alert_template where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectAlertParamsById" parameterType="Int" resultMap="AlertParam">
+        select * from sys_alert_param
+        where template_id = #{templateId}
+    </select>
+</mapper>

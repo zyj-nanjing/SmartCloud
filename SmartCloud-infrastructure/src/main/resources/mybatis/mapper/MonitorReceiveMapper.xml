@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorReceiveMapper">
+
+    <resultMap type="MonitorReceiveDO" id="MonitorReceive">
+        <result property="id"    column="id"    />
+        <result property="sn" column="sn"      />
+        <result property="channelId"    column="channel_id"    />
+        <result property="ip"    column="ip"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="receiveSize"    column="receive_size"    />
+        <result property="sendCount"    column="send_count"    />
+        <result property="sendAddress"    column="send_address"    />
+        <result property="totalSize"    column="total_size"    />
+    </resultMap>
+
+    <sql id="selectMonitorReceiveVo">
+        select id, channel_id, ip,sn, receive_time, receive_size, send_count, send_address, total_size from sys_monitor_receive_log
+    </sql>
+
+    <select id="selectMonitorReceiveBySort" parameterType="MonitorReceiveDO" resultMap="MonitorReceive">
+        <include refid="selectMonitorReceiveVo"/>
+        <where>
+            <if test="channelId != null  and channelId != ''"> and channel_id = #{channelId}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="receiveSize != null "> and receive_size = #{receiveSize}</if>
+            <if test="sendCount != null "> and send_count = #{sendCount}</if>
+            <if test="sendAddress != null  and sendAddress != ''"> and send_address = #{sendAddress}</if>
+            <if test="totalSize != null "> and total_size = #{totalSize}</if>
+        </where>
+    </select>
+
+    <select id="getMonitorReceiveById" parameterType="Integer" resultMap="MonitorReceive">
+        <include refid="selectMonitorReceiveVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="saveReceive" parameterType="MonitorReceiveDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_monitor_receive_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channelId != null">channel_id,</if>
+            <if test="ip != null">ip,</if>
+            <if test="sn != null">sn,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="receiveSize != null">receive_size,</if>
+            <if test="sendCount != null">send_count,</if>
+            <if test="sendAddress != null">send_address,</if>
+            <if test="totalSize != null">total_size,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="channelId != null">#{channelId},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="receiveSize != null">#{receiveSize},</if>
+            <if test="sendCount != null">#{sendCount},</if>
+            <if test="sendAddress != null">#{sendAddress},</if>
+            <if test="totalSize != null">#{totalSize},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteReceiveById" parameterType="Integer">
+        delete from sys_monitor_receive_log where id = #{id}
+    </delete>
+
+    <delete id="deleteReceiveByIds" parameterType="String">
+        delete from sys_monitor_receive_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

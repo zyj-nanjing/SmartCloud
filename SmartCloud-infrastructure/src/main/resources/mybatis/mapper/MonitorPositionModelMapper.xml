@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorPositionModelMapper">
+    <resultMap id="MonitorPositionModel" type="MonitorPositionModelDO">
+        <result property="id" column="id"/>
+        <result property="structureCode" column="structure_code"/>
+        <result property="modelId" column="model_id"/>
+        <result property="name" column="name"/>
+        <result property="comment" column="comment"/>
+        <result property="version" column="version"/>
+        <result property="structureVersion" column="structure_version"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <sql id="SELECT_POSITION_MODEL">
+        select id,structure_code,model_id,name,comment,version,structure_version,order_sort,effective,creator,create_time from monitor_position_model
+    </sql>
+
+
+    <select id="selectPositionModelById" resultMap="MonitorPositionModel" parameterType="int">
+        <include refid="SELECT_POSITION_MODEL"/>
+        where id =#{id}
+    </select>
+
+
+    <insert id="save" parameterType="MonitorPositionModelDO" useGeneratedKeys="true" keyProperty="id">
+        insert into monitor_position_model
+        (
+        structure_code,
+        model_id,
+        name,
+        comment,
+        version,
+        structure_version,
+        order_sort,
+        effective,
+        creator,
+        create_time
+        ) values
+        (
+        #{structureCode},
+        #{modelId},
+        #{name},
+        #{comment},
+        #{version},
+         #{structureVersion},
+        <if test="orderSort != null">#{orderSort},</if>
+        <if test="orderSort == null">0,</if>
+        1,
+        #{creator},
+        #{createTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="MonitorPositionModelDO">
+        update  monitor_position_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="comment != null and modelId !=''">
+                modelId=#{modelId},
+            </if>
+            <if test="version != null">
+                version=#{version},
+            </if>
+            <if test="orderSort != null">
+                order_sort =#{orderSort},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from monitor_position_model where  id =#{id}
+    </delete>
+
+    <delete id="deleteByStructureCode" parameterType="String">
+        delete from monitor_position_model where  structure_code =#{code}
+    </delete>
+</mapper>

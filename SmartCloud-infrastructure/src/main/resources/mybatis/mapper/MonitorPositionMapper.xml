@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorPositionMapper">
+    <resultMap id="MonitorPosition" type="MonitorPositionDO">
+        <result property="id" column="id"/>
+        <result property="structureId" column="structure_id"/>
+        <result property="sensorSn" column="sensor_sn"/>
+        <result property="name" column="name"/>
+        <result property="comment" column="comment"/>
+        <result property="orderSort" column="order_sort"/>
+        <result property="effective" column="effective"/>
+        <result property="bindingStatus" column="binding_status"/>
+    </resultMap>
+
+    <sql id="SELECT_POSITION">
+        select id,structure_id,sensor_sn,name,comment,order_sort,effective,binding_status,creator,create_time from monitor_position
+    </sql>
+
+
+    <select id="selectPositionById" resultMap="MonitorPosition" parameterType="int">
+        <include refid="SELECT_POSITION"/>
+        where id =#{id}
+    </select>
+
+    <select id="getPositionsByStructureId" parameterType="int" resultMap="MonitorPosition">
+        select  id,structure_id,sensor_sn,name,comment,order_sort,effective,binding_status from monitor_position where structure_id =#{structureId}
+    </select>
+    <insert id="save" parameterType="MonitorPositionDO" useGeneratedKeys="true" keyProperty="id">
+        insert into monitor_position
+        (
+            structure_id,
+            sensor_sn,
+            name,
+            comment,
+            order_sort,
+            effective
+        ) values
+        (
+           #{structureId},
+           #{sensorSn},
+           #{name},
+           #{comment},
+        <if test="orderSort != null">#{orderSort},</if>
+        <if test="orderSort == null">0,</if>
+           1
+        )
+    </insert>
+
+    <update id="update" parameterType="MonitorPositionDO">
+        update  monitor_position
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="comment != null and comment !=''">
+                comment=#{comment},
+            </if>
+            <if test="orderSort != null">
+                order_sort =#{orderSort},
+            </if>
+            <if test="sensorSn != null and sensorSn !=''">
+                sensor_sn = #{sensorSn},
+            </if>
+            <if test="bindingStatus != null">
+                binding_status =#{bindingStatus}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from monitor_position where  id =#{id}
+    </delete>
+
+    <delete id="deleteByStructureId" parameterType="int">
+        delete from monitor_position where  structure_id =#{structureId}
+    </delete>
+</mapper>

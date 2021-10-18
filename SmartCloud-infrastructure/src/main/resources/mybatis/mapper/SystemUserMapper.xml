@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SystemUserMapper">
+    <resultMap id="SystemUser" type="SystemUserDO">
+        <result property="id" column="id"/>
+        <result property="workNumber" column="work_number"/>
+        <result property="accountName" column="account_name"/>
+        <result property="password" column="password"/>
+        <result property="userName" column="user_name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="position" column="position"/>
+        <result property="roleId" column="role_id"/>
+        <result property="role" column="role"/>
+        <result property="operateGroupId" column="operate_group_id"/>
+        <result property="enabled" column="enabled"/>
+        <result property="accountNonLocked" column="account_non_locked"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="lastLease" column="last_lease"/>
+        <result property="leaseStartTime" column="lease_start_time"/>
+        <result property="leaseTime" column="lease_time"/>
+    </resultMap>
+
+    <sql id="SELECT_SYSTEM_USER">
+        select id,work_number,account_name,password,role,role_id,
+               user_name,avatar,mobile,email,position,operate_group_id,enabled,account_non_locked,
+               last_login_time,last_lease,lease_start_time,lease_time from system_user
+    </sql>
+
+    <select id="selectUserByAccountName" resultMap="SystemUser">
+        <include refid="SELECT_SYSTEM_USER"/>
+        where account_name =#{accountName}
+    </select>
+
+    <select id="selectUserByGroupId" resultMap="SystemUser">
+        <include refid="SELECT_SYSTEM_USER"/>
+        where operate_group_id =#{groupId}
+    </select>
+
+    <select id="selectUserByPidAndGroupId" resultMap="SystemUser">
+        <include refid="SELECT_SYSTEM_USER"/>
+        where operate_group_id=#{groupId} and id not IN (SELECT user_id from project_member where project_id =#{pid})
+        and account_non_locked =1
+    </select>
+
+    <select id="selectUserById" resultMap="SystemUser">
+        <include refid="SELECT_SYSTEM_USER"/>
+        where id =#{id}
+    </select>
+
+    <select id="selectWorkNumberGroup" resultType="int">
+        select count(*) from system_user
+        where work_number =#{workNumber} and operate_group_id =#{groupId} and account_non_locked =1
+    </select>
+
+    <select id="selectWorkNumber" resultType="int">
+        select count(*) from system_user
+        where work_number =#{workNumber} and account_non_locked =1
+    </select>
+
+    <select id="selectUserRole" resultType="String">
+        select  role from system_user
+        where account_name =#{accountName} and account_non_locked =1
+    </select>
+
+    <insert id="save" parameterType="SystemUserDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into system_user(
+            work_number,
+            account_name,
+            password,
+            user_name,
+            avatar,
+            mobile,
+            email,
+            role_id
+            role,
+            position,
+            operate_group_id,
+            enabled,
+            account_non_locked
+        ) values (
+            #{workNumber},
+            #{accountName},
+            #{password},
+            #{userName},
+            #{avatar},
+            #{mobile},
+            #{email},
+            #{roleId},
+            #{role},
+            #{position},
+            #{operateGroupId},
+                  1,
+                  1
+        )
+    </insert>
+
+    <update id="update" parameterType="SystemUserDO">
+        update  system_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workNumber != null and workNumber != ''">
+                work_number = #{workNumber},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="roleId != null ">
+                role_id =#{roleId},
+            </if>
+            <if test="role != null and role != '' ">
+                role =#{role},
+            </if>
+            <if test="operateGroupId != null ">
+                operate_group_id =#{operateGroupId},
+            </if>
+            <if test="enabled != null">
+                enabled =#{enabled},
+            </if>
+            <if test="lastLoginTime != null ">
+                last_login_time =#{lastLoginTime},
+            </if>
+        </trim>
+    </update>
+
+    <update id="banUser" parameterType="int">
+        update system_user set account_non_locked = 0
+        where id =#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+       delete from system_user where id =#{id}
+    </delete>
+</mapper>

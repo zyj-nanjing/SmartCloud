@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>www.bwsensing.com</groupId>
+        <artifactId>SmartCloud</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>SmartCloud-event</artifactId>
+	<name>SmartCloud-event</name>
+	<description>用来剥离原来的Client中的Event 暂时作为不依赖Mq的暂时方案 在后续需要使用Mq时进行替换 或整合进 核心领域Domain</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.alibaba.cola</groupId>
+			<artifactId>cola-component-dto</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.PermissionMapper">
+    <resultMap id="Permission" type="PermissionDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="comment" column="comment"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="SELECT_PERMISSION">
+        select id,name,url,comment,status from sys_permission
+    </sql>
+
+    <select id="selectPermission" resultMap="Permission">
+        <include refid="SELECT_PERMISSION"/>
+    </select>
+
+    <select id="selectPermissionByRoleCode" resultMap="Permission" parameterType="String">
+        <include refid="SELECT_PERMISSION"/>
+    </select>
+
+
+    <insert id="save" parameterType="PermissionDO" useGeneratedKeys="true" keyProperty="id">
+        insert  into sys_permission
+        (
+         name,
+         url,
+         comment,
+         status
+        ) values (
+          #{name},
+          #{url},
+          #{comment},
+          1
+        )
+    </insert>
+
+    <update id="update" parameterType="PermissionDO">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="url != null and url !='' ">
+                url = #{url},
+            </if>
+            <if test="comment != null and comment != ''">
+                comment = #{comment},
+            </if>
+            <if test="status != null ">
+                status = #{status},
+            </if>
+        </trim>
+    </update>
+</mapper>

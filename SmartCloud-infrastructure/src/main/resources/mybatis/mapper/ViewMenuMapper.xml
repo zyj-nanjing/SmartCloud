@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.project.system.database.ViewMenuMapper">
+
+    <resultMap type="www.bwsensing.com.project.system.domain.ViewMenu" id="ViewMenuResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="title"    column="title"    />
+        <result property="icon"    column="icon"    />
+        <result property="apiPath"    column="api_path"    />
+        <result property="roleCode"    column="role_code"    />
+        <result property="path"    column="path"    />
+        <result property="component"    column="component"    />
+        <result property="hidden"    column="hidden"    />
+        <result property="alwaysShow"    column="always_show"    />
+        <result property="redirect"    column="redirect"    />
+        <result property="isBaseNode"    column="is_base_node"    />
+        <result property="upperNode"    column="upper_node"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creator"    column="creator"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updater"    column="updater"    />
+    </resultMap>
+
+    <sql id="selectViewMenuVo">
+        select id, name, title, icon, api_path, role_code, path, component, hidden,
+               always_show, redirect, is_base_node, upper_node, create_time, creator, update_time, updater from sys_view_menu
+    </sql>
+
+    <select id="selectViewMenuList" parameterType="www.bwsensing.com.project.system.domain.ViewMenu" resultMap="ViewMenuResult">
+        <include refid="selectViewMenuVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and 'name' like concat('%', #{name}, '%')</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="apiPath != null  and apiPath != ''"> and api_path = #{apiPath}</if>
+            <if test="roleCode != null  and roleCode != ''"> and role_code = #{roleCode}</if>
+            <if test="path != null  and path != ''"> and 'path' = #{path}</if>
+            <if test="component != null  and component != ''"> and component = #{component}</if>
+            <if test="hidden != null "> and hidden = #{hidden}</if>
+            <if test="alwaysShow != null  and alwaysShow != ''"> and always_show = #{alwaysShow}</if>
+            <if test="redirect != null  and redirect != ''"> and redirect = #{redirect}</if>
+            <if test="isBaseNode != null  and isBaseNode != ''"> and is_base_node = #{isBaseNode}</if>
+            <if test="upperNode != null "> and upper_node = #{upperNode}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="updater != null  and updater != ''"> and updater = #{updater}</if>
+        </where>
+    </select>
+
+    <select id="selectViewMenuById" parameterType="Integer" resultMap="ViewMenuResult">
+        <include refid="selectViewMenuVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectViewMenusByRoleId" parameterType="Integer" resultMap="ViewMenuResult">
+        <include refid="selectViewMenuVo"/>
+        where id in (select menu_id from sys_role_menu where role_id =#{roleId})
+    </select>
+
+    <insert id="insertViewMenu" parameterType="www.bwsensing.com.project.system.domain.ViewMenu" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_view_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">'name',</if>
+            <if test="title != null">title,</if>
+            <if test="icon != null">icon,</if>
+            <if test="apiPath != null">api_path,</if>
+            <if test="roleCode != null">role_code,</if>
+            <if test="path != null">path,</if>
+            <if test="component != null">component,</if>
+            <if test="hidden != null">hidden,</if>
+            <if test="alwaysShow != null">always_show,</if>
+            <if test="redirect != null">redirect,</if>
+            <if test="isBaseNode != null">is_base_node,</if>
+            <if test="upperNode != null">upper_node,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="creator != null">creator,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updater != null">updater,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="title != null">#{title},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="apiPath != null">#{apiPath},</if>
+            <if test="roleCode != null">#{roleCode},</if>
+            <if test="path != null">#{path},</if>
+            <if test="component != null">#{component},</if>
+            <if test="hidden != null">#{hidden},</if>
+            <if test="alwaysShow != null">#{alwaysShow},</if>
+            <if test="redirect != null">#{redirect},</if>
+            <if test="isBaseNode != null">#{isBaseNode},</if>
+            <if test="upperNode != null">#{upperNode},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updater != null">#{updater},</if>
+        </trim>
+    </insert>
+
+    <update id="updateViewMenu" parameterType="www.bwsensing.com.project.system.domain.ViewMenu">
+        update sys_view_menu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="apiPath != null">api_path = #{apiPath},</if>
+            <if test="roleCode != null">role_code = #{roleCode},</if>
+            <if test="path != null">'path' = #{path},</if>
+            <if test="component != null">component = #{component},</if>
+            <if test="hidden != null">hidden = #{hidden},</if>
+            <if test="alwaysShow != null">always_show = #{alwaysShow},</if>
+            <if test="redirect != null">redirect = #{redirect},</if>
+            <if test="isBaseNode != null">is_base_node = #{isBaseNode},</if>
+            <if test="upperNode != null">upper_node = #{upperNode},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteViewMenuById" parameterType="Integer">
+        delete from sys_view_menu where id = #{id}
+    </delete>
+
+    <delete id="deleteViewMenuByIds" parameterType="String">
+        delete from sys_view_menu where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

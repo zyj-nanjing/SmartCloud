@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SensorMapper">
+
+    <resultMap type="SensorDO" id="SensorResult">
+        <result property="id"    column="id"    />
+        <result property="sn"    column="sn"    />
+        <result property="name"    column="name"    />
+        <result property="sensorNo"    column="sensor_no"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="managerId"    column="manager_id"    />
+        <result property="managerName" column="manager_name" />
+        <result property="memberGroupId"    column="member_group_id"    />
+        <result property="positionId"    column="position_id"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="electricity"    column="electricity"    />
+        <result property="firstOnlineTime"    column="first_online_time"    />
+        <result property="lastSendSize"    column="last_send_size"    />
+        <result property="totalSendSize"    column="total_send_size"    />
+        <result property="lastSendCount"    column="last_send_count"    />
+        <result property="lastSendAddress"    column="last_send_address"    />
+        <result property="lastSendTime"    column="last_send_time"    />
+        <result property="totalSize"    column="total_size"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="assignTime"    column="assign_time"    />
+    </resultMap>
+
+    <sql id="SENSOR_SELECT">
+        SELECT
+               eq.id id,
+               sn,
+               name,
+               manager_id,
+               user_name manager_name,
+               member_group_id,
+               model_id,
+               model_name,
+               project_id,
+               position_id,
+               longitude,
+               latitude,
+               electricity,
+               first_online_time,
+               last_send_size,
+               total_send_size,
+               last_send_count,
+               last_send_address,
+               last_send_time,
+               total_size,
+               temperature,
+               phone_number,
+               create_user,
+               assign_time
+        FROM device_sensor_equipment eq
+                 inner  join  sensor_model  md,system_user  sys where eq.model_id = md.id and eq.manager_id = sys.id
+    </sql>
+
+    <insert id="save" parameterType="SensorDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into device_sensor_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sn != null">sn,</if>
+            <if test="name != null">name,</if>
+            <if test="sensorNo != null">sensor_no,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="managerId != null">manager_id,</if>
+            <if test="memberGroupId != null">member_group_id,</if>
+            <if test="positionId != null">position_id,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="electricity != null">electricity,</if>
+            <if test="firstOnlineTime != null">first_online_time,</if>
+            <if test="lastSendSize != null">last_send_size,</if>
+            <if test="totalSendSize != null">total_send_size,</if>
+            <if test="lastSendCount != null">last_send_count,</if>
+            <if test="lastSendAddress != null">last_send_address,</if>
+            <if test="lastSendTime != null">last_send_time,</if>
+            <if test="totalSize != null">total_size,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="phoneNumber != null">phone_number,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="assignTime != null">assign_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sn != null">#{sn},</if>
+            <if test="name != null">#{name},</if>
+            <if test="sensorNo != null">#{sensorNo},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="managerId != null">#{managerId},</if>
+            <if test="memberGroupId != null">#{memberGroupId},</if>
+            <if test="positionId != null">#{positionId},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="electricity != null">#{electricity},</if>
+            <if test="firstOnlineTime != null">#{firstOnlineTime},</if>
+            <if test="lastSendSize != null">#{lastSendSize},</if>
+            <if test="totalSendSize != null">#{totalSendSize},</if>
+            <if test="lastSendCount != null">#{lastSendCount},</if>
+            <if test="lastSendAddress != null">#{lastSendAddress},</if>
+            <if test="lastSendTime != null">#{lastSendTime},</if>
+            <if test="totalSize != null">#{totalSize},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="phoneNumber != null">#{phoneNumber},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="assignTime != null">#{assignTime},</if>
+        </trim>
+    </insert>
+
+    <select id="selectModelBySensorSn" parameterType="String" resultType="String">
+        select model_no from sensor_model model INNER JOIN device_sensor_equipment eq where  eq.model_id = model.id and eq.sn= #{sn}
+    </select>
+
+    <update id="bindProject" parameterType="Integer">
+        update device_sensor_equipment set project_id =#{pid} where id=#{sid}
+    </update>
+
+    <update id="deleteSensorBind" parameterType="Integer">
+        update device_sensor_equipment set project_id = null where project_id=#{projectId}
+    </update>
+
+    <update id="update" parameterType="SensorDO" >
+        UPDATE device_sensor_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sensorNo != null">sensor_no = #{sensorNo},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="managerId != null">manager_id = #{managerId},</if>
+            <if test="memberGroupId != null">member_group_id = #{memberGroupId},</if>
+            <if test="positionId != null">position_id = #{positionId},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="electricity != null">electricity = #{electricity},</if>
+            <if test="firstOnlineTime != null">first_online_time = #{firstOnlineTime},</if>
+            <if test="lastSendSize != null">last_send_size = #{lastSendSize},</if>
+            <if test="totalSendSize != null">total_send_size = #{totalSendSize},</if>
+            <if test="lastSendCount != null">last_send_count = #{lastSendCount},</if>
+            <if test="lastSendAddress != null">last_send_address = #{lastSendAddress},</if>
+            <if test="lastSendTime != null">last_send_time = #{lastSendTime},</if>
+            <if test="totalSize != null">total_size = #{totalSize},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="assignTime != null">assign_time = #{assignTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <update id="bindSensorMethod" parameterType="SensorDO" >
+        update device_sensor_equipment set project_id =#{projectId},position_id =#{positionId} where id=#{id}
+    </update>
+
+    <select id="selectSensorBySort" resultMap="SensorResult"
+            parameterType="SensorDO">
+        <include refid="SENSOR_SELECT"/>
+        <if test="name != null  and name != ''"> and eq.name like concat('%', #{name}, '%')</if>
+        <if test="projectId !=null">and eq.project_id=#{projectId}</if>
+        <if test="modelId != null "> and eq.model_id = #{modelId}</if>
+        <if test="managerId != null "> and eq.manager_id = #{managerId}</if>
+    </select>
+
+    <select id="queryAnalyseFunctionBySn" resultType="String" parameterType="String">
+        select model_kind from sensor_model model  JOIN device_sensor_equipment eq where  model.id=eq.model_id and eq.sn = #{sn}
+    </select>
+
+    <select id="selectSensorBindByProject"  resultMap="SensorResult" parameterType="Integer">
+        SELECT id,name,project_id from device_sensor_equipment where member_group_id = #{gid}  and (project_id is null or project_id=-1 or project_id =#{pid})
+    </select>
+
+    <select id="selectSensorBindByPosition"  resultMap="SensorResult" parameterType="Integer">
+        SELECT id,name,project_id from device_sensor_equipment where member_group_id = #{gid}  and (position_id is null or position_id=-1 or position_id =#{pid})
+    </select>
+
+    <select id="selectSensorByGroupId" resultMap="SensorResult" parameterType="Integer">
+        <include refid="SENSOR_SELECT"/>
+        and member_group_id =#{groupId}
+    </select>
+
+    <select id="selectSensorByProjectId" resultMap="SensorResult" parameterType="Integer">
+        <include refid="SENSOR_SELECT"/>
+        and project_id =#{projectId}
+    </select>
+
+    <select id="selectSensorBySn" resultMap="SensorResult"
+            parameterType="String">
+        <include refid="SENSOR_SELECT"/>
+        and sn =#{sn}
+    </select>
+
+    <select id="selectSensorById" resultMap="SensorResult"
+            parameterType="int">
+        <include refid="SENSOR_SELECT"/>
+        and eq.id =#{id}
+    </select>
+
+    <select id="selectSensorByPosition" resultMap="SensorResult">
+        select  * from  device_sensor_equipment where position_id =#{positionId}
+    </select>
+
+    <select id="selectSensorByModelId" resultMap="SensorResult">
+        select  * from  device_sensor_equipment where model_id =#{modelId}
+    </select>
+
+    <select id="getSensorsByMonitorStructure" resultMap="SensorResult">
+        select  * from  device_sensor_equipment  where position_id IN (select id from monitor_position where structure_id = #{structureId})
+    </select>
+
+    <delete id="deleteById">
+        delete from device_sensor_equipment where id =#{id}
+    </delete>
+
+</mapper>

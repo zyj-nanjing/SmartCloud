@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.ProductManufacturerMapper">
+    <resultMap id="ProductManufacturer" type="ProductManufacturerDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="factureCode" column="facture_code"/>
+        <result property="postCode" column="post_code"/>
+        <result property="address" column="address"/>
+        <result property="connector" column="connector"/>
+        <result property="contactNumber" column="contact_number"/>
+        <result property="isInner" column="is_inner"/>
+    </resultMap>
+
+    <sql id="SELECT_MANUFACTURE">
+        select id,name,facture_code,post_code,address,connector,contact_number,is_inner from sys_product_manufacturer
+    </sql>
+
+    <select id="selectManufacturerById" resultMap="ProductManufacturer">
+       <include refid="SELECT_MANUFACTURE"/>
+       where id =#{id}
+    </select>
+    
+    <select id="selectManufacturesBySort" parameterType="ProductManufacturerDO" resultMap="ProductManufacturer">
+        <include refid="SELECT_MANUFACTURE"/>
+        <where>
+            <if test="name != null and name !=''">and name like concat('%',#{name},'%')</if>
+            <if test="postCode != null and postCode !=''">and post_code = #{postCode}</if>
+            <if test="connector != null and connector !=''">and connector like concat('%',#{connector},'%')</if>
+            <if test="isInner != null ">and is_inner = #{isInner}</if>
+        </where>
+    </select>
+    
+    <insert id="save" parameterType="ProductManufacturerDO" keyProperty="id" useGeneratedKeys="true">
+        insert into sys_product_manufacturer
+        (
+           name,
+           facture_code,
+           post_code,
+           address,
+           connector,
+           contact_number,
+           is_inner
+        ) values (
+           #{name},
+           #{factureCode},
+           #{postCode},
+           #{address},
+           #{connector},
+           #{contactNumber},
+           #{isInner}
+        )
+    </insert>
+
+    <update id="update" parameterType="ProductManufacturerDO">
+        update sys_product_manufacturer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="postCode != null and postCode != ''">
+                post_code = #{postCode},
+            </if>
+            <if test="address != null and address != '' ">
+                address = #{address},
+            </if>
+            <if test="connector != null and connector !='' ">
+                connector = #{connector},
+            </if>
+            <if test="contactNumber != null and contactNumber !='' ">
+                contact_number = #{contactNumber},
+            </if>
+            <if test="isInner != null">
+                is_inner = #{isInner},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

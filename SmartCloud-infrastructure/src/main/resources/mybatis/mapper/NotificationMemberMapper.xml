@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.NotificationMemberMapper">
+
+    <select id="getNotificationMemberByGroupId" resultType="NotificationMemberDO" parameterType="int">
+        select  * from  sys_alert_notifaction_member
+        where alert_group_id =#{groupId}
+    </select>
+
+    <delete id="deleteNotificationMemberByGroupId" parameterType="int">
+        delete from sys_alert_notifaction_member where alert_group_id=#{groupId}
+    </delete>
+
+    <delete id="deleteByUserId" parameterType="int">
+        delete from sys_alert_notifaction_member where user_id=#{userId}
+    </delete>
+
+    <insert id="saveNotificationMember" parameterType="int">
+        insert into sys_alert_notifaction_member (alert_group_id,user_id) values (#{groupId},#{userId})
+    </insert>
+
+</mapper>

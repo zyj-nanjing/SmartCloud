@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.MailConfigMapper">
+
+    <resultMap type="MailConfigDO" id="ConfigResult">
+        <result property="id"    column="id"    />
+        <result property="configName"    column="config_name"    />
+        <result property="accountName"    column="account_name"    />
+        <result property="fromAlias"    column="from_alias"    />
+        <result property="replyToAddress"    column="reply_to_address"    />
+        <result property="tagName"    column="tag_name"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="subscribe"    column="subscribe"    />
+        <result property="type"    column="type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectConfigVo">
+        select id, config_name, account_name, from_alias, reply_to_address, tag_name, template_name, subscribe,
+               type, create_by, create_time, update_by, update_time, remark from support_mail_config
+    </sql>
+
+    <select id="selectConfigList" parameterType="MailConfigDO" resultMap="ConfigResult">
+        <include refid="selectConfigVo"/>
+        <where>
+            <if test="configName != null  and configName != ''"> and config_name like concat('%', #{configName}, '%')</if>
+            <if test="accountName != null  and accountName != ''"> and account_name like concat('%', #{accountName}, '%')</if>
+            <if test="fromAlias != null  and fromAlias != ''"> and from_alias = #{fromAlias}</if>
+            <if test="replyToAddress != null  and replyToAddress != ''"> and reply_to_address = #{replyToAddress}</if>
+            <if test="tagName != null  and tagName != ''"> and tag_name like concat('%', #{tagName}, '%')</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="subscribe != null  and subscribe != ''"> and subscribe = #{subscribe}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectConfigById" parameterType="int" resultMap="ConfigResult">
+        <include refid="selectConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectConfigByName" parameterType="String" resultMap="ConfigResult">
+        <include refid="selectConfigVo"/>
+        where config_name = #{configName}
+    </select>
+
+    <insert id="insertConfig" parameterType="MailConfigDO" useGeneratedKeys="true" keyProperty="id">
+        insert into _config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="configName != null and configName != ''">config_name,</if>
+            <if test="accountName != null and accountName != ''">account_name,</if>
+            <if test="fromAlias != null and fromAlias != ''">from_alias,</if>
+            <if test="replyToAddress != null and replyToAddress != ''">reply_to_address,</if>
+            <if test="tagName != null and tagName != ''">tag_name,</if>
+            <if test="templateName != null">template_name,</if>
+            <if test="subscribe != null">subscribe,</if>
+            <if test="type != null">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="configName != null and configName != ''">#{configName},</if>
+            <if test="accountName != null and accountName != ''">#{accountName},</if>
+            <if test="fromAlias != null and fromAlias != ''">#{fromAlias},</if>
+            <if test="replyToAddress != null and replyToAddress != ''">#{replyToAddress},</if>
+            <if test="tagName != null and tagName != ''">#{tagName},</if>
+            <if test="templateName != null">#{templateName},</if>
+            <if test="subscribe != null">#{subscribe},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateConfig" parameterType="MailConfigDO">
+        update _config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="configName != null and configName != ''">config_name = #{configName},</if>
+            <if test="accountName != null and accountName != ''">account_name = #{accountName},</if>
+            <if test="fromAlias != null and fromAlias != ''">from_alias = #{fromAlias},</if>
+            <if test="replyToAddress != null and replyToAddress != ''">reply_to_address = #{replyToAddress},</if>
+            <if test="tagName != null and tagName != ''">tag_name = #{tagName},</if>
+            <if test="templateName != null">template_name = #{templateName},</if>
+            <if test="subscribe != null">subscribe = #{subscribe},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteConfigById" parameterType="int">
+        delete from _config where id = #{id}
+    </delete>
+
+    <delete id="deleteConfigByIds" parameterType="String">
+        delete from _config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

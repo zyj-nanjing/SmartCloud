@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SensorDataMapper">
+    <resultMap id="SensorDataResult" type="SensorDataDO">
+        <result column="id" property="id"/>
+        <result column="raw" property="raw"/>
+        <result column="sn" property="sn"/>
+        <result column="x_angle" property="xAngle"/>
+        <result column="y_angle" property="yAngle"/>
+        <result column="z_angle" property="zAngle"/>
+        <result column="x_accelerate" property="xAccelerate"/>
+        <result column="y_accelerate" property="yAccelerate"/>
+        <result column="z_accelerate" property="zAccelerate"/>
+        <result column="electricity" property="electricity"/>
+        <result column="temperature" property="temperature"/>
+        <result column="address" property="address"/>
+        <result column="phone" property="phone"/>
+        <result column="ip_address" property="ipAddress"/>
+        <result column="timestamp" property="timestamp"/>
+    </resultMap>
+
+    <sql id="SENSOR_DATA_SELECT">
+        SELECT
+            id,
+            raw,
+            sn,
+            x_angle,
+            y_angle,
+            z_angle,
+            x_accelerate,
+            y_accelerate,
+            z_accelerate,
+            electricity,
+            temperature,
+            address,
+            phone,
+            ip_address,
+            timestamp
+        FROM sensor_data
+    </sql>
+
+    <insert id="save" parameterType="SensorDataDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into sensor_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="raw != null  and raw != '' ">raw,</if>
+            <if test="sn != null  and sn != ''  ">sn,</if>
+            <if test="xAngle != null  and xAngle != ''">x_angle,</if>
+            <if test="yAngle != null and yAngle != '' ">y_angle,</if>
+            <if test="zAngle != null  and zAngle != ''  ">z_angle,</if>
+            <if test="xAccelerate != null  and xAccelerate != ''">x_accelerate,</if>
+            <if test="yAccelerate != null and yAccelerate != '' ">y_accelerate,</if>
+            <if test="zAccelerate != null  and zAccelerate != ''  ">z_accelerate,</if>
+            <if test="electricity != null  ">electricity,</if>
+            <if test="temperature != null and temperature != '' ">temperature,</if>
+            <if test="address != null  and address != ''  ">address,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="ipAddress != null and ipAddress != '' ">ip_address,</if>
+            <if test="timestamp != null ">timestamp,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="raw != null  and raw != '' ">#{raw},</if>
+            <if test="sn != null  and sn != ''  ">#{sn},</if>
+            <if test="xAngle != null  and xAngle != ''">#{xAngle},</if>
+            <if test="yAngle != null and yAngle != '' ">#{yAngle},</if>
+            <if test="zAngle != null  and zAngle != ''  ">#{zAngle},</if>
+            <if test="xAccelerate != null  and xAccelerate != ''">#{xAccelerate},</if>
+            <if test="yAccelerate != null and yAccelerate != '' ">#{yAccelerate},</if>
+            <if test="zAccelerate != null  and zAccelerate != ''  ">#{zAccelerate},</if>
+            <if test="electricity != null  ">#{electricity},</if>
+            <if test="temperature != null and temperature != '' ">#{temperature},</if>
+            <if test="address != null  and address != ''  ">#{address},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="ipAddress != null and ipAddress != '' ">#{ipAddress},</if>
+            <if test="timestamp != null ">#{timestamp},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="SensorDataDO">
+        UPDATE sensor_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xAngle != null and xAngle != ''">x_angle = #{xAngle},</if>
+            <if test="yAngle != null and yAngle != ''">y_angle = #{yAngle},</if>
+            <if test="zAngle != null and zAngle != ''">z_angle = #{zAngle},</if>
+            <if test="xAccelerate != null and xAccelerate != ''">x_accelerate = #{xAccelerate},</if>
+            <if test="yAccelerate != null and yAccelerate != ''">y_accelerate = #{yAccelerate},</if>
+            <if test="zAccelerate != null and zAccelerate != ''">z_accelerate = #{zAccelerate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+
+    <select id="querySensorListBySort" resultMap="SensorDataResult"
+            parameterType="www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO">
+        <include refid="SENSOR_DATA_SELECT"/>
+        <where>
+            <if test="sn != null  and sn != '' "> and sn = #{sn}</if>
+            <if test="structureId != null  ">  </if>
+            <if test="startTime != null "><!-- 开始时间检索 -->
+                AND date_format(timestamp,'%Y%m%dT%H:%M:%S') &gt;= date_format(#{startTime},'%Y%m%dT%H:%M:%S')
+            </if>
+            <if test="endTime != null "><!-- 结束时间检索 -->
+                AND date_format(timestamp,'%Y%m%dT%H:%M:%S') &lt;= date_format(#{endTime},'%Y%m%dT%H:%M:%S')
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="selectSnByIpAddress" resultType="String" parameterType="String">
+        select  sn from  sensor_data  where ip_address = #{ipAddress} order  by timestamp  desc  LIMIT 1
+    </select>
+
+</mapper>

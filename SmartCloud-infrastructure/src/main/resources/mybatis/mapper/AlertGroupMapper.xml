@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.AlertGroupMapper">
+
+    <resultMap type="AlertGroupDO" id="AlertGroupResult">
+        <result property="id"    column="id"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="operateGroupId"    column="operate_group_id"    />
+        <result property="currentSensorId"    column="current_sensor_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="pushType"    column="push_type"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectAlertGroupVo">
+        select id, group_name, operate_group_id, current_sensor_id, template_id,push_type, creator, create_time from sys_alert_group
+    </sql>
+
+    <select id="selectAlertGroupBySort" parameterType="AlertGroupDO" resultMap="AlertGroupResult">
+        <include refid="selectAlertGroupVo"/>
+        <where>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="operateGroupId != null "> and operate_group_id = #{operateGroupId}</if>
+            <if test="currentSensorId != null "> and current_sensor_id = #{currentSensorId}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="pushType != null "> and push_type = #{pushType}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+        </where>
+    </select>
+
+    <select id="getAlertGroupById" parameterType="Integer" resultMap="AlertGroupResult">
+        <include refid="selectAlertGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getGroupNotificationMembers" resultType="String">
+        SELECT email from system_user where id IN (SELECT user_id from sys_alert_notifaction_member where alert_group_id =#{groupId})
+    </select>
+
+    <insert id="saveAlertGroup" parameterType="AlertGroupDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_alert_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupName != null">group_name,</if>
+            <if test="operateGroupId != null">operate_group_id,</if>
+            <if test="currentSensorId != null">current_sensor_id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="pushType != null">push_type,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupName != null">#{groupName},</if>
+            <if test="operateGroupId != null">#{operateGroupId},</if>
+            <if test="currentSensorId != null">#{currentSensorId},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="pushType != null">#{pushType},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAlertGroup" parameterType="AlertGroupDO">
+        update sys_alert_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupName != null">group_name = #{groupName},</if>
+            <if test="operateGroupId != null">operate_group_id = #{operateGroupId},</if>
+            <if test="currentSensorId != null">current_sensor_id = #{currentSensorId},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="pushType != null">push_type = #{pushType},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAlertGroupById" parameterType="Integer">
+        delete from sys_alert_group where id = #{id}
+    </delete>
+
+    <delete id="deleteAlertGroupByIds" parameterType="String">
+        delete from sys_alert_group where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
