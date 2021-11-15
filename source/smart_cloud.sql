@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 16/10/2021 14:55:56
+ Date: 16/11/2021 07:15:06
 */
 
 SET NAMES utf8mb4;
@@ -84,18 +84,19 @@ CREATE TABLE `device_sensor_equipment` (
   `assign_time` datetime DEFAULT NULL COMMENT '布置时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`sn`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='传感器';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='传感器';
 
 -- ----------------------------
 -- Records of device_sensor_equipment
 -- ----------------------------
 BEGIN;
-INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, 21, 1, 1, 16, 120.2884098730, '31.513274820947032', 0, '2021-09-08 10:26:04', 10, 207588, '80', '117.132.192.200', '2021-10-15 08:46:42', 47040, '20.6508', '1440018057609\r', NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (15, '100000003', '倾角传感器2', NULL, 1, 22, 1, 1, 17, 120.2879807196, '31.5145919130638', 0, '2021-09-09 05:07:42', 1, 0, '0', '101.133.138.230', '2021-10-14 01:38:19', NULL, '0.0', NULL, NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, NULL, 1, 1, NULL, 120.2884098730, '31.513274820947032', 0, '2021-09-08 10:26:04', 10, 207588, '80', '117.132.192.200', '2021-10-15 08:46:42', 47040, '20.6508', '1440018057609\r', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (15, '100000003', '倾角传感器2', NULL, 1, 22, 1, 1, 17, 120.2879807196, '31.5145919130638', 0, '2021-09-09 05:07:42', 1, 0, '0', '89.248.165.64', '2021-11-15 18:29:07', NULL, '0.0', NULL, NULL, NULL);
 INSERT INTO `device_sensor_equipment` VALUES (16, '100000067', '倾角传感器3', NULL, 1, 23, 1, 1, 18, 120.2868649207, '31.51550654944506', 0, '2021-09-12 07:16:44', 1, 0, '0', '101.133.138.230', '2021-10-14 01:41:18', NULL, '0.0', NULL, NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (17, '100000071', '倾角传感器4', NULL, 1, 22, 1, 1, 28, 120.2857920370, '31.516238252104156', 0, '2021-09-12 07:14:04', 1, 96, '8', '101.133.138.230', '2021-10-14 01:41:09', 96, '-199.99', NULL, NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (22, '100000008', '无锡测试传感器', NULL, 1, 22, 6, 1, 31, 120.2793540000, '31.48057', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1234657', NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (23, '100000108', '无锡职院传感器910', NULL, 1, 21, 1, 1, 29, 31.1000000000, '102.1', 9, '2021-09-10 07:33:21', 1, 1460, '0', '101.133.138.230', '2021-10-14 01:37:49', 373, '24.5661', '123455678', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (17, '100000071', '倾角传感器4', NULL, 1, 22, 1, 1, 28, 120.2857920370, '31.516238252104156', 0, '2021-09-12 07:14:04', 1, 96, '0', '165.232.179.211', '2021-11-14 08:58:54', 96, '-199.99', NULL, NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (23, '100000108', '无锡职院传感器910', NULL, 1, 21, 1, 1, 32, 31.1000000000, '102.1', 8, '2021-09-10 07:33:21', 1, 5288, '0', '117.132.183.46', '2021-11-13 06:39:22', 2313, '21.4974', '123455678', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (24, '100000008', '无锡测试', NULL, 1, 26, 1, 1, 33, 1234.0000000000, '123.0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '188066', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (25, '1111', '111', NULL, 1, NULL, 1, 1, NULL, 111.0000000000, '111.0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '11111111111', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -168,7 +169,7 @@ CREATE TABLE `monitor_position` (
   `effective` int(11) DEFAULT NULL COMMENT '有效性',
   `binding_status` int(11) DEFAULT NULL COMMENT '绑定状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COMMENT='测点';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COMMENT='测点';
 
 -- ----------------------------
 -- Records of monitor_position
@@ -185,6 +186,13 @@ INSERT INTO `monitor_position` VALUES (28, 24, '桥尾', NULL, NULL, '桥尾', 0
 INSERT INTO `monitor_position` VALUES (29, 23, '桥尾', NULL, NULL, '桥尾', 0, 1, NULL);
 INSERT INTO `monitor_position` VALUES (31, 24, '桥底', NULL, NULL, '桥底', 0, 1, NULL);
 INSERT INTO `monitor_position` VALUES (32, 23, '桥底', NULL, NULL, '桥底', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (33, 29, '桥头', NULL, NULL, '桥头测点', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (34, 29, '桥尾', NULL, NULL, '桥尾', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (35, 29, '桥底', NULL, NULL, '桥底', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (36, 30, '客厅', NULL, NULL, '客厅测点', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (37, 30, '卧室', NULL, NULL, '卧室测点', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (38, 30, '厨房', NULL, NULL, '厨房测点', 0, 1, NULL);
+INSERT INTO `monitor_position` VALUES (39, 23, '桥墩', NULL, NULL, '测试', 0, 1, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -204,7 +212,7 @@ CREATE TABLE `monitor_position_model` (
   `creator` varchar(255) DEFAULT NULL,
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COMMENT='测点模板';
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COMMENT='测点模板';
 
 -- ----------------------------
 -- Records of monitor_position_model
@@ -233,6 +241,15 @@ INSERT INTO `monitor_position_model` VALUES (76, 'PTA7cX3M', 57, '大门', '大�
 INSERT INTO `monitor_position_model` VALUES (77, 'PTA7cX3M', 57, '客厅', '客厅测点', 0.01, 0.01, '0', 1, 'admin', '2021-09-30 00:55:26');
 INSERT INTO `monitor_position_model` VALUES (78, 'PTA7cX3M', 57, '卧室', '卧室测点', 0.01, 0.01, '0', 1, 'admin', '2021-09-30 00:55:26');
 INSERT INTO `monitor_position_model` VALUES (79, 'PTA7cX3M', 57, '厨房', '厨房测点', 0.01, 0.01, '0', 1, 'admin', '2021-09-30 00:55:26');
+INSERT INTO `monitor_position_model` VALUES (80, 'PTA7cX3M', 58, '客厅', '客厅测点', 0.02, 0.02, '0', 1, 'admin', '2021-10-27 07:01:25');
+INSERT INTO `monitor_position_model` VALUES (81, 'PTA7cX3M', 58, '卧室', '卧室测点', 0.02, 0.02, '0', 1, 'admin', '2021-10-27 07:01:25');
+INSERT INTO `monitor_position_model` VALUES (82, 'PTA7cX3M', 58, '厨房', '厨房测点', 0.02, 0.02, '0', 1, 'admin', '2021-10-27 07:01:25');
+INSERT INTO `monitor_position_model` VALUES (83, '8rh9DHog', 59, 'eee', 'eeee', 0.01, 0.01, '0', 1, 'admin', '2021-11-02 07:06:44');
+INSERT INTO `monitor_position_model` VALUES (84, '8rh9DHog', 59, 'ffff', 'ffff', 0.01, 0.01, '0', 1, 'admin', '2021-11-02 07:06:44');
+INSERT INTO `monitor_position_model` VALUES (85, 'FD5S8PPe', 60, '桥头', '桥头测点', 0.10, 0.10, '0', 1, 'admin', '2021-11-14 05:36:45');
+INSERT INTO `monitor_position_model` VALUES (86, 'FD5S8PPe', 60, '桥尾', '桥尾', 0.05, 0.10, '0', 1, 'admin', '2021-11-14 05:36:45');
+INSERT INTO `monitor_position_model` VALUES (87, 'FD5S8PPe', 60, '桥底', '桥底', 0.02, 0.10, '0', 1, 'admin', '2021-11-14 05:36:45');
+INSERT INTO `monitor_position_model` VALUES (88, 'FD5S8PPe', 60, '桥墩', '测试', 0.01, 0.10, '0', 1, 'admin', '2021-11-14 05:36:45');
 COMMIT;
 
 -- ----------------------------
@@ -248,7 +265,7 @@ CREATE TABLE `monitor_project` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='监测项目';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COMMENT='监测项目';
 
 -- ----------------------------
 -- Records of monitor_project
@@ -258,6 +275,8 @@ INSERT INTO `monitor_project` VALUES (21, '无锡软件园', 'http://beiwei-smar
 INSERT INTO `monitor_project` VALUES (22, '无锡职院风机', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629766111027_a7823d00', '6', 'tyler', '2021-08-24 00:48:36', NULL);
 INSERT INTO `monitor_project` VALUES (23, 'test1', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629971611694_d7f6d3b9', '7', 'bwadmin', '2021-08-26 09:53:35', NULL);
 INSERT INTO `monitor_project` VALUES (24, 'test2', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629971803268_9c0502bf', '7', 'bwadmin', '2021-08-26 09:56:46', NULL);
+INSERT INTO `monitor_project` VALUES (26, '无锡测试', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1634542030191_1ead3c2b', '1', 'admin', '2021-10-18 07:27:12', NULL);
+INSERT INTO `monitor_project` VALUES (27, '111', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1635836657971_66c7f45d', '1', 'admin', '2021-11-02 07:04:22', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -304,16 +323,18 @@ CREATE TABLE `monitor_structure` (
   `updater` varchar(255) DEFAULT NULL COMMENT '修改',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='结构物实体';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='结构物实体';
 
 -- ----------------------------
 -- Records of monitor_structure
 -- ----------------------------
 BEGIN;
-INSERT INTO `monitor_structure` VALUES (23, 53, 21, '桥梁', '桥梁', '桥梁结构物', 0.09, '0', '1', 'admin', NULL, NULL, NULL);
+INSERT INTO `monitor_structure` VALUES (23, 60, 21, '桥梁', '桥梁', '桥梁结构物', 0.10, '0', '1', 'admin', NULL, NULL, NULL);
 INSERT INTO `monitor_structure` VALUES (24, 53, 22, '桥梁', '桥梁', '桥梁结构物', 0.09, '0', '1', 'tyler', NULL, NULL, NULL);
 INSERT INTO `monitor_structure` VALUES (25, 40, 23, '桥梁', '桥梁', '桥梁结构物', 0.01, '0', '1', 'bwadmin', NULL, NULL, NULL);
 INSERT INTO `monitor_structure` VALUES (26, 40, 24, '桥梁', '桥梁', '桥梁结构物', 0.01, '0', '1', 'bwadmin', NULL, NULL, NULL);
+INSERT INTO `monitor_structure` VALUES (29, 53, 26, '桥梁', '桥梁', '桥梁结构物', 0.09, '0', '1', 'admin', NULL, NULL, NULL);
+INSERT INTO `monitor_structure` VALUES (30, 58, 27, '居民屋', '居民屋', '房屋', 0.02, '0', '1', 'admin', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -338,7 +359,7 @@ CREATE TABLE `monitor_structure_model` (
   `editor` varchar(255) DEFAULT NULL COMMENT '修改者',
   `edit_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='结构体模板';
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COMMENT='结构体模板';
 
 -- ----------------------------
 -- Records of monitor_structure_model
@@ -354,6 +375,9 @@ INSERT INTO `monitor_structure_model` VALUES (51, '桥梁', 'http://beiwei-smart
 INSERT INTO `monitor_structure_model` VALUES (52, '桥梁', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629730961454_c1438d99', 'FD5S8PPe', '桥梁结构物', 0, 1, 0, 0.08, 0, '1', 1, 'admin', '2021-09-26 12:11:00', NULL, NULL);
 INSERT INTO `monitor_structure_model` VALUES (53, '桥梁', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629730961454_c1438d99', 'FD5S8PPe', '桥梁结构物', 0, 1, 0, 0.09, 0, '1', 1, 'admin', '2021-09-26 12:46:14', NULL, NULL);
 INSERT INTO `monitor_structure_model` VALUES (57, '居民屋', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', 'PTA7cX3M', '房屋', 1, 1, 1, 0.01, 0, '1', 1, 'admin', '2021-09-30 00:55:26', NULL, NULL);
+INSERT INTO `monitor_structure_model` VALUES (58, '居民屋', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', 'PTA7cX3M', '房屋', 1, 1, 0, 0.02, 1, '1', 1, 'admin', '2021-10-27 07:01:25', NULL, NULL);
+INSERT INTO `monitor_structure_model` VALUES (59, 'tres', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1635836790359_87b7eaef', '8rh9DHog', '1111', 0, 1, 1, 0.01, 0, '1', 1, 'admin', '2021-11-02 07:06:44', NULL, NULL);
+INSERT INTO `monitor_structure_model` VALUES (60, '桥梁', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629730961454_c1438d99', 'FD5S8PPe', '桥梁结构物', 0, 1, 0, 0.10, 0, '1', 1, 'admin', '2021-11-14 05:36:44', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -370,7 +394,7 @@ CREATE TABLE `operate_group` (
   `is_enabled` int(11) DEFAULT NULL COMMENT '是否允许',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='企业组';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='企业组';
 
 -- ----------------------------
 -- Records of operate_group
@@ -379,6 +403,7 @@ BEGIN;
 INSERT INTO `operate_group` VALUES (1, '北微核心组', 'BW_MAIN', 4, 1, '核心组', 1, '2021-08-07 18:24:50');
 INSERT INTO `operate_group` VALUES (7, '成都北微工作组', 'BW_CHENGDU', 1, 0, '北微', 0, '2021-08-23 14:14:26');
 INSERT INTO `operate_group` VALUES (8, '测试', 'BW_TEST', 0, 0, '测试', 0, '2021-08-26 08:38:58');
+INSERT INTO `operate_group` VALUES (9, '3', '3', 0, 0, '3', 1, '2021-11-02 15:08:14');
 COMMIT;
 
 -- ----------------------------
@@ -394,7 +419,7 @@ CREATE TABLE `project_member` (
   `user_id` int(11) DEFAULT NULL COMMENT '用户编号',
   `join_time` datetime DEFAULT NULL COMMENT '加入时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COMMENT='项目成员';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='项目成员';
 
 -- ----------------------------
 -- Records of project_member
@@ -409,6 +434,8 @@ INSERT INTO `project_member` VALUES (22, 21, 'PROJECT_MANAGER', '管理员', 'bw
 INSERT INTO `project_member` VALUES (23, 22, 'PROJECT_MANAGER', '管理员', 'bwadmin', 7, '2021-08-26 09:40:12');
 INSERT INTO `project_member` VALUES (24, 23, 'PROJECT_OWNER', '项目拥有者', 'bwadmin', 7, '2021-08-26 09:53:35');
 INSERT INTO `project_member` VALUES (25, 24, 'PROJECT_OWNER', '项目拥有者', 'bwadmin', 7, '2021-08-26 09:56:46');
+INSERT INTO `project_member` VALUES (27, 26, 'PROJECT_OWNER', '项目拥有者', 'admin', 1, '2021-10-18 07:27:12');
+INSERT INTO `project_member` VALUES (28, 27, 'PROJECT_OWNER', '项目拥有者', 'admin', 1, '2021-11-02 07:04:22');
 COMMIT;
 
 -- ----------------------------
@@ -597,12 +624,13 @@ CREATE TABLE `sys_alert_group` (
   `creator` varchar(255) DEFAULT NULL COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='预警分组 用作预警规则的聚合根';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='预警分组 用作预警规则的聚合根';
 
 -- ----------------------------
 -- Records of sys_alert_group
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_alert_group` VALUES (15, '温度检测', 1, 23, NULL, 1, 'admin', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -614,12 +642,14 @@ CREATE TABLE `sys_alert_notifaction_member` (
   `alert_group_id` int(11) DEFAULT NULL COMMENT '预警分组编号',
   `user_id` int(11) DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='消息通知接收';
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COMMENT='消息通知接收';
 
 -- ----------------------------
 -- Records of sys_alert_notifaction_member
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_alert_notifaction_member` VALUES (33, 15, 6);
+INSERT INTO `sys_alert_notifaction_member` VALUES (34, 15, 7);
 COMMIT;
 
 -- ----------------------------
@@ -644,12 +674,48 @@ CREATE TABLE `sys_alert_notification` (
   `is_handle` int(11) DEFAULT '0' COMMENT '是否被处理',
   PRIMARY KEY (`id`),
   KEY `alert_time` (`alert_time`,`group_id`,`alert_name`,`role_name`,`sensor_id`,`summary`,`color`) USING BTREE
-) /*!50100 STORAGE MEMORY */ ENGINE=InnoDB AUTO_INCREMENT=5060 DEFAULT CHARSET=utf8mb4 COMMENT='预警通知日志';
+) /*!50100 STORAGE MEMORY */ ENGINE=InnoDB AUTO_INCREMENT=5096 DEFAULT CHARSET=utf8mb4 COMMENT='预警通知日志';
 
 -- ----------------------------
 -- Records of sys_alert_notification
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_alert_notification` VALUES (5060, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4974 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5061, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4445 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5062, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.8624 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5063, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.4921 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5064, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.3333 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5065, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.2275 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5066, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.1746 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5067, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0688 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5068, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0159 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5069, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.963 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5070, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.9101 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5071, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.8042 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5072, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0159 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5073, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.2804 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5074, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.7566 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5075, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.0741 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5076, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.1799 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5077, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4974 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5078, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.7619 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5079, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.8677 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5080, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.7619 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5081, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5082, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5083, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5084, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5085, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5086, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0794 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5087, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3968 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5088, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3439 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5089, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5090, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.1323 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5091, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5092, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.6032 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5093, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5094, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
+INSERT INTO `sys_alert_notification` VALUES (5095, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
 COMMIT;
 
 -- ----------------------------
@@ -707,12 +773,13 @@ CREATE TABLE `sys_alert_role` (
   `check_period` varchar(255) DEFAULT NULL COMMENT '规则检查周期',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_NAME` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='告警规则';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='告警规则';
 
 -- ----------------------------
 -- Records of sys_alert_role
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_alert_role` VALUES (21, '温度检测6888', 'AUTO_ROLE16888', 15, NULL, 'red', NULL, 1, 23, 'max,<,20,||#min,>,10', '2h', 'AUTO_ROLE', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:{{$values.data_value}} ', 1, '100000108|1|AUTO_ROLE16888|15', 'select  data_value from smart_cloud.sensor_data where ts > now - 2h and data_id =\'temp\' and sn =\'100000108\'', 'select  data_value from smart_cloud.sensor_data where ts > now - [forward] and data_id =\'temp\' and sn =\'100000108\'', 'max(data_value) < 20 || min(data_value) > 10', '0', '1m');
 COMMIT;
 
 -- ----------------------------
@@ -776,7 +843,7 @@ CREATE TABLE `sys_monitor_receive_log` (
   `send_address` varchar(255) DEFAULT NULL COMMENT '接收地址',
   `total_size` int(11) DEFAULT NULL COMMENT '保存后总数据量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1284 DEFAULT CHARSET=utf8mb4 COMMENT='传感器接收日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1575 DEFAULT CHARSET=utf8mb4 COMMENT='传感器接收日志';
 
 -- ----------------------------
 -- Records of sys_monitor_receive_log
@@ -2056,6 +2123,327 @@ INSERT INTO `sys_monitor_receive_log` VALUES (1280, '100000005', '8d5ee2b4', '11
 INSERT INTO `sys_monitor_receive_log` VALUES (1281, '100000005', '59c1dad6', '39.144.12.29', '2021-10-15 07:30:43', 28, 224, ' ', 47000);
 INSERT INTO `sys_monitor_receive_log` VALUES (1282, '100000005', 'f97b8aa9', '39.144.6.212', '2021-10-15 08:19:00', 35, 280, ' ', 47024);
 INSERT INTO `sys_monitor_receive_log` VALUES (1283, '100000005', '74c52a5b', '117.132.192.200', '2021-10-15 08:46:42', 10, 80, '北京市 北京市', 47040);
+INSERT INTO `sys_monitor_receive_log` VALUES (1284, '100000071', '64d2f1a2', '216.131.117.74', '2021-10-17 03:36:35', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1285, '100000003', 'e53d040e', '80.82.77.146', '2021-10-17 18:03:12', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1286, '100000003', 'b4a0a064', '89.248.165.68', '2021-10-17 19:42:09', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1287, '100000071', 'a0431e7f', '183.136.225.14', '2021-10-18 05:50:16', 1, 0, '浙江省 嘉兴市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1288, '100000071', '463897f7', '165.227.68.189', '2021-10-19 09:46:15', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1289, '100000003', '29e2b024', '89.248.165.92', '2021-10-20 12:00:05', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1290, '100000003', 'fb70a664', '94.102.49.159', '2021-10-20 17:34:21', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1291, '100000003', 'b24c75b5', '94.102.49.159', '2021-10-21 00:02:04', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1292, '100000003', 'a10977e4', '89.248.165.23', '2021-10-21 03:31:34', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1293, '100000003', 'c647d150', '89.248.165.23', '2021-10-21 08:56:23', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1294, '100000003', 'd0bdc099', '89.248.165.68', '2021-10-22 18:18:18', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1295, '100000003', '642d9c9d', '94.232.42.169', '2021-10-22 23:53:39', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1296, '100000003', '9b461075', '45.155.205.127', '2021-10-23 05:34:29', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1297, '100000003', 'a5e16cb5', '193.106.29.74', '2021-10-23 05:49:42', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1298, '100000003', '96f39b34', '31.43.191.124', '2021-10-24 07:38:40', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1299, '100000003', 'd2525ca3', '178.159.37.58', '2021-10-24 10:58:53', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1300, '100000108', '8b4795bc', '117.132.198.196', '2021-10-25 04:26:34', 5, 20, '北京市 北京市', 1013);
+INSERT INTO `sys_monitor_receive_log` VALUES (1301, '100000108', '739a84b6', '221.178.125.209', '2021-10-25 04:27:46', 5, 20, '重庆市 重庆市', 1017);
+INSERT INTO `sys_monitor_receive_log` VALUES (1302, '100000108', '88d2e22d', '218.204.253.74', '2021-10-25 04:29:18', 5, 20, '广东省 广州市', 1025);
+INSERT INTO `sys_monitor_receive_log` VALUES (1303, '100000003', 'c7adb4c2', '45.141.87.59', '2021-10-25 09:24:48', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1304, '100000003', 'ddd3d0d6', '89.248.165.41', '2021-10-25 12:08:56', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1305, '100000003', '9e5337d2', '45.141.87.59', '2021-10-25 12:42:24', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1306, '100000003', 'ad0437ee', '89.248.165.41', '2021-10-25 13:36:02', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1307, '100000003', 'ce15edf1', '45.141.87.59', '2021-10-25 17:09:53', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1308, '100000003', '60433c81', '45.141.87.59', '2021-10-25 21:28:48', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1309, '100000003', 'b6919309', '45.141.87.59', '2021-10-26 08:47:33', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1310, '100000071', '77afff26', '138.197.170.213', '2021-10-26 12:52:46', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1311, '100000003', '13685dcc', '45.141.87.59', '2021-10-26 12:58:49', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1312, '100000003', 'ab6a52fa', '45.141.87.59', '2021-10-26 17:45:04', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1313, '100000003', '52d9100b', '94.102.49.159', '2021-10-27 04:22:20', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1314, '100000003', '9226ece3', '89.248.165.5', '2021-10-27 07:12:13', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1315, '100000108', '6704ebc8', '39.144.2.101', '2021-10-27 07:17:29', 5, 20, ' ', 1029);
+INSERT INTO `sys_monitor_receive_log` VALUES (1316, '100000108', '9d904d0b', '39.144.4.131', '2021-10-27 07:24:11', 5, 20, ' ', 1037);
+INSERT INTO `sys_monitor_receive_log` VALUES (1317, '100000108', 'ff6c4e6f', '221.178.124.115', '2021-10-27 07:24:56', 5, 16, '重庆市 重庆市', 1045);
+INSERT INTO `sys_monitor_receive_log` VALUES (1318, '100000108', 'a98857f5', '39.144.15.95', '2021-10-27 07:40:29', 5, 16, ' ', 1049);
+INSERT INTO `sys_monitor_receive_log` VALUES (1319, '100000108', '4b2a13ae', '39.144.10.23', '2021-10-27 07:45:28', 2, 8, ' ', 1053);
+INSERT INTO `sys_monitor_receive_log` VALUES (1320, '100000108', '40f521e5', '39.144.2.213', '2021-10-27 07:55:32', 5, 20, ' ', 1061);
+INSERT INTO `sys_monitor_receive_log` VALUES (1321, '100000108', '9a0e9dce', '39.144.11.33', '2021-10-27 08:00:34', 5, 20, ' ', 1065);
+INSERT INTO `sys_monitor_receive_log` VALUES (1322, '100000003', 'e9963926', '94.102.49.159', '2021-10-27 08:01:21', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1323, '100000108', '59bc7a82', '117.132.193.3', '2021-10-27 08:05:34', 5, 20, '北京市 北京市', 1073);
+INSERT INTO `sys_monitor_receive_log` VALUES (1324, '100000108', 'c2cb624d', '117.132.198.224', '2021-10-27 08:10:37', 5, 16, '北京市 北京市', 1077);
+INSERT INTO `sys_monitor_receive_log` VALUES (1325, '100000108', 'd1307834', '39.144.11.234', '2021-10-27 08:15:36', 5, 12, ' ', 1081);
+INSERT INTO `sys_monitor_receive_log` VALUES (1326, '100000108', '8915c186', '223.104.255.163', '2021-10-27 08:20:37', 5, 20, '广东省 广州市', 1089);
+INSERT INTO `sys_monitor_receive_log` VALUES (1327, '100000108', '4e2125f3', '39.144.13.168', '2021-10-27 08:25:38', 6, 16, ' ', 1093);
+INSERT INTO `sys_monitor_receive_log` VALUES (1328, '100000108', 'b3ee0f27', '221.178.126.210', '2021-10-27 08:30:39', 5, 20, '重庆市 重庆市', 1097);
+INSERT INTO `sys_monitor_receive_log` VALUES (1329, '100000108', '881e667e', '117.132.195.152', '2021-10-27 08:35:43', 5, 20, '北京市 北京市', 1101);
+INSERT INTO `sys_monitor_receive_log` VALUES (1330, '100000108', 'd6cf0ee8', '117.132.195.8', '2021-10-27 08:50:10', 5, 20, '北京市 北京市', 1105);
+INSERT INTO `sys_monitor_receive_log` VALUES (1331, '100000108', '79e7fc60', '218.204.253.89', '2021-10-27 08:53:12', 5, 20, '广东省 广州市', 1113);
+INSERT INTO `sys_monitor_receive_log` VALUES (1332, '100000108', 'af032b2f', '39.144.12.218', '2021-10-27 09:03:14', 5, 20, ' ', 1117);
+INSERT INTO `sys_monitor_receive_log` VALUES (1333, '100000108', '0b8a1199', '117.132.197.138', '2021-10-27 09:13:16', 5, 20, '北京市 北京市', 1121);
+INSERT INTO `sys_monitor_receive_log` VALUES (1334, '100000108', '59e8805c', '223.104.254.228', '2021-10-27 09:18:17', 5, 20, '北京市 北京市', 1129);
+INSERT INTO `sys_monitor_receive_log` VALUES (1335, '100000108', 'e0e15ee3', '221.178.126.234', '2021-10-27 09:33:20', 5, 20, '重庆市 重庆市', 1133);
+INSERT INTO `sys_monitor_receive_log` VALUES (1336, '100000108', 'c6c8ec23', '223.104.255.127', '2021-10-27 09:43:22', 5, 20, '广东省 广州市', 1137);
+INSERT INTO `sys_monitor_receive_log` VALUES (1337, '100000108', '628f491a', '39.144.15.195', '2021-10-27 09:48:23', 5, 20, ' ', 1141);
+INSERT INTO `sys_monitor_receive_log` VALUES (1338, '100000108', 'cfd26904', '39.144.16.101', '2021-10-27 09:58:31', 5, 20, ' ', 1149);
+INSERT INTO `sys_monitor_receive_log` VALUES (1339, '100000108', '7444727d', '39.144.9.91', '2021-10-27 10:03:26', 5, 20, ' ', 1153);
+INSERT INTO `sys_monitor_receive_log` VALUES (1340, '100000108', '73e49551', '117.132.194.244', '2021-10-27 10:07:46', 5, 20, '北京市 北京市', 1157);
+INSERT INTO `sys_monitor_receive_log` VALUES (1341, '100000108', '48551b99', '221.178.125.71', '2021-10-27 10:15:23', 5, 16, '重庆市 重庆市', 1165);
+INSERT INTO `sys_monitor_receive_log` VALUES (1342, '100000108', '47232900', '39.144.4.20', '2021-10-27 10:20:24', 5, 20, ' ', 1169);
+INSERT INTO `sys_monitor_receive_log` VALUES (1343, '100000108', '5a29ab8c', '39.144.14.161', '2021-10-27 10:30:27', 5, 20, ' ', 1173);
+INSERT INTO `sys_monitor_receive_log` VALUES (1344, '100000108', 'b3315a23', '218.204.253.35', '2021-10-27 10:36:15', 5, 20, '广东省 广州市', 1177);
+INSERT INTO `sys_monitor_receive_log` VALUES (1345, '100000108', 'd28b0bc2', '39.144.12.184', '2021-10-27 10:41:16', 5, 20, ' ', 1181);
+INSERT INTO `sys_monitor_receive_log` VALUES (1346, '100000108', 'd0e91af4', '39.144.7.185', '2021-10-27 10:56:19', 5, 20, ' ', 1189);
+INSERT INTO `sys_monitor_receive_log` VALUES (1347, '100000108', '065e4d5b', '39.144.10.2', '2021-10-27 11:06:21', 5, 20, ' ', 1193);
+INSERT INTO `sys_monitor_receive_log` VALUES (1348, '100000108', '42ea9618', '39.144.15.110', '2021-10-27 11:11:22', 5, 20, ' ', 1201);
+INSERT INTO `sys_monitor_receive_log` VALUES (1349, '100000108', '001f2d3a', '223.104.255.116', '2021-10-27 11:16:23', 5, 20, '广东省 广州市', 1205);
+INSERT INTO `sys_monitor_receive_log` VALUES (1350, '100000108', '6598c338', '39.144.4.36', '2021-10-27 11:21:24', 5, 20, ' ', 1209);
+INSERT INTO `sys_monitor_receive_log` VALUES (1351, '100000108', 'edd175ed', '39.144.18.143', '2021-10-27 11:28:10', 5, 20, ' ', 1217);
+INSERT INTO `sys_monitor_receive_log` VALUES (1352, '100000108', '442e4a4d', '39.144.4.80', '2021-10-27 11:38:06', 5, 20, ' ', 1221);
+INSERT INTO `sys_monitor_receive_log` VALUES (1353, '100000108', '43ca4e09', '218.204.252.166', '2021-10-27 11:52:28', 5, 20, '广东省 广州市', 1225);
+INSERT INTO `sys_monitor_receive_log` VALUES (1354, '100000108', 'd51319a3', '39.144.9.181', '2021-10-27 12:02:31', 5, 20, ' ', 1229);
+INSERT INTO `sys_monitor_receive_log` VALUES (1355, '100000108', '99ea35cb', '218.204.253.198', '2021-10-27 12:07:32', 5, 20, '广东省 广州市', 1233);
+INSERT INTO `sys_monitor_receive_log` VALUES (1356, '100000108', '11663d39', '223.104.254.238', '2021-10-27 12:12:33', 5, 20, '北京市 北京市', 1241);
+INSERT INTO `sys_monitor_receive_log` VALUES (1357, '100000108', '117c41f6', '39.144.5.69', '2021-10-27 12:13:51', 5, 20, ' ', 1245);
+INSERT INTO `sys_monitor_receive_log` VALUES (1358, '100000108', 'b07fac76', '39.144.10.29', '2021-10-27 12:18:52', 5, 20, ' ', 1253);
+INSERT INTO `sys_monitor_receive_log` VALUES (1359, '100000108', '83725d76', '221.178.126.201', '2021-10-27 12:33:58', 5, 20, '重庆市 重庆市', 1257);
+INSERT INTO `sys_monitor_receive_log` VALUES (1360, '100000108', '422744b1', '39.144.11.123', '2021-10-27 12:43:57', 5, 20, ' ', 1265);
+INSERT INTO `sys_monitor_receive_log` VALUES (1361, '100000108', 'db3976e4', '39.144.16.86', '2021-10-27 12:51:16', 5, 20, ' ', 1269);
+INSERT INTO `sys_monitor_receive_log` VALUES (1362, '100000108', '91d3fbf3', '221.178.124.151', '2021-10-27 12:56:17', 5, 20, '重庆市 重庆市', 1273);
+INSERT INTO `sys_monitor_receive_log` VALUES (1363, '100000108', '9f5373d9', '39.144.8.245', '2021-10-27 13:01:18', 5, 20, ' ', 1281);
+INSERT INTO `sys_monitor_receive_log` VALUES (1364, '100000108', 'c94e01f8', '39.144.6.1', '2021-10-27 13:08:43', 5, 20, ' ', 1289);
+INSERT INTO `sys_monitor_receive_log` VALUES (1365, '100000108', '209fe7d2', '39.144.8.253', '2021-10-27 13:12:58', 5, 20, ' ', 1297);
+INSERT INTO `sys_monitor_receive_log` VALUES (1366, '100000108', '2bc3e801', '39.144.8.111', '2021-10-27 13:17:59', 5, 20, ' ', 1301);
+INSERT INTO `sys_monitor_receive_log` VALUES (1367, '100000108', 'e0091369', '117.132.195.187', '2021-10-27 13:23:00', 5, 20, '北京市 北京市', 1305);
+INSERT INTO `sys_monitor_receive_log` VALUES (1368, '100000108', '18d00913', '117.132.196.4', '2021-10-27 13:29:27', 5, 20, '北京市 北京市', 1313);
+INSERT INTO `sys_monitor_receive_log` VALUES (1369, '100000108', '688b5360', '117.132.193.45', '2021-10-27 13:34:29', 5, 20, '北京市 北京市', 1317);
+INSERT INTO `sys_monitor_receive_log` VALUES (1370, '100000108', 'e2fe8ca1', '39.144.15.245', '2021-10-27 13:39:29', 5, 20, ' ', 1325);
+INSERT INTO `sys_monitor_receive_log` VALUES (1371, '100000108', '9d60cc53', '218.204.253.79', '2021-10-27 13:41:49', 5, 20, '广东省 广州市', 1333);
+INSERT INTO `sys_monitor_receive_log` VALUES (1372, '100000108', 'd082027a', '221.178.126.86', '2021-10-27 13:46:50', 5, 20, '重庆市 重庆市', 1337);
+INSERT INTO `sys_monitor_receive_log` VALUES (1373, '100000108', '5f859653', '39.144.18.161', '2021-10-27 13:51:51', 5, 20, ' ', 1345);
+INSERT INTO `sys_monitor_receive_log` VALUES (1374, '100000108', 'ebc62c71', '39.144.5.112', '2021-10-27 13:56:53', 5, 20, ' ', 1349);
+INSERT INTO `sys_monitor_receive_log` VALUES (1375, '100000108', 'ad6db71d', '39.144.8.185', '2021-10-27 14:01:54', 5, 20, ' ', 1357);
+INSERT INTO `sys_monitor_receive_log` VALUES (1376, '100000108', 'ca1bdf13', '39.144.15.96', '2021-10-27 14:47:02', 5, 20, ' ', 1365);
+INSERT INTO `sys_monitor_receive_log` VALUES (1377, '100000108', 'dbf8db0a', '221.178.127.60', '2021-10-27 14:52:03', 5, 20, '重庆市 重庆市', 1369);
+INSERT INTO `sys_monitor_receive_log` VALUES (1378, '100000108', 'a4bc895c', '117.132.196.152', '2021-10-27 15:02:05', 5, 20, '北京市 北京市', 1377);
+INSERT INTO `sys_monitor_receive_log` VALUES (1379, '100000108', '6fe90bbe', '218.204.253.45', '2021-10-27 15:07:06', 5, 20, '广东省 广州市', 1385);
+INSERT INTO `sys_monitor_receive_log` VALUES (1380, '100000108', '9b397137', '39.144.6.111', '2021-10-27 15:17:08', 5, 20, ' ', 1389);
+INSERT INTO `sys_monitor_receive_log` VALUES (1381, '100000108', '76a6c7f0', '39.144.17.247', '2021-10-27 15:37:12', 5, 20, ' ', 1393);
+INSERT INTO `sys_monitor_receive_log` VALUES (1382, '100000108', '387e3f2a', '117.132.192.233', '2021-10-27 15:47:14', 5, 20, '北京市 北京市', 1401);
+INSERT INTO `sys_monitor_receive_log` VALUES (1383, '100000108', 'ae1a4cf2', '218.204.252.130', '2021-10-27 15:52:15', 5, 20, '广东省 广州市', 1409);
+INSERT INTO `sys_monitor_receive_log` VALUES (1384, '100000108', '82145cd7', '223.104.255.45', '2021-10-27 16:07:18', 5, 20, '广东省 广州市', 1413);
+INSERT INTO `sys_monitor_receive_log` VALUES (1385, '100000108', '9bf7b0d1', '218.204.253.12', '2021-10-27 16:12:19', 5, 20, '广东省 广州市', 1417);
+INSERT INTO `sys_monitor_receive_log` VALUES (1386, '100000108', '61378065', '117.132.192.62', '2021-10-27 16:17:20', 5, 20, '北京市 北京市', 1421);
+INSERT INTO `sys_monitor_receive_log` VALUES (1387, '100000108', 'b7e3d801', '39.144.8.27', '2021-10-27 16:22:21', 5, 20, ' ', 1429);
+INSERT INTO `sys_monitor_receive_log` VALUES (1388, '100000108', '302ee2d2', '39.144.9.195', '2021-10-27 16:32:23', 5, 20, ' ', 1433);
+INSERT INTO `sys_monitor_receive_log` VALUES (1389, '100000108', '8921dc28', '39.144.5.3', '2021-10-27 16:37:24', 5, 20, ' ', 1437);
+INSERT INTO `sys_monitor_receive_log` VALUES (1390, '100000108', 'c22cc3ef', '223.104.255.160', '2021-10-27 16:47:26', 5, 20, '广东省 广州市', 1441);
+INSERT INTO `sys_monitor_receive_log` VALUES (1391, '100000108', 'ab096ced', '39.144.8.236', '2021-10-27 16:57:28', 5, 20, ' ', 1449);
+INSERT INTO `sys_monitor_receive_log` VALUES (1392, '100000108', 'b85d245a', '117.132.195.106', '2021-10-27 17:02:29', 5, 20, '北京市 北京市', 1453);
+INSERT INTO `sys_monitor_receive_log` VALUES (1393, '100000108', '776452cd', '39.144.7.103', '2021-10-27 17:12:31', 5, 20, ' ', 1457);
+INSERT INTO `sys_monitor_receive_log` VALUES (1394, '100000108', '9d05f4d6', '39.144.15.109', '2021-10-27 17:17:32', 5, 20, ' ', 1461);
+INSERT INTO `sys_monitor_receive_log` VALUES (1395, '100000108', 'b8e36d30', '39.144.12.24', '2021-10-27 17:22:33', 5, 20, ' ', 1465);
+INSERT INTO `sys_monitor_receive_log` VALUES (1396, '100000108', 'a7e73878', '39.144.17.126', '2021-10-27 17:27:34', 5, 20, ' ', 1469);
+INSERT INTO `sys_monitor_receive_log` VALUES (1397, '100000108', '7bf4f57d', '117.132.196.19', '2021-10-27 17:42:37', 5, 20, '北京市 北京市', 1473);
+INSERT INTO `sys_monitor_receive_log` VALUES (1398, '100000108', 'f56e0f05', '221.178.125.178', '2021-10-27 18:02:41', 5, 20, '重庆市 重庆市', 1481);
+INSERT INTO `sys_monitor_receive_log` VALUES (1399, '100000108', '482e975a', '39.144.2.55', '2021-10-27 18:07:42', 5, 20, ' ', 1485);
+INSERT INTO `sys_monitor_receive_log` VALUES (1400, '100000108', 'b46c7e07', '218.204.253.37', '2021-10-27 18:12:43', 5, 20, '广东省 广州市', 1493);
+INSERT INTO `sys_monitor_receive_log` VALUES (1401, '100000108', '4ce1b678', '39.144.8.154', '2021-10-27 18:17:44', 5, 20, ' ', 1501);
+INSERT INTO `sys_monitor_receive_log` VALUES (1402, '100000108', '14029a4d', '117.132.198.23', '2021-10-27 18:27:46', 5, 20, '北京市 北京市', 1505);
+INSERT INTO `sys_monitor_receive_log` VALUES (1403, '100000108', 'c5635321', '117.132.191.239', '2021-10-27 18:42:49', 5, 20, '北京市 北京市', 1513);
+INSERT INTO `sys_monitor_receive_log` VALUES (1404, '100000108', '66433108', '39.144.8.183', '2021-10-27 18:47:50', 5, 20, ' ', 1521);
+INSERT INTO `sys_monitor_receive_log` VALUES (1405, '100000108', '1b1b187b', '221.178.127.113', '2021-10-27 18:52:51', 5, 20, '重庆市 重庆市', 1529);
+INSERT INTO `sys_monitor_receive_log` VALUES (1406, '100000108', 'ef6d7b61', '117.132.195.35', '2021-10-27 18:57:52', 5, 20, '北京市 北京市', 1537);
+INSERT INTO `sys_monitor_receive_log` VALUES (1407, '100000108', '32fbabbf', '39.144.15.73', '2021-10-27 19:02:53', 5, 20, ' ', 1545);
+INSERT INTO `sys_monitor_receive_log` VALUES (1408, '100000108', 'b176c8c0', '39.144.17.210', '2021-10-27 19:07:54', 5, 20, ' ', 1549);
+INSERT INTO `sys_monitor_receive_log` VALUES (1409, '100000108', '0e14bd0b', '117.132.192.165', '2021-10-27 19:17:56', 5, 20, '北京市 北京市', 1553);
+INSERT INTO `sys_monitor_receive_log` VALUES (1410, '100000108', '530a7d97', '218.204.252.181', '2021-10-27 19:27:58', 5, 20, '广东省 广州市', 1557);
+INSERT INTO `sys_monitor_receive_log` VALUES (1411, '100000108', '4533b310', '221.178.125.21', '2021-10-27 19:38:00', 5, 20, '重庆市 重庆市', 1565);
+INSERT INTO `sys_monitor_receive_log` VALUES (1412, '100000108', 'ee974bb1', '39.144.11.88', '2021-10-27 19:43:01', 5, 20, ' ', 1573);
+INSERT INTO `sys_monitor_receive_log` VALUES (1413, '100000108', '03baf9a3', '39.144.6.250', '2021-10-27 19:48:02', 5, 20, ' ', 1577);
+INSERT INTO `sys_monitor_receive_log` VALUES (1414, '100000108', '02cb7eeb', '39.144.6.10', '2021-10-27 19:53:03', 5, 20, ' ', 1581);
+INSERT INTO `sys_monitor_receive_log` VALUES (1415, '100000108', 'd40faf04', '117.132.197.7', '2021-10-27 20:08:06', 5, 20, '北京市 北京市', 1587);
+INSERT INTO `sys_monitor_receive_log` VALUES (1416, '100000108', '7888c089', '39.144.16.206', '2021-10-27 20:13:07', 5, 20, ' ', 1595);
+INSERT INTO `sys_monitor_receive_log` VALUES (1417, '100000108', '3ff538ed', '39.144.12.6', '2021-10-27 20:23:09', 5, 20, ' ', 1599);
+INSERT INTO `sys_monitor_receive_log` VALUES (1418, '100000108', '8a33c982', '39.144.5.110', '2021-10-27 20:28:10', 5, 20, ' ', 1603);
+INSERT INTO `sys_monitor_receive_log` VALUES (1419, '100000108', '10a10ced', '117.132.191.73', '2021-10-27 20:33:11', 5, 20, '北京市 北京市', 1607);
+INSERT INTO `sys_monitor_receive_log` VALUES (1420, '100000108', '52497ee7', '39.144.1.221', '2021-10-27 20:38:12', 5, 20, ' ', 1615);
+INSERT INTO `sys_monitor_receive_log` VALUES (1421, '100000108', '4a7e0cb7', '39.144.9.38', '2021-10-27 20:43:13', 5, 20, ' ', 1619);
+INSERT INTO `sys_monitor_receive_log` VALUES (1422, '100000108', 'ac5e651a', '39.144.7.72', '2021-10-27 20:48:14', 5, 20, ' ', 1623);
+INSERT INTO `sys_monitor_receive_log` VALUES (1423, '100000108', '676205ed', '117.132.194.157', '2021-10-27 20:53:15', 5, 20, '北京市 北京市', 1627);
+INSERT INTO `sys_monitor_receive_log` VALUES (1424, '100000108', '7805e2bf', '223.104.255.139', '2021-10-27 21:18:20', 5, 20, '广东省 广州市', 1631);
+INSERT INTO `sys_monitor_receive_log` VALUES (1425, '100000108', 'd3012a84', '218.204.252.37', '2021-10-27 21:23:21', 5, 20, '广东省 广州市', 1635);
+INSERT INTO `sys_monitor_receive_log` VALUES (1426, '100000108', 'a1391e7b', '39.144.16.235', '2021-10-27 21:28:22', 5, 20, ' ', 1639);
+INSERT INTO `sys_monitor_receive_log` VALUES (1427, '100000108', '26cf0d12', '223.104.255.44', '2021-10-27 21:38:24', 5, 20, '广东省 广州市', 1647);
+INSERT INTO `sys_monitor_receive_log` VALUES (1428, '100000108', 'a48114af', '117.132.195.201', '2021-10-27 21:43:25', 5, 20, '北京市 北京市', 1651);
+INSERT INTO `sys_monitor_receive_log` VALUES (1429, '100000108', 'a558c095', '223.104.254.98', '2021-10-27 21:53:27', 5, 20, '北京市 北京市', 1655);
+INSERT INTO `sys_monitor_receive_log` VALUES (1430, '100000108', 'bcc7a174', '39.144.1.59', '2021-10-27 22:13:31', 5, 20, ' ', 1659);
+INSERT INTO `sys_monitor_receive_log` VALUES (1431, '100000108', '984eac02', '39.144.2.249', '2021-10-27 22:18:32', 5, 20, ' ', 1663);
+INSERT INTO `sys_monitor_receive_log` VALUES (1432, '100000108', '6bcaef39', '117.132.191.160', '2021-10-27 22:23:33', 5, 20, '北京市 北京市', 1667);
+INSERT INTO `sys_monitor_receive_log` VALUES (1433, '100000108', 'aca847d8', '39.144.17.89', '2021-10-27 22:48:38', 5, 20, ' ', 1671);
+INSERT INTO `sys_monitor_receive_log` VALUES (1434, '100000108', '11905165', '117.132.195.86', '2021-10-27 23:03:41', 5, 20, '北京市 北京市', 1675);
+INSERT INTO `sys_monitor_receive_log` VALUES (1435, '100000108', '99f0545f', '39.144.11.78', '2021-10-27 23:13:43', 5, 20, ' ', 1679);
+INSERT INTO `sys_monitor_receive_log` VALUES (1436, '100000108', '67478182', '39.144.3.34', '2021-10-27 23:18:44', 5, 20, ' ', 1683);
+INSERT INTO `sys_monitor_receive_log` VALUES (1437, '100000108', 'c493e953', '39.144.10.104', '2021-10-27 23:28:46', 5, 20, ' ', 1691);
+INSERT INTO `sys_monitor_receive_log` VALUES (1438, '100000108', '873b5c57', '39.144.5.220', '2021-10-27 23:38:48', 5, 20, ' ', 1695);
+INSERT INTO `sys_monitor_receive_log` VALUES (1439, '100000108', '495ef9df', '39.144.18.176', '2021-10-27 23:48:50', 5, 20, ' ', 1699);
+INSERT INTO `sys_monitor_receive_log` VALUES (1440, '100000108', '744f6e11', '39.144.3.110', '2021-10-27 23:53:51', 5, 20, ' ', 1703);
+INSERT INTO `sys_monitor_receive_log` VALUES (1441, '100000108', '71ea5f92', '223.104.254.166', '2021-10-27 23:58:52', 5, 20, '北京市 北京市', 1707);
+INSERT INTO `sys_monitor_receive_log` VALUES (1442, '100000108', '2971b674', '117.132.192.181', '2021-10-28 00:03:53', 5, 20, '北京市 北京市', 1711);
+INSERT INTO `sys_monitor_receive_log` VALUES (1443, '100000108', '56d7fa23', '39.144.17.182', '2021-10-28 00:08:54', 5, 20, ' ', 1715);
+INSERT INTO `sys_monitor_receive_log` VALUES (1444, '100000108', 'c33de72a', '117.132.195.202', '2021-10-28 00:13:55', 5, 20, '北京市 北京市', 1719);
+INSERT INTO `sys_monitor_receive_log` VALUES (1445, '100000108', 'c1fef16c', '39.144.3.90', '2021-10-28 00:18:56', 5, 20, ' ', 1727);
+INSERT INTO `sys_monitor_receive_log` VALUES (1446, '100000108', 'd1a773b3', '39.144.9.124', '2021-10-28 00:23:57', 5, 20, ' ', 1731);
+INSERT INTO `sys_monitor_receive_log` VALUES (1447, '100000108', 'edb10add', '117.132.193.155', '2021-10-28 00:28:58', 5, 20, '北京市 北京市', 1739);
+INSERT INTO `sys_monitor_receive_log` VALUES (1448, '100000108', '03e848f6', '117.132.193.34', '2021-10-28 00:39:00', 5, 20, '北京市 北京市', 1743);
+INSERT INTO `sys_monitor_receive_log` VALUES (1449, '100000108', '9568de19', '39.144.10.145', '2021-10-28 00:44:01', 5, 20, ' ', 1747);
+INSERT INTO `sys_monitor_receive_log` VALUES (1450, '100000108', 'd0cc6185', '39.144.18.237', '2021-10-28 09:27:30', 5, 20, ' ', 2016);
+INSERT INTO `sys_monitor_receive_log` VALUES (1451, '100000108', '1212199b', '117.132.198.66', '2021-10-28 09:37:38', 5, 20, '北京市 北京市', 2020);
+INSERT INTO `sys_monitor_receive_log` VALUES (1452, '100000108', '79b835e3', '117.132.198.226', '2021-10-28 09:42:32', 5, 20, '北京市 北京市', 2024);
+INSERT INTO `sys_monitor_receive_log` VALUES (1453, '100000003', '8a9b88f4', '185.216.140.27', '2021-10-28 12:52:12', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1454, '100000071', '5c948d11', '39.101.204.204', '2021-10-28 19:43:17', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1455, '100000071', '85640bf9', '39.101.204.204', '2021-10-28 19:43:21', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1456, '100000071', '082676ce', '183.136.225.14', '2021-10-29 07:39:54', 1, 0, '浙江省 嘉兴市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1457, '100000003', 'cbb2f967', '89.248.165.26', '2021-10-29 09:06:03', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1458, '100000003', '27307d06', '45.9.20.97', '2021-10-29 23:24:27', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1459, '100000108', '9792cc49', '117.132.191.164', '2021-10-30 04:48:13', 5, 20, '北京市 北京市', 2032);
+INSERT INTO `sys_monitor_receive_log` VALUES (1460, '100000108', 'dca6baae', '39.144.5.182', '2021-10-30 05:03:17', 5, 20, ' ', 2036);
+INSERT INTO `sys_monitor_receive_log` VALUES (1461, '100000108', '4cbfcecf', '117.132.192.246', '2021-10-30 05:08:17', 5, 20, '北京市 北京市', 2044);
+INSERT INTO `sys_monitor_receive_log` VALUES (1462, '100000108', '8139ba50', '218.204.252.182', '2021-10-30 05:13:18', 5, 20, '广东省 广州市', 2052);
+INSERT INTO `sys_monitor_receive_log` VALUES (1463, '100000108', '27fb06d6', '39.144.5.90', '2021-10-30 05:28:21', 5, 20, ' ', 2060);
+INSERT INTO `sys_monitor_receive_log` VALUES (1464, '100000108', '33d5cb37', '221.178.126.169', '2021-10-30 05:38:22', 5, 20, '重庆市 重庆市', 2064);
+INSERT INTO `sys_monitor_receive_log` VALUES (1465, '100000108', 'a849b3b8', '39.144.15.172', '2021-10-30 05:45:01', 5, 20, ' ', 2072);
+INSERT INTO `sys_monitor_receive_log` VALUES (1466, '100000108', '7872da14', '39.144.8.27', '2021-10-30 05:50:01', 5, 20, ' ', 2080);
+INSERT INTO `sys_monitor_receive_log` VALUES (1467, '100000108', 'd32d7c8d', '223.104.255.106', '2021-10-30 06:00:03', 5, 20, '广东省 广州市', 2084);
+INSERT INTO `sys_monitor_receive_log` VALUES (1468, '100000108', '5a511538', '39.144.10.235', '2021-10-30 06:10:05', 5, 20, ' ', 2092);
+INSERT INTO `sys_monitor_receive_log` VALUES (1469, '100000108', '3632aff0', '39.144.10.170', '2021-10-30 06:15:06', 5, 20, ' ', 2100);
+INSERT INTO `sys_monitor_receive_log` VALUES (1470, '100000108', '0ee9cc6c', '223.104.255.233', '2021-10-30 06:30:09', 5, 20, '广东省 广州市', 2104);
+INSERT INTO `sys_monitor_receive_log` VALUES (1471, '100000108', 'd11603ff', '223.104.254.213', '2021-10-30 06:40:11', 5, 20, '北京市 北京市', 2108);
+INSERT INTO `sys_monitor_receive_log` VALUES (1472, '100000108', 'bd1e0e74', '39.144.4.238', '2021-10-30 06:54:19', 5, 20, ' ', 2112);
+INSERT INTO `sys_monitor_receive_log` VALUES (1473, '100000108', '14d0274c', '39.144.8.193', '2021-10-30 07:00:33', 5, 20, ' ', 2120);
+INSERT INTO `sys_monitor_receive_log` VALUES (1474, '100000108', 'f788c3a2', '223.104.255.182', '2021-10-30 07:10:37', 5, 16, '广东省 广州市', 2124);
+INSERT INTO `sys_monitor_receive_log` VALUES (1475, '100000108', 'fac710a8', '221.178.124.15', '2021-10-30 07:15:35', 6, 16, '重庆市 重庆市', 2132);
+INSERT INTO `sys_monitor_receive_log` VALUES (1476, '100000108', '5708ec5e', '221.178.124.61', '2021-10-30 07:25:41', 8, 16, '重庆市 重庆市', 2140);
+INSERT INTO `sys_monitor_receive_log` VALUES (1477, '100000108', 'e942711f', '39.144.13.174', '2021-10-30 07:45:40', 5, 20, ' ', 2148);
+INSERT INTO `sys_monitor_receive_log` VALUES (1478, '100000108', '4c17da0a', '39.144.7.164', '2021-10-30 07:50:41', 5, 20, ' ', 2152);
+INSERT INTO `sys_monitor_receive_log` VALUES (1479, '100000108', 'f5e035bf', '117.132.198.79', '2021-10-30 07:55:42', 5, 20, '北京市 北京市', 2157);
+INSERT INTO `sys_monitor_receive_log` VALUES (1480, '100000108', '04b95ba2', '39.144.8.99', '2021-10-30 08:00:48', 5, 20, ' ', 2161);
+INSERT INTO `sys_monitor_receive_log` VALUES (1481, '100000108', 'f7b127af', '221.178.126.201', '2021-10-30 08:05:45', 5, 20, '重庆市 重庆市', 2165);
+INSERT INTO `sys_monitor_receive_log` VALUES (1482, '100000108', '684b9c99', '39.144.18.216', '2021-10-30 08:20:48', 5, 20, ' ', 2169);
+INSERT INTO `sys_monitor_receive_log` VALUES (1483, '100000108', 'cc377f39', '39.144.7.175', '2021-10-30 08:25:49', 5, 20, ' ', 2173);
+INSERT INTO `sys_monitor_receive_log` VALUES (1484, '100000108', 'e5bbafb5', '218.204.253.155', '2021-10-30 08:30:50', 5, 20, '广东省 广州市', 2177);
+INSERT INTO `sys_monitor_receive_log` VALUES (1485, '100000108', '88521624', '221.178.124.207', '2021-10-30 08:35:51', 5, 20, '重庆市 重庆市', 2181);
+INSERT INTO `sys_monitor_receive_log` VALUES (1486, '100000108', '9386c6fd', '223.104.255.223', '2021-10-30 08:40:52', 5, 20, '广东省 广州市', 2185);
+INSERT INTO `sys_monitor_receive_log` VALUES (1487, '100000108', 'e8c1e270', '39.144.3.237', '2021-10-30 08:45:53', 5, 20, ' ', 2189);
+INSERT INTO `sys_monitor_receive_log` VALUES (1488, '100000108', '7afa2c73', '221.178.127.53', '2021-10-30 08:50:54', 5, 20, '重庆市 重庆市', 2193);
+INSERT INTO `sys_monitor_receive_log` VALUES (1489, '100000108', '357ca372', '39.144.9.65', '2021-10-30 09:21:00', 5, 20, ' ', 2197);
+INSERT INTO `sys_monitor_receive_log` VALUES (1490, '100000108', 'bce5bb37', '117.132.191.147', '2021-10-30 09:41:03', 5, 20, '北京市 北京市', 2201);
+INSERT INTO `sys_monitor_receive_log` VALUES (1491, '100000108', '3873570b', '39.144.15.57', '2021-10-30 09:46:04', 5, 20, ' ', 2205);
+INSERT INTO `sys_monitor_receive_log` VALUES (1492, '100000108', '9910aa6e', '117.132.193.106', '2021-10-30 09:56:07', 5, 20, '北京市 北京市', 2213);
+INSERT INTO `sys_monitor_receive_log` VALUES (1493, '100000108', '9857f397', '39.144.5.83', '2021-10-30 10:06:08', 5, 20, ' ', 2221);
+INSERT INTO `sys_monitor_receive_log` VALUES (1494, '100000003', '5ec15ee0', '94.102.49.159', '2021-10-30 10:08:34', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1495, '100000108', '81b82b34', '39.144.16.133', '2021-10-30 10:11:10', 5, 20, ' ', 2229);
+INSERT INTO `sys_monitor_receive_log` VALUES (1496, '100000108', 'b2cd22d9', '39.144.16.91', '2021-10-30 10:16:11', 5, 20, ' ', 2233);
+INSERT INTO `sys_monitor_receive_log` VALUES (1497, '100000108', 'a88dd007', '221.178.125.64', '2021-10-30 10:21:12', 5, 20, '重庆市 重庆市', 2237);
+INSERT INTO `sys_monitor_receive_log` VALUES (1498, '100000108', '859e6144', '218.204.253.215', '2021-10-30 10:28:25', 5, 20, '广东省 广州市', 2241);
+INSERT INTO `sys_monitor_receive_log` VALUES (1499, '100000108', 'c7185b8a', '117.132.194.107', '2021-10-30 10:45:22', 5, 20, '北京市 北京市', 2249);
+INSERT INTO `sys_monitor_receive_log` VALUES (1500, '100000108', '9e52d419', '39.144.16.163', '2021-10-30 10:50:23', 5, 20, ' ', 2253);
+INSERT INTO `sys_monitor_receive_log` VALUES (1501, '100000003', '93f594de', '94.102.49.159', '2021-10-30 10:50:37', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1502, '100000108', '92fafc9b', '39.144.17.93', '2021-10-30 11:23:34', 5, 20, ' ', 2257);
+INSERT INTO `sys_monitor_receive_log` VALUES (1503, '100000108', '3537a094', '221.178.125.30', '2021-10-30 11:28:35', 5, 20, '重庆市 重庆市', 2261);
+INSERT INTO `sys_monitor_receive_log` VALUES (1504, '100000108', '4f5daaf3', '221.178.126.224', '2021-10-30 11:33:36', 5, 20, '重庆市 重庆市', 2269);
+INSERT INTO `sys_monitor_receive_log` VALUES (1505, '100000003', '4273f284', '31.43.191.134', '2021-10-30 11:45:35', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1506, '100000108', 'b339cf28', '39.144.16.237', '2021-10-30 11:48:39', 5, 20, ' ', 2277);
+INSERT INTO `sys_monitor_receive_log` VALUES (1507, '100000108', '6910a68f', '117.132.192.251', '2021-10-30 11:53:40', 5, 20, '北京市 北京市', 2281);
+INSERT INTO `sys_monitor_receive_log` VALUES (1508, '100000108', '0dd1f231', '117.132.196.167', '2021-10-30 12:03:42', 5, 20, '北京市 北京市', 2285);
+INSERT INTO `sys_monitor_receive_log` VALUES (1509, '100000108', '954e7376', '39.144.18.254', '2021-10-30 12:08:43', 5, 20, ' ', 2289);
+INSERT INTO `sys_monitor_receive_log` VALUES (1510, '100000108', '81e9d50c', '39.144.7.133', '2021-10-30 12:13:44', 5, 20, ' ', 2293);
+INSERT INTO `sys_monitor_receive_log` VALUES (1511, '100000108', '892a62af', '39.144.6.215', '2021-10-30 12:23:46', 5, 20, ' ', 2297);
+INSERT INTO `sys_monitor_receive_log` VALUES (1512, '100000108', '4f0fe1e1', '221.178.124.146', '2021-10-30 12:38:49', 5, 20, '重庆市 重庆市', 2301);
+INSERT INTO `sys_monitor_receive_log` VALUES (1513, '100000108', '0e0873ab', '39.144.17.76', '2021-10-30 12:53:52', 5, 20, ' ', 2305);
+INSERT INTO `sys_monitor_receive_log` VALUES (1514, '100000108', '09efc5cb', '117.132.193.83', '2021-10-30 12:58:53', 5, 20, '北京市 北京市', 2309);
+INSERT INTO `sys_monitor_receive_log` VALUES (1515, '100000108', '6254c9a5', '39.144.16.237', '2021-10-30 13:08:55', 5, 20, ' ', 2313);
+INSERT INTO `sys_monitor_receive_log` VALUES (1516, '100000003', 'f6a81d22', '79.124.62.106', '2021-10-30 23:15:11', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1517, '100000071', '9b885fda', '104.131.13.38', '2021-10-31 18:22:23', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1518, '100000003', '4c3f6101', '178.159.37.58', '2021-11-01 08:30:11', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1519, '100000003', '6afa145a', '45.9.20.111', '2021-11-02 14:34:07', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1520, '100000003', 'fa446c57', '94.102.49.159', '2021-11-02 22:47:19', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1521, '100000003', '7d3ce245', '94.102.49.159', '2021-11-03 00:26:25', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1522, '100000003', '37b0d787', '45.93.201.97', '2021-11-03 11:01:03', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1523, '100000003', 'fa203f5b', '45.93.201.97', '2021-11-03 16:05:27', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1524, '100000071', '3f5d4569', '173.245.202.207', '2021-11-03 20:06:45', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1525, '100000003', 'e76c1d40', '89.248.165.25', '2021-11-04 09:56:27', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1526, '100000003', '717b949a', '94.102.49.159', '2021-11-04 11:09:33', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1527, '100000003', '0da24e1f', '94.102.49.159', '2021-11-04 17:13:24', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1528, '100000071', '25bb6ded', '91.219.215.68', '2021-11-04 20:40:40', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1529, '100000071', '67a19283', '64.145.76.123', '2021-11-04 20:41:21', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1530, '100000071', '831a11ed', '123.160.221.22', '2021-11-05 08:06:11', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1531, '100000003', '8be00360', '123.160.221.22', '2021-11-05 08:06:17', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1532, '100000071', '0431ba67', '123.160.221.22', '2021-11-05 08:08:17', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1533, '100000071', 'ffdeb996', '183.136.225.14', '2021-11-05 11:59:04', 1, 0, '浙江省 嘉兴市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1534, '100000003', '839397e2', '185.156.72.32', '2021-11-05 14:19:45', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1535, '100000003', 'cd33b1b2', '45.9.20.97', '2021-11-07 01:08:32', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1536, '100000003', '671bbcfc', '178.159.37.58', '2021-11-07 09:14:53', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1537, '100000071', '670a2358', '167.94.138.43', '2021-11-07 16:24:11', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1538, '100000003', 'f051fc97', '89.248.165.23', '2021-11-07 17:26:59', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1539, '100000071', 'f30fce6b', '159.203.95.15', '2021-11-07 20:17:25', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1540, '100000071', 'c22858fa', '62.212.239.54', '2021-11-07 21:18:16', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1541, '100000071', '67f55093', '173.255.191.17', '2021-11-07 21:18:56', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1542, '100000003', '3890d3ed', '89.248.165.23', '2021-11-08 02:55:42', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1543, '100000003', 'e1c674a6', '89.248.165.250', '2021-11-08 06:35:20', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1544, '100000071', '76880f5c', '125.64.94.138', '2021-11-08 21:07:30', 1, 0, '四川省 德阳市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1545, '100000071', 'c43b47cb', '162.142.125.43', '2021-11-09 04:38:10', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1546, '100000071', 'c2dd3b7b', '162.142.125.128', '2021-11-09 04:51:51', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1547, '100000071', '242ae455', '162.142.125.128', '2021-11-09 04:55:42', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1548, '100000071', '83e2b512', '162.142.125.128', '2021-11-09 05:01:28', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1549, '100000071', '051bcbe6', '111.7.96.149', '2021-11-09 08:21:16', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1550, '100000003', '2442a519', '111.7.96.149', '2021-11-09 08:21:23', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1551, '100000003', '0e203e47', '178.159.37.58', '2021-11-09 12:05:47', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1552, '100000003', '552cf829', '89.248.165.206', '2021-11-09 12:18:34', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1553, '100000003', '733056c9', '45.9.20.97', '2021-11-09 18:05:45', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1554, '100000071', 'de4cb9ca', '223.71.167.164', '2021-11-10 14:02:56', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1555, '100000003', 'da1c97f2', '23.88.66.167', '2021-11-10 22:23:48', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1556, '100000003', '56a7706f', '178.159.37.58', '2021-11-11 03:49:46', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1557, '100000071', 'e615654e', '42.240.141.27', '2021-11-11 07:45:35', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1558, '100000003', '0913a69e', '185.217.1.122', '2021-11-11 12:05:25', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1559, '100000003', '7e201cac', '185.217.1.122', '2021-11-11 16:28:38', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1560, '100000003', 'b911ed9e', '89.248.165.45', '2021-11-11 18:06:52', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1561, '100000071', 'a556bb57', '123.160.221.22', '2021-11-12 07:50:39', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1562, '100000003', '8669e61f', '123.160.221.22', '2021-11-12 07:50:45', 1, 0, '河南省 郑州市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1563, '100000003', 'b1d93fa3', '89.248.165.183', '2021-11-13 02:01:06', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1564, '100000003', 'f4858307', '178.159.37.58', '2021-11-13 03:40:09', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1565, '100000071', '67e2a328', '117.132.183.46', '2021-11-13 06:38:29', 1, 0, '内蒙古 呼和浩特市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1566, '100000003', 'bc5c1626', '117.132.183.46', '2021-11-13 06:39:07', 1, 0, '内蒙古 呼和浩特市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1567, '100000108', '7c6131eb', '117.132.183.46', '2021-11-13 06:39:22', 1, 0, '内蒙古 呼和浩特市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1568, '100000071', '646e3166', '117.132.183.46', '2021-11-13 06:39:26', 1, 0, '内蒙古 呼和浩特市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1569, '100000003', 'f58a3122', '45.9.20.111', '2021-11-13 07:06:07', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1570, '100000071', '7e48eb8a', '183.136.225.14', '2021-11-14 07:48:26', 1, 0, '浙江省 嘉兴市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1571, '100000071', '90e1fc06', '165.232.179.211', '2021-11-14 08:58:54', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1572, '100000003', '0fc526ff', '94.102.49.66', '2021-11-14 11:51:43', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1573, '100000003', '3df9f152', '89.248.168.226', '2021-11-15 08:17:57', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1574, '100000003', '9d452f52', '89.248.165.64', '2021-11-15 18:29:07', 1, 0, ' ', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_notification_cache
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notification_cache`;
+CREATE TABLE `sys_notification_cache` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `group_id` int(10) NOT NULL COMMENT '预警分组编号',
+  `message` varchar(300) DEFAULT NULL COMMENT '消息',
+  `add_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `status` int(2) DEFAULT NULL COMMENT '状态',
+  `reader_id` int(10) DEFAULT NULL COMMENT '处理人',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of sys_notification_cache
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_notification_cache` VALUES (1, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0794 ', '2021-10-30 14:49:31', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (2, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3968 ', '2021-10-30 15:49:42', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (3, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3439 ', '2021-10-30 16:49:53', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (4, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', '2021-10-30 17:49:54', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (5, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.1323 ', '2021-10-30 18:49:54', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (6, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', '2021-10-30 19:49:55', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (7, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.6032 ', '2021-10-30 20:49:56', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (8, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 21:49:56', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (9, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 22:49:57', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (10, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 23:13:07', 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -2262,6 +2650,7 @@ CREATE TABLE `system_user` (
   `last_lease` int(11) DEFAULT NULL COMMENT '是否长期有效',
   `lease_start_time` datetime DEFAULT NULL COMMENT '起始时间',
   `lease_time` int(11) DEFAULT NULL COMMENT '租期（月）',
+  `enable_notification` int(1) DEFAULT NULL COMMENT '是否允许推送服务(邮件等)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `INDEX` (`account_name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
@@ -2270,9 +2659,9 @@ CREATE TABLE `system_user` (
 -- Records of system_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_user` VALUES (1, '100001', 'admin', '$2a$10$/6ArmS07S4n9gMLFN0ENpuEP5cq31AMIynEmRkUpvsvz4lko2OS/2', '北微', NULL, '15161513257', '1436550119@qq.com', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `system_user` VALUES (6, '00123', 'tyler', '$2a$10$GkpWZqbiBpgHgUa4k5MTteEIrhhZ8Fic.DKRocsSV90.UE.USZnou', 'tyler', NULL, '12345', 'www.972237177.com@qq.com', 'USER', 3, NULL, 1, 1, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `system_user` VALUES (7, '100010', 'bwadmin', '$2a$10$709OEKRujh0f1yPS7ixUnOUVNCMBkGAAaHyj5Wfds.T8jTak6XLcm', '张经理', NULL, '12344566', NULL, 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `system_user` VALUES (1, '100001', 'admin', '$2a$10$/6ArmS07S4n9gMLFN0ENpuEP5cq31AMIynEmRkUpvsvz4lko2OS/2', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `system_user` VALUES (6, '100001', 'tyler', '$2a$10$GkpWZqbiBpgHgUa4k5MTteEIrhhZ8Fic.DKRocsSV90.UE.USZnou', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 3, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `system_user` VALUES (7, '100001', 'bwadmin', '$2a$10$709OEKRujh0f1yPS7ixUnOUVNCMBkGAAaHyj5Wfds.T8jTak6XLcm', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
