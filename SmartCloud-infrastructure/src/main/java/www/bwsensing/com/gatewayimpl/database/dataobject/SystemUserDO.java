@@ -26,4 +26,6 @@ public class SystemUserDO {
     private Boolean lastLease;
     private Date leaseStartTime;
     private Integer leaseTime;
+    /**是否允许通知*/
+    private Boolean enableNotification;
 }

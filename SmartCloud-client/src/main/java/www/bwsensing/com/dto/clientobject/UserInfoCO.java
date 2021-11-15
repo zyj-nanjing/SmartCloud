@@ -35,6 +35,9 @@ public class UserInfoCO extends DTO {
     private boolean enabled;
     /**账户是否被锁**/
     private boolean accountNonLocked;
+    /**是否允许通知*/
+    private Boolean enableNotification;
+
 
     public Integer getId() {
         return id;
@@ -146,5 +149,13 @@ public class UserInfoCO extends DTO {
 
     public void setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
+    }
+
+    public Boolean getEnableNotification() {
+        return enableNotification;
+    }
+
+    public void setEnableNotification(Boolean enableNotification) {
+        this.enableNotification = enableNotification;
     }
 }

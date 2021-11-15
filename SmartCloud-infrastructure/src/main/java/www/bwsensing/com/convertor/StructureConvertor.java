@@ -1,10 +1,10 @@
 package www.bwsensing.com.convertor;
 
+import java.util.List;
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.monitor.MonitorPosition;
 import www.bwsensing.com.domain.monitor.MonitorStructure;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureDO;
-import java.util.List;
 
 /**
  * @author macos-zyj

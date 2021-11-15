@@ -16,6 +16,12 @@ public interface AlertGroupMapper {
     List<AlertGroupDO> selectAlertGroupBySort(AlertGroupDO querySort);
 
     /**
+     * 根据用户编号获取所有预警分组
+     * @param userId
+     * @return
+     */
+    List<AlertGroupDO> queryAlertGroupByCurrent(Integer userId);
+    /**
      * ID 获取
      * @param id
      * @return
@@ -28,6 +34,7 @@ public interface AlertGroupMapper {
      * @return
      */
     List<String> getGroupNotificationMembers(Integer groupId);
+
     /**
      * 数据插入
      * @param saveAlertGroup

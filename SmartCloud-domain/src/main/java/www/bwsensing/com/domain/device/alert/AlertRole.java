@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 /**
- * 告警数据模型
+ * 告警数据规则
  * @author macos-zyj
  */
 @Data
@@ -170,9 +170,10 @@ public class AlertRole {
             this.initRandom(null);
             this.label = template.getNamePrefix();
         } else{
-            this.initRandom(AUTO_ROLE_NAME+sensorInfo.getMemberGroupId());
+            this.initRandom(AUTO_ROLE_NAME + sensorInfo.getMemberGroupId());
             this.label = AUTO_ROLE_NAME;
         }
+        this.labels = new  Labels(this.label);
     }
 
     private void initAlertRoleParam(){

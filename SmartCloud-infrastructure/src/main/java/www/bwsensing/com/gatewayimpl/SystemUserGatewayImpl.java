@@ -37,7 +37,6 @@ public class SystemUserGatewayImpl implements SystemUserGateway {
     @Override
     public SystemUser loadUserByAccountName(String accountName) {
         SystemUserDO selectedUser = systemUserMapper.selectUserByAccountName(accountName);
-        System.out.println(selectedUser);
         if(null != selectedUser){
             SystemUser resultUser =  SystemUserConvertor.toDomain(selectedUser);
             resultUser.setAccountNonExpired(true);

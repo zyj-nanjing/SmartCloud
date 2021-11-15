@@ -32,6 +32,8 @@ public class SystemUser {
     private String operateGroup;
     /**角色*/
     private String role;
+    /**是否允许通知*/
+    private Boolean enableNotification;
     /**用户角色**/
     private UserRole userRole;
     /**用例场景*/

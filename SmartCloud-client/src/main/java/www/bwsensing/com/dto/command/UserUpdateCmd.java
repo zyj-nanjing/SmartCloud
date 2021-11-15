@@ -31,6 +31,8 @@ public class UserUpdateCmd extends Command {
     private Integer groupId;
     /**角色*/
     private String role;
+    /**是否允许通知*/
+    private Boolean enableNotification;
     /**用例场景*/
     private String scenario;
     private String bizId;

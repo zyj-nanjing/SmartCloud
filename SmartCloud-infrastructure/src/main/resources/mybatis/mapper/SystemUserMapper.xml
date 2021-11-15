@@ -20,12 +20,13 @@
         <result property="lastLease" column="last_lease"/>
         <result property="leaseStartTime" column="lease_start_time"/>
         <result property="leaseTime" column="lease_time"/>
+        <result property="enableNotification" column="enable_notification"/>
     </resultMap>
 
     <sql id="SELECT_SYSTEM_USER">
         select id,work_number,account_name,password,role,role_id,
                user_name,avatar,mobile,email,position,operate_group_id,enabled,account_non_locked,
-               last_login_time,last_lease,lease_start_time,lease_time from system_user
+               last_login_time,last_lease,lease_start_time,lease_time,enable_notification from system_user
     </sql>
 
     <select id="selectUserByAccountName" resultMap="SystemUser">
@@ -79,7 +80,8 @@
             position,
             operate_group_id,
             enabled,
-            account_non_locked
+            account_non_locked,
+            enable_notification
         ) values (
             #{workNumber},
             #{accountName},
@@ -92,6 +94,7 @@
             #{role},
             #{position},
             #{operateGroupId},
+                  1,
                   1,
                   1
         )
@@ -127,11 +130,11 @@
             <if test="operateGroupId != null ">
                 operate_group_id =#{operateGroupId},
             </if>
-            <if test="enabled != null">
-                enabled =#{enabled},
-            </if>
             <if test="lastLoginTime != null ">
                 last_login_time =#{lastLoginTime},
+            </if>
+            <if test="enableNotification != null ">
+                enable_notification =#{enableNotification},
             </if>
         </trim>
     </update>

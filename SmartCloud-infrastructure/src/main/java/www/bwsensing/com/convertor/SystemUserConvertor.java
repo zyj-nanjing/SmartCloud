@@ -1,5 +1,6 @@
 package www.bwsensing.com.convertor;
 
+import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.system.SystemUser;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
 
@@ -7,37 +8,22 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
  * @author macos-zyj
  */
 public class SystemUserConvertor {
+    private static final BeanCopier USER_COPIER = BeanCopier.create(SystemUser.class, SystemUserDO.class,false);
+    private static final BeanCopier USER_DOMAIN_COPIER = BeanCopier.create(SystemUserDO.class,SystemUser.class,false);
+
     public static SystemUser toDomain(SystemUserDO dataObject){
         SystemUser user = new SystemUser();
-        user.setId(dataObject.getId());
-        user.setAccountName(dataObject.getAccountName());
-        user.setUserName(dataObject.getUserName());
-        user.setWorkNumber(dataObject.getWorkNumber());
-        user.setPassword(dataObject.getPassword());
+        USER_DOMAIN_COPIER.copy(dataObject,user,null);
         user.setAvatar(dataObject.getAvatar());
-        user.setMobile(dataObject.getMobile());
-        user.setGroupId(dataObject.getOperateGroupId());
-        user.setRole(dataObject.getRole());
         user.setEnabled(dataObject.getEnabled());
-        user.setAccountNonLocked(dataObject.getAccountNonLocked());
-        user.setLastLoginTime(dataObject.getLastLoginTime());
+        user.setAccountNonLocked(true);
         return user;
     }
 
     public static SystemUserDO toDataObject(SystemUser sysUser){
         SystemUserDO dataObject = new SystemUserDO();
-        dataObject.setId(sysUser.getId());
-        dataObject.setAccountName(sysUser.getAccountName());
-        dataObject.setUserName(sysUser.getUserName());
-        dataObject.setWorkNumber(sysUser.getWorkNumber());
-        dataObject.setPassword(sysUser.getPassword());
-        dataObject.setRole(sysUser.getRole());
-        dataObject.setMobile(sysUser.getMobile());
-        dataObject.setAvatar(sysUser.getAvatar());
-        dataObject.setEnabled(sysUser.isEnabled());
-        dataObject.setOperateGroupId(sysUser.getGroupId());
-        dataObject.setAccountNonLocked(sysUser.isAccountNonLocked());
-        dataObject.setLastLoginTime(sysUser.getLastLoginTime());
+        USER_COPIER.copy(sysUser,dataObject,null);
+        System.out.println(dataObject);
         return dataObject;
     }
 }

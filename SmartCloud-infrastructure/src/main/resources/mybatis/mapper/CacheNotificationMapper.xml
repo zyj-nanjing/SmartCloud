@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.CacheNotificationMapper">
+
+    <insert id="insertNotificationTag" parameterType="NotificationTag" keyColumn="id" useGeneratedKeys="true">
+        insert into sys_notification_cache
+        (
+            group_id,
+            message,
+            add_time,
+            status
+        ) values (
+            #{groupId},
+            #{message},
+            now(),
+            0
+        )
+    </insert>
+
+    <update id="updateCacheStatus" parameterType="int">
+        update sys_notification_cache
+           set  status = 1,reader_id =#{readerId}
+        where id =#{id}
+    </update>
+
+
+    <select id="queryNotification" parameterType="NotificationTag" resultType="NotificationTag">
+        select * from sys_notification_cache
+        where group_id = #{groupId}
+        and DATE_SUB(CURDATE(), INTERVAL ${queryDay} DAY) &lt;= date(add_time)
+    </select>
+</mapper>
