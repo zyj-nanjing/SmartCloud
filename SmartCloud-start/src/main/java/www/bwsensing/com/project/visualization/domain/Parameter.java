@@ -18,6 +18,12 @@ public class Parameter {
      */
     private String paramNo;
 
+
+    /**
+     * 小数点长度
+     */
+    private Integer decimalSize;
+
     /**
      * 单位
      */

@@ -39,6 +39,8 @@ public class MonitorQuery {
      */
     private String interval;
 
+    /**回查小数点长度*/
+    private int decimalSize;
     /**
      * 开始时间
      */

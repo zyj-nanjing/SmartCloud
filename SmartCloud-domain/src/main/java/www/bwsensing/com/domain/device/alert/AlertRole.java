@@ -22,6 +22,10 @@ public class AlertRole {
      */
     private Integer alertGroupId;
     /**
+     * 告警规则名称
+     */
+    private String roleName;
+    /**
      * 规则编号
      */
     private Integer roleCode;
@@ -195,6 +199,7 @@ public class AlertRole {
             this.name = setName + rangeId;
         }
         this.alertName = this.alertParam.getAlertName()+rangeId;
+        this.roleName = this.alertParam.getAlertName();
     }
 
 
@@ -218,7 +223,7 @@ public class AlertRole {
 
     private String getRoleSummary(){
         SensorInfo sensor = this.sensorInfo;
-        return this.alertParam.getSummary().replace("${roleName}",this.alertName)
+        return this.alertParam.getSummary().replace("${roleName}",this.roleName)
                 .replace("${dataNumber}","{{$values.data_value}}")
                 .replace("${sensorModel}",sensor.getModelName())
                 .replace("${sensor}",sensor.getName());

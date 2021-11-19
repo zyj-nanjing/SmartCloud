@@ -21,7 +21,9 @@ public class AlertGroupConvertor {
         if (null != domainObject.getCurrentTemplate()){
             alertGroup.setTemplateId(domainObject.getCurrentTemplate().getId());
         }
-        alertGroup.setPushType(domainObject.getNotificationMethod().getTypeId());
+        if (null != domainObject.getNotificationMethod()){
+            alertGroup.setPushType(domainObject.getNotificationMethod().getTypeId());
+        }
         alertGroup.setGroupName(domainObject.getGroupName());
         alertGroup.setOperateGroupId(domainObject.getOperateGroupId());
         alertGroup.setId(domainObject.getId());

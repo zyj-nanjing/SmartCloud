@@ -3,17 +3,14 @@ package www.bwsensing.com.project.visualization.service.impl;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.Assert;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper;
+import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorItemsDO;
 import www.bwsensing.com.project.visualization.domain.MonitorQuery;
-import www.bwsensing.com.project.visualization.domain.Parameter;
 import www.bwsensing.com.project.visualization.domain.StatisticsData;
 import www.bwsensing.com.project.visualization.domain.StatisticsResult;
 import www.bwsensing.com.project.visualization.domain.status.MonitorQueryEnum;
 import www.bwsensing.com.project.visualization.mapper.StatisticsDataMapper;
-import www.bwsensing.com.project.visualization.mapper.ParamMapper;
 import www.bwsensing.com.project.visualization.service.IMonitorStatisticsService;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -21,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -33,14 +31,10 @@ import java.util.stream.Collectors;
 @CatchAndLog
 public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
     @Resource
-    private ParamMapper paramMapper;
-
-    @Resource
     private StatisticsDataMapper monitorDataMapper;
 
     @Resource
-    private SensorMapper sensorMapper;
-
+    private MonitorItemsMapper monitorItemsMapper;
 
     @Override
     public SingleResponse<Map<String, StatisticsResult>> singleDataAnalyse(MonitorQuery query) {
@@ -52,23 +46,17 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
             dataMap.put(key,fixStatisticData(statisticsData,sortedTimestamp));
         });
         Map<String, StatisticsResult> resultData = new LinkedHashMap<>();
-        List<Parameter> parameters = getCurrentDeviceParam(query.getCurrentDevice());
+        List<MonitorItemsDO> parameters = getCurrentDeviceParam(query.getCurrentDevice());
         resultData.put("XAxis",packageAxis(sortedTimestamp));
-        query.getParamIds().forEach(paramId->{
-            resultData.put(paramId,packageStaticData(getParameter(paramId,parameters),dataMap.get(paramId)));
-        });
+        query.getParamIds().forEach(paramId->
+                resultData.put(paramId,packageStaticData(getParameter(paramId,parameters),dataMap.get(paramId))));
         return SingleResponse.of(resultData);
     }
 
 
-    private List<Parameter> getCurrentDeviceParam(String sn){
+    private List<MonitorItemsDO> getCurrentDeviceParam(String sn){
         Assert.notNull(sn,"Sn编码不能为空");
-        String modelNo = sensorMapper.selectModelBySensorSn(sn);
-        if (StringUtils.isNotEmpty(modelNo)){
-            return  paramMapper.selectParamByModelNo(modelNo);
-        } else {
-            return new ArrayList<>();
-        }
+        return monitorItemsMapper.selectItemsBySensorSn(sn);
     }
     /**
      * 组装数据
@@ -85,10 +73,10 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
      * 组装数据
      * @return
      */
-    private StatisticsResult packageStaticData(Parameter param,List<StatisticsData> dataCollection){
+    private StatisticsResult packageStaticData(MonitorItemsDO param,List<StatisticsData> dataCollection){
         StatisticsResult resultData = new StatisticsResult();
         if(null !=  param){
-            resultData.setName(param.getParamName());
+            resultData.setName(param.getItemName());
             resultData.setUnity(param.getUnit());
         }
         List<Float> dataResult = new ArrayList<>(dataCollection.size());
@@ -97,9 +85,9 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
         return  resultData;
     }
 
-    private  Parameter getParameter(String paramId,List<Parameter> parameters){
-        for (Parameter paramParam:parameters){
-            if (paramParam.getParamId().equals(paramId)){
+    private  MonitorItemsDO getParameter(String paramId,List<MonitorItemsDO> parameters){
+        for (MonitorItemsDO paramParam:parameters){
+            if (paramParam.getDataId().equals(paramId)){
                 return paramParam;
             }
         }
@@ -145,12 +133,14 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
         List<String> paramList = query.getParamIds();
         //封装数据并初始化
         for (int index=0;index < paramList.size();index ++){
+            MonitorItemsDO item = monitorItemsMapper.selectItemsByDataId(paramList.get(index));
             List<StatisticsData> statisticsDataList = queryDataCollection(query,index);
-            dataMap.put(paramList.get(index),statisticsDataList);
             List<Timestamp> timestamps = new ArrayList<>();
-            statisticsDataList.forEach(data->{
+            statisticsDataList.forEach(data-> {
                 timestamps.add(data.getTs());
-            } );
+                data.setValue(getDataValue(data.getValue(), item.getDecimalSize()));
+            });
+            dataMap.put(paramList.get(index),statisticsDataList);
             timestampList.addAll(timestamps);
         }
         timestampList = timestampList.stream().distinct().collect(Collectors.toList());
@@ -175,4 +165,8 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
         }
     }
 
+    private  float getDataValue(Float dataValue,Integer decimalSize){
+        int divisionValue = ((Double) Math.pow(10, decimalSize)).intValue();
+        return (float)(Math.round(dataValue*divisionValue)*1.0/divisionValue);
+    }
 }

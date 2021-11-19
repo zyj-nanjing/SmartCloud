@@ -11,6 +11,8 @@ public class MonitorItemsDO {
     private String itemName;
     /**对应数据名称**/
     private String dataId;
+    /**小数点长度*/
+    private Integer decimalSize;
     /**单位**/
     private String unit;
     /**ASCII 解析标位*/

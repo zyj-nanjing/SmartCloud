@@ -5,6 +5,7 @@
         <result column="id" property="id"/>
         <result column="item_name" property="itemName"/>
         <result column="data_id" property="dataId"/>
+        <result column="decimal_size" property="decimalSize"/>
         <result column="unit" property="unit"/>
         <result column="ascii_index" property="asciiIndex"/>
         <result column="hex_index" property="hexIndex"/>
@@ -14,7 +15,7 @@
     </resultMap>
 
     <sql id="ITEMS_QUERY">
-        select  id,item_name,data_id,unit,ascii_index,hex_index,ascii_prefix,reduce_number,divide_number from monitor_items
+        select  id,item_name,data_id,decimal_size,unit,ascii_index,hex_index,ascii_prefix,reduce_number,divide_number from monitor_items
     </sql>
 
     <insert id="save"  parameterType="MonitorItemsDO"
@@ -23,6 +24,7 @@
         (
             item_name,
             data_id,
+            decimal_size,
             unit,
             ascii_index,
             hex_index,
@@ -33,6 +35,7 @@
         values (
                    #{itemName},
                    #{dataId},
+                   #{decimalSize},
                    #{unit},
                    #{asciiIndex},
                    #{hexIndex},
@@ -48,8 +51,11 @@
             <if test="itemName != null and itemName != ''">
                 item_name = #{itemName},
             </if>
+            <if test="decimalSize != null ">
+                decimal_size =#{decimalSize},
+            </if>
             <if test="unit != null and unit != ''">
-                unit =#{unit}
+                unit =#{unit},
             </if>
             <if test="asciiIndex != null ">
                 ascii_index = #{asciiIndex},
@@ -57,17 +63,14 @@
             <if test="hexIndex != null">
                 hex_index =#{hexIndex},
             </if>
-            <if test="unit != null and unit != ''">
-                unit =#{unit}
-            </if>
             <if test="asciiPrefix != null and asciiPrefix != ''">
-                ascii_prefix =#{asciiPrefix}
+                ascii_prefix =#{asciiPrefix},
             </if>
             <if test="reduceNumber != null ">
-                reduce_number =#{reduceNumber}
+                reduce_number =#{reduceNumber},
             </if>
             <if test="divideNumber != null ">
-                divide_number =#{divideNumber}
+                divide_number =#{divideNumber},
             </if>
         </trim>
         where id = #{id}
@@ -99,5 +102,18 @@
     <select id="selectItemsByModelId" resultMap="MonitorItems">
         select id,item_name,data_id,unit,ascii_index,hex_index,ascii_prefix,reduce_number,divide_number from monitor_items
         where id in (select item_id from proto_type_item where type_id in (SELECT type_id from sensor_model_type where model_id =#{modelId}))
+    </select>
+
+    <select id="selectItemsBySensorSn" resultMap="MonitorItems" parameterType="String">
+        SELECT * FROM monitor_items WHERE id
+            IN(SELECT item_id FROM proto_type_item WHERE type_id
+               IN(SELECT id FROM monitor_prototype WHERE id
+                   IN(SELECT type_id FROM sensor_model_type WHERE model_id
+                       IN(SELECT id FROM sensor_model where id
+                           IN(SELECT model_id FROM device_sensor_equipment WHERE sn=#{sensorSn})))))
+    </select>
+
+    <select id="selectItemsByDataId" resultMap="MonitorItems" parameterType="String">
+        select  * FROM  monitor_items WHERE data_id =#{dataId}
     </select>
 </mapper>

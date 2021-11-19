@@ -7,6 +7,7 @@
     <resultMap type="AlertRoleDO" id="AlertRole">
         <result property="id"    column="id"    />
         <result property="alertName"    column="alert_name"    />
+        <result property="roleName" column="role_name"/>
         <result property="alertGroupId" column="alert_group_id"/>
         <result property="name"    column="name"    />
         <result property="operateGroupId" column="group_id"/>
@@ -28,7 +29,7 @@
     </resultMap>
 
     <sql id="selectAlertRoleVo">
-        select id, name,alert_name,alert_group_id, template_id, param_id, group_id,sensor_id,color, formulas,
+        select id, name,alert_name,role_name,alert_group_id, template_id, param_id, group_id,sensor_id,color, formulas,
                forward, label, summary, alert_status, alert_info, state_sql, template_sql, expr, last_time, check_period from sys_alert_role
     </sql>
 
@@ -74,6 +75,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
             <if test="alertName != null and alertName !=''">alert_name,</if>
+            <if test="roleName != null and roleName !=''">role_name,</if>
             <if test="templateId != null">template_id,</if>
             <if test="operateGroupId !=null">group_id,</if>
             <if test="alertGroupId != null">alert_group_id,</if>
@@ -95,6 +97,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
             <if test="alertName != null and alertName !=''">#{alertName},</if>
+            <if test="roleName != null and roleName !=''">#{roleName},</if>
             <if test="templateId != null">#{templateId},</if>
             <if test="operateGroupId !=null">#{operateGroupId},</if>
             <if test="alertGroupId != null">#{alertGroupId},</if>
@@ -119,6 +122,7 @@
         update sys_alert_role
         <trim prefix="SET" suffixOverrides=",">
             <if test="alertName != null and alertName !=''">alert_name=#{alertName},</if>
+            <if test="roleName != null and roleName !=''">role_name=#{roleName},</if>
             <if test="formulas != null">formulas = #{formulas},</if>
             <if test="forward != null">forward = #{forward},</if>
             <if test="label != null">label = #{label},</if>

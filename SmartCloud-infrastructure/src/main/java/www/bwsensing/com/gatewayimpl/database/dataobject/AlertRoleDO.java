@@ -12,6 +12,11 @@ public class AlertRoleDO {
      */
     private Integer id;
     /**
+     * 告警规则名称
+     */
+    private String roleName;
+
+    /**
      * 告警名称
      */
     private String alertName;

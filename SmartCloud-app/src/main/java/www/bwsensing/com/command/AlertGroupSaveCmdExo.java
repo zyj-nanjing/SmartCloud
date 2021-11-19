@@ -60,6 +60,7 @@ public class AlertGroupSaveCmdExo {
             List<AlertParam> paramList = saveCmd.getRoleCollection().stream().map(this::validAlertRole).collect(toList());
             saveGroup = new AlertGroup(saveCmd.getGroupName(),selectedSensor,currentUser,paramList);
         }
+        saveGroup.setOperateGroupId(tokenData.getGroupId());
         saveGroup.setNotificationMethod(NotificationMethod.getNotificationMethod(saveCmd.getPushMethod()));
         alertGroupGateway.saveGroup(saveGroup);
         return Response.buildSuccess();

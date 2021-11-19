@@ -58,4 +58,18 @@ public interface MonitorItemsMapper {
      * @return
      */
     List<MonitorItemsDO> selectItemsByModelId(Integer modelId);
+
+    /**
+     * 根据传感器sn编码获取监测项信息
+     * @param sensorSn
+     * @return
+     */
+    List<MonitorItemsDO> selectItemsBySensorSn(String sensorSn);
+
+    /**
+     * 根据检测项编码获取检测项
+     * @param dataId
+     * @return
+     */
+    MonitorItemsDO selectItemsByDataId(String dataId);
 }
