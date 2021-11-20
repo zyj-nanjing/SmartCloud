@@ -1,17 +1,27 @@
-package www.bwsensing.com.project.analyse;
+package www.bwsensing.com.extension;
 
 import com.alibaba.cola.exception.BizException;
+import lombok.extern.slf4j.Slf4j;
+import com.alibaba.cola.extension.Extension;
 import org.springframework.util.Assert;
+import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.utills.SensorUtils;
-import www.bwsensing.com.project.analyse.domain.SensorData;
+import www.bwsensing.com.domain.device.data.MonitorReceive;
+import www.bwsensing.com.dto.command.FacilityDataCmd;
+import www.bwsensing.com.extensionpoint.FacilityDataAnalyseExtPt;
+import www.bwsensing.com.service.common.facility.BwAngleData;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * 倾角传感
+ * @// TODO: 2021/11/20  后续优化解析算法以及多种传感器的解析 在没有新传感器类型前先不做适配
  * @author macos-zyj
  */
-public class AngleSensorState implements SensorBaseState{
+@Slf4j
+@Extension(bizId = BizScenarioCode.BIZ_ID_CLOUD,useCase = BizScenarioCode.USER_CAUSE_ANALYSE,scenario = BizScenarioCode.ANALYSE_BW_ANGLE)
+public class BwAngleAnalyseExtPtExp implements FacilityDataAnalyseExtPt {
+
     private static final Integer CONTAIN_ACCELERATE = 10;
     private static final Integer NOT_CONTAIN_ACCELERATE = 5 ;
     private static final Integer FUNCTION_CODE_SIZE = 8;
@@ -19,10 +29,32 @@ public class AngleSensorState implements SensorBaseState{
     private static final Integer FUNCTION_MODEL_LENGTH = 3;
     private static final int[]  HEX_CODE_FORMAT = {1,1,1,16,2};
 
-
     @Override
-    public SensorData analyseRawData(String raw) {
-        SensorData analyseData = new SensorData();
+    public MonitorReceive analyseFacilityData(FacilityDataCmd facilityDataCmd) {
+        MonitorReceive monitorReceive = new MonitorReceive();
+        monitorReceive.setSn(facilityDataCmd.getSn());
+        monitorReceive.setDataCollection(new ArrayList<>());
+        if(facilityDataCmd.getReceiveData().size() > 0){
+            for (String rawData: facilityDataCmd.getReceiveData()) {
+                log.info(rawData);
+                try {
+                    BwAngleData result = analyseRawData(rawData);
+                    monitorReceive.getDataCollection().addAll(result.toSeriesData());
+                    monitorReceive.setPhoneNumber(result.getPhoneNumber());
+                    monitorReceive.setTemperature(result.getTemperature());
+                    monitorReceive.setElectricity(result.getElectricity());
+                } catch (Exception e){
+                    log.warn("analyse error Raw:{} error msg:{}",rawData,e.getLocalizedMessage());
+                }
+            }
+            monitorReceive.setSendCount(monitorReceive.getDataCollection().size());
+        }
+        monitorReceive.setReceiveSize(facilityDataCmd.getReceiveData().size());
+        return monitorReceive;
+    }
+
+    public BwAngleData analyseRawData(String raw) {
+        BwAngleData analyseData = new BwAngleData();
         analyseData.setRaw(raw);
         if (checkFormat(raw)){
             analyseData.setHexDecode(true);
@@ -36,7 +68,7 @@ public class AngleSensorState implements SensorBaseState{
         return codeArray.length <= 1;
     }
 
-    private void analyseRawData(SensorData analyseData){
+    private void analyseRawData(BwAngleData analyseData){
         if (analyseData.isHexDecode()){
             hexAnalyse(analyseData);
         } else{
@@ -44,7 +76,7 @@ public class AngleSensorState implements SensorBaseState{
         }
     }
 
-    private void hexAnalyse(SensorData analyseData){
+    private void hexAnalyse(BwAngleData analyseData){
         String toNoNull = analyseData.getRaw().replaceAll(" ","");
         List<String> codeSplitArray = codeSplit(toNoNull);
         analyseData.setSn(SensorUtils.hexSnAnalyse(codeSplitArray.get(0)));
@@ -67,7 +99,7 @@ public class AngleSensorState implements SensorBaseState{
         return codeSplitArray;
     }
 
-    private void initFunctionCode(String functionHex,SensorData analyseData){
+    private void initFunctionCode(String functionHex,BwAngleData analyseData){
         List<String> functionCodeArray = new ArrayList<>(9);
         for (int i=0; i< FUNCTION_CODE_SIZE; i++){
             String codeSplits = functionHex.substring(i*4,(i+1)*4);
@@ -91,7 +123,7 @@ public class AngleSensorState implements SensorBaseState{
         }
     }
 
-    private void asciiAnalyse(SensorData analyseData){
+    private void asciiAnalyse(BwAngleData analyseData){
         String toNoNull = analyseData.getRaw().replaceAll(" ","");
         String[] dataArray = toNoNull.split(",");
         Assert.isTrue(dataArray.length == CONTAIN_ACCELERATE ||
@@ -107,7 +139,7 @@ public class AngleSensorState implements SensorBaseState{
         }
     }
 
-    private void asciiAngleAnalyse(String[] dataArray, boolean isContainAcc, SensorData analyseData){
+    private void asciiAngleAnalyse(String[] dataArray, boolean isContainAcc, BwAngleData analyseData){
         analyseData.setXAngle(toAngleFormat(dataArray[1],false));
         analyseData.setYAngle (toAngleFormat(dataArray[1 +1],false));
         if(isContainAcc){
@@ -115,13 +147,13 @@ public class AngleSensorState implements SensorBaseState{
         }
     }
 
-    private void asciiAccelerateAnalyse(String[] dataArray, SensorData analyseData){
+    private void asciiAccelerateAnalyse(String[] dataArray, BwAngleData analyseData){
         analyseData.setXAccelerate(toAccelerateFormat(dataArray[4],false).floatValue());
         analyseData.setYAccelerate(toAccelerateFormat(dataArray[5],false).floatValue());
         analyseData.setZAccelerate(toAccelerateFormat(dataArray[6],false).floatValue());
     }
 
-    private void  sensorStatesAnalyse(String[] dataArray,int start,boolean isContainAcc, SensorData analyseData){
+    private void  sensorStatesAnalyse(String[] dataArray,int start,boolean isContainAcc, BwAngleData analyseData){
         analyseData.setTemperature(toTemperatureFormat(dataArray[start],false));
         analyseData.setElectricity(electricityAnalyse(dataArray[start+1],false).floatValue());
         if(isContainAcc){

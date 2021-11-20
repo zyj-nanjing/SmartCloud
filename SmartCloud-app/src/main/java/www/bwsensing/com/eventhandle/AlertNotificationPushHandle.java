@@ -60,6 +60,7 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
             return count > NotificationLimitConstant.MAX_COUNT;
         }
     }
+
     private void putNotificationLimit(Integer groupId){
         String chekKey = NotificationLimitConstant.PREFIX + groupId;
         String securityKey = Md5Utils.encryptMd5(chekKey);

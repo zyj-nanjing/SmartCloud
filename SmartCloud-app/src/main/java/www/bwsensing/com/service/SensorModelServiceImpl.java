@@ -18,7 +18,7 @@ import www.bwsensing.com.domain.device.SensorModel;
 import www.bwsensing.com.domain.gateway.PrototypeGateway;
 import www.bwsensing.com.domain.gateway.SensorModelGateway;
 import www.bwsensing.com.domain.monitor.MonitorPrototype;
-import www.bwsensing.com.dto.SensorModelVO;
+import www.bwsensing.com.dto.export.SensorModelVO;
 import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.dto.command.SensorModelSaveCmd;
 import www.bwsensing.com.dto.command.SensorModelUpdateCmd;

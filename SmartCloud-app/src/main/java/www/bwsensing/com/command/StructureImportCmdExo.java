@@ -14,8 +14,8 @@ import www.bwsensing.com.domain.gateway.StructureModelGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
-import www.bwsensing.com.dto.PositionModelVo;
-import www.bwsensing.com.dto.StructureModelVo;
+import www.bwsensing.com.dto.export.PositionModelVo;
+import www.bwsensing.com.dto.export.StructureModelVo;
 import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
 

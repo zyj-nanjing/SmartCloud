@@ -1,25 +1,21 @@
 package www.bwsensing.com.common.netty.handler;
 
 import io.netty.channel.ChannelHandler;
+import io.netty.handler.timeout.IdleState;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.ReferenceCountUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import www.bwsensing.com.common.core.event.DomainEventPublisher;
+import www.bwsensing.com.domainevent.FacilityDataReceiveEvent;
 import www.bwsensing.com.common.utills.AddressUtils;
 import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.domain.device.data.MonitorReceive;
-import www.bwsensing.com.domain.gateway.MonitorReceiveGateway;
-import www.bwsensing.com.gatewayimpl.database.SensorMapper;
-import www.bwsensing.com.project.analyse.SensorDataContext;
+import java.util.concurrent.atomic.AtomicInteger;
+import io.netty.handler.timeout.IdleStateEvent;
+import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Service;
+import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * @author 朱永杰
  */
@@ -35,11 +31,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     private  ConcurrentHashMap<String,String> ipCache = new ConcurrentHashMap<>();
 
-    @Autowired
-    private MonitorReceiveGateway sensorDataGateway;
-
     @Resource
-    private SensorDataContext sensorDataContext;
+    private DomainEventPublisher domainEventPublisher;
 
     /**
      * 建立连接时，发送一条消息
@@ -90,19 +83,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 log.debug("Data receive Client address:{}，Raw message:{}", ipAddress,msg);
             }
         } catch (Exception e) {
-            log.warn("netty channput(ctx.channel().remoteAddress().toString(),ctx.channel().id().asShortText());elRead error Message:{}",e.getLocalizedMessage());
+            log.warn("netty channel Read error Message:{}",e.getLocalizedMessage());
         } finally {
             ReferenceCountUtil.release(msg);
         }
     }
 
-    private void setMonitorReceiveData(MonitorReceive receive,String ipAddress,String channel,Date receiveTime){
-        String fixIp = ipAddress.substring(1, ipAddress.indexOf(":"));
-        receive.setIp(fixIp);
-        receive.setChannelId(channel);
-        receive.setReceiveTime(receiveTime);
-        receive.setSendAddress(AddressUtils.getRealAddressByIp(fixIp));
-    }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
@@ -112,13 +98,22 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String totalReceive = ipCache.get(ipAddress);
         if (StringUtils.isNotEmpty(totalReceive)){
             Date receiveTime = new Date();
-            MonitorReceive monitorReceive = sensorDataContext.analyseRawData(totalReceive);
-            setMonitorReceiveData(monitorReceive,ipAddress,channelId,receiveTime);
-            sensorDataGateway.storageMonitorReceive(monitorReceive);
-            log.info("start to analyse and storage received data SensorSn:{}",monitorReceive.getSn());
+            FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
+            receiveEvent.setReceiveData(totalReceive);
+            setReceiveEvent(receiveEvent,ipAddress,channelId,receiveTime);
+            domainEventPublisher.transactionPublish(receiveEvent);
+            log.info("facility data pushed,Client address:{}",ctx.channel().remoteAddress());
         }
         ipCache.remove(ipAddress);
         log.info("link down ,Client address:{}",ctx.channel().remoteAddress());
+    }
+
+    private void setReceiveEvent(FacilityDataReceiveEvent receive,String ipAddress,String channel,Date receiveTime){
+        String fixIp = ipAddress.substring(1, ipAddress.indexOf(":"));
+        receive.setIp(fixIp);
+        receive.setChannelId(channel);
+        receive.setReceiveTime(receiveTime);
+        receive.setSendAddress(AddressUtils.getRealAddressByIp(fixIp));
     }
 
     /**

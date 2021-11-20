@@ -1,18 +1,18 @@
-package www.bwsensing.com.project.analyse.domain;
+package www.bwsensing.com.service.common.facility;
 
+import lombok.Data;
 import www.bwsensing.com.domain.device.data.MonitorData;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import lombok.Data;
 
 /**
- * 传感器数据
  * @author macos-zyj
  */
 @Data
-public class SensorData {
+public class BwAngleData {
     private static final Integer MAX_NUMBER = 360;
     private static final Integer MIN_VALUE = -360;
     private Integer id;

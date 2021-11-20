@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import www.bwsensing.com.api.ISensorModelService;
-import www.bwsensing.com.dto.SensorModelVO;
+import www.bwsensing.com.dto.export.SensorModelVO;
 import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.dto.command.SensorModelSaveCmd;
 import www.bwsensing.com.dto.command.SensorModelUpdateCmd;

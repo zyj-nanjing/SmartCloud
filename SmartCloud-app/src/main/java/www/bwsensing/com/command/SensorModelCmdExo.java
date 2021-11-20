@@ -9,7 +9,7 @@ import www.bwsensing.com.convertor.PrototypeConvertor;
 import www.bwsensing.com.domain.device.SensorModel;
 import www.bwsensing.com.domain.gateway.SensorModelGateway;
 import www.bwsensing.com.domain.monitor.MonitorPrototype;
-import www.bwsensing.com.dto.SensorModelVO;
+import www.bwsensing.com.dto.export.SensorModelVO;
 import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.gatewayimpl.database.MonitorPrototypeMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorModelMapper;

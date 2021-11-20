@@ -58,7 +58,7 @@ public class AlertRoleServiceImpl implements IAlertRoleService {
     @Override
     public Response updateAlertRole(AlertRoleUpdateCmd updateCmd) {
         AlertRole alertRole = alertRoleGateway.selectAlertRoleById(updateCmd.getId());
-        BeanUtil.copyProperties(updateCmd, alertRole, true, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+        BeanUtil.copyProperties(updateCmd, alertRole, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
         alertRoleGateway.updateAlertRole(alertRole);
         return Response.buildSuccess();
     }
