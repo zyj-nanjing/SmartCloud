@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 121.41.96.206
+ Source Server         : DEV——DB
  Source Server Type    : MySQL
- Source Server Version : 50735
- Source Host           : 121.41.96.206:3306
+ Source Server Version : 80023
+ Source Host           : localhost:3306
  Source Schema         : smart_cloud
 
  Target Server Type    : MySQL
- Target Server Version : 50735
+ Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 16/11/2021 07:15:06
+ Date: 20/11/2021 20:35:46
 */
 
 SET NAMES utf8mb4;
@@ -22,12 +22,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_token`;
 CREATE TABLE `auth_token` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `enableRefresh` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否支持 refreshToken, 默认: 1. 1 表示支持, 0 表示不支持',
   `providerId` varchar(20) DEFAULT NULL COMMENT '第三方服务商,如: qq,github',
   `accessToken` varchar(512) DEFAULT NULL COMMENT 'accessToken',
-  `expireIn` bigint(20) DEFAULT '-1' COMMENT 'accessToken 过期时间, 无过期时间默认为 -1',
-  `refreshTokenExpireIn` bigint(20) DEFAULT '-1' COMMENT 'refreshToken 过期时间, 无过期时间默认为 -1',
+  `expireIn` bigint DEFAULT '-1' COMMENT 'accessToken 过期时间, 无过期时间默认为 -1',
+  `refreshTokenExpireIn` bigint DEFAULT '-1' COMMENT 'refreshToken 过期时间, 无过期时间默认为 -1',
   `refreshToken` varchar(512) DEFAULT NULL COMMENT 'refreshToken',
   `uid` varchar(20) DEFAULT NULL COMMENT 'alipay userId',
   `openId` varchar(256) DEFAULT NULL COMMENT 'qq/mi/toutiao/wechatMp/wechatOpen/weibo/jd/kujiale/dingTalk/douyin/feishu',
@@ -44,9 +44,9 @@ CREATE TABLE `auth_token` (
   `userId` varchar(64) DEFAULT NULL COMMENT 'Twitter附带属性',
   `screenName` varchar(64) DEFAULT NULL COMMENT 'Twitter附带属性',
   `oauthCallbackConfirmed` varchar(64) DEFAULT NULL COMMENT 'Twitter附带属性',
-  `expireTime` bigint(20) DEFAULT '-1' COMMENT '过期时间, 基于 1970-01-01T00:00:00Z, 无过期时间默认为 -1',
+  `expireTime` bigint DEFAULT '-1' COMMENT '过期时间, 基于 1970-01-01T00:00:00Z, 无过期时间默认为 -1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of auth_token
@@ -59,25 +59,25 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `device_sensor_equipment`;
 CREATE TABLE `device_sensor_equipment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `sn` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
-  `sensor_no` int(11) DEFAULT NULL COMMENT '传感器编号',
-  `model_id` int(11) DEFAULT NULL COMMENT '模型编号',
-  `project_id` int(11) DEFAULT NULL,
-  `manager_id` int(11) DEFAULT NULL COMMENT '管理员编号',
-  `member_group_id` int(11) DEFAULT NULL COMMENT '当前分组编号',
-  `position_id` int(11) DEFAULT NULL COMMENT '测点编号',
+  `sensor_no` int DEFAULT NULL COMMENT '传感器编号',
+  `model_id` int DEFAULT NULL COMMENT '模型编号',
+  `project_id` int DEFAULT NULL,
+  `manager_id` int DEFAULT NULL COMMENT '管理员编号',
+  `member_group_id` int DEFAULT NULL COMMENT '当前分组编号',
+  `position_id` int DEFAULT NULL COMMENT '测点编号',
   `longitude` double(30,10) DEFAULT NULL COMMENT '经度',
   `latitude` varchar(30) DEFAULT NULL COMMENT '维度',
   `electricity` float DEFAULT NULL COMMENT '电量',
   `first_online_time` datetime DEFAULT NULL COMMENT '初次提交时间',
-  `last_send_size` int(11) DEFAULT NULL COMMENT '上一次提交数据条数',
-  `total_send_size` int(11) DEFAULT NULL COMMENT '总提交量',
+  `last_send_size` int DEFAULT NULL COMMENT '上一次提交数据条数',
+  `total_send_size` int DEFAULT NULL COMMENT '总提交量',
   `last_send_count` varchar(255) DEFAULT NULL COMMENT '上一次提交总量',
   `last_send_address` varchar(255) DEFAULT NULL COMMENT '上一次提交地址',
   `last_send_time` datetime DEFAULT NULL COMMENT '上次提交时间',
-  `total_size` int(11) DEFAULT NULL COMMENT '数据总量',
+  `total_size` int DEFAULT NULL COMMENT '数据总量',
   `temperature` varchar(255) DEFAULT NULL COMMENT '温度',
   `phone_number` varchar(255) DEFAULT NULL COMMENT '手机号',
   `create_user` varchar(255) DEFAULT NULL COMMENT '创建者',
@@ -90,35 +90,10 @@ CREATE TABLE `device_sensor_equipment` (
 -- Records of device_sensor_equipment
 -- ----------------------------
 BEGIN;
-INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, NULL, 1, 1, NULL, 120.2884098730, '31.513274820947032', 0, '2021-09-08 10:26:04', 10, 207588, '80', '117.132.192.200', '2021-10-15 08:46:42', 47040, '20.6508', '1440018057609\r', NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (15, '100000003', '倾角传感器2', NULL, 1, 22, 1, 1, 17, 120.2879807196, '31.5145919130638', 0, '2021-09-09 05:07:42', 1, 0, '0', '89.248.165.64', '2021-11-15 18:29:07', NULL, '0.0', NULL, NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, 21, 1, 1, 16, 120.2884098730, '31.513274820947032', 8, '2021-09-08 10:26:04', 52, 208004, '416', '58.241.26.226', '2021-11-20 11:20:06', 47331, '57.0', '1440033931565', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (15, '100000003', '倾角传感器2', NULL, 1, 22, 1, 1, 17, 120.2879807196, '31.5145919130638', 0, '2021-09-09 05:07:42', 1, 0, '0', '89.248.170.2', '2021-11-19 01:36:03', NULL, '0.0', NULL, NULL, NULL);
 INSERT INTO `device_sensor_equipment` VALUES (16, '100000067', '倾角传感器3', NULL, 1, 23, 1, 1, 18, 120.2868649207, '31.51550654944506', 0, '2021-09-12 07:16:44', 1, 0, '0', '101.133.138.230', '2021-10-14 01:41:18', NULL, '0.0', NULL, NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (17, '100000071', '倾角传感器4', NULL, 1, 22, 1, 1, 28, 120.2857920370, '31.516238252104156', 0, '2021-09-12 07:14:04', 1, 96, '0', '165.232.179.211', '2021-11-14 08:58:54', 96, '-199.99', NULL, NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (23, '100000108', '无锡职院传感器910', NULL, 1, 21, 1, 1, 32, 31.1000000000, '102.1', 8, '2021-09-10 07:33:21', 1, 5288, '0', '117.132.183.46', '2021-11-13 06:39:22', 2313, '21.4974', '123455678', NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (24, '100000008', '无锡测试', NULL, 1, 26, 1, 1, 33, 1234.0000000000, '123.0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '188066', NULL, NULL);
-INSERT INTO `device_sensor_equipment` VALUES (25, '1111', '111', NULL, 1, NULL, 1, 1, NULL, 111.0000000000, '111.0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '11111111111', NULL, NULL);
-COMMIT;
-
--- ----------------------------
--- Table structure for monitor_factors
--- ----------------------------
-DROP TABLE IF EXISTS `monitor_factors`;
-CREATE TABLE `monitor_factors` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `factors_name` varchar(255) DEFAULT NULL COMMENT '因素名称',
-  `structure_id` int(11) DEFAULT NULL COMMENT '结构编号',
-  `prototype_id` int(11) DEFAULT NULL COMMENT '监测原型',
-  `monitor_item` varchar(255) DEFAULT NULL COMMENT '检测项',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `is_effective` int(11) DEFAULT NULL COMMENT '是否有效',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='监测因素';
-
--- ----------------------------
--- Records of monitor_factors
--- ----------------------------
-BEGIN;
+INSERT INTO `device_sensor_equipment` VALUES (17, '100000071', '倾角传感器4', NULL, 1, 22, 1, 1, 28, 120.2857920370, '31.516238252104156', 0, '2021-09-12 07:14:04', 1, 96, '0', '39.103.221.201', '2021-11-17 15:54:33', 96, '-199.99', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -126,32 +101,33 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_items`;
 CREATE TABLE `monitor_items` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `item_name` varchar(255) NOT NULL COMMENT '检测项名称',
   `data_id` varchar(255) NOT NULL COMMENT '名称',
   `data_type` varchar(255) DEFAULT NULL COMMENT '数据类型',
+  `decimal_size` int DEFAULT NULL COMMENT '小数位',
   `unit` varchar(255) DEFAULT NULL COMMENT '单位',
-  `ascii_index` int(11) DEFAULT NULL COMMENT 'ASCII 解析标位',
-  `hex_index` int(11) DEFAULT NULL COMMENT 'HEX 解析标位',
+  `ascii_index` int DEFAULT NULL COMMENT 'ASCII 解析标位',
+  `hex_index` int DEFAULT NULL COMMENT 'HEX 解析标位',
   `ascii_prefix` varchar(255) DEFAULT NULL COMMENT 'ASCII 解析前缀',
-  `reduce_number` int(11) DEFAULT NULL COMMENT 'HEX减 偏移量',
-  `divide_number` int(11) DEFAULT NULL COMMENT 'HEX除 偏移量',
+  `reduce_number` int DEFAULT NULL COMMENT 'HEX减 偏移量',
+  `divide_number` int DEFAULT NULL COMMENT 'HEX除 偏移量',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_DATA_ID` (`data_id`) USING BTREE COMMENT '唯一时序数据库标识'
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COMMENT='监控条目';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='监控条目';
 
 -- ----------------------------
 -- Records of monitor_items
 -- ----------------------------
 BEGIN;
-INSERT INTO `monitor_items` VALUES (1, 'X轴倾角', 'x_ang', 'float', '°', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (2, 'Y轴倾角', 'y_ang', 'float', '°', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (3, 'Z轴倾角', 'z_ang', 'float', '°', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (4, 'X轴加速度', 'x_acc', 'float', 'g', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (5, 'Y轴加速度', 'y_acc', 'float', 'g', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (6, 'Z轴加速度', 'z_acc', 'float', 'g', 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (7, '电量', 'elect', 'float', NULL, 1, 2, '1', 0, 0);
-INSERT INTO `monitor_items` VALUES (8, '温度', 'temp', 'float', '°C ', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (1, 'X轴倾角', 'x_ang', 'float', 4, '°', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (2, 'Y轴倾角', 'y_ang', 'float', 4, '°', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (3, 'Z轴倾角', 'z_ang', 'float', 4, '°', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (4, 'X轴加速度', 'x_acc', 'float', 4, 'g', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (5, 'Y轴加速度', 'y_acc', 'float', 4, 'g', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (6, 'Z轴加速度', 'z_acc', 'float', 4, 'g', 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (7, '电量', 'elect', 'float', 4, NULL, 1, 2, '1', 0, 0);
+INSERT INTO `monitor_items` VALUES (8, '温度', 'temp', 'float', 4, '°C ', 1, 2, '1', 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -159,17 +135,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_position`;
 CREATE TABLE `monitor_position` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `structure_id` int(11) NOT NULL COMMENT '结构物编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `structure_id` int NOT NULL COMMENT '结构物编号',
   `name` varchar(255) NOT NULL COMMENT '名称',
   `picture` varchar(255) DEFAULT NULL COMMENT '对应图片',
   `sensor_sn` varchar(255) DEFAULT NULL COMMENT '传感器Sn码',
   `comment` varchar(255) DEFAULT NULL COMMENT '说明',
-  `order_sort` int(11) DEFAULT NULL COMMENT '排序',
-  `effective` int(11) DEFAULT NULL COMMENT '有效性',
-  `binding_status` int(11) DEFAULT NULL COMMENT '绑定状态',
+  `order_sort` int DEFAULT NULL COMMENT '排序',
+  `effective` int DEFAULT NULL COMMENT '有效性',
+  `binding_status` int DEFAULT NULL COMMENT '绑定状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COMMENT='测点';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='测点';
 
 -- ----------------------------
 -- Records of monitor_position
@@ -200,19 +176,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_position_model`;
 CREATE TABLE `monitor_position_model` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `structure_code` varchar(255) NOT NULL COMMENT '结构物标识编号',
-  `model_id` int(11) DEFAULT NULL COMMENT '结构物模型编号',
+  `model_id` int DEFAULT NULL COMMENT '结构物模型编号',
   `name` varchar(255) NOT NULL COMMENT '位置名称',
   `comment` varchar(255) DEFAULT NULL COMMENT '位置描述',
   `version` double(20,2) DEFAULT NULL COMMENT '版本',
   `structure_version` double(20,2) DEFAULT NULL,
   `order_sort` varchar(255) DEFAULT NULL COMMENT '排序',
-  `effective` int(11) DEFAULT NULL COMMENT '有效性',
+  `effective` int DEFAULT NULL COMMENT '有效性',
   `creator` varchar(255) DEFAULT NULL,
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COMMENT='测点模板';
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='测点模板';
 
 -- ----------------------------
 -- Records of monitor_position_model
@@ -257,7 +233,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_project`;
 CREATE TABLE `monitor_project` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `picture` varchar(255) DEFAULT NULL COMMENT '照片路劲',
   `owner_id` varchar(255) DEFAULT NULL COMMENT '所属编号',
@@ -265,14 +241,14 @@ CREATE TABLE `monitor_project` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COMMENT='监测项目';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='监测项目';
 
 -- ----------------------------
 -- Records of monitor_project
 -- ----------------------------
 BEGIN;
 INSERT INTO `monitor_project` VALUES (21, '无锡软件园', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629731492490_70f55386', '1', 'admin', '2021-08-23 15:11:34', NULL);
-INSERT INTO `monitor_project` VALUES (22, '无锡职院风机', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629766111027_a7823d00', '6', 'tyler', '2021-08-24 00:48:36', NULL);
+INSERT INTO `monitor_project` VALUES (22, '无锡风机', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629766111027_a7823d00', '6', 'tyler', '2021-08-24 00:48:36', NULL);
 INSERT INTO `monitor_project` VALUES (23, 'test1', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629971611694_d7f6d3b9', '7', 'bwadmin', '2021-08-26 09:53:35', NULL);
 INSERT INTO `monitor_project` VALUES (24, 'test2', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1629971803268_9c0502bf', '7', 'bwadmin', '2021-08-26 09:56:46', NULL);
 INSERT INTO `monitor_project` VALUES (26, '无锡测试', 'http://beiwei-smart-cloud.oss-cn-hangzhou.aliyuncs.com/pic/bw1634542030191_1ead3c2b', '1', 'admin', '2021-10-18 07:27:12', NULL);
@@ -284,16 +260,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_prototype`;
 CREATE TABLE `monitor_prototype` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `type_name` varchar(255) DEFAULT NULL,
   `creator` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `updater` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `is_effective` int(11) DEFAULT NULL,
+  `is_effective` int DEFAULT NULL,
   `order_sort` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='监测类型\n';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='监测类型\n';
 
 -- ----------------------------
 -- Records of monitor_prototype
@@ -309,9 +285,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_structure`;
 CREATE TABLE `monitor_structure` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `model_id` int(11) DEFAULT NULL COMMENT '模型编号',
-  `project_id` int(11) DEFAULT NULL COMMENT '项目编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `model_id` int DEFAULT NULL COMMENT '模型编号',
+  `project_id` int DEFAULT NULL COMMENT '项目编号',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `structure_name` varchar(255) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL COMMENT '描述',
@@ -323,7 +299,7 @@ CREATE TABLE `monitor_structure` (
   `updater` varchar(255) DEFAULT NULL COMMENT '修改',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='结构物实体';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='结构物实体';
 
 -- ----------------------------
 -- Records of monitor_structure
@@ -342,24 +318,24 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `monitor_structure_model`;
 CREATE TABLE `monitor_structure_model` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `picture` varchar(300) DEFAULT NULL COMMENT '结构物模板图片',
   `structure_code` varchar(255) DEFAULT NULL COMMENT '结构体表示编码',
   `comment` varchar(255) DEFAULT NULL COMMENT '描述',
-  `is_public` int(11) DEFAULT NULL COMMENT '是否为公共结构物',
-  `is_contain_mobile` int(11) DEFAULT NULL COMMENT '是否包含手机号',
-  `is_contain_position` int(11) DEFAULT NULL COMMENT '是否包含经纬度',
+  `is_public` int DEFAULT NULL COMMENT '是否为公共结构物',
+  `is_contain_mobile` int DEFAULT NULL COMMENT '是否包含手机号',
+  `is_contain_position` int DEFAULT NULL COMMENT '是否包含经纬度',
   `version` double(20,2) DEFAULT NULL COMMENT '版本',
-  `order_sort` int(11) DEFAULT NULL COMMENT '排序',
+  `order_sort` int DEFAULT NULL COMMENT '排序',
   `effective` varchar(255) DEFAULT NULL COMMENT '有效性',
-  `group_id` int(11) DEFAULT NULL COMMENT '小组编号',
+  `group_id` int DEFAULT NULL COMMENT '小组编号',
   `creator` varchar(255) DEFAULT NULL COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `editor` varchar(255) DEFAULT NULL COMMENT '修改者',
   `edit_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COMMENT='结构体模板';
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='结构体模板';
 
 -- ----------------------------
 -- Records of monitor_structure_model
@@ -385,23 +361,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `operate_group`;
 CREATE TABLE `operate_group` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
   `group_name` varchar(255) DEFAULT NULL COMMENT '组名',
   `group_code` varchar(255) DEFAULT NULL COMMENT '小组编码',
-  `person_number` int(11) DEFAULT NULL COMMENT '人员数量',
-  `is_inner` int(11) DEFAULT NULL COMMENT '是否为内部组织',
+  `person_number` int DEFAULT NULL COMMENT '人员数量',
+  `is_inner` int DEFAULT NULL COMMENT '是否为内部组织',
   `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
-  `is_enabled` int(11) DEFAULT NULL COMMENT '是否允许',
+  `is_enabled` int DEFAULT NULL COMMENT '是否允许',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='企业组';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='企业组';
 
 -- ----------------------------
 -- Records of operate_group
 -- ----------------------------
 BEGIN;
-INSERT INTO `operate_group` VALUES (1, '北微核心组', 'BW_MAIN', 4, 1, '核心组', 1, '2021-08-07 18:24:50');
-INSERT INTO `operate_group` VALUES (7, '成都北微工作组', 'BW_CHENGDU', 1, 0, '北微', 0, '2021-08-23 14:14:26');
+INSERT INTO `operate_group` VALUES (1, '核心组', 'BW_MAIN', 4, 1, '核心组', 1, '2021-08-07 18:24:50');
+INSERT INTO `operate_group` VALUES (7, '成都工作组', 'BW_CHENGDU', 1, 0, '11111', 0, '2021-08-23 14:14:26');
 INSERT INTO `operate_group` VALUES (8, '测试', 'BW_TEST', 0, 0, '测试', 0, '2021-08-26 08:38:58');
 INSERT INTO `operate_group` VALUES (9, '3', '3', 0, 0, '3', 1, '2021-11-02 15:08:14');
 COMMIT;
@@ -411,15 +387,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `project_member`;
 CREATE TABLE `project_member` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `project_id` int(11) DEFAULT NULL COMMENT '项目编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `project_id` int DEFAULT NULL COMMENT '项目编号',
   `role_code` varchar(255) DEFAULT NULL COMMENT '角色编码',
   `role_name` varchar(255) DEFAULT NULL COMMENT '角色名称',
   `account_name` varchar(255) DEFAULT NULL COMMENT '账户名称',
-  `user_id` int(11) DEFAULT NULL COMMENT '用户编号',
+  `user_id` int DEFAULT NULL COMMENT '用户编号',
   `join_time` datetime DEFAULT NULL COMMENT '加入时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='项目成员';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='项目成员';
 
 -- ----------------------------
 -- Records of project_member
@@ -443,11 +419,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `project_role`;
 CREATE TABLE `project_role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `role_code` varchar(255) DEFAULT NULL COMMENT '编号',
   `role_name` varchar(255) DEFAULT NULL COMMENT '名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='项目权限';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='项目权限';
 
 -- ----------------------------
 -- Records of project_role
@@ -464,11 +440,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `proto_type_item`;
 CREATE TABLE `proto_type_item` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type_id` int(11) DEFAULT NULL COMMENT '监测类型编号',
-  `item_id` int(11) DEFAULT NULL COMMENT '监测',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type_id` int DEFAULT NULL COMMENT '监测类型编号',
+  `item_id` int DEFAULT NULL COMMENT '监测',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='监测类型与监测项关联';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='监测类型与监测项关联';
 
 -- ----------------------------
 -- Records of proto_type_item
@@ -485,11 +461,48 @@ INSERT INTO `proto_type_item` VALUES (8, 3, 8);
 COMMIT;
 
 -- ----------------------------
+-- Table structure for sensor
+-- ----------------------------
+DROP TABLE IF EXISTS `sensor`;
+CREATE TABLE `sensor` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sn` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `sensor_type` varchar(255) DEFAULT NULL,
+  `fist_online_time` datetime DEFAULT NULL,
+  `online_time` datetime DEFAULT NULL,
+  `last_online_time` datetime DEFAULT NULL,
+  `temperature_status` varchar(255) DEFAULT NULL,
+  `electricity_status` varchar(255) DEFAULT NULL,
+  `online_status` varchar(255) DEFAULT NULL,
+  `current_online_time` double DEFAULT NULL,
+  `total_online_time` double DEFAULT NULL,
+  `last_online_address` varchar(255) DEFAULT NULL,
+  `online_address` varchar(255) DEFAULT NULL,
+  `electricity` double DEFAULT NULL,
+  `temperature` varchar(255) DEFAULT NULL,
+  `owner_phone` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique` (`sn`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sensor
+-- ----------------------------
+BEGIN;
+INSERT INTO `sensor` VALUES (14, '100000005', NULL, NULL, '2021-07-18 15:14:57', NULL, '2021-07-25 12:23:54', NULL, NULL, '1', 0, 2, '/112.21.45.150:28064', '', 0, '0.0', '1440033931560');
+INSERT INTO `sensor` VALUES (15, '100000003', NULL, NULL, '2021-07-24 05:38:38', NULL, '2021-08-07 02:28:44', NULL, NULL, '1', 0, 0, '/89.248.165.41:63047', NULL, 0, '0.0', NULL);
+INSERT INTO `sensor` VALUES (16, '100000067', NULL, NULL, '2021-07-25 23:12:11', NULL, '2021-08-06 19:52:59', NULL, NULL, '1', 0, 0, '/89.248.165.52:59382', NULL, 0, '0.0', NULL);
+INSERT INTO `sensor` VALUES (17, '100000071', NULL, NULL, '2021-07-27 20:11:44', NULL, '2021-07-27 20:11:47', NULL, NULL, '1', 0, 0, '/162.142.125.38:34422', NULL, 0, '0.0', NULL);
+INSERT INTO `sensor` VALUES (18, '100000018', NULL, NULL, '2021-07-28 21:20:04', NULL, '2021-08-06 18:35:32', NULL, NULL, '1', 0, 0, '/185.219.52.154:52814', NULL, 0, '0.0', NULL);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sensor_model
 -- ----------------------------
 DROP TABLE IF EXISTS `sensor_model`;
 CREATE TABLE `sensor_model` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `model_name` varchar(255) DEFAULT NULL,
   `model_kind` varchar(255) DEFAULT NULL,
   `model_no` varchar(255) DEFAULT NULL,
@@ -497,9 +510,9 @@ CREATE TABLE `sensor_model` (
   `comment` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `version` varchar(255) DEFAULT NULL,
-  `is_effective` int(11) DEFAULT NULL,
+  `is_effective` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='传感器模板\n';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='传感器模板\n';
 
 -- ----------------------------
 -- Records of sensor_model
@@ -514,11 +527,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sensor_model_type`;
 CREATE TABLE `sensor_model_type` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `model_id` int(11) NOT NULL COMMENT '模型编号',
-  `type_id` int(11) NOT NULL COMMENT '类型编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_id` int NOT NULL COMMENT '模型编号',
+  `type_id` int NOT NULL COMMENT '类型编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COMMENT='传感器 监测类型关联';
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='传感器 监测类型关联';
 
 -- ----------------------------
 -- Records of sensor_model_type
@@ -526,12 +539,28 @@ CREATE TABLE `sensor_model_type` (
 BEGIN;
 INSERT INTO `sensor_model_type` VALUES (4, 2, 1);
 INSERT INTO `sensor_model_type` VALUES (5, 2, 2);
-INSERT INTO `sensor_model_type` VALUES (29, 1, 1);
-INSERT INTO `sensor_model_type` VALUES (30, 1, 2);
-INSERT INTO `sensor_model_type` VALUES (31, 1, 3);
 INSERT INTO `sensor_model_type` VALUES (41, 6, 1);
 INSERT INTO `sensor_model_type` VALUES (42, 6, 2);
 INSERT INTO `sensor_model_type` VALUES (43, 6, 3);
+INSERT INTO `sensor_model_type` VALUES (44, 1, 1);
+INSERT INTO `sensor_model_type` VALUES (45, 1, 2);
+INSERT INTO `sensor_model_type` VALUES (46, 1, 3);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sensor_type
+-- ----------------------------
+DROP TABLE IF EXISTS `sensor_type`;
+CREATE TABLE `sensor_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sensor_type
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -539,12 +568,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `structure_type`;
 CREATE TABLE `structure_type` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `structure_code` varchar(255) NOT NULL,
-  `is_effective` int(11) NOT NULL,
+  `is_effective` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='结构体类型';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='结构体类型';
 
 -- ----------------------------
 -- Records of structure_type
@@ -559,7 +588,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `support_mail_config`;
 CREATE TABLE `support_mail_config` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `config_name` varchar(255) DEFAULT NULL COMMENT '配置名称',
   `account_name` varchar(255) DEFAULT NULL COMMENT '控制台创建的发信地址',
   `from_alias` varchar(255) DEFAULT NULL COMMENT '发信人昵称',
@@ -574,13 +603,13 @@ CREATE TABLE `support_mail_config` (
   `update_time` datetime DEFAULT NULL COMMENT '修改者',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='系统邮件推送设置';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统邮件推送设置';
 
 -- ----------------------------
 -- Records of support_mail_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `support_mail_config` VALUES (1, 'mail_notification', 'notifaction@send.xianyun.site', '北微传感器', NULL, 'Notifaction', 'alert_notifation', '预警消息订阅', '1', 'admin', '2021-09-21 17:45:14', 'admin', '2021-09-21 17:45:17', '预警邮件消息');
+INSERT INTO `support_mail_config` VALUES (1, 'mail_notification', 'notifaction@send.xianyun.site', '传感器', NULL, 'Notifaction', 'alert_notifation', '预警消息订阅', '1', 'admin', '2021-09-21 17:45:14', 'admin', '2021-09-21 17:45:17', '预警邮件消息');
 COMMIT;
 
 -- ----------------------------
@@ -588,20 +617,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `support_mail_template`;
 CREATE TABLE `support_mail_template` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(255) DEFAULT NULL COMMENT '抬头',
   `version` double(8,2) DEFAULT NULL COMMENT '版本号',
   `file_name` varchar(255) DEFAULT NULL COMMENT '文件名称',
   `model` varchar(255) DEFAULT NULL COMMENT '模板',
   `template_local` varchar(255) DEFAULT NULL COMMENT '模板路径',
-  `is_default` int(11) DEFAULT NULL COMMENT '是否为默认',
+  `is_default` int DEFAULT NULL COMMENT '是否为默认',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(255) DEFAULT NULL COMMENT '修改人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='邮件模板';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='邮件模板';
 
 -- ----------------------------
 -- Records of support_mail_template
@@ -615,22 +644,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_group`;
 CREATE TABLE `sys_alert_group` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `group_name` varchar(255) DEFAULT NULL COMMENT '预警分组名称',
-  `operate_group_id` int(11) DEFAULT NULL COMMENT '操作组',
-  `current_sensor_id` int(11) DEFAULT NULL COMMENT '当前传感器',
-  `template_id` int(11) DEFAULT NULL COMMENT '模板编号',
-  `push_type` int(11) DEFAULT NULL COMMENT '推送方式',
+  `operate_group_id` int DEFAULT NULL COMMENT '操作组',
+  `current_sensor_id` int DEFAULT NULL COMMENT '当前传感器',
+  `template_id` int DEFAULT NULL COMMENT '模板编号',
+  `push_type` int DEFAULT NULL COMMENT '推送方式',
   `creator` varchar(255) DEFAULT NULL COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='预警分组 用作预警规则的聚合根';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='预警分组 用作预警规则的聚合根';
 
 -- ----------------------------
 -- Records of sys_alert_group
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_alert_group` VALUES (15, '温度检测', 1, 23, NULL, 1, 'admin', NULL);
+INSERT INTO `sys_alert_group` VALUES (18, '测试', 1, 14, NULL, 1, 'admin', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -638,18 +668,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_notifaction_member`;
 CREATE TABLE `sys_alert_notifaction_member` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alert_group_id` int(11) DEFAULT NULL COMMENT '预警分组编号',
-  `user_id` int(11) DEFAULT NULL COMMENT '用户编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `alert_group_id` int DEFAULT NULL COMMENT '预警分组编号',
+  `user_id` int DEFAULT NULL COMMENT '用户编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COMMENT='消息通知接收';
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息通知接收';
 
 -- ----------------------------
 -- Records of sys_alert_notifaction_member
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_alert_notifaction_member` VALUES (33, 15, 6);
-INSERT INTO `sys_alert_notifaction_member` VALUES (34, 15, 7);
+INSERT INTO `sys_alert_notifaction_member` VALUES (35, 15, 6);
+INSERT INTO `sys_alert_notifaction_member` VALUES (36, 15, 7);
+INSERT INTO `sys_alert_notifaction_member` VALUES (37, 15, 1);
 COMMIT;
 
 -- ----------------------------
@@ -657,65 +688,29 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_notification`;
 CREATE TABLE `sys_alert_notification` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `group_id` int(11) DEFAULT NULL COMMENT '小组编号',
-  `alert_group_id` int(11) DEFAULT NULL COMMENT '预警分组编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `group_id` int DEFAULT NULL COMMENT '小组编号',
+  `alert_group_id` int DEFAULT NULL COMMENT '预警分组编号',
   `group_name` varchar(100) DEFAULT NULL COMMENT '小组名称',
   `alert_name` varchar(100) DEFAULT NULL COMMENT '告警名称',
   `role_name` varchar(100) DEFAULT NULL COMMENT '规则名称',
-  `sensor_id` int(11) DEFAULT NULL COMMENT '传感器编号',
+  `sensor_id` int DEFAULT NULL COMMENT '传感器编号',
   `sn` varchar(100) DEFAULT NULL COMMENT '传感器Sn码',
   `sensor_name` varchar(100) DEFAULT NULL COMMENT '传感器名称',
   `sensor_model` varchar(100) DEFAULT NULL COMMENT '传感器型号',
-  `model_id` int(11) DEFAULT NULL COMMENT '传感器型号编号',
+  `model_id` int DEFAULT NULL COMMENT '传感器型号编号',
   `alert_time` varchar(100) NOT NULL DEFAULT '' COMMENT '告警时间',
   `summary` varchar(100) DEFAULT NULL COMMENT '告警信息',
   `color` varchar(100) DEFAULT NULL COMMENT '展示颜色',
-  `is_handle` int(11) DEFAULT '0' COMMENT '是否被处理',
+  `is_handle` int DEFAULT '0' COMMENT '是否被处理',
   PRIMARY KEY (`id`),
   KEY `alert_time` (`alert_time`,`group_id`,`alert_name`,`role_name`,`sensor_id`,`summary`,`color`) USING BTREE
-) /*!50100 STORAGE MEMORY */ ENGINE=InnoDB AUTO_INCREMENT=5096 DEFAULT CHARSET=utf8mb4 COMMENT='预警通知日志';
+) /*!50100 STORAGE MEMORY */ ENGINE=InnoDB AUTO_INCREMENT=5098 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='预警通知日志';
 
 -- ----------------------------
 -- Records of sys_alert_notification
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_alert_notification` VALUES (5060, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4974 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5061, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4445 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5062, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.8624 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5063, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.4921 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5064, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.3333 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5065, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.2275 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5066, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.1746 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5067, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0688 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5068, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0159 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5069, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.963 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5070, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.9101 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5071, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:19.8042 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5072, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.0159 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5073, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.2804 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5074, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:20.7566 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5075, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.0741 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5076, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.1799 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5077, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.4974 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5078, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.7619 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5079, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.8677 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5080, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.7619 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5081, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5082, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5083, 1, 14, '北微核心组', '温度预警1216', 'AUTO_ROLE11216', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-27 13:29:00.0', '传感器:无锡职院传感器910 发生 ${alertName} 当前 ${paramName} 监测数据为:21.6561 型号:倾角传感器', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5084, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5085, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5086, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0794 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5087, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3968 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5088, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3439 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5089, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5090, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.1323 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5091, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5092, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.6032 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5093, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5094, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
-INSERT INTO `sys_alert_notification` VALUES (5095, 1, 15, '北微核心组', '温度检测6888', 'AUTO_ROLE16888', 23, '100000108', '无锡职院传感器910', '倾角传感器', 1, '2021-10-30 04:49:00.0', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', 'red', 0);
 COMMIT;
 
 -- ----------------------------
@@ -723,17 +718,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_param`;
 CREATE TABLE `sys_alert_param` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `template_id` int(11) DEFAULT NULL COMMENT '模板编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `template_id` int DEFAULT NULL COMMENT '模板编号',
   `alert_name` varchar(255) DEFAULT NULL COMMENT '告警名称',
-  `param_no` int(11) DEFAULT NULL COMMENT '监测参数编号',
+  `param_no` int DEFAULT NULL COMMENT '监测参数编号',
   `last_time` varchar(255) DEFAULT NULL COMMENT '问题出现后多久开始预警',
   `period` varchar(255) DEFAULT NULL COMMENT '监测周期',
   `formulas` varchar(255) DEFAULT NULL COMMENT '函数公式',
   `color` varchar(255) DEFAULT NULL COMMENT '颜色',
   `summary` varchar(1000) DEFAULT NULL COMMENT '告警信息预设',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='告警参数\n';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='告警参数\n';
 
 -- ----------------------------
 -- Records of sys_alert_param
@@ -751,20 +746,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_role`;
 CREATE TABLE `sys_alert_role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `alert_name` varchar(255) DEFAULT NULL COMMENT '告警名称',
   `name` varchar(255) DEFAULT NULL COMMENT '规则名称',
-  `alert_group_id` int(11) DEFAULT NULL COMMENT '告警分组编号',
-  `template_id` int(11) DEFAULT NULL COMMENT '模板编号',
+  `role_name` varchar(255) DEFAULT NULL COMMENT '告警规则名称信息',
+  `alert_group_id` int DEFAULT NULL COMMENT '告警分组编号',
+  `template_id` int DEFAULT NULL COMMENT '模板编号',
   `color` varchar(255) DEFAULT NULL COMMENT '颜色',
-  `param_id` int(11) DEFAULT NULL COMMENT '参数编号',
-  `group_id` int(11) DEFAULT NULL COMMENT '小组编号',
-  `sensor_id` int(11) DEFAULT NULL COMMENT '传感器编号',
+  `param_id` int DEFAULT NULL COMMENT '参数编号',
+  `group_id` int DEFAULT NULL COMMENT '小组编号',
+  `sensor_id` int DEFAULT NULL COMMENT '传感器编号',
   `formulas` varchar(1000) DEFAULT NULL COMMENT '预警公式',
   `forward` varchar(255) DEFAULT NULL COMMENT '回查时间',
   `label` varchar(255) DEFAULT NULL COMMENT '标签',
   `summary` varchar(255) DEFAULT NULL COMMENT '提示信息',
-  `alert_status` int(11) DEFAULT NULL COMMENT '监测状态',
+  `alert_status` int DEFAULT NULL COMMENT '监测状态',
   `alert_info` varchar(255) DEFAULT NULL COMMENT '内涵信息用于解析',
   `state_sql` varchar(1000) DEFAULT NULL COMMENT 'TDengin 查询SQL',
   `template_sql` varchar(1000) DEFAULT NULL COMMENT '未修改回查时间的SQL',
@@ -773,13 +769,15 @@ CREATE TABLE `sys_alert_role` (
   `check_period` varchar(255) DEFAULT NULL COMMENT '规则检查周期',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_NAME` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='告警规则';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='告警规则';
 
 -- ----------------------------
 -- Records of sys_alert_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_alert_role` VALUES (21, '温度检测6888', 'AUTO_ROLE16888', 15, NULL, 'red', NULL, 1, 23, 'max,<,20,||#min,>,10', '2h', 'AUTO_ROLE', '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:{{$values.data_value}} ', 1, '100000108|1|AUTO_ROLE16888|15', 'select  data_value from smart_cloud.sensor_data where ts > now - 2h and data_id =\'temp\' and sn =\'100000108\'', 'select  data_value from smart_cloud.sensor_data where ts > now - [forward] and data_id =\'temp\' and sn =\'100000108\'', 'max(data_value) < 20 || min(data_value) > 10', '0', '1m');
+INSERT INTO `sys_alert_role` VALUES (21, '温度检测6888', 'AUTO_ROLE16888', '温度检测', 15, NULL, 'red', NULL, 1, 23, 'max,<,20,||#min,>,10', '2h', 'AUTO_ROLE', '无锡传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:{{$values.data_value}} ', 1, '100000108|1|AUTO_ROLE16888|15', 'select  data_value from smart_cloud.sensor_data where ts > now - 2h and data_id =\'temp\' and sn =\'100000108\'', 'select  data_value from smart_cloud.sensor_data where ts > now - [forward] and data_id =\'temp\' and sn =\'100000108\'', 'max(data_value) < 20 || min(data_value) > 10', '0', '1m');
+INSERT INTO `sys_alert_role` VALUES (25, '温度6993', 'AUTO_ROLE16993', '温度', 18, NULL, 'red', NULL, 1, 14, 'max,<,32,||#min,>,10', '1h', 'AUTO_ROLE', '倾角传感器1(倾角传感器) 发生 温度 问题 ！ 当前数值:{{$values.data_value}} ', 1, '100000005|1|AUTO_ROLE16993|18', 'select  data_value from smart_cloud.sensor_data where ts > now - 1h and data_id =\'temp\' and sn =\'100000005\'', 'select  data_value from smart_cloud.sensor_data where ts > now - [forward] and data_id =\'temp\' and sn =\'100000005\'', 'max(data_value) < 32 || min(data_value) > 10', '0', '1m');
+INSERT INTO `sys_alert_role` VALUES (26, '电量6997', 'AUTO_ROLE16997', '电量', 18, NULL, 'red', NULL, 1, 14, 'max,<=,10,||#min,>=,1', '1h', 'AUTO_ROLE', '倾角传感器1(倾角传感器) 发生 电量 问题 ！ 当前数值:{{$values.data_value}} ', 1, '100000005|1|AUTO_ROLE16997|18', 'select  data_value from smart_cloud.sensor_data where ts > now - 1h and data_id =\'elect\' and sn =\'100000005\'', 'select  data_value from smart_cloud.sensor_data where ts > now - [forward] and data_id =\'elect\' and sn =\'100000005\'', 'max(data_value) <= 10 || min(data_value) >= 1', '0', '1m');
 COMMIT;
 
 -- ----------------------------
@@ -787,9 +785,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_alert_template`;
 CREATE TABLE `sys_alert_template` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `model_no` int(11) DEFAULT NULL COMMENT '模型编号',
-  `group_id` int(11) DEFAULT NULL COMMENT '小组编号',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_no` int DEFAULT NULL COMMENT '模型编号',
+  `group_id` int DEFAULT NULL COMMENT '小组编号',
   `template_name` varchar(255) DEFAULT NULL COMMENT '模型名称',
   `name_prefix` varchar(255) DEFAULT NULL COMMENT '告警role前缀名称',
   `summary_model` varchar(1000) DEFAULT NULL COMMENT '告警信息模板',
@@ -798,7 +796,7 @@ CREATE TABLE `sys_alert_template` (
   `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   `updater` varchar(255) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='告警模板\n';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='告警模板\n';
 
 -- ----------------------------
 -- Records of sys_alert_template
@@ -815,12 +813,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_industry_field`;
 CREATE TABLE `sys_industry_field` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `code` varchar(255) DEFAULT NULL COMMENT '编码',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='行业领域\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='行业领域\n';
 
 -- ----------------------------
 -- Records of sys_industry_field
@@ -833,17 +831,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_monitor_receive_log`;
 CREATE TABLE `sys_monitor_receive_log` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `sn` varchar(255) DEFAULT NULL COMMENT 'SN编码',
   `channel_id` varchar(255) DEFAULT NULL COMMENT 'CHANEL编号',
   `ip` varchar(255) DEFAULT NULL COMMENT 'IP地址',
   `receive_time` datetime DEFAULT NULL COMMENT '接收时间',
-  `receive_size` int(11) DEFAULT NULL COMMENT '接收数据条数',
-  `send_count` int(11) DEFAULT NULL COMMENT '发送总量',
+  `receive_size` int DEFAULT NULL COMMENT '接收数据条数',
+  `send_count` int DEFAULT NULL COMMENT '发送总量',
   `send_address` varchar(255) DEFAULT NULL COMMENT '接收地址',
-  `total_size` int(11) DEFAULT NULL COMMENT '保存后总数据量',
+  `total_size` int DEFAULT NULL COMMENT '保存后总数据量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1575 DEFAULT CHARSET=utf8mb4 COMMENT='传感器接收日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1595 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='传感器接收日志';
 
 -- ----------------------------
 -- Records of sys_monitor_receive_log
@@ -2414,6 +2412,26 @@ INSERT INTO `sys_monitor_receive_log` VALUES (1571, '100000071', '90e1fc06', '16
 INSERT INTO `sys_monitor_receive_log` VALUES (1572, '100000003', '0fc526ff', '94.102.49.66', '2021-11-14 11:51:43', 1, 0, ' ', NULL);
 INSERT INTO `sys_monitor_receive_log` VALUES (1573, '100000003', '3df9f152', '89.248.168.226', '2021-11-15 08:17:57', 1, 0, ' ', NULL);
 INSERT INTO `sys_monitor_receive_log` VALUES (1574, '100000003', '9d452f52', '89.248.165.64', '2021-11-15 18:29:07', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1575, '100000003', '1caadae1', '45.9.20.97', '2021-11-16 02:57:43', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1576, '100000003', '48e256a1', '89.248.165.41', '2021-11-16 20:00:30', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1577, '100000003', '8779fdfb', '89.248.165.41', '2021-11-16 22:15:05', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1578, '100000003', '6865c616', '89.248.165.41', '2021-11-17 10:22:18', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1579, '100000003', '377557ca', '94.102.51.31', '2021-11-17 13:13:09', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1580, '100000003', '787fc77c', '89.248.165.41', '2021-11-17 13:28:22', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1581, '100000071', '0c70f9c5', '39.103.221.201', '2021-11-17 15:54:28', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1582, '100000071', '4123a381', '39.103.221.201', '2021-11-17 15:54:33', 1, 0, '北京市 北京市', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1583, '100000003', '3ca36bea', '89.248.165.15', '2021-11-17 16:41:19', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1584, '100000003', '400e4744', '94.102.49.74', '2021-11-17 20:09:02', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1585, '100000003', '66611ab6', '185.217.1.122', '2021-11-17 22:24:01', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1586, '100000003', '43f0f86b', '185.217.1.122', '2021-11-18 03:57:06', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1587, '100000003', 'd08c3074', '94.102.49.74', '2021-11-18 08:10:47', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1588, '100000003', '970f8f66', '94.102.49.74', '2021-11-18 19:50:57', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1589, '100000003', '0c912db9', '89.248.170.2', '2021-11-19 01:36:03', 1, 0, ' ', NULL);
+INSERT INTO `sys_monitor_receive_log` VALUES (1590, '100000108', '70362c5a', '39.144.6.44', '2021-11-20 11:19:44', 5, 20, ' ', 2321);
+INSERT INTO `sys_monitor_receive_log` VALUES (1591, '100000005', '0ab78dc5', '58.241.26.226', '2021-11-20 11:20:06', 52, 416, '江苏省 无锡市', 47331);
+INSERT INTO `sys_monitor_receive_log` VALUES (1592, '100000108', '161c7b04', '223.104.255.201', '2021-11-20 11:20:56', 5, 20, '广东省 广州市', 2329);
+INSERT INTO `sys_monitor_receive_log` VALUES (1593, '100000108', '0c4429d1', '221.178.125.183', '2021-11-20 11:25:57', 5, 20, '重庆市 重庆市', 2337);
+INSERT INTO `sys_monitor_receive_log` VALUES (1594, '100000108', 'a9be975f', '223.104.255.210', '2021-11-20 11:32:29', 5, 20, '广东省 广州市', 2345);
 COMMIT;
 
 -- ----------------------------
@@ -2421,29 +2439,31 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_notification_cache`;
 CREATE TABLE `sys_notification_cache` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `group_id` int(10) NOT NULL COMMENT '预警分组编号',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `group_id` int NOT NULL COMMENT '预警分组编号',
   `message` varchar(300) DEFAULT NULL COMMENT '消息',
   `add_time` datetime DEFAULT NULL COMMENT '添加时间',
-  `status` int(2) DEFAULT NULL COMMENT '状态',
-  `reader_id` int(10) DEFAULT NULL COMMENT '处理人',
+  `status` int DEFAULT NULL COMMENT '状态',
+  `reader_id` int DEFAULT NULL COMMENT '处理人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of sys_notification_cache
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_notification_cache` VALUES (1, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0794 ', '2021-10-30 14:49:31', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (2, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3968 ', '2021-10-30 15:49:42', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (3, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.3439 ', '2021-10-30 16:49:53', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (4, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.0265 ', '2021-10-30 17:49:54', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (5, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:22.1323 ', '2021-10-30 18:49:54', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (6, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.8148 ', '2021-10-30 19:49:55', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (7, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.6032 ', '2021-10-30 20:49:56', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (8, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 21:49:56', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (9, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 22:49:57', 0, NULL);
-INSERT INTO `sys_notification_cache` VALUES (10, 15, '无锡职院传感器910(倾角传感器) 发生 温度检测6888 问题 ！ 当前数值:21.4974 ', '2021-10-30 23:13:07', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (1, 15, '无锡传感器910(倾角传感器) 发生 温度检测问题 ！ 当前数值:22.0794 ', '2021-10-30 14:49:31', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (2, 15, '无锡传感器910(倾角传感器) 发生 温度检测问题 ！ 当前数值:22.3968 ', '2021-10-30 15:49:42', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (3, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:22.3439 ', '2021-10-30 16:49:53', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (4, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:22.0265 ', '2021-10-30 17:49:54', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (5, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:22.1323 ', '2021-10-30 18:49:54', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (6, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:21.8148 ', '2021-10-30 19:49:55', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (7, 15, '无锡传感器910(倾角传感器) 发生 温度检测问题 ！ 当前数值:21.6032 ', '2021-10-30 20:49:56', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (8, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:21.4974 ', '2021-10-30 21:49:56', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (9, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:21.4974 ', '2021-10-30 22:49:57', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (10, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:21.4974 ', '2021-10-30 23:13:07', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (11, 15, '无锡传感器910(倾角传感器) 发生 温度检测 问题 ！ 当前数值:21.4445 ', '2021-11-20 19:20:12', 0, NULL);
+INSERT INTO `sys_notification_cache` VALUES (12, 18, '倾角传感器1(倾角传感器) 发生 温度 问题 ！ 当前数值:57 ', '2021-11-20 20:20:21', 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -2451,16 +2471,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_product_manufacturer`;
 CREATE TABLE `sys_product_manufacturer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `facture_code` varchar(255) DEFAULT NULL COMMENT '厂商编码',
   `post_code` varchar(255) DEFAULT NULL COMMENT '邮编',
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `connector` varchar(255) DEFAULT NULL COMMENT '联系人',
   `contact_number` varchar(255) DEFAULT NULL COMMENT '联系电话',
-  `is_inner` int(11) DEFAULT NULL COMMENT '是否为内部',
+  `is_inner` int DEFAULT NULL COMMENT '是否为内部',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='传感器厂商';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='传感器厂商';
 
 -- ----------------------------
 -- Records of sys_product_manufacturer
@@ -2474,10 +2494,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
-  `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `menu_id` bigint NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_id`,`menu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色和菜单关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色和菜单关联表';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -2537,7 +2557,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_view_menu`;
 CREATE TABLE `sys_view_menu` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `icon` varchar(255) DEFAULT NULL COMMENT '图标',
@@ -2545,17 +2565,17 @@ CREATE TABLE `sys_view_menu` (
   `role_code` varchar(255) DEFAULT NULL COMMENT '权限标识',
   `path` varchar(255) DEFAULT NULL COMMENT '前端路径',
   `component` varchar(255) DEFAULT NULL COMMENT '组件',
-  `hidden` int(11) DEFAULT NULL COMMENT '是否隐藏',
+  `hidden` int DEFAULT NULL COMMENT '是否隐藏',
   `always_show` varchar(255) DEFAULT NULL COMMENT '是否长显示',
   `redirect` varchar(255) DEFAULT NULL COMMENT '定向地址',
   `is_base_node` varchar(255) DEFAULT NULL COMMENT '是否为根节点',
-  `upper_node` int(11) DEFAULT NULL COMMENT '上层节点',
+  `upper_node` int DEFAULT NULL COMMENT '上层节点',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `updater` varchar(255) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='系统路由配置';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统路由配置';
 
 -- ----------------------------
 -- Records of sys_view_menu
@@ -2589,13 +2609,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `system_permission`;
 CREATE TABLE `system_permission` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `url` varchar(255) DEFAULT NULL COMMENT '权限URL',
   `comment` varchar(255) DEFAULT NULL COMMENT '描述',
-  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `status` int DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统权限';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统权限';
 
 -- ----------------------------
 -- Records of system_permission
@@ -2608,15 +2628,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `system_role`;
 CREATE TABLE `system_role` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `base_role_code` varchar(255) DEFAULT NULL COMMENT '上层角色编码',
   `role_code` varchar(255) NOT NULL COMMENT '角色编码',
   `role_name` varchar(255) NOT NULL COMMENT '角色名称',
   `is_base_role` varchar(255) DEFAULT NULL COMMENT '是否是根角色',
-  `role_status` int(11) DEFAULT NULL COMMENT '角色状态',
+  `role_status` int DEFAULT NULL COMMENT '角色状态',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`role_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='系统角色';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统角色';
 
 -- ----------------------------
 -- Records of system_role
@@ -2632,7 +2652,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user`;
 CREATE TABLE `system_user` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `work_number` varchar(255) NOT NULL COMMENT '工号',
   `account_name` varchar(255) NOT NULL COMMENT '用户名',
   `password` varchar(255) NOT NULL COMMENT '密码',
@@ -2641,27 +2661,27 @@ CREATE TABLE `system_user` (
   `mobile` varchar(255) NOT NULL COMMENT '手机号',
   `email` varchar(255) DEFAULT NULL COMMENT '邮件地址',
   `role` varchar(255) NOT NULL COMMENT '权限标识',
-  `role_id` int(11) DEFAULT NULL COMMENT '权限编号',
+  `role_id` int DEFAULT NULL COMMENT '权限编号',
   `position` varchar(255) DEFAULT NULL COMMENT '职位',
-  `operate_group_id` int(11) DEFAULT NULL COMMENT '操作组编号',
-  `enabled` int(11) DEFAULT NULL COMMENT '是否被销户',
-  `account_non_locked` int(11) DEFAULT NULL COMMENT '是否被锁定',
+  `operate_group_id` int DEFAULT NULL COMMENT '操作组编号',
+  `enabled` int DEFAULT NULL COMMENT '是否被销户',
+  `account_non_locked` int DEFAULT NULL COMMENT '是否被锁定',
   `last_login_time` datetime DEFAULT NULL COMMENT '上次登录时间',
-  `last_lease` int(11) DEFAULT NULL COMMENT '是否长期有效',
+  `last_lease` int DEFAULT NULL COMMENT '是否长期有效',
   `lease_start_time` datetime DEFAULT NULL COMMENT '起始时间',
-  `lease_time` int(11) DEFAULT NULL COMMENT '租期（月）',
-  `enable_notification` int(1) DEFAULT NULL COMMENT '是否允许推送服务(邮件等)',
+  `lease_time` int DEFAULT NULL COMMENT '租期（月）',
+  `enable_notification` int DEFAULT NULL COMMENT '是否允许推送服务(邮件等)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `INDEX` (`account_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_user` VALUES (1, '100001', 'admin', '$2a$10$/6ArmS07S4n9gMLFN0ENpuEP5cq31AMIynEmRkUpvsvz4lko2OS/2', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `system_user` VALUES (6, '100001', 'tyler', '$2a$10$GkpWZqbiBpgHgUa4k5MTteEIrhhZ8Fic.DKRocsSV90.UE.USZnou', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 3, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `system_user` VALUES (7, '100001', 'bwadmin', '$2a$10$709OEKRujh0f1yPS7ixUnOUVNCMBkGAAaHyj5Wfds.T8jTak6XLcm', '北微-超级管理员', NULL, '15161513257', 'zhangshu@bwsensing.com', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `system_user` VALUES (1, '100001', 'admin', '$2a$10$/6ArmS07S4n9gMLFN0ENpuEP5cq31AMIynEmRkUpvsvz4lko2OS/2', '超级管理员', NULL, '', '', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `system_user` VALUES (6, '100001', 'tyler', '$2a$10$GkpWZqbiBpgHgUa4k5MTteEIrhhZ8Fic.DKRocsSV90.UE.USZnou', '超级管理员', NULL, '', '', 'ROOT_ADMIN', 3, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `system_user` VALUES (7, '100001', 'bwadmin', '$2a$10$709OEKRujh0f1yPS7ixUnOUVNCMBkGAAaHyj5Wfds.T8jTak6XLcm', '超级管理员', NULL, '', '', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, 0);
 COMMIT;
 
 -- ----------------------------
@@ -2672,19 +2692,19 @@ CREATE TABLE `user_connection` (
   `userId` varchar(36) NOT NULL COMMENT '本地用户id',
   `providerId` varchar(20) NOT NULL COMMENT '第三方服务商',
   `providerUserId` varchar(36) NOT NULL COMMENT '第三方用户id',
-  `rank` int(11) NOT NULL COMMENT 'userId 绑定同一个 providerId 的排序',
+  `rank` int NOT NULL COMMENT 'userId 绑定同一个 providerId 的排序',
   `displayName` varchar(64) DEFAULT NULL COMMENT '第三方用户名',
   `profileUrl` varchar(256) DEFAULT NULL COMMENT '主页',
   `imageUrl` varchar(256) DEFAULT NULL COMMENT '头像',
   `accessToken` varchar(512) NOT NULL COMMENT 'accessToken',
-  `tokenId` bigint(20) DEFAULT NULL COMMENT 'auth_token.id',
+  `tokenId` bigint DEFAULT NULL COMMENT 'auth_token.id',
   `refreshToken` varchar(512) DEFAULT NULL COMMENT 'refreshToken',
-  `expireTime` bigint(20) DEFAULT '-1' COMMENT '过期时间, 基于 1970-01-01T00:00:00Z, 无过期时间默认为 -1',
+  `expireTime` bigint DEFAULT '-1' COMMENT '过期时间, 基于 1970-01-01T00:00:00Z, 无过期时间默认为 -1',
   PRIMARY KEY (`userId`,`providerId`,`providerUserId`),
   UNIQUE KEY `idx_userId_providerId_rank` (`userId`,`providerId`,`rank`),
   KEY `idx_providerId_providerUserId_rank` (`providerId`,`providerUserId`,`rank`),
   KEY `idx_tokenId` (`tokenId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of user_connection
