@@ -164,14 +164,21 @@ public class ProjectServiceImpl implements IProjectService {
 
     @Override
     public Response bindPosition(PositionBindCmd bindCmd) {
-        SensorDO bindSensor = new SensorDO();
-        bindSensor.setId(bindCmd.getSensorId());
-        bindSensor.setProjectId(bindCmd.getProjectId());
-        bindSensor.setPositionId(bindCmd.getPositionId());
-        sensorMapper.bindSensorMethod(bindSensor);
+        if (chekPositionExist(bindCmd.getPositionId())<=0){
+            SensorDO bindSensor = new SensorDO();
+            bindSensor.setId(bindCmd.getSensorId());
+            bindSensor.setProjectId(bindCmd.getProjectId());
+            bindSensor.setPositionId(bindCmd.getPositionId());
+            if (chekPositionExist(bindCmd.getPositionId())<=0) {
+                sensorMapper.bindSensorMethod(bindSensor);
+            }
+        }
         return Response.buildSuccess();
     }
 
+    private Integer chekPositionExist(Integer positionId) {
+        return sensorMapper.countByPositionId(positionId);
+    }
     @Override
     public MultiResponse<ProjectCO> selectProjectByPermission() {
         List<ProjectCO> projectCoList = new ArrayList<>();

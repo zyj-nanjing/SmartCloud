@@ -20,7 +20,7 @@
     <update id="updateCacheStatus" parameterType="int">
         update sys_notification_cache
            set  status = 1,reader_id =#{readerId}
-        where id =#{id}
+        where id =#{updateId}
     </update>
 
 

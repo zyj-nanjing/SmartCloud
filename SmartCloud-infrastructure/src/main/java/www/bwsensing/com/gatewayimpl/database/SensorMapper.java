@@ -30,6 +30,13 @@ public interface SensorMapper {
     int deleteById(Integer id);
 
     /**
+     * 校验测点数据数量
+     * @param positionId
+     * @return
+     */
+    int countByPositionId(Integer positionId);
+
+    /**
      *项目绑定
      * @param id
      * @param projectId
@@ -74,6 +81,7 @@ public interface SensorMapper {
      * @return
      */
     List<SensorDO> getSensorsByMonitorStructure(Integer structureId);
+
     /**
      * 查询传感绑定情况
      * @param projectId

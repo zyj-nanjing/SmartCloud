@@ -6,12 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.convertor.MonitorReceiveConvertor;
+import www.bwsensing.com.domain.device.data.MonitorData;
 import www.bwsensing.com.domain.device.data.MonitorReceive;
 import www.bwsensing.com.domain.gateway.MonitorReceiveGateway;
 import www.bwsensing.com.gatewayimpl.database.MonitorReceiveMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
 import www.bwsensing.com.gatewayimpl.tdengin.MonitorDataMapper;
+
+import java.util.List;
 
 /**
  * @author macos-zyj
@@ -36,9 +39,18 @@ public class MonitorReceiveGatewayImpl implements MonitorReceiveGateway {
             monitorDataMapper.createSuperTable();
             monitorDataMapper.batchMonitorData(receive.getDataCollection());
             receive.setTotalSize(monitorDataMapper.queryMonitorDataSize(receive.getSn()));
+            log.info("current sn:{} ----  Storage data  success --- data size:{}",receive.getSn(),receive.getTotalSize());
         }
         monitorReceiveMapper.saveReceive(MonitorReceiveConvertor.toDataObject(receive));
         updateSensor(receive);
+    }
+
+    private void batchStorageMonitor(List<MonitorData> dataCollection,String sn){
+        log.info("current sn:{} ---- start to storage data --- data size:{}",sn,dataCollection.size());
+        for (MonitorData monitorData : dataCollection){
+            monitorDataMapper.createNewDataTable(monitorData);
+            monitorDataMapper.insertMonitorData(monitorData);
+        }
     }
 
     private void updateSensor(MonitorReceive receive) {

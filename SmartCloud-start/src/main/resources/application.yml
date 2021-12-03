@@ -19,9 +19,9 @@ spring:
   datasource:
     # 数据库驱动：
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+      url: jdbc:mysql://127.0.0.1:3306/smartcloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
       username: root
-      password: root
+      password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       max-active: 30
@@ -90,27 +90,40 @@ pagehelper:
 alibaba :
   cloud :
     # 密钥 ID
-    access-key : ########
+    access-key : ............
     # 密钥  secret
-    secret-key : ########
+    secret-key : ..............
     mail:
       regionId : cn-hangzhou
       host : dm.aliyuncs.com
       version : 2015-11-23
 
 system:
+  visualization:
+    decimal: 3
   alert:
     prefix: http://
     server-host: 127.0.0.1
     port: 8100
-    forward: 2h
+    forward: 1h
   encrypt:
-    key: #########
-    vector: #########
+    key: TE53DAH...9VMHEP
+    vector: ZEM8........EJDHMKG0
   token:
-    secret: ##20100818
-    iss: ##_##
+    secret: ..........
+    iss: ........
     exist_time: 8
     head: Authorization
     prefix: Bearer
+  notification:
+    max_last: 30
+    prefix: NOTIFICATION_
+  netty:
+    port: 9876
+    read_timeout: 4
+    wait_timeout: 0
+    all_timeout: 8
+  udp:
+    port: 9875
+
 

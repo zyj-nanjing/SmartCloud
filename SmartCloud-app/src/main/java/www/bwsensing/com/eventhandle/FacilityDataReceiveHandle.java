@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
 import java.util.stream.Collectors;
 import com.alibaba.cola.dto.Response;
-import org.springframework.beans.BeanUtils;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.extension.BizScenario;
 import com.alibaba.cola.exception.BizException;
@@ -46,12 +45,17 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
         FacilityDataCmd  facilityDataCmd = initFacilityDataCmd(receiveEvent.getReceiveData());
         MonitorReceive receiveResult = extensionExecutor.execute(FacilityDataAnalyseExtPt.class, facilityDataCmd.getBizScenario(),
                 extension -> extension.analyseFacilityData(facilityDataCmd));
-        BeanUtils.copyProperties(receiveEvent,receiveResult);
-        sensorDataGateway.storageMonitorReceive(receiveResult);
         log.info("Start to analyse and storage received data SensorSn:{}",receiveResult.getSn());
+        setSendMessageDetail(receiveEvent,receiveResult);
+        sensorDataGateway.storageMonitorReceive(receiveResult);
         return Response.buildSuccess();
     }
-
+    private void setSendMessageDetail(FacilityDataReceiveEvent receiveEvent,MonitorReceive receiveResult) {
+        receiveResult.setChannelId(receiveEvent.getChannelId());
+        receiveResult.setIp(receiveEvent.getIp());
+        receiveResult.setReceiveMessage(receiveEvent.getReceiveData());
+        receiveResult.setReceiveTime(receiveEvent.getReceiveTime());
+    }
     private FacilityDataCmd initFacilityDataCmd(String rawData){
         FacilityDataCmd  facilityDataCmd = new FacilityDataCmd();
         List<String> receiveData = splitReceiveCollection(rawData);

@@ -1,5 +1,9 @@
 package www.bwsensing.com.common.netty.filter;
 
+import www.bwsensing.com.common.constant.NettyConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import www.bwsensing.com.common.netty.decoder.NettyServerDecoder;
+import www.bwsensing.com.common.netty.handler.NettyServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -7,12 +11,7 @@ import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.constant.NettyConstants;
-import www.bwsensing.com.common.netty.decoder.NettyServerDecoder;
-import www.bwsensing.com.common.netty.handler.NettyServerHandler;
-
 import java.util.concurrent.TimeUnit;
 
 /**

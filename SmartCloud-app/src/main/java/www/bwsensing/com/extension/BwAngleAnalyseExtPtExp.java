@@ -35,11 +35,12 @@ public class BwAngleAnalyseExtPtExp implements FacilityDataAnalyseExtPt {
         monitorReceive.setSn(facilityDataCmd.getSn());
         monitorReceive.setDataCollection(new ArrayList<>());
         if(facilityDataCmd.getReceiveData().size() > 0){
-            for (String rawData: facilityDataCmd.getReceiveData()) {
+            for(int i = 0;i< facilityDataCmd.getReceiveData().size();i++){
+                String rawData = facilityDataCmd.getReceiveData().get(i);
                 log.info(rawData);
                 try {
-                    BwAngleData result = analyseRawData(rawData);
-                    monitorReceive.getDataCollection().addAll(result.toSeriesData());
+                    BwAngleData result = analyseRawData(rawData,facilityDataCmd.getSn());
+                    monitorReceive.getDataCollection().addAll(result.toSeriesData(i));
                     monitorReceive.setPhoneNumber(result.getPhoneNumber());
                     monitorReceive.setTemperature(result.getTemperature());
                     monitorReceive.setElectricity(result.getElectricity());
@@ -53,13 +54,14 @@ public class BwAngleAnalyseExtPtExp implements FacilityDataAnalyseExtPt {
         return monitorReceive;
     }
 
-    public BwAngleData analyseRawData(String raw) {
+    public BwAngleData analyseRawData(String raw,String snCode) {
         BwAngleData analyseData = new BwAngleData();
         analyseData.setRaw(raw);
         if (checkFormat(raw)){
             analyseData.setHexDecode(true);
         }
         analyseRawData(analyseData);
+        analyseData.setSn(snCode);
         return analyseData;
     }
 

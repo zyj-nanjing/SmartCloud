@@ -168,6 +168,10 @@
         <if test="managerId != null "> and eq.manager_id = #{managerId}</if>
     </select>
 
+    <select id="countByPositionId" resultType="int">
+        select  count(*) from device_sensor_equipment where position_id =#{positionId}
+    </select>
+
     <select id="queryAnalyseFunctionBySn" resultType="String" parameterType="String">
         select model_kind from sensor_model model  JOIN device_sensor_equipment eq where  model.id=eq.model_id and eq.sn = #{sn}
     </select>

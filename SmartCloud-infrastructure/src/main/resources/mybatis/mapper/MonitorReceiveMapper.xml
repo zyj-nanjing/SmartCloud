@@ -12,12 +12,12 @@
         <result property="receiveTime"    column="receive_time"    />
         <result property="receiveSize"    column="receive_size"    />
         <result property="sendCount"    column="send_count"    />
-        <result property="sendAddress"    column="send_address"    />
+        <result property="receiveMessage"    column="receive_message"    />
         <result property="totalSize"    column="total_size"    />
     </resultMap>
 
     <sql id="selectMonitorReceiveVo">
-        select id, channel_id, ip,sn, receive_time, receive_size, send_count, send_address, total_size from sys_monitor_receive_log
+        select id, channel_id, ip,sn, receive_time, receive_size, send_count, receive_message, total_size from sys_monitor_receive_log
     </sql>
 
     <select id="selectMonitorReceiveBySort" parameterType="MonitorReceiveDO" resultMap="MonitorReceive">
@@ -29,9 +29,10 @@
             <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
             <if test="receiveSize != null "> and receive_size = #{receiveSize}</if>
             <if test="sendCount != null "> and send_count = #{sendCount}</if>
-            <if test="sendAddress != null  and sendAddress != ''"> and send_address = #{sendAddress}</if>
+            <if test="receiveMessage != null  and receiveMessage != ''"> and receive_message = #{receiveMessage}</if>
             <if test="totalSize != null "> and total_size = #{totalSize}</if>
         </where>
+        order by receive_time desc
     </select>
 
     <select id="getMonitorReceiveById" parameterType="Integer" resultMap="MonitorReceive">
@@ -48,7 +49,7 @@
             <if test="receiveTime != null">receive_time,</if>
             <if test="receiveSize != null">receive_size,</if>
             <if test="sendCount != null">send_count,</if>
-            <if test="sendAddress != null">send_address,</if>
+            <if test="receiveMessage != null and receiveMessage !=''">receive_message,</if>
             <if test="totalSize != null">total_size,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -58,7 +59,7 @@
             <if test="receiveTime != null">#{receiveTime},</if>
             <if test="receiveSize != null">#{receiveSize},</if>
             <if test="sendCount != null">#{sendCount},</if>
-            <if test="sendAddress != null">#{sendAddress},</if>
+            <if test="receiveMessage != null  and receiveMessage !=''">#{receiveMessage},</if>
             <if test="totalSize != null">#{totalSize},</if>
         </trim>
     </insert>

@@ -1,6 +1,7 @@
 package www.bwsensing.com.domain.device.data;
 
 import lombok.Data;
+import lombok.ToString;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class MonitorReceive {
     /**
      * 发送地址
      */
-    private String sendAddress;
+    private String receiveMessage;
     /**
      * 当前数据全量
      */

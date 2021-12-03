@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.ISensorService;
+import www.bwsensing.com.dto.clientobject.FacilityReceiveCO;
 import www.bwsensing.com.dto.command.SensorProjectBindCmd;
 import www.bwsensing.com.dto.command.SensorSaveCmd;
+import www.bwsensing.com.dto.command.query.FacilityReceivePageQuery;
 import www.bwsensing.com.dto.command.query.SensorSortQuery;
 import www.bwsensing.com.dto.command.SensorUpdateCmd;
 import www.bwsensing.com.dto.clientobject.SensorBindCO;
@@ -33,6 +35,11 @@ public class SensorController {
     @PostMapping("/query/sort")
     public PageResponse<SensorCO> querySensorBySort(@RequestBody SensorSortQuery sensorSortQuery){
         return sensorService.querySensorBySort(sensorSortQuery);
+    }
+
+    @PostMapping("/log/query")
+    public PageResponse<FacilityReceiveCO> queryFacilitySendsBySn(@Valid @RequestBody FacilityReceivePageQuery receivePageQuery){
+        return sensorService.queryFacilitySendsBySn(receivePageQuery);
     }
 
     @PostMapping("/bind/save")

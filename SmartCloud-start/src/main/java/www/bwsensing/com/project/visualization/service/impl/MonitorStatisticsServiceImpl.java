@@ -1,28 +1,27 @@
 package www.bwsensing.com.project.visualization.service.impl;
 
-import com.alibaba.cola.catchlog.CatchAndLog;
-import com.alibaba.cola.dto.SingleResponse;
-import com.alibaba.cola.exception.Assert;
-import org.springframework.stereotype.Service;
-import www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorItemsDO;
-import www.bwsensing.com.project.visualization.domain.MonitorQuery;
-import www.bwsensing.com.project.visualization.domain.StatisticsData;
-import www.bwsensing.com.project.visualization.domain.StatisticsResult;
-import www.bwsensing.com.project.visualization.domain.status.MonitorQueryEnum;
-import www.bwsensing.com.project.visualization.mapper.StatisticsDataMapper;
-import www.bwsensing.com.project.visualization.service.IMonitorStatisticsService;
-import javax.annotation.Resource;
+import java.util.Map;
+import java.util.List;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import java.util.stream.Collectors;
+import com.alibaba.cola.exception.Assert;
+import com.alibaba.cola.dto.SingleResponse;
+import com.alibaba.cola.catchlog.CatchAndLog;
+import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
+import www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper;
+import www.bwsensing.com.project.visualization.domain.MonitorQuery;
+import www.bwsensing.com.project.visualization.domain.StatisticsData;
+import www.bwsensing.com.project.visualization.domain.StatisticsResult;
+import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorItemsDO;
+import www.bwsensing.com.project.visualization.mapper.StatisticsDataMapper;
+import www.bwsensing.com.project.visualization.domain.status.MonitorQueryEnum;
+import www.bwsensing.com.project.visualization.service.IMonitorStatisticsService;
 /**
  * @author macos-zyj
  */
@@ -42,7 +41,7 @@ public class MonitorStatisticsServiceImpl implements IMonitorStatisticsService {
         //获取排序完的时间戳并且封装查询数据
         List<Timestamp> sortedTimestamp = getSortTimestamp(dataMap,query);
         dataMap.forEach((key, statisticsData) -> {
-            //各个数据补点
+            //各个数据补充点位
             dataMap.put(key,fixStatisticData(statisticsData,sortedTimestamp));
         });
         Map<String, StatisticsResult> resultData = new LinkedHashMap<>();

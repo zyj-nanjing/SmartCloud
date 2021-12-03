@@ -52,7 +52,7 @@
 
     <select id="selectTotalAlertsByUserId" parameterType="int" resultType="int">
         select COUNT(id) from sys_alert_notification where  is_handle = 0
-        and alert_group_id IN (SELECT alert_group_id from sys_alert_notifaction_member where user_id = #{userId})
+        and alert_group_id IN (SELECT alert_group_id from sys_alert_notification_member where user_id = #{userId})
     </select>
 
     <insert id="saveNotification" parameterType="AlertNotificationDO" useGeneratedKeys="true" keyProperty="id">

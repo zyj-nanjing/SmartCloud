@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <aliyun-spring-boot.version>1.0.0</aliyun-spring-boot.version>
-        <spring-boot.version>2.4.1</spring-boot.version>
+        <spring-boot.version>2.5.5</spring-boot.version>
         <netty.version>4.1.66.Final</netty.version>
         <protobuf.version>3.5.1</protobuf.version>
         <power.mock.version>2.0.9</power.mock.version>
@@ -38,54 +38,63 @@
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-statemachine</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-extension-starter</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-exception</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-dto</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-framework-archetype-web</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-framework-archetype-service</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-catchlog-starter</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba.cola</groupId>
                 <artifactId>cola-component-domain-starter</artifactId>
                 <version>4.0.1</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -128,18 +137,21 @@
                 <version>1.2.2</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.taobao.arthas</groupId>
                 <artifactId>arthas-spring-boot-starter</artifactId>
                 <version>3.4.8</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>2.1.4</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
@@ -163,6 +175,7 @@
                 <version>${power.mock.version}</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-module-junit4</artifactId>
@@ -188,13 +201,14 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>2.11.4</version>
+                <version>2.12.4</version>
                 <type>jar</type>
             </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.11.4</version>
+                <version>2.12.4</version>
                 <type>jar</type>
             </dependency>
 

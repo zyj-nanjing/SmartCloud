@@ -2,7 +2,6 @@ package www.bwsensing.com.common.tdengine.datasource;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Properties;

@@ -37,7 +37,7 @@
     </select>
 
     <select id="getGroupNotificationMembers" resultType="String">
-        SELECT email from system_user where id IN (SELECT user_id from sys_alert_notifaction_member where alert_group_id =#{groupId}) and enable_notification = 1
+        SELECT email from system_user where id IN (SELECT user_id from sys_alert_notification_member where alert_group_id =#{groupId}) and enable_notification = 1
     </select>
 
     <select id="queryAlertGroupByCurrent" resultMap="AlertGroupResult" parameterType="int">
@@ -52,8 +52,8 @@
             create_time
         FROM
             sys_alert_group alert_group
-                LEFT JOIN sys_alert_notifaction_member ON
-                sys_alert_notifaction_member.alert_group_id = alert_group.id
+                LEFT JOIN sys_alert_notification_member ON
+                sys_alert_notification_member.alert_group_id = alert_group.id
         WHERE
             user_id = #{userId}
     </select>

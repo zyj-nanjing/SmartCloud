@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import www.bwsensing.com.common.netty.NettyServer;
 
 /**
  * @author 朱永杰
  */
 @Slf4j
+@EnableAsync
 @EnableCaching
 @ComponentScan(value = {"com.alibaba.cola","top.dcenter.ums","www.bwsensing.com"})
 @SpringBootApplication(scanBasePackages = {"www.bwsensing.com", "com.alibaba.cola" })

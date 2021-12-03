@@ -15,7 +15,7 @@ public interface CacheNotificationMapper {
      * @param readerId
      * @param id
      */
-    void updateCacheStatus(@Param("readerId")Integer readerId,@Param("readerId")Integer id);
+    void updateCacheStatus(@Param("readerId")Integer readerId,@Param("updateId")Integer id);
 
     /**
      * 保存

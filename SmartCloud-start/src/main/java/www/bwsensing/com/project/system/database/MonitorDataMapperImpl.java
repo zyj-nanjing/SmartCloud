@@ -19,14 +19,14 @@ public class MonitorDataMapperImpl extends BaseMapper implements MonitorDataMapp
 
     @Override
     public int createSuperTable() {
-        return jdbcTemplate.update("create table  if not exists smart_cloud.sensor_data(ts timestamp, data_value float) TAGS(sn nchar(64),group_id int,data_id nchar(64))");
+        return jdbcTemplate.update("create stable  if not exists smart_cloud.sensor_data(ts timestamp, data_value float) TAGS(sn nchar(64),group_id int,data_id nchar(64))");
     }
 
     @Override
     public int createNewDataTable(MonitorData monitorData) {
-        String prefix = "create table if not exists smart_cloud.data_"+monitorData.getSn()+"_"+monitorData.getDataId();
+        String prefix = "create table if not exists smart_cloud.data_"+monitorData.getSn()+"_"+monitorData.getDataId() ;
         return jdbcTemplate.update(
-                prefix +"TAGS (?,?,?)",
+                prefix +" using smart_cloud.sensor_data tags(?,?,?)",
                 monitorData.getSn(), monitorData.getGroupId(),monitorData.getDataId()
         );
     }

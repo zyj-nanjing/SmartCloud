@@ -1,11 +1,32 @@
 package www.bwsensing.com.common.constant;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 /**
  * @author macos-zyj
  */
-public class NettyConstants {
-    public static final Integer  HTTP_PORT = 9876 ;
-    public static final Integer SERVER_READ_IDEL_TIME_OUT = 4 ;
-    public static final Integer SERVER_WRITE_IDEL_TIME_OUT = 0;
-    public static final Integer SERVER_ALL_IDEL_TIME_OUT = 8 ;
+@Component
+public class NettyConstants implements InitializingBean {
+    public static  Integer  HTTP_PORT;
+    public static  Integer SERVER_READ_IDEL_TIME_OUT;
+    public static  Integer SERVER_WRITE_IDEL_TIME_OUT;
+    public static  Integer SERVER_ALL_IDEL_TIME_OUT;
+
+    @Value("${system.netty.port}")
+    private String port;
+    @Value("${system.netty.read_timeout}")
+    private String readTimeout;
+    @Value("${system.netty.wait_timeout}")
+    private String waitTimeout;
+    @Value("${system.netty.all_timeout}")
+    private String allTimeout;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        NettyConstants.HTTP_PORT = Integer.parseInt(this.port);
+        NettyConstants.SERVER_READ_IDEL_TIME_OUT = Integer.parseInt(readTimeout);
+        NettyConstants.SERVER_WRITE_IDEL_TIME_OUT = Integer.parseInt(this.waitTimeout);
+        NettyConstants.SERVER_ALL_IDEL_TIME_OUT = Integer.parseInt(this.allTimeout);
+    }
 }

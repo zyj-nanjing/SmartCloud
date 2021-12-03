@@ -42,7 +42,7 @@ public class MonitorReceiveDO {
     /**
      * 发送地址
      */
-    private String sendAddress;
+    private String receiveMessage;
     /**
      * 当前数据全量
      */

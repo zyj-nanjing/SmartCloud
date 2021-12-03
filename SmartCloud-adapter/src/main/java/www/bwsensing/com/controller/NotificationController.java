@@ -35,8 +35,8 @@ public class NotificationController {
         return notificationService.getCurrentMessage();
     }
 
-    @GetMapping("/tag/update")
-    public Response updateMessageStatus(@Valid NotificationUpdateCmd updateUpdateCmd){
+    @PostMapping("/tag/update")
+    public Response updateMessageStatus(@Valid @RequestBody NotificationUpdateCmd updateUpdateCmd){
         return notificationService.updateCacheStatus(updateUpdateCmd.getUpdateIds());
     }
 }
