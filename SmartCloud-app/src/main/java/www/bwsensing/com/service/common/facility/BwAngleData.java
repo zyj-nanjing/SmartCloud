@@ -40,7 +40,7 @@ public class BwAngleData {
     private String phoneNumber;
     private String ip;
     /**时间戳**/
-    private Date timestamp;
+    private Timestamp timestamp;
     private boolean isHexDecode;
 
     public List<MonitorData> toSeriesData(int index){
@@ -79,8 +79,7 @@ public class BwAngleData {
         MonitorData monitorData = new MonitorData();
         monitorData.setSn(this.getSn());
         monitorData.setGroupId(101);
-        long currentTime = System.currentTimeMillis()+ (long) index * SUB;
-        monitorData.setTimeStamp(new Timestamp(currentTime));
+        monitorData.setTimeStamp(timestamp);
         monitorData.setType("avg");
         monitorData.setDataId(dataId);
         monitorData.setDataIdValue(value);

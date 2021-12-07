@@ -2,6 +2,7 @@ package www.bwsensing.com.dto.command;
 
 import lombok.Data;
 import java.util.List;
+import java.sql.Timestamp;
 import java.io.Serializable;
 import com.alibaba.cola.extension.BizScenario;
 
@@ -22,6 +23,10 @@ public class FacilityDataCmd extends CommonCommand implements Serializable {
      * 接收数据
      */
     private List<String> receiveData;
+    /**
+     * 时间戳
+     */
+    private List<Timestamp> dataTimestamp;
     /**
      * 用例场景
      */

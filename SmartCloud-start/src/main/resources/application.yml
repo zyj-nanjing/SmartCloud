@@ -107,11 +107,11 @@ system:
     port: 8100
     forward: 1h
   encrypt:
-    key: TE53DAH...9VMHEP
-    vector: ZEM8........EJDHMKG0
+    key: TE53............EP
+    vector: ZE............G0
   token:
-    secret: ..........
-    iss: ........
+    secret: Bw..........
+    iss: BEI_WEI
     exist_time: 8
     head: Authorization
     prefix: Bearer
@@ -119,7 +119,8 @@ system:
     max_last: 30
     prefix: NOTIFICATION_
   netty:
-    port: 9876
+    tcp_port: 9876
+    udp_port: 9875
     read_timeout: 4
     wait_timeout: 0
     all_timeout: 8

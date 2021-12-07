@@ -3,7 +3,7 @@
     <parent>
         <groupId>www.bwsensing.com</groupId>
         <artifactId>SmartCloud</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -34,23 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-integration</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-ip</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>
@@ -181,5 +164,6 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>${parent.artifactId}-${parent.version}</finalName>
     </build>
 </project>

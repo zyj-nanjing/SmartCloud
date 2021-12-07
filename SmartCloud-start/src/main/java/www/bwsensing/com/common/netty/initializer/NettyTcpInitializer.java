@@ -1,9 +1,9 @@
-package www.bwsensing.com.common.netty.filter;
+package www.bwsensing.com.common.netty.initializer;
 
 import www.bwsensing.com.common.constant.NettyConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.common.netty.decoder.NettyServerDecoder;
-import www.bwsensing.com.common.netty.handler.NettyServerHandler;
+import www.bwsensing.com.common.netty.handler.NettyTcpServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -18,10 +18,10 @@ import java.util.concurrent.TimeUnit;
  * @author macos-zyj
  */
 @Component
-public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
+public class NettyTcpInitializer extends ChannelInitializer<SocketChannel> {
 
     @Autowired
-    private NettyServerHandler nettyServerHandler;
+    private NettyTcpServerHandler nettyServerHandler;
 
     @Override
     protected void initChannel(SocketChannel socketChannel) {

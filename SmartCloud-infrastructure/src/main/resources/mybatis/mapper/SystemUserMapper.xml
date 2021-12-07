@@ -75,7 +75,7 @@
             avatar,
             mobile,
             email,
-            role_id
+            role_id,
             role,
             position,
             operate_group_id,

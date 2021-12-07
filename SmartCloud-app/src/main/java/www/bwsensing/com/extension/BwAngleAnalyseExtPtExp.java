@@ -40,6 +40,7 @@ public class BwAngleAnalyseExtPtExp implements FacilityDataAnalyseExtPt {
                 log.info(rawData);
                 try {
                     BwAngleData result = analyseRawData(rawData,facilityDataCmd.getSn());
+                    result.setTimestamp(facilityDataCmd.getDataTimestamp().get(i));
                     monitorReceive.getDataCollection().addAll(result.toSeriesData(i));
                     monitorReceive.setPhoneNumber(result.getPhoneNumber());
                     monitorReceive.setTemperature(result.getTemperature());

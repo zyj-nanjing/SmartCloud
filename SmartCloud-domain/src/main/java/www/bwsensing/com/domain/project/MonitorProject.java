@@ -1,5 +1,6 @@
 package www.bwsensing.com.domain.project;
 
+import com.alibaba.cola.exception.Assert;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,15 @@ public class MonitorProject {
     /**修改时间*/
     private Date updateTime;
 
+    public MonitorProject() {
+    }
+
+    public MonitorProject(SystemUser owner) {
+        this.owner = owner;
+    }
+
     public void create(){
+        Assert.notNull(owner,"项目拥有者不能为空");
         this.creator = owner.getAccountName();
         this.createTime = new Date();
     }

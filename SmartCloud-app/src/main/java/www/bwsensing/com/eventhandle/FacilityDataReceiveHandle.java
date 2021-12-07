@@ -1,5 +1,7 @@
 package www.bwsensing.com.eventhandle;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.common.utills.SensorUtils;
 import www.bwsensing.com.common.utills.StringUtils;
 import com.alibaba.cola.extension.ExtensionExecutor;
+import www.bwsensing.com.domainevent.object.DataMessage;
 import www.bwsensing.com.dto.command.FacilityDataCmd;
 import www.bwsensing.com.common.core.event.EventHandler;
 import www.bwsensing.com.common.core.event.EventHandlerI;
@@ -30,6 +33,7 @@ import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 @Slf4j
 @EventHandler
 public class FacilityDataReceiveHandle implements EventHandlerI<Response, FacilityDataReceiveEvent> {
+    private static final String CHANGE_LINE = "\n";
     @Resource
     private ExtensionExecutor extensionExecutor;
 
@@ -50,27 +54,49 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
         sensorDataGateway.storageMonitorReceive(receiveResult);
         return Response.buildSuccess();
     }
+
     private void setSendMessageDetail(FacilityDataReceiveEvent receiveEvent,MonitorReceive receiveResult) {
         receiveResult.setChannelId(receiveEvent.getChannelId());
         receiveResult.setIp(receiveEvent.getIp());
-        receiveResult.setReceiveMessage(receiveEvent.getReceiveData());
+        receiveResult.setReceiveMessage(getReceiveMessageLog(receiveEvent.getReceiveData()));
         receiveResult.setReceiveTime(receiveEvent.getReceiveTime());
     }
-    private FacilityDataCmd initFacilityDataCmd(String rawData){
+
+    private String getReceiveMessageLog(List<DataMessage> messageData){
+        StringBuilder logMessage = new StringBuilder();
+        messageData.forEach(message ->logMessage.append(message.getMessage()) );
+        return logMessage.toString();
+    }
+
+    private FacilityDataCmd initFacilityDataCmd(List<DataMessage> messageData){
         FacilityDataCmd  facilityDataCmd = new FacilityDataCmd();
-        List<String> receiveData = splitReceiveCollection(rawData);
+        List<Timestamp> timestamps = new ArrayList<>();
+        List<String> receiveData = new ArrayList<>();
+        messageData.forEach(message ->{
+           if (message.getMessage().contains(CHANGE_LINE)){
+               String [] atrArray =  message.getMessage().split(CHANGE_LINE);
+               Timestamp currentTime = message.getReceiveTime();
+               if (atrArray.length > 0){
+                   for (String s : atrArray) {
+                       timestamps.add(currentTime);
+                       receiveData.add(s);
+                       currentTime = new Timestamp(currentTime.getTime() + (long) 10);
+                   }
+               }
+           } else {
+               timestamps.add(message.getReceiveTime());
+               receiveData.add(message.getMessage());
+           }
+        });
         String sensorSn = SensorUtils.getSnCode(receiveData);
         facilityDataCmd.setSn(sensorSn);
         facilityDataCmd.setReceiveData(receiveData);
+        facilityDataCmd.setDataTimestamp(timestamps);
         facilityDataCmd.setBizScenario(getCorrectScenario(sensorSn));
         facilityDataCmd.setAnalyseKind(facilityDataCmd.getBizScenario().getUniqueIdentity());
         return facilityDataCmd;
     }
 
-    private List<String> splitReceiveCollection(String raw){
-        String [] atrArray =  raw.split("\n");
-        return  Arrays.stream(atrArray).filter(string -> !string.isEmpty()).collect(Collectors.toList());
-    }
 
     private BizScenario getCorrectScenario(String sn){
         String analyseFunction = sensorManager.queryAnalyseFunctionBySn(sn);
@@ -80,4 +106,5 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
             throw new BizException("SENSOR_DATA_ANALYSE_FUNCTION_NOT_FOUND","传感器数据解析算法不存在");
         }
     }
+
 }

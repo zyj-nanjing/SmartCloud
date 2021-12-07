@@ -1,13 +1,16 @@
 package www.bwsensing.com.common.utills;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author macos-zyj
  */
+@Slf4j
 public class SensorUtils {
     private static final Integer SN_LENGTH = 9;
     private static final String ASCII_SPLIT = ",";
@@ -28,17 +31,21 @@ public class SensorUtils {
     }
 
     public static String getSnCode(List<String> dataCollection){
+        dataCollection.removeAll(Collections.singleton(null));
         return analyseSensorSn(dataCollection.get(0));
     }
 
 
     public static String analyseSensorSn(String sensorRaw){
         if (!sensorRaw.contains(ASCII_SPLIT)){
-            String currentBitCode = sensorRaw.substring(0, 2);
-            return SensorUtils.hexSnAnalyse(currentBitCode);
-        } else{
-            String[] dataArray = sensorRaw.split(",");
-            return SensorUtils.asciiSnAnalyse(dataArray[0]);
+            try {
+                String currentBitCode = sensorRaw.substring(0, 2);
+                return SensorUtils.hexSnAnalyse(currentBitCode);
+            } catch (Exception ex){
+                log.warn("is not hex");
+            }
         }
+        String[] dataArray = sensorRaw.split(",");
+        return SensorUtils.asciiSnAnalyse(dataArray[0]);
     }
 }

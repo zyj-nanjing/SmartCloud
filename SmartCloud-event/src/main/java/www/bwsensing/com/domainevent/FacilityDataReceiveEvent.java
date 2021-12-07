@@ -2,6 +2,8 @@ package www.bwsensing.com.domainevent;
 
 import lombok.Data;
 import java.util.Date;
+import java.util.List;
+import www.bwsensing.com.domainevent.object.DataMessage;
 import www.bwsensing.com.event.DomainEventI;
 
 
@@ -32,5 +34,5 @@ public class FacilityDataReceiveEvent implements DomainEventI {
     /**
      * 接收的数据
      */
-    private String receiveData;
+    private List<DataMessage> receiveData;
 }

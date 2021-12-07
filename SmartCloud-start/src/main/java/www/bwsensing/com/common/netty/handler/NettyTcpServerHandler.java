@@ -8,12 +8,18 @@ import www.bwsensing.com.common.core.event.DomainEventPublisher;
 import www.bwsensing.com.domainevent.FacilityDataReceiveEvent;
 import www.bwsensing.com.common.utills.AddressUtils;
 import www.bwsensing.com.common.utills.StringUtils;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import io.netty.handler.timeout.IdleStateEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
+import www.bwsensing.com.domainevent.object.DataMessage;
+
 import javax.annotation.Resource;
 import java.util.Date;
 /**
@@ -21,16 +27,14 @@ import java.util.Date;
  */
 @Slf4j
 @ChannelHandler.Sharable
-@Service("nettyServerHandler")
-public class NettyServerHandler extends ChannelInboundHandlerAdapter {
+@Service("nettyTcpServerHandler")
+public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
     /** 空闲次数 */
     private AtomicInteger idleCount = new AtomicInteger(1);
 
     private final ConcurrentHashMap<String,String> ipChannelCache = new ConcurrentHashMap<>();
 
-
-    private  ConcurrentHashMap<String,String> ipCache = new ConcurrentHashMap<>();
-
+    private static final ConcurrentHashMap<String, List<DataMessage>> ipCache = new ConcurrentHashMap<>();
     @Resource
     private DomainEventPublisher domainEventPublisher;
 
@@ -41,7 +45,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("连接的客户端地址：{},客户端Id:{}",ctx.channel().remoteAddress(),ctx.channel().id().asShortText());
         ipChannelCache.put(ctx.channel().remoteAddress().toString(),ctx.channel().id().asShortText());
-        ipCache.put(ctx.channel().remoteAddress().toString(),"");
+        ipCache.put(ctx.channel().remoteAddress().toString(),new ArrayList<>());
         super.channelActive(ctx);
     }
 
@@ -70,15 +74,18 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        long currentTime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(currentTime);
         try {
             String rawText = msg.toString();
             if (StringUtils.isNotEmpty(rawText)){
                 String ipAddress = ctx.channel().remoteAddress().toString();
                 if (StringUtils.isEmpty(ipCache.get(ipAddress))){
-                    ipCache.put(ipAddress,rawText);
+                    List<DataMessage> messages = new ArrayList<>();
+                    messages.add(new DataMessage(timestamp,rawText));
+                    ipCache.put(ipAddress,messages);
                 } else {
-                    String currentValue = ipCache.get(ipAddress)+"\n";
-                    ipCache.put(ipAddress,currentValue+rawText);
+                    ipCache.get(ipAddress).add(new DataMessage(timestamp,rawText));
                 }
                 log.debug("Data receive Client address:{}，Raw message:{}", ipAddress,msg);
             }
@@ -95,11 +102,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         //客户端断开后批量保存
         String channelId = ctx.channel().id().asShortText();
         String ipAddress = ctx.channel().remoteAddress().toString();
-        String totalReceive = ipCache.get(ipAddress);
-        if (StringUtils.isNotEmpty(totalReceive)){
+        if (ipCache.get(ipAddress).size()>0){
             Date receiveTime = new Date();
             FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
-            receiveEvent.setReceiveData(totalReceive);
+            receiveEvent.setReceiveData(ipCache.get(ipAddress));
             setReceiveEvent(receiveEvent,ipAddress,channelId,receiveTime);
             domainEventPublisher.transactionPublish(receiveEvent);
             log.info("facility data pushed,Client address:{}",ctx.channel().remoteAddress());
@@ -111,7 +117,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     private void setReceiveEvent(FacilityDataReceiveEvent receive,String ipAddress,String channel,Date receiveTime){
         String fixIp = ipAddress.substring(1, ipAddress.indexOf(":"));
         receive.setIp(fixIp);
-        receive.setChannelId(channel);
+        receive.setChannelId("TCP");
         receive.setReceiveTime(receiveTime);
         receive.setSendAddress(AddressUtils.getRealAddressByIp(fixIp));
     }
