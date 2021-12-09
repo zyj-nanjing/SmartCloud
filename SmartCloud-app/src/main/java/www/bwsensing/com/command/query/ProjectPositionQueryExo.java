@@ -9,6 +9,7 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorProjectDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;

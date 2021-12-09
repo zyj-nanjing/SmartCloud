@@ -13,10 +13,11 @@ import www.bwsensing.com.convertor.UserDataCoConvertor;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.SystemUser;
-import www.bwsensing.com.dto.command.UserRegisterCmd;
-import www.bwsensing.com.dto.command.UserUpdateCmd;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.clientobject.UserInfoCO;
+import www.bwsensing.com.dto.command.UserRegisterCmd;
+import www.bwsensing.com.dto.command.UserUpdateCmd;
+
 import javax.annotation.Resource;
 
 /**

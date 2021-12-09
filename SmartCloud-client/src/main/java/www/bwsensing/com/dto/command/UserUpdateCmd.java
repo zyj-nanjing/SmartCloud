@@ -3,6 +3,7 @@ package www.bwsensing.com.dto.command;
 import com.alibaba.cola.dto.Command;
 import com.alibaba.cola.extension.BizScenario;
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 /**

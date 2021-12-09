@@ -1,24 +1,25 @@
 package www.bwsensing.com.eventhandle;
 
-import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.Assert;
-import org.springframework.beans.BeanUtils;
-import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.extension.BizScenario;
-import www.bwsensing.com.common.utills.Md5Utils;
-import www.bwsensing.com.api.INotificationService;
-import www.bwsensing.com.common.redis.RedisService;
 import com.alibaba.cola.extension.ExtensionExecutor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import www.bwsensing.com.api.INotificationService;
 import www.bwsensing.com.common.constant.BizScenarioCode;
-import www.bwsensing.com.common.core.event.EventHandlerI;
+import www.bwsensing.com.common.constant.NotificationLimitConstant;
 import www.bwsensing.com.common.core.event.EventHandler;
-import www.bwsensing.com.dto.command.NotificationMessageCmd;
+import www.bwsensing.com.common.core.event.EventHandlerI;
+import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.utills.Md5Utils;
 import www.bwsensing.com.domain.device.alert.NotificationMethod;
 import www.bwsensing.com.domainevent.AlertNotificationPushEvent;
+import www.bwsensing.com.dto.command.NotificationMessageCmd;
 import www.bwsensing.com.extensionpoint.AlertNotificationExtPt;
-import www.bwsensing.com.common.constant.NotificationLimitConstant;
+
+import javax.annotation.Resource;
 /**
  * @author macos-zyj
  */
@@ -43,16 +44,16 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
         messagePushCmd.setBizScenario(scenario);
         notificationService.cacheNotification(pushEvent.getAlertGroupId(), pushEvent.getAlertMessage());
         //扩展点 多重预警方式推送
-        if (!chekPushIsLimit(pushEvent.getAlertGroupId())){
+        if (!checkPushIsLimit(pushEvent.getAlertGroupId())){
             extensionExecutor.executeVoid(AlertNotificationExtPt.class, messagePushCmd.getBizScenario(), extension -> extension.singleNotification(messagePushCmd));
             putNotificationLimit(pushEvent.getAlertGroupId());
         }
         return Response.buildSuccess();
     }
 
-    private Boolean chekPushIsLimit(Integer groupId){
-        String chekKey = NotificationLimitConstant.PREFIX + groupId;
-        String securityKey = Md5Utils.encryptMd5(chekKey);
+    private Boolean checkPushIsLimit(Integer groupId){
+        String checkKey = NotificationLimitConstant.PREFIX + groupId;
+        String securityKey = Md5Utils.encryptMd5(checkKey);
         if( null == redisService.getCacheObject(securityKey)){
             return false;
         } else {
@@ -62,8 +63,8 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
     }
 
     private void putNotificationLimit(Integer groupId){
-        String chekKey = NotificationLimitConstant.PREFIX + groupId;
-        String securityKey = Md5Utils.encryptMd5(chekKey);
+        String checkKey = NotificationLimitConstant.PREFIX + groupId;
+        String securityKey = Md5Utils.encryptMd5(checkKey);
         if( null == redisService.getCacheObject(securityKey)){
             redisService.setCacheObject(securityKey,1, NotificationLimitConstant.CHECK_LAST, NotificationLimitConstant.TIME_UNIT);
         } else {

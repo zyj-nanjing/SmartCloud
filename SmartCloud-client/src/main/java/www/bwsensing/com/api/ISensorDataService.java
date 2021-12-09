@@ -1,8 +1,8 @@
 package www.bwsensing.com.api;
 
 import com.alibaba.cola.dto.PageResponse;
-import www.bwsensing.com.dto.command.query.SensorDataSortQuery;
 import www.bwsensing.com.dto.clientobject.SensorDataCO;
+import www.bwsensing.com.dto.command.query.SensorDataSortQuery;
 
 /**
  * 设备数据服务

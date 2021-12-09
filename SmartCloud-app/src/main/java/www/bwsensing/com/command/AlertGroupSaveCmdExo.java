@@ -5,8 +5,6 @@ import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import static java.util.stream.Collectors.toList;
-
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.convertor.ItemsConvertor;
 import www.bwsensing.com.domain.device.SensorInfo;
@@ -24,6 +22,8 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorItemsDO;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**

@@ -1,11 +1,11 @@
 package www.bwsensing.com.service.common.facility;
 
 import lombok.Data;
+import www.bwsensing.com.domain.device.data.MonitorData;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import www.bwsensing.com.domain.device.data.MonitorData;
 /**
  * @author macos-zyj
  */

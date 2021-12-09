@@ -11,6 +11,7 @@ import www.bwsensing.com.domain.system.SystemUser;
 import www.bwsensing.com.dto.command.UserUpdateCmd;
 import www.bwsensing.com.extensionpoint.UserUpdateExtPt;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;
+
 import javax.annotation.Resource;
 
 /**

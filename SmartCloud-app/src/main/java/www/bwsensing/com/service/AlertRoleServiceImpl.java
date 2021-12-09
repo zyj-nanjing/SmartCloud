@@ -1,12 +1,10 @@
 package www.bwsensing.com.service;
 
-import javax.annotation.Resource;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.catchlog.CatchAndLog;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -18,13 +16,15 @@ import www.bwsensing.com.convertor.AlertRoleCoConvertor;
 import www.bwsensing.com.domain.device.alert.AlertRole;
 import www.bwsensing.com.domain.gateway.AlertRoleGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
+import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.AlertRoleAddCmd;
 import www.bwsensing.com.dto.command.AlertRoleBindCmd;
 import www.bwsensing.com.dto.command.AlertRoleUpdateCmd;
-import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.query.AlertRoleQuery;
 import www.bwsensing.com.gatewayimpl.database.AlertRoleMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertRoleDO;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

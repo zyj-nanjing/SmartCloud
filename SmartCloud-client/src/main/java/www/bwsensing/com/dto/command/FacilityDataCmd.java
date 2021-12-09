@@ -1,10 +1,11 @@
 package www.bwsensing.com.dto.command;
 
-import lombok.Data;
-import java.util.List;
-import java.sql.Timestamp;
-import java.io.Serializable;
 import com.alibaba.cola.extension.BizScenario;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author macos-zyj

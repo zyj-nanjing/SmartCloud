@@ -9,6 +9,7 @@ import www.bwsensing.com.domain.monitor.MonitorItem;
 import www.bwsensing.com.domain.monitor.MonitorPrototype;
 import www.bwsensing.com.dto.command.ItemsUpdateCmd;
 import www.bwsensing.com.dto.command.PrototypeUpdateCmd;
+
 import javax.annotation.Resource;
 import java.util.List;
 

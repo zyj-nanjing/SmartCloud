@@ -1,19 +1,20 @@
 package www.bwsensing.com.controller;
 
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
-import www.bwsensing.com.dto.command.PositionBindCmd;
-import www.bwsensing.com.dto.command.ProjectMemberDeleteCmd;
-import www.bwsensing.com.dto.clientobject.*;
+import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IProjectService;
+import www.bwsensing.com.dto.clientobject.*;
+import www.bwsensing.com.dto.command.PositionBindCmd;
+import www.bwsensing.com.dto.command.ProjectMemberDeleteCmd;
 import www.bwsensing.com.dto.command.ProjectMemberStorageCmd;
 import www.bwsensing.com.dto.command.ProjectSaveCmd;
-import com.alibaba.cola.dto.MultiResponse;
-import com.alibaba.cola.dto.SingleResponse;
-import com.alibaba.cola.dto.Response;
 import www.bwsensing.com.dto.command.query.BaseQuery;
+
 import javax.validation.Valid;
 
 /**

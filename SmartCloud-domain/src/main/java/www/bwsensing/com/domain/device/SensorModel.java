@@ -1,10 +1,11 @@
 package www.bwsensing.com.domain.device;
 
 import lombok.Data;
+import www.bwsensing.com.domain.device.manufacturer.ProductManufacturer;
+import www.bwsensing.com.domain.monitor.MonitorPrototype;
+
 import java.util.Date;
 import java.util.List;
-import www.bwsensing.com.domain.monitor.MonitorPrototype;
-import www.bwsensing.com.domain.device.manufacturer.ProductManufacturer;
 /**
  * 传感器模板
  * @author macos-zyj

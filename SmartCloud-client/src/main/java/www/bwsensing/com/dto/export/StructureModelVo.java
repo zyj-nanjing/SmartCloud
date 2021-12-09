@@ -1,9 +1,10 @@
 package www.bwsensing.com.dto.export;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
+
 import java.util.List;
 import java.util.Objects;
-import com.alibaba.excel.annotation.ExcelProperty;
 /**
  * @author macos-zyj
  */

@@ -4,9 +4,9 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
+import www.bwsensing.com.dto.clientobject.IndustryFieldCO;
 import www.bwsensing.com.dto.command.IndustryFieldSaveCmd;
 import www.bwsensing.com.dto.command.IndustryFieldUpdateCmd;
-import www.bwsensing.com.dto.clientobject.IndustryFieldCO;
 import www.bwsensing.com.dto.command.query.IndustryFileSortQuery;
 
 /**

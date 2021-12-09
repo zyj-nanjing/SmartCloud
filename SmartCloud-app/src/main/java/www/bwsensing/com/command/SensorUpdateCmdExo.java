@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import www.bwsensing.com.dto.command.SensorUpdateCmd;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
+
 import javax.annotation.Resource;
 
 /**

@@ -3,8 +3,10 @@ package www.bwsensing.com.convertor;
 import org.springframework.beans.BeanUtils;
 import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.RoleDO;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 /**

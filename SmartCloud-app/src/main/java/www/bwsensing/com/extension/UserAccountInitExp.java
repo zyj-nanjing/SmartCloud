@@ -12,6 +12,7 @@ import www.bwsensing.com.dto.command.UserRegisterCmd;
 import www.bwsensing.com.extensionpoint.AccountInitExtPt;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
+
 import javax.annotation.Resource;
 
 /**

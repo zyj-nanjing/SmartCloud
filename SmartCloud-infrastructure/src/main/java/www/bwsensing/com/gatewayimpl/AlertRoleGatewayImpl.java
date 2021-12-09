@@ -1,15 +1,16 @@
 package www.bwsensing.com.gatewayimpl;
 
 import com.alibaba.cola.exception.BizException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.convertor.AlertRoleConvertor;
 import www.bwsensing.com.domain.device.alert.AlertRole;
 import www.bwsensing.com.domain.gateway.AlertRoleGateway;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.gatewayimpl.database.AlertRoleMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertRoleDO;
 import www.bwsensing.com.gatewayimpl.tcp.AlertRoleQuest;
-import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.List;
 

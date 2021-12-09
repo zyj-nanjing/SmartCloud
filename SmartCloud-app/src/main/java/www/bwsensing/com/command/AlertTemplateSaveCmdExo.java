@@ -9,6 +9,7 @@ import www.bwsensing.com.domain.gateway.AlertTemplateGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.command.AlarmTemplateSaveCmd;
+
 import javax.annotation.Resource;
 
 /**

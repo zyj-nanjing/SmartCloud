@@ -1,17 +1,17 @@
 package www.bwsensing.com.gatewayimpl;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.convertor.PositionConvertor;
 import www.bwsensing.com.convertor.StructureConvertor;
+import www.bwsensing.com.domain.gateway.StructureGateway;
 import www.bwsensing.com.domain.monitor.MonitorPosition;
 import www.bwsensing.com.domain.monitor.MonitorStructure;
-import www.bwsensing.com.domain.gateway.StructureGateway;
 import www.bwsensing.com.gatewayimpl.database.MonitorPositionMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureDO;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

@@ -2,6 +2,7 @@ package www.bwsensing.com.gatewayimpl.database;
 
 import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.gatewayimpl.database.dataobject.NotificationMemberDO;
+
 import java.util.List;
 
 /**

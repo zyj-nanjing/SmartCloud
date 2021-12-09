@@ -1,14 +1,12 @@
 package www.bwsensing.com.common.utills;
 
+import com.alibaba.cola.exception.BizException;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.constant.TokenConstant;
-import com.alibaba.cola.exception.BizException;
-import lombok.extern.slf4j.Slf4j;
-import io.jsonwebtoken.*;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

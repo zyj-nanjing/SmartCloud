@@ -1,6 +1,7 @@
 package www.bwsensing.com.domain.industry;
 
 import lombok.Data;
+
 import java.util.Date;
 /**
  * 行业领域

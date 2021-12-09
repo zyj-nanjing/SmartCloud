@@ -2,6 +2,7 @@ package www.bwsensing.com.gatewayimpl.database;
 
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureDO;
+
 import java.util.List;
 
 /**

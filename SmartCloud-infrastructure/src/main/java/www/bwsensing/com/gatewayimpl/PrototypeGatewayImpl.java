@@ -11,6 +11,7 @@ import www.bwsensing.com.domain.monitor.MonitorPrototype;
 import www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorPrototypeMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPrototypeDO;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;

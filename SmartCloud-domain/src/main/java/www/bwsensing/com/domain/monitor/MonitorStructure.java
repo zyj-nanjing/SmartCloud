@@ -1,13 +1,13 @@
 package www.bwsensing.com.domain.monitor;
 
 import lombok.Data;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import www.bwsensing.com.domain.device.SensorInfo;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 结构物实体

@@ -9,6 +9,7 @@ import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.system.SystemUser;
 import www.bwsensing.com.dto.command.UserRegisterCmd;
 import www.bwsensing.com.extensionpoint.AccountInitExtPt;
+
 import javax.annotation.Resource;
 
 /**

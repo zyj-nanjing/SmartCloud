@@ -1,8 +1,8 @@
 package www.bwsensing.com.extension;
 
 import com.alibaba.cola.exception.BizException;
-import lombok.extern.slf4j.Slf4j;
 import com.alibaba.cola.extension.Extension;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.utills.SensorUtils;
@@ -10,6 +10,7 @@ import www.bwsensing.com.domain.device.data.MonitorReceive;
 import www.bwsensing.com.dto.command.FacilityDataCmd;
 import www.bwsensing.com.extensionpoint.FacilityDataAnalyseExtPt;
 import www.bwsensing.com.service.common.facility.BwAngleData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class BwAngleAnalyseExtPtExp implements FacilityDataAnalyseExtPt {
     private static final int[]  HEX_CODE_FORMAT = {1,1,1,16,2};
 
     @Override
-    public MonitorReceive analyseFacilityData(FacilityDataCmd facilityDataCmd) {
+    public MonitorReceive  analyseFacilityData(FacilityDataCmd facilityDataCmd) {
         MonitorReceive monitorReceive = new MonitorReceive();
         monitorReceive.setSn(facilityDataCmd.getSn());
         monitorReceive.setDataCollection(new ArrayList<>());

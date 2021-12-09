@@ -3,10 +3,11 @@ package www.bwsensing.com.api;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import www.bwsensing.com.dto.command.query.BaseQuery;
+import www.bwsensing.com.dto.clientobject.PermissionCO;
 import www.bwsensing.com.dto.command.PermissionSaveCmd;
 import www.bwsensing.com.dto.command.PermissionUpdateCmd;
-import www.bwsensing.com.dto.clientobject.PermissionCO;
+import www.bwsensing.com.dto.command.query.BaseQuery;
+
 import java.util.List;
 
 /**

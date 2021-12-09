@@ -12,12 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import www.bwsensing.com.api.IStructureModelService;
-import www.bwsensing.com.dto.export.PositionModelVo;
-import www.bwsensing.com.dto.export.StructureModelVo;
-import www.bwsensing.com.dto.command.query.BaseQuery;
+import www.bwsensing.com.dto.clientobject.StructureModelCO;
 import www.bwsensing.com.dto.command.StructureModelSaveCmd;
 import www.bwsensing.com.dto.command.StructureModelUpdateCmd;
-import www.bwsensing.com.dto.clientobject.StructureModelCO;
+import www.bwsensing.com.dto.command.query.BaseQuery;
+import www.bwsensing.com.dto.export.PositionModelVo;
+import www.bwsensing.com.dto.export.StructureModelVo;
 import www.bwsensing.com.listener.PositionModelListener;
 import www.bwsensing.com.listener.StructureModelDataListener;
 

@@ -1,8 +1,5 @@
 package www.bwsensing.com.command.query;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Resource;
 import com.alibaba.cola.dto.MultiResponse;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.domain.gateway.ProjectMonitorGateway;
@@ -10,6 +7,10 @@ import www.bwsensing.com.domain.project.MonitorProject;
 import www.bwsensing.com.dto.clientobject.SensorMapCO;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

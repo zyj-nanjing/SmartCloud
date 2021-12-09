@@ -8,6 +8,7 @@ import www.bwsensing.com.domain.device.manufacturer.ProductManufacturer;
 import www.bwsensing.com.domain.gateway.ManufacturerGateway;
 import www.bwsensing.com.gatewayimpl.database.ProductManufacturerMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.ProductManufacturerDO;
+
 import javax.annotation.Resource;
 
 /**

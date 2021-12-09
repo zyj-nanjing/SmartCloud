@@ -2,10 +2,10 @@ package www.bwsensing.com.api;
 
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
+import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.AlertRoleAddCmd;
 import www.bwsensing.com.dto.command.AlertRoleBindCmd;
 import www.bwsensing.com.dto.command.AlertRoleUpdateCmd;
-import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.query.AlertRoleQuery;
 
 /**

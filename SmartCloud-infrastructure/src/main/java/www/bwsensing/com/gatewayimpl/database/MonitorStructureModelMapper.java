@@ -1,8 +1,9 @@
 package www.bwsensing.com.gatewayimpl.database;
 
-import java.util.List;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionModelDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
+
+import java.util.List;
 
 /**
  * @author macos-zyj

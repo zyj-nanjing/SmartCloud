@@ -1,7 +1,7 @@
 package www.bwsensing.com.domain.device.data;
 
 import lombok.Data;
-import lombok.ToString;
+
 import java.util.Date;
 import java.util.List;
 

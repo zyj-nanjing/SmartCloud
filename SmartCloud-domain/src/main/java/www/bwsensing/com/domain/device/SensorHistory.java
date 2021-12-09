@@ -2,6 +2,7 @@ package www.bwsensing.com.domain.device;
 
 import com.alibaba.cola.exception.Assert;
 import lombok.Data;
+
 import java.util.Date;
 
 /**

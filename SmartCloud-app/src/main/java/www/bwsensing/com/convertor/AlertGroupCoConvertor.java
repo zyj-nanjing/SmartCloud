@@ -1,12 +1,14 @@
 package www.bwsensing.com.convertor;
 
 
-import java.util.List;
-import java.util.ArrayList;
-import static java.util.stream.Collectors.toList;
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.dto.clientobject.AlertGroupCO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertGroupDO;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**

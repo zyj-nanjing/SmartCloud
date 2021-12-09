@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 import javax.annotation.Resource;
-
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.PostConstruct;
@@ -68,7 +67,7 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
         }
     }
 
-    private void storageAndWait(String ipAddress,String receiveMessage){
+    private  void storageAndWait(String ipAddress,String receiveMessage){
         long currentTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTime);
         if (redisService.hasKey(ipAddress)&& null != ipDataCache.get(ipAddress)){

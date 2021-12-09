@@ -1,9 +1,10 @@
 package www.bwsensing.com.domain.system;
 
 import lombok.Data;
-import java.util.Date;
 import www.bwsensing.com.domain.common.UuidUtils;
 import www.bwsensing.com.domain.industry.IndustryField;
+
+import java.util.Date;
 /**
  * @author macos-zyj
  */

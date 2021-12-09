@@ -3,6 +3,7 @@ package www.bwsensing.com.domain.device.alert;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import www.bwsensing.com.domain.device.SensorInfo;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

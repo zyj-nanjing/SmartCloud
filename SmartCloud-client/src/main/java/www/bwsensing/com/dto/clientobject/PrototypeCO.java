@@ -2,7 +2,7 @@ package www.bwsensing.com.dto.clientobject;
 
 import com.alibaba.cola.dto.DTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;

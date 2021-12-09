@@ -2,6 +2,7 @@ package www.bwsensing.com.dto.command;
 
 import com.alibaba.cola.dto.Command;
 import lombok.Data;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

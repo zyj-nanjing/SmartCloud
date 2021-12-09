@@ -8,6 +8,7 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 
 /**

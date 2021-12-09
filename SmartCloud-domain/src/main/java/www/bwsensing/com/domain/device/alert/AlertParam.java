@@ -1,13 +1,14 @@
 package www.bwsensing.com.domain.device.alert;
 
-import lombok.Data;
-import java.util.List;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
+import lombok.Data;
 import www.bwsensing.com.domain.device.alert.formulas.ParamFunction;
 import www.bwsensing.com.domain.device.alert.formulas.ParamLogic;
 import www.bwsensing.com.domain.device.alert.formulas.ParamOperator;
 import www.bwsensing.com.domain.monitor.MonitorItem;
+
+import java.util.List;
 
 /**
  * 告警参数

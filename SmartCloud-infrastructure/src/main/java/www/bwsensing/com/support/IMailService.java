@@ -1,12 +1,12 @@
 package www.bwsensing.com.support;
 
 import com.aliyuncs.IAcsClient;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.dm.model.v20151123.BatchSendMailRequest;
 import com.aliyuncs.dm.model.v20151123.BatchSendMailResponse;
 import com.aliyuncs.dm.model.v20151123.SingleSendMailRequest;
 import com.aliyuncs.dm.model.v20151123.SingleSendMailResponse;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
 
 /**
  * @author macos-zyj

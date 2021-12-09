@@ -1,8 +1,9 @@
 package www.bwsensing.com.common.utills;
+
 import www.bwsensing.com.common.constant.Constants;
+
 import java.util.Collection;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * 字符串工具类

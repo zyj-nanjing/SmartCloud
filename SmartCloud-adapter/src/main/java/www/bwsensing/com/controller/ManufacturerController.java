@@ -1,6 +1,5 @@
 package www.bwsensing.com.controller;
 
-import javax.validation.Valid;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
@@ -9,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IManufacturerService;
+import www.bwsensing.com.dto.clientobject.ManufacturerCO;
 import www.bwsensing.com.dto.command.ManufacturerSaveCmd;
 import www.bwsensing.com.dto.command.ManufacturerUpdateCmd;
-import www.bwsensing.com.dto.clientobject.ManufacturerCO;
 import www.bwsensing.com.dto.command.query.ManufacturerSortQuery;
+
+import javax.validation.Valid;
 
 /**
  * @author macos-zyj

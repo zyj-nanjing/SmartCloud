@@ -1,6 +1,7 @@
 package www.bwsensing.com.domain.gateway;
 
 import www.bwsensing.com.domain.device.alert.AlertRole;
+
 import java.util.List;
 
 /**
