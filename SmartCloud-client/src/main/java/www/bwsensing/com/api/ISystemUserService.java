@@ -2,9 +2,9 @@ package www.bwsensing.com.api;
 
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-import www.bwsensing.com.dto.clientobject.UserInfoCO;
 import www.bwsensing.com.dto.command.UserRegisterCmd;
 import www.bwsensing.com.dto.command.UserUpdateCmd;
+import www.bwsensing.com.dto.clientobject.UserInfoCO;
 
 /**
  * @author macos-zyj

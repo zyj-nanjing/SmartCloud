@@ -1,8 +1,5 @@
 package www.bwsensing.com.gatewayimpl;
-
 import com.alibaba.cola.exception.BizException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.common.utills.DateUtils;
@@ -19,8 +16,9 @@ import www.bwsensing.com.gatewayimpl.database.MonitorPositionModelMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionModelDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
-
+import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 /**

@@ -3,7 +3,6 @@ package www.bwsensing.com.common.constant;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.util.concurrent.TimeUnit;
 
 /**

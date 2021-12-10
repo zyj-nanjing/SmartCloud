@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.system;
 
 import lombok.Data;
-
 import java.util.List;
 
 /**

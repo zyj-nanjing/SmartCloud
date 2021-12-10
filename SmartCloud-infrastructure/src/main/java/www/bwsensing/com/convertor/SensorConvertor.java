@@ -3,7 +3,6 @@ package www.bwsensing.com.convertor;
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.device.SensorInfo;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
 import java.util.ArrayList;
 import java.util.List;
 

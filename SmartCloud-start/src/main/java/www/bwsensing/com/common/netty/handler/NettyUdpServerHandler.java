@@ -78,32 +78,35 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
             messages.add(new DataMessage(timestamp,receiveMessage));
             ipDataCache.put(ipAddress,messages);
             redisService.setCacheObject(ipAddress,receiveMessage,WAIT_TIMEOUT,TimeUnit.MILLISECONDS);
-            nettyUdpThread.submit(() -> {
-                while(true){
-                    if(!redisService.hasKey(ipAddress)){
-                        if (ipDataCache.get(ipAddress).size()>0){
-                            Date receiveTime = new Date();
-                            FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
-                            receiveEvent.setReceiveData(ipDataCache.get(ipAddress));
-                            setReceiveEvent(receiveEvent,ipAddress,receiveTime);
-                            domainEventPublisher.transactionPublish(receiveEvent);
-                            log.info("facility data pushed,Client address:{}",ipAddress);
-                        }
-                        ipDataCache.remove(ipAddress);
-                        log.info("link down ,Client address:{}",ipAddress);
-                        break;
-                    } else {
-                        try {
-                            Thread.sleep(WAIT_TIMEOUT/4);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
+            commitThreadWaitBatch(ipAddress);
         }
     }
 
+    private void commitThreadWaitBatch(String ipAddress){
+        nettyUdpThread.submit(() -> {
+            while(true){
+                if(!redisService.hasKey(ipAddress)){
+                    if (ipDataCache.get(ipAddress).size()>0){
+                        Date receiveTime = new Date();
+                        FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
+                        receiveEvent.setReceiveData(ipDataCache.get(ipAddress));
+                        setReceiveEvent(receiveEvent,ipAddress,receiveTime);
+                        domainEventPublisher.transactionPublish(receiveEvent);
+                        log.info("facility data pushed,Client address:{}",ipAddress);
+                    }
+                    ipDataCache.remove(ipAddress);
+                    log.info("link down ,Client address:{}",ipAddress);
+                    break;
+                } else {
+                    try {
+                        Thread.sleep(WAIT_TIMEOUT/4);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
 
     private void setReceiveEvent(FacilityDataReceiveEvent receive,String ipAddress,Date receiveTime){
         receive.setChannelId("UDP");

@@ -2,7 +2,6 @@ package www.bwsensing.com.domain.monitor.model;
 
 import lombok.Data;
 import www.bwsensing.com.domain.monitor.MonitorPosition;
-
 import java.util.Date;
 
 /**

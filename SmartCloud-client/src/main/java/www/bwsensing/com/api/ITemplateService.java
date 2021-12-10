@@ -3,9 +3,9 @@ package www.bwsensing.com.api;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-import www.bwsensing.com.dto.clientobject.AlertTemplateCO;
 import www.bwsensing.com.dto.command.AlarmTemplateSaveCmd;
 import www.bwsensing.com.dto.command.AlarmTemplateUpdateCmd;
+import www.bwsensing.com.dto.clientobject.AlertTemplateCO;
 import www.bwsensing.com.dto.command.query.AlertTemplateQuery;
 
 

@@ -3,10 +3,10 @@ package www.bwsensing.com.api;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 import www.bwsensing.com.dto.command.RoleSaveCmd;
 import www.bwsensing.com.dto.command.RoleUpdateCmd;
 import www.bwsensing.com.dto.command.query.SystemRolePageQuery;
+import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 /**
  * @author macos-zyj
  */

@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IPermissionService;
-import www.bwsensing.com.dto.clientobject.PermissionCO;
+import www.bwsensing.com.dto.command.query.BaseQuery;
 import www.bwsensing.com.dto.command.PermissionSaveCmd;
 import www.bwsensing.com.dto.command.PermissionUpdateCmd;
-import www.bwsensing.com.dto.command.query.BaseQuery;
-
+import www.bwsensing.com.dto.clientobject.PermissionCO;
 import javax.validation.Valid;
 
 /**

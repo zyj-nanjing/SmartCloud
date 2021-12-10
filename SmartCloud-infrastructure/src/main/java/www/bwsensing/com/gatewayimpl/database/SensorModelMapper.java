@@ -1,8 +1,7 @@
 package www.bwsensing.com.gatewayimpl.database;
 
-import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorModelDO;
-
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**

@@ -1,5 +1,8 @@
 package www.bwsensing.com.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
@@ -25,10 +28,6 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.AlertGroupDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertNotificationDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.NotificationTag;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 
 

@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IAlertRoleService;
-import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.AlertRoleAddCmd;
 import www.bwsensing.com.dto.command.AlertRoleBindCmd;
 import www.bwsensing.com.dto.command.AlertRoleUpdateCmd;
+import www.bwsensing.com.dto.clientobject.AlertRoleCO;
 import www.bwsensing.com.dto.command.query.AlertRoleQuery;
-
 import javax.validation.Valid;
 
 /**

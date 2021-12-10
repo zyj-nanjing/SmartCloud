@@ -2,7 +2,6 @@ package www.bwsensing.com.domain.gateway;
 
 import www.bwsensing.com.domain.monitor.MonitorStructure;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
-
 import java.util.List;
 
 /**

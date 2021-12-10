@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.device.data;
 
 import lombok.Data;
-
 import java.sql.Timestamp;
 
 

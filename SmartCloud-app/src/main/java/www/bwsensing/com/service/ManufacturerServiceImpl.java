@@ -18,13 +18,12 @@ import www.bwsensing.com.domain.device.manufacturer.ProductManufacturer;
 import www.bwsensing.com.domain.gateway.ManufacturerGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.token.TokenData;
-import www.bwsensing.com.dto.clientobject.ManufacturerCO;
 import www.bwsensing.com.dto.command.ManufacturerSaveCmd;
 import www.bwsensing.com.dto.command.ManufacturerUpdateCmd;
+import www.bwsensing.com.dto.clientobject.ManufacturerCO;
 import www.bwsensing.com.dto.command.query.ManufacturerSortQuery;
 import www.bwsensing.com.gatewayimpl.database.ProductManufacturerMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.ProductManufacturerDO;
-
 import javax.annotation.Resource;
 import java.util.List;
 

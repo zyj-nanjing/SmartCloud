@@ -1,14 +1,14 @@
 package www.bwsensing.com.domain.monitor.model;
 
 import lombok.Data;
-import www.bwsensing.com.domain.common.UuidUtils;
-import www.bwsensing.com.domain.industry.IndustryField;
-import www.bwsensing.com.domain.monitor.MonitorPosition;
-import www.bwsensing.com.domain.monitor.MonitorStructure;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import www.bwsensing.com.domain.common.UuidUtils;
+import www.bwsensing.com.domain.industry.IndustryField;
+import www.bwsensing.com.domain.monitor.MonitorPosition;
+import www.bwsensing.com.domain.monitor.MonitorStructure;
 
 /**
  * @author macos-zyj

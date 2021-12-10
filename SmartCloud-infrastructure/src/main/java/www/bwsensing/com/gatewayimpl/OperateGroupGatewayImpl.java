@@ -8,7 +8,6 @@ import www.bwsensing.com.domain.gateway.OperateGroupGateway;
 import www.bwsensing.com.domain.system.OperateGroup;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
-
 import javax.annotation.Resource;
 
 /**

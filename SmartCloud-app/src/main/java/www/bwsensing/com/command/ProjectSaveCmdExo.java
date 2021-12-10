@@ -1,23 +1,22 @@
 package www.bwsensing.com.command;
 
 import com.alibaba.cola.dto.SingleResponse;
-import com.alibaba.cola.exception.BizException;
-import org.springframework.stereotype.Component;
+import www.bwsensing.com.domain.gateway.TokenGateway;
+import www.bwsensing.com.domain.monitor.MonitorStructure;
+import www.bwsensing.com.domain.project.ProjectMember;
+import www.bwsensing.com.dto.command.ModelGenerateCmd;
+import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
+import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
+import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
 import www.bwsensing.com.convertor.StructureModelConvertor;
 import www.bwsensing.com.domain.gateway.ProjectMonitorGateway;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
-import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.domain.monitor.MonitorStructure;
-import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
 import www.bwsensing.com.domain.project.MonitorProject;
-import www.bwsensing.com.domain.project.ProjectMember;
 import www.bwsensing.com.domain.system.SystemUser;
 import www.bwsensing.com.domain.system.token.TokenData;
-import www.bwsensing.com.dto.command.ModelGenerateCmd;
+import org.springframework.stereotype.Component;
+import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.dto.command.ProjectSaveCmd;
-import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;

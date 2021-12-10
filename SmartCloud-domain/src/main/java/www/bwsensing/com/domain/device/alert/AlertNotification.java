@@ -1,12 +1,11 @@
 package www.bwsensing.com.domain.device.alert;
 
-import com.alibaba.cola.exception.BizException;
 import lombok.Data;
+import java.util.Date;
+import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.device.SensorInfo;
 import www.bwsensing.com.domain.device.SensorModel;
 import www.bwsensing.com.domain.system.OperateGroup;
-
-import java.util.Date;
 /**
  * 告警通知
  * @author macos-zyj

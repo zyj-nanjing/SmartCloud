@@ -1,5 +1,6 @@
 package www.bwsensing.com.common.constant;
 
+
 /**
  * @author macos-zyj
  */

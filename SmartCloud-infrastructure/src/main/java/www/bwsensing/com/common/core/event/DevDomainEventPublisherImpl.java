@@ -3,7 +3,6 @@ package www.bwsensing.com.common.core.event;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.event.DomainEventI;
-
 import javax.annotation.Resource;
 
 /**

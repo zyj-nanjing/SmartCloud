@@ -1,5 +1,6 @@
 package www.bwsensing.com.command;
 
+import javax.annotation.Resource;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
@@ -8,8 +9,6 @@ import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.command.SensorSaveCmd;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
-import javax.annotation.Resource;
 
 /**
  * @author macos-zyj

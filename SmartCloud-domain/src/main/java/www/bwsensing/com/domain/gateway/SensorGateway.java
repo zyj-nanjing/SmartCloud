@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.gateway;
 
 import www.bwsensing.com.domain.device.SensorInfo;
-
 import java.util.List;
 
 /**

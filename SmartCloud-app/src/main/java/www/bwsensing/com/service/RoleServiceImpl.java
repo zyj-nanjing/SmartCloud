@@ -14,14 +14,13 @@ import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.convertor.SystemRoleCoConvertor;
 import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.domain.system.token.TokenData;
-import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 import www.bwsensing.com.dto.command.RoleSaveCmd;
 import www.bwsensing.com.dto.command.RoleUpdateCmd;
 import www.bwsensing.com.dto.command.query.SystemRolePageQuery;
+import www.bwsensing.com.dto.clientobject.SystemRoleCO;
+import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.gatewayimpl.database.RoleMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.RoleDO;
-
 import javax.annotation.Resource;
 import java.util.List;
 

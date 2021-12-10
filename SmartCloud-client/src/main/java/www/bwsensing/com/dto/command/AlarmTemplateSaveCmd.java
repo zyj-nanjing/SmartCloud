@@ -1,13 +1,12 @@
 package www.bwsensing.com.dto.command;
 
-import com.alibaba.cola.dto.Command;
 import lombok.Data;
-
+import java.util.List;
 import javax.validation.Valid;
+import com.alibaba.cola.dto.Command;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 /**
  * 告警模板保存

@@ -16,6 +16,7 @@ public class SystemUserConvertor {
         USER_DOMAIN_COPIER.copy(dataObject,user,null);
         user.setAvatar(dataObject.getAvatar());
         user.setEnabled(dataObject.getEnabled());
+        user.setGroupId(dataObject.getOperateGroupId());
         user.setAccountNonLocked(true);
         return user;
     }
@@ -23,7 +24,9 @@ public class SystemUserConvertor {
     public static SystemUserDO toDataObject(SystemUser sysUser){
         SystemUserDO dataObject = new SystemUserDO();
         USER_COPIER.copy(sysUser,dataObject,null);
-        System.out.println(dataObject);
+        dataObject.setAvatar(sysUser.getAvatar());
+        dataObject.setOperateGroupId(sysUser.getGroupId());
+        dataObject.setAccountNonLocked(true);
         return dataObject;
     }
 }

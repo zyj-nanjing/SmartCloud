@@ -1,18 +1,17 @@
 package www.bwsensing.com.controller;
 
+import javax.validation.Valid;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.ITemplateService;
-import www.bwsensing.com.dto.clientobject.AlertTemplateCO;
 import www.bwsensing.com.dto.command.AlarmTemplateSaveCmd;
+import org.springframework.validation.annotation.Validated;
 import www.bwsensing.com.dto.command.AlarmTemplateUpdateCmd;
+import www.bwsensing.com.dto.clientobject.AlertTemplateCO;
 import www.bwsensing.com.dto.command.query.AlertTemplateQuery;
-
-import javax.validation.Valid;
 
 /**
  * @author macos-zyj

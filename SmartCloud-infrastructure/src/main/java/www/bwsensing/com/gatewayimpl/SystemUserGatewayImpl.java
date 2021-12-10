@@ -13,7 +13,6 @@ import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.gatewayimpl.database.*;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -45,6 +44,19 @@ public class SystemUserGatewayImpl implements SystemUserGateway {
         } else{
             return new SystemUser();
         }
+    }
+
+    @Override
+    public Boolean haveRoleToAddUser(Integer groupId,Boolean isAdmin) {
+        TokenData tokenData = tokenGateway.getTokenInfo();
+        if(RoleConstant.ROOT_ADMIN.equals(tokenData.getRole())){
+            return true;
+        } else{
+            if(!isAdmin){
+                return RoleConstant.GROUP_ADMIN.equals(tokenData.getRole()) && tokenData.getGroupId().equals(groupId);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -103,13 +115,15 @@ public class SystemUserGatewayImpl implements SystemUserGateway {
             throw new BizException("NO_USER_FOUND","该用户不存在!");
         }
         OperateGroupDO operateGroupDo = groupMapper.selectGroupById(userDo.getOperateGroupId());
+        if(RoleConstant.USER.equals(tokenData.getRole()) ){
+            throw new BizException("NO_PERMISSION_DELETE","无权进行删除!");
+        }
         if (operateGroupDo.getIsInner()){
             if (!RoleConstant.ROOT_ADMIN.equals(tokenData.getRole())){
                 throw new BizException("NO_PERMISSION_DELETE","无权进行删除!");
             }
         } else {
-            if (!(RoleConstant.GROUP_ADMIN.equals(tokenData.getRole())
-                    ||RoleConstant.ROOT_ADMIN.equals(tokenData.getRole()))){
+            if (userDo.getRole().equals(tokenData.getRole())){
                 throw new BizException("NO_PERMISSION_DELETE","无权进行删除!");
             }
         }

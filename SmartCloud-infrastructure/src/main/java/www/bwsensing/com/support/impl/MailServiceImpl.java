@@ -7,11 +7,10 @@ import com.aliyuncs.dm.model.v20151123.SingleSendMailResponse;
 import com.aliyuncs.exceptions.ClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.config.AliCloudMailProperties;
 import www.bwsensing.com.common.config.AliCloudProperties;
+import www.bwsensing.com.common.config.AliCloudMailProperties;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.support.AbstractMailService;
-
 import javax.annotation.Resource;
 
 /**

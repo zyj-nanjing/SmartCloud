@@ -4,7 +4,6 @@ import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
-
 import java.util.List;
 
 /**

@@ -1,5 +1,7 @@
 package www.bwsensing.com.gatewayimpl;
 
+import java.util.List;
+import javax.annotation.Resource;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.convertor.SensorConvertor;
@@ -8,9 +10,6 @@ import www.bwsensing.com.domain.gateway.SensorGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author macos-zyj

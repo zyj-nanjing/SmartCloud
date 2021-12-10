@@ -1,7 +1,6 @@
 package www.bwsensing.com.dto.clientobject;
 
 import com.alibaba.cola.dto.DTO;
-
 import java.util.List;
 
 /**

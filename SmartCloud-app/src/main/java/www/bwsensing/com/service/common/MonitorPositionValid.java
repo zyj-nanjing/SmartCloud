@@ -2,7 +2,6 @@ package www.bwsensing.com.service.common;
 
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;

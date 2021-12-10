@@ -1,21 +1,15 @@
 package www.bwsensing.com.service;
 
-import com.alibaba.cola.catchlog.CatchAndLog;
-import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
-import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.api.IProjectMemberService;
-import www.bwsensing.com.api.IProjectService;
+import java.util.concurrent.atomic.AtomicBoolean;
 import www.bwsensing.com.command.ProjectMemberStorageCmdExo;
-import www.bwsensing.com.command.ProjectSaveCmdExo;
 import www.bwsensing.com.command.query.ProjectPositionQueryExo;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.convertor.ProjectCoConvertor;
@@ -27,23 +21,28 @@ import www.bwsensing.com.domain.monitor.MonitorStructure;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
 import www.bwsensing.com.domain.project.MonitorProject;
 import www.bwsensing.com.domain.project.ProjectRoleEnum;
-import www.bwsensing.com.domain.system.token.TokenData;
-import www.bwsensing.com.dto.clientobject.*;
 import www.bwsensing.com.dto.command.PositionBindCmd;
 import www.bwsensing.com.dto.command.ProjectMemberDeleteCmd;
 import www.bwsensing.com.dto.command.ProjectMemberStorageCmd;
-import www.bwsensing.com.dto.command.ProjectSaveCmd;
+import www.bwsensing.com.dto.clientobject.*;
 import www.bwsensing.com.dto.command.query.BaseQuery;
-import www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.*;
-
+import www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper;
+import www.bwsensing.com.domain.system.token.TokenData;
+import com.alibaba.cola.dto.MultiResponse;
+import com.alibaba.cola.dto.SingleResponse;
+import www.bwsensing.com.dto.command.ProjectSaveCmd;
+import www.bwsensing.com.api.IProjectService;
+import www.bwsensing.com.command.ProjectSaveCmdExo;
+import org.springframework.stereotype.Component;
+import com.alibaba.cola.catchlog.CatchAndLog;
+import com.alibaba.cola.dto.Response;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**

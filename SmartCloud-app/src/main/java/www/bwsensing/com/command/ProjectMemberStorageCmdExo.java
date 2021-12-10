@@ -1,5 +1,6 @@
 package www.bwsensing.com.command;
 
+import javax.annotation.Resource;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
@@ -8,14 +9,12 @@ import www.bwsensing.com.domain.gateway.ProjectMonitorGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.project.ProjectMember;
 import www.bwsensing.com.domain.project.ProjectRoleEnum;
-import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.command.ProjectMemberStorageCmd;
+import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorProjectDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
-
-import javax.annotation.Resource;
 
 /**
  * @author macos-zyj

@@ -5,11 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.convertor.SensorCoConvertor;
-import www.bwsensing.com.dto.clientobject.SensorCO;
+import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.dto.command.query.SensorSortQuery;
+import www.bwsensing.com.dto.clientobject.SensorCO;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -18,7 +18,8 @@ import java.util.List;
  */
 @Component
 public class SensorSortQueryExo {
-
+    @Resource
+    private TokenGateway tokenGateway;
     @Resource
     private SensorMapper sensorMapper;
 
@@ -33,6 +34,7 @@ public class SensorSortQueryExo {
 
     private SensorDO initSensorQuery(SensorSortQuery sortQuery){
         SensorDO query = new SensorDO();
+        query.setMemberGroupId(tokenGateway.getTokenInfo().getGroupId());
         query.setName(sortQuery.getName());
         query.setProjectId(sortQuery.getProjectId());
         query.setManagerId(sortQuery.getManagerId());

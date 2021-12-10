@@ -1,7 +1,6 @@
 package www.bwsensing.com.common.core.event;
 
 import org.springframework.stereotype.Component;
-
 import java.lang.annotation.*;
 
 /**

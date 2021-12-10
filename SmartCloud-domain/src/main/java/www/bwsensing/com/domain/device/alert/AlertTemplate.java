@@ -1,12 +1,11 @@
 package www.bwsensing.com.domain.device.alert;
 
 import lombok.Data;
-import www.bwsensing.com.domain.device.SensorInfo;
-import www.bwsensing.com.domain.device.SensorModel;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
+import www.bwsensing.com.domain.device.SensorInfo;
+import www.bwsensing.com.domain.device.SensorModel;
 
 /**
  * 告警模板

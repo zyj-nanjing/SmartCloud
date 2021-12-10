@@ -9,15 +9,14 @@ import www.bwsensing.com.domain.gateway.StructureModelGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
-import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.command.PositionModelSaveCmd;
 import www.bwsensing.com.dto.command.StructureModelSaveCmd;
+import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.service.common.MonitorPositionValid;
 
+import static java.util.stream.Collectors.toList;
 import javax.annotation.Resource;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 /**

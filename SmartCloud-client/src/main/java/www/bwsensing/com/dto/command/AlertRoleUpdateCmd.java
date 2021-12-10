@@ -1,10 +1,9 @@
 package www.bwsensing.com.dto.command;
 
 import com.alibaba.cola.dto.Command;
-import lombok.Data;
-
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import lombok.Data;
 
 /**
  * @author macos-zyj

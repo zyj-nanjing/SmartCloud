@@ -1,9 +1,8 @@
 package www.bwsensing.com.dto.clientobject;
 
-import com.alibaba.cola.dto.DTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.alibaba.cola.dto.DTO;
 import lombok.Data;
-
 import java.util.List;
 
 /**

@@ -1,14 +1,13 @@
 package www.bwsensing.com.gatewayimpl.tcp.impl;
 
+import javax.annotation.Resource;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.config.AlertApiConfig;
 import www.bwsensing.com.common.config.AlertConfig;
+import www.bwsensing.com.common.config.AlertApiConfig;
 import www.bwsensing.com.common.utills.HttpUtils;
 import www.bwsensing.com.domain.device.alert.AlertRole;
 import www.bwsensing.com.gatewayimpl.tcp.AlertRoleQuest;
-
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 

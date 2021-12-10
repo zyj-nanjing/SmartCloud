@@ -1,7 +1,6 @@
 package www.bwsensing.com.gatewayimpl.database;
 
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertParamDO;
-
 import java.util.List;
 
 /**

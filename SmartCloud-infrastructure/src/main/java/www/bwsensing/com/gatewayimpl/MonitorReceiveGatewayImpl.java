@@ -1,5 +1,7 @@
 package www.bwsensing.com.gatewayimpl;
 
+import javax.annotation.Resource;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +14,6 @@ import www.bwsensing.com.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
 import www.bwsensing.com.gatewayimpl.tdengin.MonitorDataMapper;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

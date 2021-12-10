@@ -1,8 +1,7 @@
 package www.bwsensing.com.dto.command.query;
 
-import com.alibaba.cola.dto.PageQuery;
 import lombok.Data;
-
+import com.alibaba.cola.dto.PageQuery;
 import javax.validation.constraints.NotBlank;
 
 /**

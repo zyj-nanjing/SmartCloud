@@ -12,6 +12,7 @@ import www.bwsensing.com.api.ISystemUserService;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.common.utills.StringUtils;
+import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.dto.clientobject.ViewMenuTreeCO;
 import www.bwsensing.com.dto.command.UserRegisterCmd;
@@ -33,6 +34,8 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     private ISystemUserService userService;
+    @Resource
+    private SystemUserGateway systemUserGateway;
     @Autowired
     private IViewMenuService viewMenuService;
     /**
@@ -52,25 +55,27 @@ public class UserController {
 
     @PostMapping("/save/user")
     public Response registerUser(@Valid @RequestBody UserRegisterCmd saveCmd){
-        if (haveAddPermission(saveCmd.getGroupId(),false)){
+        if (systemUserGateway.haveRoleToAddUser(saveCmd.getGroupId(),false)){
             saveCmd.setBizId(BizScenarioCode.BIZ_ID_CLOUD);
             saveCmd.setScenario(BizScenarioCode.USER_SCENARIO);
             saveCmd.setPassword(passwordEncoder.encode(saveCmd.getPassword()));
             return userService.registerUser(saveCmd);
         } else{
+            log.warn("No Permission To Create User");
             return Response.buildFailure("USER_ADD_ERROR","无权限添加用户");
         }
     }
 
     @PostMapping("/save/manager")
     public Response registerManager(@Valid @RequestBody UserRegisterCmd saveCmd){
-        if (haveAddPermission(saveCmd.getGroupId(),true)){
+        if (systemUserGateway.haveRoleToAddUser(saveCmd.getGroupId(),true)){
             saveCmd.setBizId(BizScenarioCode.BIZ_ID_CLOUD);
             saveCmd.setScenario(BizScenarioCode.MANAGER_SCENARIO);
             saveCmd.setPassword(passwordEncoder.encode(saveCmd.getPassword()));
             return userService.registerUser(saveCmd);
         } else{
-            return Response.buildFailure("USER_ADD_ERROR","无权限添加用户");
+            log.warn("No Permission To Create Manager");
+            return Response.buildFailure("USER_ADD_ERROR","无权限添加管理员");
         }
     }
     @GetMapping("/delete/{userId}")
@@ -92,18 +97,5 @@ public class UserController {
     @GetMapping("/info")
     public SingleResponse<UserInfoCO> getUserInfo(){
         return userService.getUserInfo();
-    }
-
-
-    private boolean haveAddPermission(Integer groupId,boolean isAdmin){
-        TokenData tokenData = tokenGateway.getTokenInfo();
-        if(RoleConstant.ROOT_ADMIN.equals(tokenData.getRole())){
-            return true;
-        } else{
-            if (!isAdmin){
-                return RoleConstant.ROOT_ADMIN.equals(tokenData.getRole()) && tokenData.getGroupId().equals(groupId);
-            }
-        }
-        return false;
     }
 }

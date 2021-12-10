@@ -1,8 +1,10 @@
 package www.bwsensing.com.gatewayimpl;
 
+import java.util.List;
+import javax.annotation.Resource;
+
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.convertor.AlertGroupConvertor;
 import www.bwsensing.com.domain.device.alert.AlertGroup;
@@ -12,12 +14,10 @@ import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.gatewayimpl.database.AlertGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.AlertRoleMapper;
+import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.gatewayimpl.database.NotificationMemberMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertGroupDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertRoleDO;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author macos-zyj

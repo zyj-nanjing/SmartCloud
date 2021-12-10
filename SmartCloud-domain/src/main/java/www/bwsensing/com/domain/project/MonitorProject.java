@@ -2,11 +2,10 @@ package www.bwsensing.com.domain.project;
 
 import com.alibaba.cola.exception.Assert;
 import lombok.Data;
-import www.bwsensing.com.domain.monitor.MonitorStructure;
-import www.bwsensing.com.domain.system.SystemUser;
-
 import java.util.Date;
 import java.util.List;
+import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.monitor.MonitorStructure;
 
 /**
  * @author macos-zyj

@@ -4,7 +4,6 @@ import com.alibaba.cola.exception.SysException;
 import io.jsonwebtoken.lang.Assert;
 import io.netty.handler.codec.http.HttpMethod;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.InputStream;
 import java.util.Properties;
 

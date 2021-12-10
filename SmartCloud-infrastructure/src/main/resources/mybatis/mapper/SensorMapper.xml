@@ -166,6 +166,7 @@
         <if test="projectId !=null">and eq.project_id=#{projectId}</if>
         <if test="modelId != null "> and eq.model_id = #{modelId}</if>
         <if test="managerId != null "> and eq.manager_id = #{managerId}</if>
+         <if test="memberGroupId">and eq.member_group_id =#{memberGroupId}</if>
     </select>
 
     <select id="countByPositionId" resultType="int">

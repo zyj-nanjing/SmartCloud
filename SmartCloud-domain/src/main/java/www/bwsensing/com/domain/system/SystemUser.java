@@ -2,7 +2,6 @@ package www.bwsensing.com.domain.system;
 
 import com.alibaba.cola.extension.BizScenario;
 import lombok.Data;
-
 import java.util.Date;
 
 /**

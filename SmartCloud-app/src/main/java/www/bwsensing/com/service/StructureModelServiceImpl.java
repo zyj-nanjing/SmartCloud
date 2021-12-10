@@ -17,21 +17,19 @@ import www.bwsensing.com.command.MonitorStructureModelUpdateCmdExo;
 import www.bwsensing.com.command.StructureImportCmdExo;
 import www.bwsensing.com.domain.gateway.StructureModelGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.dto.clientobject.ImportResultCO;
-import www.bwsensing.com.dto.clientobject.StructureModelCO;
-import www.bwsensing.com.dto.command.StructureModelSaveCmd;
-import www.bwsensing.com.dto.command.StructureModelUpdateCmd;
-import www.bwsensing.com.dto.command.query.BaseQuery;
 import www.bwsensing.com.dto.export.PositionModelVo;
 import www.bwsensing.com.dto.export.StructureModelVo;
+import www.bwsensing.com.dto.clientobject.ImportResultCO;
+import www.bwsensing.com.dto.command.query.BaseQuery;
+import static java.util.stream.Collectors.toList;
+import www.bwsensing.com.dto.command.StructureModelSaveCmd;
+import www.bwsensing.com.dto.command.StructureModelUpdateCmd;
+import www.bwsensing.com.dto.clientobject.StructureModelCO;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 /**

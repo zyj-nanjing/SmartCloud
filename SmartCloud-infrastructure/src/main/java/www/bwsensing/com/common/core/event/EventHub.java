@@ -3,7 +3,6 @@ package www.bwsensing.com.common.core.event;
 import com.alibaba.cola.exception.SysException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.event.EventI;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

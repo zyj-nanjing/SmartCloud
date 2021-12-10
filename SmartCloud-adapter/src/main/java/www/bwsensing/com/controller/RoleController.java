@@ -6,11 +6,10 @@ import com.alibaba.cola.dto.Response;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IRoleService;
-import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 import www.bwsensing.com.dto.command.RoleSaveCmd;
 import www.bwsensing.com.dto.command.RoleUpdateCmd;
 import www.bwsensing.com.dto.command.query.SystemRolePageQuery;
-
+import www.bwsensing.com.dto.clientobject.SystemRoleCO;
 import javax.annotation.Resource;
 
 /**

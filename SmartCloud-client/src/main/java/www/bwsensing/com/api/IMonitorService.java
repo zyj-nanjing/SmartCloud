@@ -4,10 +4,10 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-import www.bwsensing.com.dto.clientobject.PrototypeCO;
 import www.bwsensing.com.dto.command.PrototypeAddCmd;
-import www.bwsensing.com.dto.command.PrototypeUpdateCmd;
 import www.bwsensing.com.dto.command.query.PrototypeSortQuery;
+import www.bwsensing.com.dto.command.PrototypeUpdateCmd;
+import www.bwsensing.com.dto.clientobject.PrototypeCO;
 
 /**
  * @author macos-zyj

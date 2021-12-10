@@ -1,17 +1,28 @@
 package www.bwsensing.com.extension;
 
-import com.alibaba.cola.exception.BizException;
-import com.alibaba.cola.extension.Extension;
-import com.aliyuncs.dm.model.v20151123.SingleSendMailRequest;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
+import java.util.concurrent.TimeUnit;
+import java.net.MalformedURLException;
+
 import org.springframework.util.Assert;
+import com.alibaba.cola.extension.Extension;
+import com.alibaba.cola.exception.BizException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.core.text.Convert;
 import www.bwsensing.com.common.redis.RedisService;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.common.utills.io.IoUtils;
 import www.bwsensing.com.convertor.MailConfigConvertor;
+import com.aliyuncs.dm.model.v20151123.SingleSendMailRequest;
 import www.bwsensing.com.dto.command.NotificationMessageCmd;
 import www.bwsensing.com.extensionpoint.AlertNotificationExtPt;
 import www.bwsensing.com.gatewayimpl.database.AlertGroupMapper;
@@ -20,17 +31,6 @@ import www.bwsensing.com.gatewayimpl.database.MailTemplateMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MailConfigDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MailTemplateDO;
 import www.bwsensing.com.support.IMailService;
-
-import javax.annotation.Resource;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 
 /**

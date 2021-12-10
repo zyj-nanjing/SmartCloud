@@ -1,5 +1,6 @@
 package www.bwsensing.com.controller;
 
+import javax.validation.Valid;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
@@ -7,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.api.IAlertGroupService;
-import www.bwsensing.com.dto.clientobject.AlertGroupCO;
-import www.bwsensing.com.dto.clientobject.NotificationMemberBindCO;
+import www.bwsensing.com.dto.command.query.AlertGroupQuery;
 import www.bwsensing.com.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.dto.command.AlertGroupUpdateCmd;
 import www.bwsensing.com.dto.command.NotificationMemberCmd;
-import www.bwsensing.com.dto.command.query.AlertGroupQuery;
-
-import javax.validation.Valid;
+import www.bwsensing.com.dto.clientobject.AlertGroupCO;
+import www.bwsensing.com.dto.clientobject.NotificationMemberBindCO;
 
 
 /**

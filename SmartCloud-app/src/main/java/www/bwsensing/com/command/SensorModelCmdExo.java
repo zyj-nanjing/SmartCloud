@@ -9,17 +9,16 @@ import www.bwsensing.com.convertor.PrototypeConvertor;
 import www.bwsensing.com.domain.device.SensorModel;
 import www.bwsensing.com.domain.gateway.SensorModelGateway;
 import www.bwsensing.com.domain.monitor.MonitorPrototype;
-import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.dto.export.SensorModelVO;
+import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.gatewayimpl.database.MonitorPrototypeMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorModelMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPrototypeDO;
-
 import javax.annotation.Resource;
-import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @author macos-zyj

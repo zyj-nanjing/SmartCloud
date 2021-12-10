@@ -3,7 +3,6 @@ package www.bwsensing.com.support;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

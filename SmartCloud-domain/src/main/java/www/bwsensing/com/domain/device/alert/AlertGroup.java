@@ -1,13 +1,12 @@
 package www.bwsensing.com.domain.device.alert;
 
-import com.alibaba.cola.exception.BizException;
 import lombok.Data;
-import www.bwsensing.com.domain.device.SensorInfo;
-import www.bwsensing.com.domain.system.SystemUser;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
+import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.device.SensorInfo;
 
 /**
  * 告警组 用来做告警规则分组

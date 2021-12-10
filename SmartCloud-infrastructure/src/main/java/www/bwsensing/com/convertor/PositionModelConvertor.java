@@ -1,12 +1,9 @@
 package www.bwsensing.com.convertor;
-
-import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPositionModelDO;
-
-import java.util.List;
-
+import org.springframework.cglib.beans.BeanCopier;
 import static java.util.stream.Collectors.toList;
+import java.util.List;
 /**
  * @author macos-zyj
  */

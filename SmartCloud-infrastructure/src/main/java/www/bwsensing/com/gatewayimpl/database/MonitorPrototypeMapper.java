@@ -2,7 +2,6 @@ package www.bwsensing.com.gatewayimpl.database;
 
 import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorPrototypeDO;
-
 import java.util.List;
 
 /**

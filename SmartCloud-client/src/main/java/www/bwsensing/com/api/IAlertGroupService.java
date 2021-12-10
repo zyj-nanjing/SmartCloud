@@ -3,12 +3,12 @@ package www.bwsensing.com.api;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import www.bwsensing.com.dto.clientobject.AlertGroupCO;
-import www.bwsensing.com.dto.clientobject.NotificationMemberBindCO;
+import www.bwsensing.com.dto.command.query.AlertGroupQuery;
 import www.bwsensing.com.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.dto.command.AlertGroupUpdateCmd;
 import www.bwsensing.com.dto.command.NotificationMemberCmd;
-import www.bwsensing.com.dto.command.query.AlertGroupQuery;
+import www.bwsensing.com.dto.clientobject.AlertGroupCO;
+import www.bwsensing.com.dto.clientobject.NotificationMemberBindCO;
 
 /**
  * @author macos-zyj

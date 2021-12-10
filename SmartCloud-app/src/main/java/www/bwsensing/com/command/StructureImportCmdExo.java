@@ -1,27 +1,23 @@
 package www.bwsensing.com.command;
 
-import com.alibaba.cola.dto.SingleResponse;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import java.util.stream.Collectors;
+import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.utills.StringUtils;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import www.bwsensing.com.domain.gateway.StructureModelGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.monitor.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.MonitorStructureModel;
-import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.dto.export.PositionModelVo;
 import www.bwsensing.com.dto.export.StructureModelVo;
+import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

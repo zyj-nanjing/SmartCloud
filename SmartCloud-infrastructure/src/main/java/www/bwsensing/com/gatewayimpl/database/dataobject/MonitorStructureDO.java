@@ -2,7 +2,6 @@ package www.bwsensing.com.gatewayimpl.database.dataobject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
 

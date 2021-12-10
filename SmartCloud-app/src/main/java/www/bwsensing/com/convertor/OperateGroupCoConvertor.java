@@ -3,10 +3,8 @@ package www.bwsensing.com.convertor;
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.dto.clientobject.OperateGroupCO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static java.util.stream.Collectors.toList;
 
 /**

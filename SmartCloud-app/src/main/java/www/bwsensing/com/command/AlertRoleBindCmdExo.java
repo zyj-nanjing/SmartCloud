@@ -1,16 +1,15 @@
 package www.bwsensing.com.command;
 
+import javax.annotation.Resource;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.dto.command.AlertRoleBindCmd;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.domain.device.SensorInfo;
-import www.bwsensing.com.domain.device.alert.AlertTemplate;
-import www.bwsensing.com.domain.gateway.AlertRoleGateway;
-import www.bwsensing.com.domain.gateway.AlertTemplateGateway;
 import www.bwsensing.com.domain.gateway.SensorGateway;
-import www.bwsensing.com.dto.command.AlertRoleBindCmd;
-
-import javax.annotation.Resource;
+import www.bwsensing.com.domain.gateway.AlertRoleGateway;
+import www.bwsensing.com.domain.device.alert.AlertTemplate;
+import www.bwsensing.com.domain.gateway.AlertTemplateGateway;
 
 /**
  * @author macos-zyj

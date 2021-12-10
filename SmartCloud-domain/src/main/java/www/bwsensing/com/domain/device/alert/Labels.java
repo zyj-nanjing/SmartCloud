@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.device.alert;
 
 import lombok.Data;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -2,8 +2,8 @@ package www.bwsensing.com.convertor;
 
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.domain.device.alert.AlertParam;
-import www.bwsensing.com.dto.clientobject.AlertParamCO;
 import www.bwsensing.com.dto.command.AlertParamSaveCmd;
+import www.bwsensing.com.dto.clientobject.AlertParamCO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertParamDO;
 
 import java.util.ArrayList;

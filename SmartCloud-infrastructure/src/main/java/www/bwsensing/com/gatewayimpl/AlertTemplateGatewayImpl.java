@@ -1,5 +1,7 @@
 package www.bwsensing.com.gatewayimpl;
 
+import java.util.List;
+import javax.annotation.Resource;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,21 +9,18 @@ import www.bwsensing.com.convertor.AlarmTemplateConvertor;
 import www.bwsensing.com.convertor.AlertParamConvertor;
 import www.bwsensing.com.convertor.ItemsConvertor;
 import www.bwsensing.com.convertor.SensorModelConvertor;
-import www.bwsensing.com.domain.device.alert.AlertParam;
 import www.bwsensing.com.domain.device.alert.AlertTemplate;
+import www.bwsensing.com.domain.device.alert.AlertParam;
 import www.bwsensing.com.domain.gateway.AlertTemplateGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.gatewayimpl.database.AlertParamMapper;
 import www.bwsensing.com.gatewayimpl.database.AlertTemplateMapper;
+import www.bwsensing.com.gatewayimpl.database.AlertParamMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorModelMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.AlertParamDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.AlertTemplateDO;
+import www.bwsensing.com.gatewayimpl.database.dataobject.AlertParamDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorItemsDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorModelDO;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author macos-zyj

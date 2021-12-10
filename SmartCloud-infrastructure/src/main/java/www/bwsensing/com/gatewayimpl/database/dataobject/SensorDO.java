@@ -1,7 +1,6 @@
 package www.bwsensing.com.gatewayimpl.database.dataobject;
 
 import lombok.Data;
-
 import java.util.Date;
 /**
  * @author macos-zyj

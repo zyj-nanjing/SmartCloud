@@ -3,11 +3,9 @@ package www.bwsensing.com.convertor;
 import org.springframework.cglib.beans.BeanCopier;
 import www.bwsensing.com.dto.clientobject.FacilityReceiveCO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorReceiveDO;
-
+import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 /**

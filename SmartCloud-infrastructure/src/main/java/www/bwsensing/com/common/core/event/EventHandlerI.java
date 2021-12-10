@@ -2,7 +2,6 @@ package www.bwsensing.com.common.core.event;
 
 import com.alibaba.cola.dto.Response;
 import www.bwsensing.com.event.EventI;
-
 import java.util.concurrent.ExecutorService;
 
 /**

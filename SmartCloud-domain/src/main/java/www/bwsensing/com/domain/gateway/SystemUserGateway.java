@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.gateway;
 
 import www.bwsensing.com.domain.system.SystemUser;
-
 import java.util.List;
 
 /**
@@ -14,6 +13,14 @@ public interface SystemUserGateway {
      * @return
      */
     SystemUser loadUserByAccountName(String accountName);
+
+    /**
+     * 是否有权限添加对应权限的账户
+     * @param groupId 对应操作组
+     * @param isAdmin 是否为超管
+     * @return
+     */
+    Boolean haveRoleToAddUser(Integer groupId,Boolean isAdmin);
 
     /**
      * 根据用户编号获取用户信息及权限
@@ -34,6 +41,7 @@ public interface SystemUserGateway {
      * @return
      */
     String getUserRole(String accountName);
+
     /**
      * 用户校验
      * @param accountName
