@@ -1,11 +1,10 @@
 package www.bwsensing.com.common.auth.service;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.alibaba.cola.exception.BizException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
-import org.springframework.stereotype.Service;
-import com.alibaba.cola.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,19 +15,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import top.dcenter.ums.security.core.oauth.enums.ErrorCodeEnum;
 import top.dcenter.ums.security.core.oauth.exception.RegisterUserFailureException;
 import top.dcenter.ums.security.core.oauth.exception.UserNotExistException;
 import top.dcenter.ums.security.core.oauth.service.UmsUserDetailsService;
+import www.bwsensing.com.common.auth.common.IGrantedAuthority;
 import www.bwsensing.com.common.constant.SecurityConstants;
 import www.bwsensing.com.common.utills.StringUtils;
+import www.bwsensing.com.common.utils.IGrantedAuthorityUtils;
 import www.bwsensing.com.domain.gateway.AuthenticationGateway;
 import www.bwsensing.com.domain.system.token.UserInfo;
 import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
+
 import javax.annotation.Resource;
 import java.util.*;
 
@@ -99,7 +102,7 @@ public class UserDetailsServiceImpl implements UmsUserDetailsService {
         }
     }
 
-    private User getUserDetails(UserInfo info){
+    private SmartUser getUserDetails(UserInfo info){
         if (info == null || info.getSystemUser() == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
@@ -110,22 +113,22 @@ public class UserDetailsServiceImpl implements UmsUserDetailsService {
             // 获取资源
             dbAuthsSet.addAll(Arrays.asList(info.getPermissions()));
         }
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils
+        Collection<IGrantedAuthority> authorities = IGrantedAuthorityUtils
                 .createAuthorityList(dbAuthsSet.toArray(new String[0]));
         SystemUser user = info.getSystemUser();
         // 构造security用户
 
         return new SmartUser(
                 user.getId(),
-                user.getGroupId(),
                 user.getAccountName(),
                 user.getPassword(),
+                user.getGroupId(),
                 user.getMobile(),
+                authorities,
                 user.getEnabled(),
                 user.getAccountNonExpired(),
                 true,
-                user.getAccountNonLocked(),
-                authorities);
+                user.getAccountNonLocked());
     }
 
     @Override
