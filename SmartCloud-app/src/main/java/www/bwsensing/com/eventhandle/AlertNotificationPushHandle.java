@@ -8,8 +8,8 @@ import org.springframework.beans.BeanUtils;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.extension.BizScenario;
 import www.bwsensing.com.common.utills.Md5Utils;
-import www.bwsensing.com.api.INotificationService;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.api.NotificationService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import com.alibaba.cola.extension.ExtensionExecutor;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.core.event.EventHandlerI;
@@ -31,7 +31,7 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
     @Resource
     private RedisService redisService;
     @Resource
-    private INotificationService notificationService;
+    private NotificationService notificationService;
 
     @Override
     public Response execute(AlertNotificationPushEvent pushEvent) {

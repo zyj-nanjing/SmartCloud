@@ -47,19 +47,14 @@ public class EventHub {
      * @param executor
      */
     public void register(Class<? extends EventI> eventClz, EventHandlerI executor){
-        List<EventHandlerI> eventHandlers = eventRepository.get(eventClz);
-        if(null == eventHandlers){
-            eventHandlers = new ArrayList<>();
-            eventRepository.put(eventClz, eventHandlers);
-        }
+        List<EventHandlerI> eventHandlers = eventRepository.computeIfAbsent(eventClz, k -> new ArrayList<>());
         eventHandlers.add(executor);
 
     }
 
     private List<EventHandlerI> findHandler(Class<? extends EventI> eventClass){
         List<EventHandlerI> eventHandlerList = null;
-        Class cls = eventClass;
-        eventHandlerList = eventRepository.get(cls);
+        eventHandlerList = eventRepository.get(eventClass);
         return eventHandlerList;
     }
 

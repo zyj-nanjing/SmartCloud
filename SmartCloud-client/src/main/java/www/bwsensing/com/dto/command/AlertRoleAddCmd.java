@@ -16,7 +16,7 @@ public class AlertRoleAddCmd extends DTO {
     /**告警名称**/
     @NotBlank(message = "告警名称不能为空")
     private String alertName;
-    /**预警编号Id*/
+    /**告警编号Id*/
     @NotNull(message = "告警分组不能为空")
     private Integer alertGroupId;
     /**监测参数编号 注数据库编号*/
@@ -30,7 +30,8 @@ public class AlertRoleAddCmd extends DTO {
     @NotBlank(message = "告警消息不能为空")
     private String summary;
     /**
-     * 每组格式为 (max,>,10,&&)  第一位为 函数 可以为 max avg min  第二位为 运算符 可以为 < <= >  >= != == 第三位为具体数据 第四位为 逻辑或按位 运算符  || | && & 注意数组末尾不要加加了校验不会让你过的
+     * 每组格式为 (max,>,10,&&)  第一位为 函数 可以为 max avg min
+     * 第二位为 运算符 可以为 < <= >  >= != == 第三位为具体数据 第四位为 逻辑或按位 运算符  || | && &
      **/
     @Valid
     @NotNull(message = "监测公式不能为空")

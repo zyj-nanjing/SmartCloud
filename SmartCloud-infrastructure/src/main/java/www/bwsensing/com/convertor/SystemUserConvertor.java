@@ -1,7 +1,7 @@
 package www.bwsensing.com.convertor;
 
 import org.springframework.cglib.beans.BeanCopier;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
 
 /**

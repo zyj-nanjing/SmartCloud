@@ -12,7 +12,7 @@ import www.bwsensing.com.convertor.StructureModelConvertor;
 import www.bwsensing.com.domain.gateway.ProjectMonitorGateway;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.project.MonitorProject;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.domain.system.token.TokenData;
 import org.springframework.stereotype.Component;
 import com.alibaba.cola.exception.BizException;

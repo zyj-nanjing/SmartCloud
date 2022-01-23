@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.dcenter.ums.security.core.oauth.config.Auth2AutoConfigurer;
 import top.dcenter.ums.security.core.oauth.properties.Auth2Properties;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.auth.common.jwt.JwtAccessDeniedHandler;
 import www.bwsensing.com.common.auth.common.jwt.JwtAuthenticationEntryPoint;
 import www.bwsensing.com.common.auth.filter.JwtAuthenticationFilter;
@@ -58,11 +58,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/main/api/**")
+                .antMatchers(HttpMethod.POST, "/main/api/**","/swagger-ui.html")
                 .permitAll()
                 .antMatchers(HttpMethod.GET,
                         auth2Properties.getRedirectUrlPrefix() + "/*",
-                        auth2Properties.getAuthLoginUrlPrefix() + "/*")
+                        auth2Properties.getAuthLoginUrlPrefix() + "/*",
+                        "/swagger-ui/index.html","/tool/swagger",
+                        "/swagger-ui/**","/swagger-resources/**",
+                        "/v3/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 //授权

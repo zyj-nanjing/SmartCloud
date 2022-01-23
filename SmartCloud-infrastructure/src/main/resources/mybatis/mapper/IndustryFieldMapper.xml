@@ -25,6 +25,15 @@
         </where>
     </select>
 
+
+    <select id="validIndustryBySort" resultMap="Industry" parameterType="IndustryFieldDO">
+        <include refid="SELECT_INDUSTRY_FIELD"/>
+        <where>
+            <if test="name != null and name !=''">and name = #{name}</if>
+            <if test="code != null and code !=''">and code = #{code}</if>
+        </where>
+    </select>
+
     <insert id="save" parameterType="IndustryFieldDO" keyProperty="id" useGeneratedKeys="true">
         insert into sys_industry_field(
                 name,
@@ -40,4 +49,13 @@
     <update id="update" parameterType="IndustryFieldDO">
         update  sys_industry_field set name =#{name} where id =#{id}
     </update>
+
+    <select id="getIndustryFieldsByIds" resultMap="Industry">
+        <include refid="SELECT_INDUSTRY_FIELD"/>
+        where id in
+        <foreach collection="list" item="ids" index="index"
+                 open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </select>
 </mapper>

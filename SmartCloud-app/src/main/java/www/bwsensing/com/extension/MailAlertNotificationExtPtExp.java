@@ -1,6 +1,7 @@
 package www.bwsensing.com.extension;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
@@ -11,14 +12,13 @@ import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.TimeUnit;
 import java.net.MalformedURLException;
-
 import org.springframework.util.Assert;
 import com.alibaba.cola.extension.Extension;
 import com.alibaba.cola.exception.BizException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.core.text.Convert;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.common.utills.io.IoUtils;
 import www.bwsensing.com.convertor.MailConfigConvertor;
@@ -150,7 +150,7 @@ public class MailAlertNotificationExtPtExp implements AlertNotificationExtPt {
 
 
     private String getInputStreamToHtmlBody(InputStream mailTemplateStream){
-        Scanner scanner = new Scanner(mailTemplateStream);
+        Scanner scanner = new Scanner(mailTemplateStream, StandardCharsets.UTF_8);
         StringBuilder htmlBody = new StringBuilder();
         while (scanner.hasNextLine()) {
             //去除空格 否则调用接口会报异常

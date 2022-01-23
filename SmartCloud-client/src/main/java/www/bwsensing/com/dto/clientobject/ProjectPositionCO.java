@@ -11,6 +11,8 @@ public class ProjectPositionCO {
     private String positionName;
     /**说明*/
     private String comment;
+    /**结构物类型*/
+    private String structureKind;
     /**结构物名称*/
     private String structureName;
     /**结构物版本*/
@@ -74,5 +76,13 @@ public class ProjectPositionCO {
 
     public void setBindStatus(Boolean bindStatus) {
         this.bindStatus = bindStatus;
+    }
+
+    public String getStructureKind() {
+        return structureKind;
+    }
+
+    public void setStructureKind(String structureKind) {
+        this.structureKind = structureKind;
     }
 }

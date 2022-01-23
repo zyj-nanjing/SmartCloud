@@ -4,13 +4,14 @@
     <resultMap id="Permission" type="PermissionDO">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="code" column="code"/>
         <result property="url" column="url"/>
         <result property="comment" column="comment"/>
         <result property="status" column="status"/>
     </resultMap>
 
     <sql id="SELECT_PERMISSION">
-        select id,name,url,comment,status from sys_permission
+        select id,name,code,url,comment,status from sys_permission
     </sql>
 
     <select id="selectPermission" resultMap="Permission">
@@ -21,16 +22,24 @@
         <include refid="SELECT_PERMISSION"/>
     </select>
 
+    <select id="selectPermissionsByRoleId" resultMap="Permission">
+        <include refid="SELECT_PERMISSION"/>
+        where id in (select  permission_id from sys_permission_role where role_id =#{roleId})
+    </select>
 
-    <insert id="save" parameterType="PermissionDO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="PermissionDO" >
         insert  into sys_permission
         (
+         id,
          name,
+         code,
          url,
          comment,
          status
         ) values (
+          #{id},
           #{name},
+          #{code},
           #{url},
           #{comment},
           1
@@ -38,9 +47,13 @@
     </insert>
 
     <update id="update" parameterType="PermissionDO">
+        update sys_permission
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null and name != ''">
                 name = #{name},
+            </if>
+            <if test="code != null and code !='' ">
+                code = #{code},
             </if>
             <if test="url != null and url !='' ">
                 url = #{url},
@@ -53,4 +66,8 @@
             </if>
         </trim>
     </update>
+
+    <delete id="clearAll">
+        delete from sys_permission where 1=1
+    </delete>
 </mapper>

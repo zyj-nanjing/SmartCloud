@@ -2,6 +2,8 @@ package www.bwsensing.com.project.system.gateway;
 
 
 import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.common.cache.ehcache.EhCacheService;
+import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.token.TokenData;
 import org.springframework.security.core.Authentication;
@@ -23,17 +25,28 @@ import java.util.List;
 public class TokenGatewayImpl implements TokenGateway {
     @Resource
     private SystemUserMapper systemUserMapper;
+    @Resource
+    private EhCacheService ehCacheService;
 
     @Override
     public TokenData getTokenInfo() {
         TokenData tokenData = new TokenData();
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        if ( null == securityContext ){
-            throw new BizException("TOKEN_IS_NULL","token不能为空");
+        if (null == ehCacheService.getTemp("USER_INFO")){
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            if ( null == securityContext ){
+                throw new BizException("TOKEN_IS_NULL","token不能为空");
+            }
+            Authentication  authority = securityContext.getAuthentication();
+            initUserAuthInfo(tokenData,authority);
+            setUserRoleAuth(tokenData,authority);
+            ehCacheService.putTemp("USER_INFO",tokenData);
+        } else {
+            Object cacheObj = ehCacheService.getTemp("USER_INFO");
+            if (StringUtils.isNotNull(cacheObj))
+            {
+                return StringUtils.cast(cacheObj);
+            }
         }
-        Authentication  authority = securityContext.getAuthentication();
-        initUserAuthInfo(tokenData,authority);
-        setUserRoleAuth(tokenData,authority);
         return tokenData;
     }
 

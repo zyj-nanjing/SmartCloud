@@ -8,7 +8,7 @@ import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.convertor.SystemUserConvertor;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.gatewayimpl.database.*;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
@@ -30,7 +30,7 @@ public class SystemUserGatewayImpl implements SystemUserGateway {
     @Resource
     private MonitorProjectMapper projectMapper;
     @Resource
-    private RoleMapper roleMapper;
+    private SystemRoleMapper roleMapper;
     @Resource
     private TokenGateway tokenGateway;
 

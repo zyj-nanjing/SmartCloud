@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import www.bwsensing.com.domain.common.UuidUtils;
-import www.bwsensing.com.domain.industry.IndustryField;
+import www.bwsensing.com.domain.monitor.industry.IndustryField;
 import www.bwsensing.com.domain.monitor.MonitorPosition;
 import www.bwsensing.com.domain.monitor.MonitorStructure;
 

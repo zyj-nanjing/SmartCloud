@@ -7,11 +7,13 @@ import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import www.bwsensing.com.api.IStructureModelService;
+import www.bwsensing.com.api.StructureModelService;
 import www.bwsensing.com.dto.export.PositionModelVo;
 import www.bwsensing.com.dto.export.StructureModelVo;
 import www.bwsensing.com.dto.command.query.BaseQuery;
@@ -29,23 +31,25 @@ import java.io.IOException;
  */
 @Validated
 @CrossOrigin
+@Api(tags = "结构物模板管理")
 @RequestMapping("/api/v1.0/monitor/structure")
 @RestController
 public class MonitorStructureController {
     @Autowired
-    private IStructureModelService structureModelService;
+    private StructureModelService structureModelService;
 
+    @ApiOperation("新增结构物模板")
     @PostMapping("/model/save")
     public Response save(@Valid @RequestBody StructureModelSaveCmd structureSaveCmd){
         return structureModelService.save(structureSaveCmd);
     }
 
-
+    @ApiOperation("修改结构物模板")
     @PostMapping("/model/update")
     public Response update(@Valid @RequestBody StructureModelUpdateCmd updateCmd){
         return structureModelService.update(updateCmd);
     }
-
+    @ApiOperation("根据结构物模板编码进行删除")
     @GetMapping("/model/delete/{code}")
     public Response delete(@PathVariable String code){
         return structureModelService.deleteStructure(code);
@@ -57,7 +61,8 @@ public class MonitorStructureController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/model/importData")
+    @ApiOperation("结构物模板Excel导入")
+    @PostMapping("/model/importData")
     public SingleResponse importData(@RequestParam MultipartFile file){
         ExcelReader excelReader = null;
         try {
@@ -82,20 +87,24 @@ public class MonitorStructureController {
         }
     }
 
+    @ApiOperation("结构物模板查询(非分页)")
     @GetMapping("/model/query")
     public MultiResponse<StructureModelCO> selectStructureShow(){
         return structureModelService.selectStructureShow();
     }
 
+    @ApiOperation("结构物模板查询(分页)")
     @PostMapping("/model/page/query")
     public PageResponse<StructureModelCO> selectStructurePage(@RequestBody BaseQuery baseQuery){
         return structureModelService.selectStructurePages(baseQuery);
     }
 
+    @ApiOperation("结构物模板查询(根据结构物编码)")
     @GetMapping("/model/query/{code}")
     public SingleResponse<StructureModelCO> selectStructureByCode(@PathVariable String code){
         return structureModelService.selectStructureByCode(code);
     }
+    @ApiOperation("结构物模板查询(根据ID)")
     @GetMapping("/model/history/query/{structureId}")
     public SingleResponse<StructureModelCO> selectStructureById(@PathVariable Integer structureId){
         return structureModelService.selectStructureById(structureId);

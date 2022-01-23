@@ -20,10 +20,29 @@ public interface PermissionMapper {
     void update(PermissionDO  permission);
 
     /**
+     * 清理所有
+     */
+    void clearAll();
+
+    /**
+     * 角色权限关联
+     * @param roleId
+     * @param permissionId
+     */
+    void insertRolePermission(Integer roleId,Integer permissionId);
+
+    /**
      * 查询所有权限
      * @return
      */
     List<PermissionDO> selectPermission();
+
+    /**
+     * 根据对应的角色编号获取路由列表
+     * @param roleId
+     * @return
+     */
+    List<PermissionDO> selectPermissionsByRoleId(Integer roleId);
 
     /**
      * 根据角色编码查询权限

@@ -1,6 +1,6 @@
 package www.bwsensing.com.domain.gateway;
 
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import java.util.List;
 
 /**

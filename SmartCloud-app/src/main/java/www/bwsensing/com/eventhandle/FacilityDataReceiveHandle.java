@@ -3,10 +3,8 @@ package www.bwsensing.com.eventhandle;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
-
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.extension.BizScenario;
@@ -42,7 +40,6 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
 
     @Resource
     private SensorMapper sensorManager;
-
 
     @Override
     public Response execute(FacilityDataReceiveEvent receiveEvent) {
@@ -87,7 +84,7 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
                 if (!isMix){
                     timestampResult.add(timestamps.get(i));
                 } else{
-                    int timeIndex = i!= 0 ? i/2:0;
+                    int timeIndex = Math.min((i / 2), timestamps.size() - 1);
                     Timestamp currentTime = timestamps.get(timeIndex);
                     if (((i+1)%2)==0) {
                         timestampResult.add(new Timestamp(currentTime.getTime() + (long) 10));
@@ -114,5 +111,4 @@ public class FacilityDataReceiveHandle implements EventHandlerI<Response, Facili
             throw new BizException("SENSOR_DATA_ANALYSE_FUNCTION_NOT_FOUND","传感器数据解析算法不存在");
         }
     }
-
 }

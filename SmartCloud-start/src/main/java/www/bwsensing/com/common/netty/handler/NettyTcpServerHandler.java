@@ -8,7 +8,6 @@ import www.bwsensing.com.common.core.event.DomainEventPublisher;
 import www.bwsensing.com.domainevent.FacilityDataReceiveEvent;
 import www.bwsensing.com.common.utills.AddressUtils;
 import www.bwsensing.com.common.utills.StringUtils;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 import www.bwsensing.com.domainevent.object.DataMessage;
-
 import javax.annotation.Resource;
 import java.util.Date;
 /**
@@ -34,7 +32,7 @@ public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
 
     private final ConcurrentHashMap<String,String> ipChannelCache = new ConcurrentHashMap<>();
 
-    private static final ConcurrentHashMap<String, List<DataMessage>> ipCache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, List<DataMessage>> IP_CACHE = new ConcurrentHashMap<>();
     @Resource
     private DomainEventPublisher domainEventPublisher;
 
@@ -45,7 +43,7 @@ public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("连接的客户端地址：{},客户端Id:{}",ctx.channel().remoteAddress(),ctx.channel().id().asShortText());
         ipChannelCache.put(ctx.channel().remoteAddress().toString(),ctx.channel().id().asShortText());
-        ipCache.put(ctx.channel().remoteAddress().toString(),new ArrayList<>());
+        IP_CACHE.put(ctx.channel().remoteAddress().toString(),new ArrayList<>());
         super.channelActive(ctx);
     }
 
@@ -80,12 +78,12 @@ public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
             String rawText = msg.toString();
             if (StringUtils.isNotEmpty(rawText)){
                 String ipAddress = ctx.channel().remoteAddress().toString();
-                if (StringUtils.isEmpty(ipCache.get(ipAddress))){
+                if (StringUtils.isEmpty(IP_CACHE.get(ipAddress))){
                     List<DataMessage> messages = new ArrayList<>();
                     messages.add(new DataMessage(timestamp,rawText));
-                    ipCache.put(ipAddress,messages);
+                    IP_CACHE.put(ipAddress,messages);
                 } else {
-                    ipCache.get(ipAddress).add(new DataMessage(timestamp,rawText));
+                    IP_CACHE.get(ipAddress).add(new DataMessage(timestamp,rawText));
                 }
                 log.debug("Data receive Client address:{}，Raw message:{}", ipAddress,msg);
             }
@@ -102,15 +100,15 @@ public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
         //客户端断开后批量保存
         String channelId = ctx.channel().id().asShortText();
         String ipAddress = ctx.channel().remoteAddress().toString();
-        if (ipCache.get(ipAddress).size()>0){
+        if (IP_CACHE.get(ipAddress).size()>0){
             Date receiveTime = new Date();
             FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
-            receiveEvent.setReceiveData(ipCache.get(ipAddress));
+            receiveEvent.setReceiveData(IP_CACHE.get(ipAddress));
             setReceiveEvent(receiveEvent,ipAddress,channelId,receiveTime);
             domainEventPublisher.transactionPublish(receiveEvent);
             log.info("facility data pushed,Client address:{}",ctx.channel().remoteAddress());
         }
-        ipCache.remove(ipAddress);
+        IP_CACHE.remove(ipAddress);
         log.info("link down ,Client address:{}",ctx.channel().remoteAddress());
     }
 
@@ -127,7 +125,7 @@ public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        log.warn("TCP Receive error:{}",cause.getLocalizedMessage());
         ctx.close();
     }
 }

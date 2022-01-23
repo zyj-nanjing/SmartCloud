@@ -15,7 +15,7 @@ import www.bwsensing.com.domain.device.alert.AlertParam;
 import www.bwsensing.com.domain.device.alert.AlertTemplate;
 import www.bwsensing.com.domain.device.alert.NotificationMethod;
 import www.bwsensing.com.domain.gateway.*;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.dto.command.AlertRoleAddCmd;

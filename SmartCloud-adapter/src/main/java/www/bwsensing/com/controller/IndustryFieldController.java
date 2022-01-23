@@ -4,16 +4,18 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import www.bwsensing.com.api.IIndustryFieldService;
+import org.springframework.web.bind.annotation.*;
+import www.bwsensing.com.api.IndustryFieldService;
 import www.bwsensing.com.dto.command.IndustryFieldSaveCmd;
 import www.bwsensing.com.dto.command.IndustryFieldUpdateCmd;
 import www.bwsensing.com.dto.clientobject.IndustryFieldCO;
 import www.bwsensing.com.dto.command.query.IndustryFileSortQuery;
+
+import javax.validation.Valid;
 
 /**
  * 行业领域
@@ -21,19 +23,22 @@ import www.bwsensing.com.dto.command.query.IndustryFileSortQuery;
  */
 @Validated
 @CrossOrigin
+@Api(tags = "行业领域管理")
 @RequestMapping("/api/v1.0/industry/filed")
 @RestController
 public class IndustryFieldController {
 
     @Autowired
-    private IIndustryFieldService industryFieldService;
+    private IndustryFieldService industryFieldService;
 
     /**
      * 保存行业领域
      * @param saveCmd
      * @return
      */
-    public Response saveIndustryField(IndustryFieldSaveCmd saveCmd){
+    @ApiOperation("新增行业领域")
+    @PostMapping("/save")
+    public Response saveIndustryField(@Valid @RequestBody IndustryFieldSaveCmd saveCmd){
         return industryFieldService.saveIndustryField(saveCmd);
     }
 
@@ -43,7 +48,9 @@ public class IndustryFieldController {
      * @param updateCmd
      * @return
      */
-    public Response updateIndustryField(IndustryFieldUpdateCmd updateCmd){
+    @ApiOperation("修改行业领域")
+    @PostMapping("/update")
+    public Response updateIndustryField(@Valid @RequestBody IndustryFieldUpdateCmd updateCmd){
         return industryFieldService.updateIndustryField(updateCmd);
     }
 
@@ -52,7 +59,9 @@ public class IndustryFieldController {
      * @param id
      * @return
      */
-    public SingleResponse<IndustryFieldCO> selectIndustryFieldById(Integer id){
+    @ApiOperation("新增行业领域")
+    @GetMapping("/query/{id}")
+    public SingleResponse<IndustryFieldCO> getIndustryFieldInfo(@PathVariable Integer id){
         return industryFieldService.selectIndustryFieldById(id);
     }
 
@@ -60,8 +69,10 @@ public class IndustryFieldController {
      * 查询所有
      * @return
      */
-    public MultiResponse<IndustryFieldCO> selectIndustryFileQuery(){
-        return industryFieldService.selectIndustryFileQuery();
+    @ApiOperation("查询行业领域(SELECT)")
+    @PostMapping("/query")
+    public MultiResponse<IndustryFieldCO> selectIndustryFileQuery(@RequestBody IndustryFileSortQuery sortQuery){
+        return industryFieldService.selectIndustryFileQuery(sortQuery);
     }
 
     /**
@@ -69,7 +80,9 @@ public class IndustryFieldController {
      * @param sortQuery
      * @return
      */
-    public PageResponse<IndustryFieldCO> selectIndustryFileBySortPage(IndustryFileSortQuery sortQuery){
+    @ApiOperation("查询行业领域分页")
+    @PostMapping("/page/query")
+    public PageResponse<IndustryFieldCO> selectIndustryFileBySortPage(@RequestBody IndustryFileSortQuery sortQuery){
         return industryFieldService.selectIndustryFileBySortPage(sortQuery);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import www.bwsensing.com.common.constant.TokenConstant;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.Md5Utils;
 import www.bwsensing.com.common.utills.TokenUtils;
 import javax.servlet.FilterChain;

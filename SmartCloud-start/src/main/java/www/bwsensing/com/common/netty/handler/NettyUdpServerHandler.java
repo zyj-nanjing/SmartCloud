@@ -15,7 +15,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import org.springframework.stereotype.Service;
 import www.bwsensing.com.domainevent.object.DataMessage;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.thread.NamedThreadFactory;
 import www.bwsensing.com.common.utills.StringUtils;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -39,7 +39,7 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
 
     public static NettyUdpServerHandler nettyUdpServerHandler;
 
-    private static final ConcurrentHashMap<String, List<DataMessage>> ipDataCache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, List<DataMessage>> IP_DATA_CACHE = new ConcurrentHashMap<>();
 
     @Resource
     private DomainEventPublisher domainEventPublisher;
@@ -70,13 +70,13 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
     private  void storageAndWait(String ipAddress,String receiveMessage){
         long currentTime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentTime);
-        if (redisService.hasKey(ipAddress)&& null != ipDataCache.get(ipAddress)){
-            ipDataCache.get(ipAddress).add(new DataMessage(timestamp,receiveMessage));
+        if (redisService.hasKey(ipAddress)&& null != IP_DATA_CACHE.get(ipAddress)){
+            IP_DATA_CACHE.get(ipAddress).add(new DataMessage(timestamp,receiveMessage));
             redisService.setCacheObject(ipAddress,receiveMessage,WAIT_TIMEOUT,TimeUnit.MILLISECONDS);
         } else {
             List<DataMessage> messages = new ArrayList<>();
             messages.add(new DataMessage(timestamp,receiveMessage));
-            ipDataCache.put(ipAddress,messages);
+            IP_DATA_CACHE.put(ipAddress,messages);
             redisService.setCacheObject(ipAddress,receiveMessage,WAIT_TIMEOUT,TimeUnit.MILLISECONDS);
             commitThreadWaitBatch(ipAddress);
         }
@@ -86,15 +86,15 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
         nettyUdpThread.submit(() -> {
             while(true){
                 if(!redisService.hasKey(ipAddress)){
-                    if (ipDataCache.get(ipAddress).size()>0){
+                    if (IP_DATA_CACHE.get(ipAddress).size()>0){
                         Date receiveTime = new Date();
                         FacilityDataReceiveEvent receiveEvent = new FacilityDataReceiveEvent();
-                        receiveEvent.setReceiveData(ipDataCache.get(ipAddress));
+                        receiveEvent.setReceiveData(IP_DATA_CACHE.get(ipAddress));
                         setReceiveEvent(receiveEvent,ipAddress,receiveTime);
                         domainEventPublisher.transactionPublish(receiveEvent);
                         log.info("facility data pushed,Client address:{}",ipAddress);
                     }
-                    ipDataCache.remove(ipAddress);
+                    IP_DATA_CACHE.remove(ipAddress);
                     log.info("link down ,Client address:{}",ipAddress);
                     break;
                 } else {

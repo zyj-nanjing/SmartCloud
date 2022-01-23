@@ -21,6 +21,8 @@ public class SystemUserDO {
     private String role;
     private Integer operateGroupId;
     private Boolean enabled;
+    private Boolean isAdmin;
+    private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Date lastLoginTime;
     private Boolean lastLease;

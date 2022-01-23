@@ -6,7 +6,6 @@ import www.bwsensing.com.common.constant.ColaConstant;
 import www.bwsensing.com.common.core.event.EventHandlerI;
 import www.bwsensing.com.common.core.event.EventHub;
 import www.bwsensing.com.event.EventI;
-
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 

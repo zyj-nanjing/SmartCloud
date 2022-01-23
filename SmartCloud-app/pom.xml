@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>www.bwsensing.com</groupId>
 		<artifactId>SmartCloud</artifactId>
-		<version>0.1.4</version>
+		<version>0.8.2</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>SmartCloud-app</artifactId>
@@ -48,5 +48,15 @@
 							</plugin>
 					</plugins>
 			</pluginManagement>
-	</build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

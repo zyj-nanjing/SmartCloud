@@ -16,6 +16,12 @@ public class ViewMenuTreeCO extends DTO {
     private Integer id;
     /**名称*/
     private String name;
+    /**是否为前端路径*/
+    private Boolean isView;
+    /**视图类型*/
+    private String menuKind;
+    /**API路径*/
+    private String apiPath;
     /**前端路径*/
     private String path;
     /**组件*/

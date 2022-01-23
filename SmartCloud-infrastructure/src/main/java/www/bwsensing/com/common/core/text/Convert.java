@@ -2,7 +2,6 @@ package www.bwsensing.com.common.core.text;
 
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.common.utills.StringUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,6 +10,7 @@ import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Set;
+
 
 /**
  * 类型转换器

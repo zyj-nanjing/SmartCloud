@@ -4,7 +4,7 @@ import com.alibaba.cola.dto.MultiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.IItemsService;
+import www.bwsensing.com.api.ItemsService;
 import www.bwsensing.com.dto.clientobject.MonitorItemsCO;
 import www.bwsensing.com.dto.command.query.ItemsQuery;
 
@@ -17,7 +17,7 @@ import www.bwsensing.com.dto.command.query.ItemsQuery;
 @RestController
 public class MonitorItemController {
     @Autowired
-    private IItemsService itemsService;
+    private ItemsService itemsService;
 
     @PostMapping("/query")
     public MultiResponse<MonitorItemsCO> selectMonitorItemsBySort(@RequestBody ItemsQuery query){

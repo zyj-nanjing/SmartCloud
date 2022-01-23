@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.convertor.OperateGroupConvertor;
 import www.bwsensing.com.domain.gateway.OperateGroupGateway;
-import www.bwsensing.com.domain.system.OperateGroup;
+import www.bwsensing.com.domain.system.user.OperateGroup;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
 import javax.annotation.Resource;

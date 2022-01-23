@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SystemClientMapper">
+    <resultMap type="SystemClientDO" id="SystemClientResult">
+        <result property="id"    column="id"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientShortName"    column="client_short_name"    />
+        <result property="clientLogo"    column="client_logo"    />
+        <result property="country"    column="country"    />
+        <result property="clientPhone"    column="client_phone"    />
+        <result property="clientFax"    column="client_fax"    />
+        <result property="clientAddress"    column="client_address"    />
+        <result property="email"    column="email"    />
+        <result property="comesFrom"    column="comes_from"    />
+        <result property="level"    column="level"    />
+        <result property="clientType"    column="client_type"    />
+        <result property="clientStatus"    column="client_status"    />
+        <result property="clientDesc"    column="client_desc"    />
+        <result property="creator"    column="creator"    />
+        <result property="updater"    column="updater"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="SystemClientDO" id="SystemClientInfo">
+        <result property="id"    column="id"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientShortName"    column="client_short_name"    />
+        <result property="clientLogo"    column="client_logo"    />
+        <result property="country"    column="country"    />
+        <result property="clientPhone"    column="client_phone"    />
+        <result property="clientFax"    column="client_fax"    />
+        <result property="clientAddress"    column="client_address"    />
+        <result property="email"    column="email"    />
+        <result property="comesFrom"    column="comes_from"    />
+        <result property="level"    column="level"    />
+        <result property="clientType"    column="client_type"    />
+        <result property="clientStatus"    column="client_status"    />
+        <result property="clientDesc"    column="client_desc"    />
+        <result property="creator"    column="creator"    />
+        <result property="updater"    column="updater"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <collection property="releaseFields" ofType="IndustryField" column="id" select="selectFieldTemplateByCid"/>
+    </resultMap>
+
+    <resultMap id="IndustryField" type="IndustryFieldDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="systemClientQuery">
+        select id, client_name, client_short_name, client_logo, country, client_phone,
+               client_fax, client_address, email, comes_from, level, client_type, client_status,
+               client_desc, creator, updater, create_time, update_time from sys_client
+    </sql>
+
+    <select id="selectClientBySort" parameterType="SystemClientDO" resultMap="SystemClientResult">
+        <include refid="systemClientQuery"/>
+        <where>
+            <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
+            <if test="clientShortName != null  and clientShortName != ''"> and client_short_name like concat('%', #{clientShortName}, '%')</if>
+            <if test="clientLogo != null  and clientLogo != ''"> and client_logo = #{clientLogo}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="clientPhone != null  and clientPhone != ''"> and client_phone = #{clientPhone}</if>
+            <if test="clientFax != null  and clientFax != ''"> and client_fax = #{clientFax}</if>
+            <if test="clientAddress != null  and clientAddress != ''"> and client_address = #{clientAddress}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="comesFrom != null  and comesFrom != ''"> and comes_from = #{comesFrom}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="clientType != null  and clientType != ''"> and client_type = #{clientType}</if>
+            <if test="clientStatus != null  and clientStatus != ''"> and client_status = #{clientStatus}</if>
+            <if test="clientDesc != null  and clientDesc != ''"> and client_desc = #{clientDesc}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="updater != null  and updater != ''"> and updater = #{updater}</if>
+        </where>
+    </select>
+
+    <select id="validSystemClientBySort" parameterType="SystemClientDO" resultMap="SystemClientResult">
+        <include refid="systemClientQuery"/>
+        <where>
+            <if test="clientName != null  and clientName != ''"> and client_name = #{clientName}</if>
+            <if test="clientShortName != null  and clientShortName != ''"> and client_short_name = #{clientShortName}</if>
+        </where>
+    </select>
+
+    <select id="getClientById" parameterType="Integer" resultMap="SystemClientInfo">
+        <include refid="systemClientQuery"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectFieldTemplateByCid" resultMap="IndustryField">
+        select  * from sys_industry_field where id in (select  field_id from sys_client_field_relate where client_id =#{cid})
+    </select>
+
+    <insert id="addClient" parameterType="SystemClientDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_client
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientName != null">client_name,</if>
+            <if test="clientShortName != null">client_short_name,</if>
+            <if test="clientLogo != null">client_logo,</if>
+            <if test="country != null">country,</if>
+            <if test="clientPhone != null">client_phone,</if>
+            <if test="clientFax != null">client_fax,</if>
+            <if test="clientAddress != null">client_address,</if>
+            <if test="email != null">email,</if>
+            <if test="comesFrom != null">comes_from,</if>
+            <if test="level != null">level,</if>
+            <if test="clientType != null">client_type,</if>
+            <if test="clientStatus != null">client_status,</if>
+            <if test="clientDesc != null">client_desc,</if>
+            <if test="creator != null">creator,</if>
+            <if test="updater != null">updater,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientName != null">#{clientName},</if>
+            <if test="clientShortName != null">#{clientShortName},</if>
+            <if test="clientLogo != null">#{clientLogo},</if>
+            <if test="country != null">#{country},</if>
+            <if test="clientPhone != null">#{clientPhone},</if>
+            <if test="clientFax != null">#{clientFax},</if>
+            <if test="clientAddress != null">#{clientAddress},</if>
+            <if test="email != null">#{email},</if>
+            <if test="comesFrom != null">#{comesFrom},</if>
+            <if test="level != null">#{level},</if>
+            <if test="clientType != null">#{clientType},</if>
+            <if test="clientStatus != null">#{clientStatus},</if>
+            <if test="clientDesc != null">#{clientDesc},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateClient" parameterType="SystemClientDO">
+        update sys_client
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientName != null">client_name = #{clientName},</if>
+            <if test="clientShortName != null">client_short_name = #{clientShortName},</if>
+            <if test="clientLogo != null">client_logo = #{clientLogo},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="clientPhone != null">client_phone = #{clientPhone},</if>
+            <if test="clientFax != null">client_fax = #{clientFax},</if>
+            <if test="clientAddress != null">client_address = #{clientAddress},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="comesFrom != null">comes_from = #{comesFrom},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="clientType != null">client_type = #{clientType},</if>
+            <if test="clientStatus != null">client_status = #{clientStatus},</if>
+            <if test="clientDesc != null">client_desc = #{clientDesc},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteClientById" parameterType="Integer">
+        delete from sys_client where id = #{id}
+    </delete>
+
+    <delete id="deleteClientByIds" parameterType="String">
+        delete from sys_client where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addClientFieldRelate" >
+        insert into sys_client_field_relate values (#{clientId},#{fieldId})
+    </insert>
+
+    <delete id="deleteClientFieldRelate">
+        delete from sys_client_field_relate where client_id = #{clientId}
+    </delete>
+</mapper>

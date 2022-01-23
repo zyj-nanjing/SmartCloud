@@ -1,7 +1,7 @@
 package www.bwsensing.com.convertor;
 
 import org.springframework.beans.BeanUtils;
-import www.bwsensing.com.domain.system.OperateGroup;
+import www.bwsensing.com.domain.system.user.OperateGroup;
 import www.bwsensing.com.gatewayimpl.database.dataobject.OperateGroupDO;
 
 /**

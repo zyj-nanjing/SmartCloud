@@ -42,7 +42,7 @@ public class MonitorDataMapperImpl extends BaseMapper implements MonitorDataMapp
 
     @Override
     public Integer queryMonitorDataSize(String sn) {
-        String sql = "select count(*) from sensor_data where sn ="+sn;
+        String sql = "select count(*) from smart_cloud.sensor_data where sn ="+sn;
         return jdbcTemplate.queryForObject(sql,Integer.class);
     }
 

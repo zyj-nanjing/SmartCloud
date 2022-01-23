@@ -14,11 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.api.IUserAuthService;
+import www.bwsensing.com.api.UserAuthService;
 import www.bwsensing.com.common.utills.Md5Utils;
 import www.bwsensing.com.common.utils.ServletUtils;
 import www.bwsensing.com.common.constant.TokenConstant;
-import www.bwsensing.com.common.redis.RedisService;
+import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.TokenUtils;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @CatchAndLog
 @Component
-public class UserAuthServiceImpl implements IUserAuthService {
+public class UserAuthServiceImpl implements UserAuthService {
     private static final String USER_TOKEN_KEY_FORMAT = "TOKEN_KEY_";
     @Resource
     private SystemUserGateway systemUserGateway;

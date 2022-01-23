@@ -1,0 +1,67 @@
+package www.bwsensing.com.dto.command;
+
+import com.alibaba.cola.dto.Command;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
+/**
+ * @author macos-zyj
+ */
+@Data
+@ApiModel(value="菜单新增",description="菜单新增")
+public class SystemMenuSaveCmd extends Command {
+    /**名称*/
+    @ApiModelProperty(value = "菜单名称",example="systemManger",required = true)
+    @NotBlank( message ="菜单名称不能为空!")
+    private String name;
+    /**标题*/
+    @ApiModelProperty(value ="菜单标题",example="系统管理",required = true)
+    @NotBlank( message ="菜单标题不能为空!")
+    private String title;
+    /**图标*/
+    @ApiModelProperty(value = "菜单图标",example="menu")
+    private String icon;
+    /**是否为前端视图菜单*/
+    @ApiModelProperty(value = "是否为前端接口",example= "true",required = true)
+    @NotNull(message="是否为前端接口不能为空!")
+    private Boolean isView;
+    /**视图类型*/
+    @ApiModelProperty(value = "视图类别",example= "F",required = true)
+    @NotBlank(message="视图类型不能为空!")
+    private String menuKind;
+    /**后端路由*/
+    @ApiModelProperty(value = "后端接口路径",example= "/user/login")
+    private String apiPath;
+    /**权限标识*/
+    @ApiModelProperty(value = "权限编码",example= "SYS_MENU")
+    @NotBlank( message ="权限编码不能为空!")
+    private String roleCode;
+    /**前端路径*/
+    @ApiModelProperty(value = "前端路径",example= "menu")
+    private String path;
+    /**组件*/
+    @ApiModelProperty(value = "前端组件",example= "menu")
+    private String component;
+    /**是否隐藏*/
+    @ApiModelProperty(value = "是否隐藏",example= "true")
+    private Boolean hidden;
+    /**是否长显示*/
+    @ApiModelProperty(value = "是否长显示",example= "true")
+    private Boolean alwaysShow;
+    /**重定向地址*/
+    @ApiModelProperty(value = "重定向地址")
+    private String redirect;
+    /**是否为根节点*/
+    @ApiModelProperty(value = "是否为根节点",required=true)
+    @NotNull( message ="是否为根节点不能为空!")
+    private Boolean isBaseNode;
+    /**上层节点*/
+    @ApiModelProperty(value = "上层节点")
+    private Integer upperNode;
+    private String creator;
+    private Date createTime;
+}

@@ -1,10 +1,11 @@
 package www.bwsensing.com.common.auth.service;
 
-
-import com.alibaba.cola.exception.BizException;
+import cn.hutool.core.util.ArrayUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
+import org.springframework.stereotype.Service;
+import com.alibaba.cola.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,21 +16,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import top.dcenter.ums.security.core.oauth.enums.ErrorCodeEnum;
 import top.dcenter.ums.security.core.oauth.exception.RegisterUserFailureException;
 import top.dcenter.ums.security.core.oauth.exception.UserNotExistException;
 import top.dcenter.ums.security.core.oauth.service.UmsUserDetailsService;
+import www.bwsensing.com.common.constant.SecurityConstants;
 import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.domain.gateway.SystemUserGateway;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.gateway.AuthenticationGateway;
+import www.bwsensing.com.domain.system.token.UserInfo;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  *  用户密码与手机短信登录与注册服务：<br><br>
@@ -42,15 +43,15 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserDetailsServiceImpl implements UmsUserDetailsService {
-    @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
-    @Autowired(required = false)
+
+    @Autowired
     private UserCache userCache;
 
     @Resource
-    private SystemUserGateway systemUserGateway;
+    private SystemUserMapper systemUserMapper;
 
     @Resource
-    private SystemUserMapper systemUserMapper;
+    private AuthenticationGateway authenticationGateway;
     /**
      * 用于密码加解密
      */
@@ -70,34 +71,61 @@ public class UserDetailsServiceImpl implements UmsUserDetailsService {
         try
         {
             // 从缓存中查询用户信息
-            UserDetails userDetails = getUserDetailFromCache(username);
-            if (null != userDetails)
+            UserDetails cacheDetails = getUserDetailFromCache(username);
+            if (null != cacheDetails)
             {
-                return userDetails;
+                log.info("北微云平台 ======>: 登录用户名：{}, 加载成功(cache)", username);
+                return cacheDetails;
             }
             // 根据用户名获取用户信息
-            SystemUser sqlResultUser = systemUserGateway.loadUserByAccountName(username);
+            UserInfo userInfo = authenticationGateway.getUserByName(username);
             // 获取用户信息逻辑。。。
-            if (StringUtils.isNotEmpty(sqlResultUser.getAccountName())){
+            if (null != userInfo){
                 // 示例：只是从用户登录日志表中提取的信息，
-                log.info("北微云平台 ======>: 登录用户名：{}, 登录成功", username);
-                return new User(username,
-                        sqlResultUser.getPassword(),
-                        sqlResultUser.isEnabled(),
-                        sqlResultUser.isAccountNonExpired(),
-                        true,
-                        sqlResultUser.isAccountNonLocked(),
-                        AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VISIT, ROLE_USER"));
+                log.info("北微云平台 ======>: 登录用户名：{}, 加载成功", username);
+                UserDetails loadDetails = getUserDetails(userInfo);
+                userCache.putUserInCache(loadDetails);
+                return loadDetails;
             } else{
                 throw new BizException("该用户不存在");
             }
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             String msg = String.format("北微云平台======>: 登录用户名：%s, 登录失败: %s", username, e.getMessage());
             log.error(msg);
             throw new UserNotExistException(ErrorCodeEnum.QUERY_USER_INFO_ERROR, e, username);
         }
+    }
+
+    private User getUserDetails(UserInfo info){
+        if (info == null || info.getSystemUser() == null) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
+        Set<String> dbAuthsSet = new HashSet<>();
+        if (ArrayUtil.isNotEmpty(info.getUserRoles())) {
+            // 获取角色
+            Arrays.stream(info.getUserRoles()).forEach(role -> dbAuthsSet.add(SecurityConstants.ROLE + role));
+            // 获取资源
+            dbAuthsSet.addAll(Arrays.asList(info.getPermissions()));
+        }
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils
+                .createAuthorityList(dbAuthsSet.toArray(new String[0]));
+        SystemUser user = info.getSystemUser();
+        // 构造security用户
+
+        return new SmartUser(
+                user.getId(),
+                user.getGroupId(),
+                user.getAccountName(),
+                user.getPassword(),
+                user.getMobile(),
+                user.getEnabled(),
+                user.getAccountNonExpired(),
+                true,
+                user.getAccountNonLocked(),
+                authorities);
     }
 
     @Override
@@ -126,7 +154,6 @@ public class UserDetailsServiceImpl implements UmsUserDetailsService {
                 .authorities(grantedAuthorities)
                 .build();
         // @formatter:off
-
         // 把用户信息存入缓存
         if (userCache != null)
         {

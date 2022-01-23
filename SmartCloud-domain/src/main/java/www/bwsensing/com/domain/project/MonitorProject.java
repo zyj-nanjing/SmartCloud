@@ -4,7 +4,7 @@ import com.alibaba.cola.exception.Assert;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.domain.monitor.MonitorStructure;
 
 /**

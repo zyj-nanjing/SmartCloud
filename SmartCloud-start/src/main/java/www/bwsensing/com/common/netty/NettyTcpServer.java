@@ -1,19 +1,18 @@
 package www.bwsensing.com.common.netty;
 
-import io.netty.bootstrap.ServerBootstrap;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
-import lombok.extern.slf4j.Slf4j;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.nio.NioEventLoopGroup;
 import org.springframework.stereotype.Service;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import www.bwsensing.com.common.constant.NettyConstants;
 import www.bwsensing.com.common.netty.initializer.NettyTcpInitializer;
-
-import javax.annotation.Resource;
 
 /**
  * @author 朱永杰
@@ -44,6 +43,7 @@ public class NettyTcpServer {
             channelHttp.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            log.error("TCP Service start error cause:{}",e.getMessage());
         } finally {
             // 关闭EventLoopGroup，释放掉所有资源包括创建的线程
             childGroup.shutdownGracefully();

@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import www.bwsensing.com.api.ISensorModelService;
+import www.bwsensing.com.api.SensorModelService;
 import www.bwsensing.com.dto.export.SensorModelVO;
 import www.bwsensing.com.dto.clientobject.ImportResultCO;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class SensorModelDataListener extends AnalysisEventListener<SensorModelVO
 
     private static final int BATCH_COUNT = 100;
 
-    private ISensorModelService sensorModelService;
+    private SensorModelService sensorModelService;
 
     private List<SensorModelVO> importCollection = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class SensorModelDataListener extends AnalysisEventListener<SensorModelVO
 
     }
 
-    public SensorModelDataListener(ISensorModelService sensorModelService) {
+    public SensorModelDataListener(SensorModelService sensorModelService) {
         this.sensorModelService = sensorModelService;
     }
 

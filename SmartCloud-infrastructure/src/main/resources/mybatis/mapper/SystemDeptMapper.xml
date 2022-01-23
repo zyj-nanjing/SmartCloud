@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SystemDeptMapper">
+
+    <resultMap type="SystemDeptDO" id="SystemDeptResult">
+        <result property="id"    column="id"    />
+        <result property="structureId"    column="structure_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="excludeId"    column="exclude_id"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="systemDeptQuery">
+        select id, structure_id, parent_id, ancestors, dept_name, order_number, leader, phone, email, status, exclude_id from sys_dept
+    </sql>
+
+    <select id="selectSystemDeptBySort" parameterType="SystemDeptDO" resultMap="SystemDeptResult">
+        <include refid="systemDeptQuery"/>
+        <where>
+            <if test="structureId != null "> and structure_id = #{structureId}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="orderNumber != null "> and order_number = #{orderNumber}</if>
+            <if test="leader != null  and leader != ''"> and leader = #{leader}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="excludeId != null "> and exclude_id = #{excludeId}</if>
+        </where>
+        order by parent_id
+    </select>
+
+
+    <select id="validDeptBySort" parameterType="SystemDeptDO" resultMap="SystemDeptResult">
+        <include refid="systemDeptQuery"/>
+        <where>
+            <if test="structureId != null "> and structure_id = #{structureId}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name =  #{deptName}</if>
+        </where>
+    </select>
+
+    <select id="getSystemDeptById" parameterType="Integer" resultMap="SystemDeptResult">
+        select t.id, t.structure_id, t.parent_id, t.ancestors, t.dept_name, t.order_number, t.leader, t.phone, t.email, t.status, t.exclude_id, p.dept_name as parent_name
+        from sys_dept t
+                 left join sys_dept p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+
+
+    <select id="getDepartmentByStructureId" parameterType="SystemDeptDO" resultMap="SystemDeptResult">
+        select t.id, t.structure_id, t.parent_id, t.ancestors, t.dept_name, t.order_number, t.leader, t.phone, t.email, t.status, t.exclude_id, p.dept_name as parent_name
+        from sys_dept t
+                 left join sys_dept p on p.id = t.parent_id
+        where t.structure_id = #{structureId}
+    </select>
+
+    <insert id="addSystemDept" parameterType="SystemDeptDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="structureId != null">structure_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="leader != null">leader,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="status != null">status,</if>
+            <if test="excludeId != null">exclude_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="structureId != null">#{structureId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="status != null">#{status},</if>
+            <if test="excludeId != null">#{excludeId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSystemDept" parameterType="SystemDeptDO">
+        update sys_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="structureId != null">structure_id = #{structureId},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="excludeId != null">exclude_id = #{excludeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from sys_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from sys_dept where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

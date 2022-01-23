@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.DeptTemplateMapper">
+
+    <resultMap type="SysDeptTemplateDO" id="DeptTemplate">
+        <result property="id"    column="id"    />
+        <result property="structureId"    column="structure_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="parentName"    column="parent_name"    />
+        <result property="excludeId"    column="exclude_id"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <sql id="DeptTemplateQuery">
+        select id, structure_id, parent_id, ancestors, dept_name, order_num, parent_name, exclude_id from sys_dept_template
+    </sql>
+
+    <select id="queryDeptTemplateBySort" parameterType="SysDeptTemplateDO" resultMap="DeptTemplate">
+        <include refid="DeptTemplateQuery"/>
+        <where>
+            <if test="structureId != null "> and structure_id = #{structureId}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="parentName != null  and parentName != ''"> and parent_name like concat('%', #{parentName}, '%')</if>
+            <if test="excludeId != null "> and exclude_id = #{excludeId}</if>
+        </where>
+        order by parent_id
+    </select>
+
+    <select id="validDeptTemplateBySort" parameterType="SysDeptTemplateDO" resultMap="DeptTemplate">
+        <include refid="DeptTemplateQuery"/>
+        <where>
+            <if test="structureId != null "> and structure_id = #{structureId}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name = #{deptName}</if>
+        </where>
+        order by parent_id
+    </select>
+
+    <select id="getDeptTemplateById" parameterType="Integer" resultMap="DeptTemplate">
+        select t.id, t.structure_id, t.parent_id, t.ancestors, t.dept_name, t.order_num, t.parent_name, t.exclude_id, p.dept_name as parent_name
+        from sys_dept_template t
+                 left join sys_dept_template p on p.id = t.parent_id
+        where t.id = #{id}
+    </select>
+
+    <insert id="addDeptTemplate" parameterType="SysDeptTemplateDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dept_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="structureId != null">structure_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="parentName != null">parent_name,</if>
+            <if test="excludeId != null">exclude_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="structureId != null">#{structureId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="parentName != null">#{parentName},</if>
+            <if test="excludeId != null">#{excludeId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeptTemplate" parameterType="SysDeptTemplateDO">
+        update sys_dept_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="parentName != null">parent_name = #{parentName},</if>
+            <if test="excludeId != null">exclude_id = #{excludeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from sys_dept_template where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from sys_dept_template where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -5,7 +5,7 @@ import java.util.Date;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.device.SensorInfo;
 import www.bwsensing.com.domain.device.SensorModel;
-import www.bwsensing.com.domain.system.OperateGroup;
+import www.bwsensing.com.domain.system.user.OperateGroup;
 /**
  * 告警通知
  * @author macos-zyj

@@ -12,7 +12,7 @@ import java.util.TreeSet;
  */
 public class MonitorPositionValid {
     public static void validatePosition(List<MonitorPositionModel> positionList){
-        if(chekPositionNameRepeat(positionList)){
+        if(checkPositionNameRepeat(positionList)){
             throw new BizException("POSITION_NOT_REPEAT","测点名称不能重复");
         }
     }
@@ -22,7 +22,7 @@ public class MonitorPositionValid {
      * @param positionList
      * @return
      */
-    private static Boolean chekPositionNameRepeat(List<MonitorPositionModel> positionList) {
+    private static Boolean checkPositionNameRepeat(List<MonitorPositionModel> positionList) {
         Set<MonitorPositionModel> set = new TreeSet<>(Comparator.comparing(MonitorPositionModel::getName));
         set.addAll(positionList);
         return set.size() < positionList.size();

@@ -18,6 +18,11 @@ public class PermissionDO {
     private String name;
 
     /**
+     * 权限Code
+     */
+    private String code;;
+
+    /**
      * 授权url
      */
     private String url;

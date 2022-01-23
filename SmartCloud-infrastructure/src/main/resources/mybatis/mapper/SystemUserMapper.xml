@@ -15,6 +15,8 @@
         <result property="role" column="role"/>
         <result property="operateGroupId" column="operate_group_id"/>
         <result property="enabled" column="enabled"/>
+        <result property="isAdmin" column="is_admin"/>
+        <result property="accountNonExpired" column="account_non_expired"/>
         <result property="accountNonLocked" column="account_non_locked"/>
         <result property="lastLoginTime" column="last_login_time"/>
         <result property="lastLease" column="last_lease"/>
@@ -25,7 +27,7 @@
 
     <sql id="SELECT_SYSTEM_USER">
         select id,work_number,account_name,password,role,role_id,
-               user_name,avatar,mobile,email,position,operate_group_id,enabled,account_non_locked,
+               user_name,avatar,mobile,email,position,operate_group_id,enabled,is_admin,account_non_locked,account_non_expired,
                last_login_time,last_lease,lease_start_time,lease_time,enable_notification from system_user
     </sql>
 

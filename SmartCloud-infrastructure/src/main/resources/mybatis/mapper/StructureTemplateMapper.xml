@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.StructureTemplateMapper">
+
+    <resultMap type="SysStructureTemplateDO" id="StructureTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap type="SysStructureTemplateDO" id="StructureTemplateInfo">
+        <result property="id"    column="id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+        <collection property="belowField" ofType="IndustryField" column="id" select="selectFieldTemplateByTid"/>
+        <collection property="deptTemplates" ofType="DeptTemplate" column="id" select="selectDeptTemplateByTid"/>
+    </resultMap>
+
+    <resultMap type="SysDeptTemplateDO" id="DeptTemplate">
+        <result property="id"    column="id"    />
+        <result property="structureId"    column="structure_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="parentName"    column="parent_name"    />
+        <result property="excludeId"    column="exclude_id"    />
+        <result property="parentName" column="parent_name" />
+    </resultMap>
+
+    <resultMap id="IndustryField" type="IndustryFieldDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="sysStructureTemplateQuery">
+        select id, template_name, creator, create_time, updater, update_time from sys_structure_template
+    </sql>
+
+    <select id="selectFieldTemplateByTid" resultMap="IndustryField">
+        select  * from sys_industry_field where id in (select  field_id from structure_template_field where temp_id =#{tid})
+    </select>
+
+    <select id="selectDeptTemplateByTid" resultMap="DeptTemplate">
+        select t.id, t.structure_id, t.parent_id, t.ancestors, t.dept_name, t.order_num, t.parent_name, t.exclude_id, p.dept_name as parent_name
+        from sys_dept_template t
+                 left join sys_dept_template p on p.id = t.parent_id
+        where t.structure_id = #{tid}
+    </select>
+
+    <select id="queryStructureTemplateBySort" parameterType="SysStructureTemplateDO" resultMap="StructureTemplateResult">
+        <include refid="sysStructureTemplateQuery"/>
+        <where>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="updater != null  and updater != ''"> and updater = #{updater}</if>
+        </where>
+    </select>
+
+    <select id="validStructureTemplateBySort" parameterType="SysStructureTemplateDO" resultMap="StructureTemplateResult">
+        <include refid="sysStructureTemplateQuery"/>
+        <where>
+            <if test="templateName != null  and templateName != ''"> and template_name =  #{templateName}</if>
+        </where>
+    </select>
+
+    <select id="getStructureTemplateById" parameterType="Integer" resultMap="StructureTemplateInfo">
+        <include refid="sysStructureTemplateQuery"/>
+        where id = #{id}
+    </select>
+
+    <insert id="addStructureTemplate" parameterType="SysStructureTemplateDO" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_structure_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateStructureTemplate" parameterType="SysStructureTemplateDO">
+        update sys_structure_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from sys_structure_template where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from sys_structure_template where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addStructureTemplateFieldLink" parameterType="Integer">
+        insert into structure_template_field values(#{tempId},#{filedId})
+    </insert>
+
+    <delete id="deleteStructureTemplateFieldLink" parameterType="Integer">
+       delete from structure_template_field where temp_id =#{tempId}
+    </delete>
+
+
+
+</mapper>

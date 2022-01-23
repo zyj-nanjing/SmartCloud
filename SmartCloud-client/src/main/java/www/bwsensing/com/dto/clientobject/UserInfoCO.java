@@ -33,10 +33,12 @@ public class UserInfoCO extends DTO {
     private List<String> roles;
     /***是否有效*/
     private boolean enabled;
+    /**是否为管理员*/
+    private boolean isAdmin;
     /**账户是否被锁**/
     private boolean accountNonLocked;
     /**是否允许通知*/
-    private Boolean enableNotification;
+    private boolean enableNotification;
 
 
     public Integer getId() {

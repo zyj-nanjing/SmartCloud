@@ -7,7 +7,7 @@ import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.IMonitorService;
+import www.bwsensing.com.api.MonitorService;
 import www.bwsensing.com.dto.command.PrototypeAddCmd;
 import www.bwsensing.com.dto.command.query.PrototypeSortQuery;
 import www.bwsensing.com.dto.command.PrototypeUpdateCmd;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
 public class MonitorTypeController {
 
     @Autowired
-    private IMonitorService monitorService;
+    private MonitorService monitorService;
 
     @PostMapping("/prototype/save")
     public Response savePrototype(@Valid @RequestBody PrototypeAddCmd prototypeAddCmd){

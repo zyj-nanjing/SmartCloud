@@ -37,6 +37,7 @@ public class NettyUdpServer {
             channelHttp.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            log.error("UDP Service start error cause:{}",e.getMessage());
         } finally {
             // 关闭EventLoopGroup，释放掉所有资源包括创建的线程
             group.shutdownGracefully();

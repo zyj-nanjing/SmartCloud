@@ -1,10 +1,9 @@
 package www.bwsensing.com.dto.clientobject;
 
-import com.alibaba.cola.dto.DTO;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 import java.util.List;
+import com.alibaba.cola.dto.DTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author macos-zyj

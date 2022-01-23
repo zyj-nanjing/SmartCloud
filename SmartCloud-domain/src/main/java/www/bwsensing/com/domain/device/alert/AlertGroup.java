@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import com.alibaba.cola.exception.BizException;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.domain.device.SensorInfo;
 
 /**

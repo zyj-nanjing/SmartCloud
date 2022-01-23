@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.ISystemUserService;
+import www.bwsensing.com.api.SystemUserService;
 import www.bwsensing.com.common.constant.BizScenarioCode;
-import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
@@ -19,7 +18,7 @@ import www.bwsensing.com.dto.command.UserRegisterCmd;
 import www.bwsensing.com.dto.command.UserUpdateCmd;
 import www.bwsensing.com.domain.system.token.TokenData;
 import www.bwsensing.com.dto.clientobject.UserInfoCO;
-import www.bwsensing.com.project.system.service.IViewMenuService;
+import www.bwsensing.com.api.SystemMenuService;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -33,11 +32,11 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
     @Autowired
-    private ISystemUserService userService;
+    private SystemUserService userService;
     @Resource
     private SystemUserGateway systemUserGateway;
     @Autowired
-    private IViewMenuService viewMenuService;
+    private SystemMenuService viewMenuService;
     /**
      * 用于密码加解密
      */
@@ -50,7 +49,7 @@ public class UserController {
 
     @GetMapping("/menu")
     public MultiResponse<ViewMenuTreeCO> getViewMenus(){
-        return MultiResponse.of(viewMenuService.showViewMenuByAuth());
+        return viewMenuService.showViewMenuByAuth();
     }
 
     @PostMapping("/save/user")

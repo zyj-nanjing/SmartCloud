@@ -2,8 +2,6 @@ package www.bwsensing.com.project.visualization.domain;
 
 import lombok.Data;
 import java.sql.Timestamp;
-
-
 /**
  * @author macos-zyj
  */

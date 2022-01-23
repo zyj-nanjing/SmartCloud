@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.dto.command.UserRegisterCmd;
 import www.bwsensing.com.extensionpoint.AccountInitExtPt;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;

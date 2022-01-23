@@ -1,6 +1,6 @@
 package www.bwsensing.com.domain.gateway;
 
-import www.bwsensing.com.domain.system.OperateGroup;
+import www.bwsensing.com.domain.system.user.OperateGroup;
 /**
  * @author macos-zyj
  */

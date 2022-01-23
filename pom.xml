@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>www.bwsensing.com</groupId>
     <artifactId>SmartCloud</artifactId>
-    <version>0.1.4</version>
+    <version>0.8.2</version>
     <packaging>pom</packaging>
     <name>SmartCloud</name>
     <description> CQRS project for Spring Boot</description>
@@ -18,6 +18,8 @@
         <netty.version>4.1.66.Final</netty.version>
         <protobuf.version>3.5.1</protobuf.version>
         <power.mock.version>2.0.9</power.mock.version>
+        <swagger.version>3.0.0</swagger.version>
+        <ehcache.version>2.10.2</ehcache.version>
     </properties>
 
     <modules>
@@ -95,6 +97,22 @@
                 <type>jar</type>
             </dependency>
 
+            <!-- javassist 二进制class分析 -->
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.28.0-GA</version>
+                <type>jar</type>
+            </dependency>
+
+            <!-- Swagger3依赖 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger.version}</version>
+                <type>jar</type>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -121,6 +139,13 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.4</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
                 <type>jar</type>
             </dependency>
 

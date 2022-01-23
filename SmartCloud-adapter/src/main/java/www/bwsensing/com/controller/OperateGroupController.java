@@ -5,7 +5,7 @@ import com.alibaba.cola.dto.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.IOperateGroupService;
+import www.bwsensing.com.api.OperateGroupService;
 import www.bwsensing.com.dto.command.OperateGroupSaveCmd;
 import www.bwsensing.com.dto.command.OperateGroupUpdateCmd;
 import www.bwsensing.com.dto.clientobject.OperateGroupCO;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 public class OperateGroupController {
     @Autowired
-    private IOperateGroupService operateGroupService;
+    private OperateGroupService operateGroupService;
 
     @PostMapping("/save")
     Response saveGroup(@Valid @RequestBody OperateGroupSaveCmd saveGroup){

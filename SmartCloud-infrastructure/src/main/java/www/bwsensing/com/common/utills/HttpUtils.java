@@ -41,7 +41,7 @@ public class HttpUtils {
         try {
             HttpPost method = new HttpPost(url);
             if (paramsMap != null) {
-                List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                List<NameValuePair> paramList = new ArrayList<>();
                 for (Map.Entry<String, String> param : paramsMap.entrySet()) {
                     NameValuePair pair = new BasicNameValuePair(param.getKey(), param.getValue());
                     paramList.add(pair);
@@ -57,6 +57,7 @@ public class HttpUtils {
             log.error("http request failed",e);
         } finally {
             try {
+                assert response != null;
                 response.close();
             } catch (Exception e) {
                 log.error("",e);

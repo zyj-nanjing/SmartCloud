@@ -6,7 +6,7 @@ import com.alibaba.cola.dto.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.IPermissionService;
+import www.bwsensing.com.api.PermissionService;
 import www.bwsensing.com.dto.command.query.BaseQuery;
 import www.bwsensing.com.dto.command.PermissionSaveCmd;
 import www.bwsensing.com.dto.command.PermissionUpdateCmd;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 public class PermissionController {
     @Autowired
-    private IPermissionService permissionService;
+    private PermissionService permissionService;
 
     @PostMapping("/save")
     public Response save(@Valid @RequestBody PermissionSaveCmd saveCmd){

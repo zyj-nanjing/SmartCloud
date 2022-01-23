@@ -1,6 +1,5 @@
 package www.bwsensing.com.controller;
 
-import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.IUserAuthService;
-import www.bwsensing.com.dto.clientobject.ViewMenuTreeCO;
+import www.bwsensing.com.api.UserAuthService;
 import www.bwsensing.com.dto.command.UserLoginCmd;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,7 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     @Autowired
-    private IUserAuthService authService;
+    private UserAuthService authService;
 
 
     @PostMapping("/login")

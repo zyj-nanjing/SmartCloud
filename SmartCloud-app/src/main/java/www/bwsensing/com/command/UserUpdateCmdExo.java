@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.domain.gateway.SystemUserGateway;
-import www.bwsensing.com.domain.system.SystemUser;
+import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.dto.command.UserUpdateCmd;
 import www.bwsensing.com.extensionpoint.UserUpdateExtPt;
 import www.bwsensing.com.gatewayimpl.database.OperateGroupMapper;

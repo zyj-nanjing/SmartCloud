@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.SystemRoleMapper">
+    <resultMap id="SystemRole" type="SystemRoleDO">
+        <result column="id" property="id"/>
+        <result column="role_code" property="roleCode"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_sort" property="roleSort"/>
+        <result column="data_scope" property="dataScope"/>
+        <result column="role_status" property="roleStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="flag" property="flag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="SELECT_ROLE">
+         select  id,role_code,role_name,role_sort,data_scope,role_status,del_flag,flag,creator,create_time,updater,update_time from system_role
+    </sql>
+
+    <select id="getUserRoleByCode" resultMap="SystemRole">
+        <include refid="SELECT_ROLE"/>
+        where role_code = #{roleCode}
+    </select>
+
+
+    <select id="getUserRoleById" resultMap="SystemRole">
+        <include refid="SELECT_ROLE"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectAllRole" resultMap="SystemRole">
+        <include refid="SELECT_ROLE"/>
+    </select>
+
+    <select id="countUserRoleSizeByCode" parameterType="String" resultType="Integer">
+        select  count(id) from system_role
+        where role_code =#{roleCode}
+    </select>
+
+    <select id="countUserRoleByName" parameterType="String" resultType="Integer">
+        select  count(id) from system_role
+        where role_code =#{roleCode}
+    </select>
+
+    <select id="selectRoleByUserId" resultMap="SystemRole">
+        <include refid="SELECT_ROLE"/>
+        where id in (select role_id from system_user_role where user_id =#{userId})
+    </select>
+
+    <select id="selectRoleBySort" parameterType="SystemRoleDO" resultMap="SystemRole">
+        <include refid="SELECT_ROLE"/>
+        <where>
+            <if test="roleCode != null and roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
+            <if test="roleName != null and roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
+        </where>
+    </select>
+
+    <insert id="saveUserRole" parameterType="SystemRoleDO"
+            keyProperty="id" useGeneratedKeys="true">
+        insert into system_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleCode != null and roleCode != ''">role_code,</if>
+            <if test="roleName != null and roleName != ''">role_name,</if>
+            <if test="roleSort != null">role_sort,</if>
+            <if test="dataScope != null">data_scope,</if>
+            <if test="roleStatus != null">role_status,</if>
+            <if test="1==1">del_flag,</if>
+            <if test="1==1">flag,</if>
+            <if test="creator != null and creator != ''">creator,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleCode != null and roleCode != ''">#{roleCode},</if>
+            <if test="roleName != null and roleName != ''">#{roleName},</if>
+            <if test="roleSort != null">#{roleSort},</if>
+            <if test="dataScope != null">#{dataScope},</if>
+            <if test="roleStatus != null">#{roleStatus},</if>
+            <if test="1==1">0,</if>
+            <if test="1==1">0,</if>
+            <if test="creator != null and creator != ''">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserRole" parameterType="SystemRoleDO">
+        UPDATE system_role
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null and roleName != ''">
+                role_name = #{roleName},
+            </if>
+            <if test="roleSort != null ">
+                role_sort = #{roleSort},
+            </if>
+            <if test="dataScope != null ">
+                data_scope = #{dataScope},
+            </if>
+            <if test="roleStatus != null ">
+                role_status = #{roleSatus},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="flag != null">
+                 flag = #{flag},
+            </if>
+            <if test="updater != null and creator != ''">
+                updater = #{updater},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <delete id="deleteMenuRoleByRoleId" parameterType="Integer">
+        delete  from sys_role_menu where role_id =#{roleId}
+    </delete>
+
+    <insert id="insertMenuRole" parameterType="Integer">
+        insert into sys_role_menu
+        values (#{roleId},#{menuId})
+    </insert>
+</mapper>

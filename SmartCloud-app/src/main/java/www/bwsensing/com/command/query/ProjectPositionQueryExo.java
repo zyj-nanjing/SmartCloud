@@ -26,9 +26,8 @@ public class ProjectPositionQueryExo {
     public MultiResponse<ProjectPositionCO> execute(Integer projectId){
         List<ProjectPositionCO> projectPositions = new ArrayList<>(16);
         MonitorProjectDO projectDataObject = projectMapper.selectMonitorProjectById(projectId);
-        projectDataObject.getStructureArray().forEach( structureDataObject ->{
-            projectPositions.addAll(toProjectsPosition(structureDataObject));
-        });
+        projectDataObject.getStructureArray().forEach( structureDataObject ->
+                projectPositions.addAll(toProjectsPosition(structureDataObject)));
         return MultiResponse.of(projectPositions);
     }
 
@@ -36,9 +35,7 @@ public class ProjectPositionQueryExo {
     private List<ProjectPositionCO> toProjectsPosition(MonitorStructureDO structureDataObject){
         List<MonitorPositionDO> positionArray = structureDataObject.getPositionList();
         List<ProjectPositionCO> projectPositions = new ArrayList<>(16);
-        positionArray.forEach( position ->{
-            projectPositions.add(initPositionData(position,structureDataObject));
-        });
+        positionArray.forEach( position -> projectPositions.add(initPositionData(position,structureDataObject)));
         return projectPositions;
     }
 
@@ -46,7 +43,8 @@ public class ProjectPositionQueryExo {
         ProjectPositionCO clientObject = new ProjectPositionCO();
         clientObject.setId(positionData.getId());
         clientObject.setPositionName(positionData.getName());
-        clientObject.setStructureName(structureData.getStructureName());
+        clientObject.setStructureName(structureData.getName());
+        clientObject.setStructureKind(structureData.getStructureName());
         clientObject.setStructureVersion(structureData.getCurrentVersion());
         SensorDO querySensor = sensorMapper.selectSensorByPosition(positionData.getId());
         if(null != querySensor){

@@ -1,3 +1,11 @@
+smartcloud:
+  # 名称
+  name: SmartCloud
+  # 版本
+  version: 0.2.1
+  # 版权年份
+  copyrightYear: 2022
+
 server:
   port: 8066
 spring:
@@ -19,9 +27,9 @@ spring:
   datasource:
     # 数据库驱动：
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/smartcloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+      url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
       username: root
-      password: 123456
+      password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       max-active: 30
@@ -90,9 +98,9 @@ pagehelper:
 alibaba :
   cloud :
     # 密钥 ID
-    access-key : ............
+    access-key : 11111111111111
     # 密钥  secret
-    secret-key : ..............
+    secret-key : 111111111111
     mail:
       regionId : cn-hangzhou
       host : dm.aliyuncs.com
@@ -107,17 +115,17 @@ system:
     port: 8100
     forward: 1h
   encrypt:
-    key: TE53............EP
-    vector: ZE............G0
+    key: 1111111111
+    vector: 1111111111
   token:
-    secret: Bw..........
-    iss: BEI_WEI
+    secret: 111111111
+    iss: 1111111
     exist_time: 8
     head: Authorization
     prefix: Bearer
   notification:
     max_last: 30
-    prefix: NOTIFICATION_
+    prefix: 111111111111
   netty:
     tcp_port: 9876
     udp_port: 9875
@@ -127,4 +135,8 @@ system:
   udp:
     port: 9875
 
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
 

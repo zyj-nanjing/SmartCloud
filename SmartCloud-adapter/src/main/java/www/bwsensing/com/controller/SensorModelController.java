@@ -1,38 +1,42 @@
 package www.bwsensing.com.controller;
 
-import com.alibaba.cola.dto.MultiResponse;
 import javax.validation.Valid;
-import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.excel.EasyExcel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import io.swagger.annotations.Api;
+import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.MultiResponse;
+import com.alibaba.cola.dto.SingleResponse;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import www.bwsensing.com.api.ISensorModelService;
+import www.bwsensing.com.api.SensorModelService;
 import www.bwsensing.com.dto.export.SensorModelVO;
-import www.bwsensing.com.dto.clientobject.ImportResultCO;
+import org.springframework.web.multipart.MultipartFile;
 import www.bwsensing.com.dto.command.SensorModelSaveCmd;
-import www.bwsensing.com.dto.command.SensorModelUpdateCmd;
 import www.bwsensing.com.dto.clientobject.SensorModelCO;
+import www.bwsensing.com.dto.clientobject.ImportResultCO;
+import www.bwsensing.com.dto.command.SensorModelUpdateCmd;
+import org.springframework.validation.annotation.Validated;
 import www.bwsensing.com.listener.SensorModelDataListener;
-
+import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author macos-zyj
  */
 @Validated
 @CrossOrigin
+@Api(tags = "产品型号管理")
 @RequestMapping("/api/v1.0/sensor/model")
 @RestController
 public class SensorModelController {
     @Autowired
-    private ISensorModelService sensorModelService;
+    private SensorModelService sensorModelService;
 
+    @ApiOperation("新增产品型号")
     @PostMapping("/save")
     public Response saveModel(@Valid @RequestBody SensorModelSaveCmd saveCmd){
         return  sensorModelService.saveModel( saveCmd);
     }
 
+    @ApiOperation("修改产品型号")
     @PostMapping("/update")
     public Response updateModel(@Valid @RequestBody SensorModelUpdateCmd updateCmd){
         return  sensorModelService.updateModel(updateCmd);
@@ -44,7 +48,8 @@ public class SensorModelController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/importData")
+    @ApiOperation("导入产品型号")
+    @PostMapping("/importData")
     public SingleResponse<ImportResultCO>  importData(@RequestParam MultipartFile file) throws Exception
     {
         SensorModelDataListener dataListener = new SensorModelDataListener(sensorModelService);
@@ -52,16 +57,19 @@ public class SensorModelController {
         return SingleResponse.of(dataListener.getImportResult());
     }
 
+    @ApiOperation("根据ID删除产品型号")
     @GetMapping("/delete/{modelId}")
     public Response deleteModel(@PathVariable Integer modelId){
         return sensorModelService.deleteModel( modelId);
     }
 
+    @ApiOperation("产品型号查询(非分页)")
     @GetMapping("/query")
     public MultiResponse<SensorModelCO> queryAllModels(){
         return sensorModelService.queryAllModels();
     }
 
+    @ApiOperation("根据编号查询产品型号详细信息")
     @GetMapping("/query/{modelId}")
     public SingleResponse<SensorModelCO> selectModelById(@PathVariable Integer modelId){
         return sensorModelService.selectModelById(modelId);
