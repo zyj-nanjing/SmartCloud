@@ -1,5 +1,6 @@
 package www.bwsensing.com.gatewayimpl.database;
 
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
 import java.util.List;

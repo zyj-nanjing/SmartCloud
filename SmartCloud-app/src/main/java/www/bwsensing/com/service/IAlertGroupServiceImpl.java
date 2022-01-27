@@ -13,17 +13,21 @@ import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.AlertGroupService;
 import www.bwsensing.com.api.ProjectMemberService;
 import www.bwsensing.com.command.AlertGroupSaveCmdExo;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.convertor.AlertGroupCoConvertor;
+import www.bwsensing.com.convertor.SensorCoConvertor;
 import www.bwsensing.com.domain.device.alert.AlertGroup;
 import www.bwsensing.com.domain.gateway.AlertGroupGateway;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.project.ProjectRoleEnum;
+import www.bwsensing.com.dto.clientobject.SensorCO;
 import www.bwsensing.com.dto.command.query.AlertGroupQuery;
 import www.bwsensing.com.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.dto.command.AlertGroupUpdateCmd;
 import www.bwsensing.com.dto.command.NotificationMemberCmd;
 import www.bwsensing.com.dto.clientobject.AlertGroupCO;
 import www.bwsensing.com.dto.clientobject.NotificationMemberBindCO;
+import www.bwsensing.com.dto.command.query.SensorSortQuery;
 import www.bwsensing.com.gatewayimpl.database.AlertGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.gatewayimpl.database.NotificationMemberMapper;
@@ -96,17 +100,12 @@ public class IAlertGroupServiceImpl implements AlertGroupService {
 
     @Override
     public PageResponse<AlertGroupCO> alertGroupPageQuery(AlertGroupQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
-        SensorDO sensorInfo = sensorMapper.selectSensorBySn(pageQuery.getCurrentDevice());
-        Assert.notNull(sensorInfo,"SENSOR_CODE_NOT_TRUE","设备码不存在!");
-        AlertGroupDO query = new AlertGroupDO();
-        BeanUtils.copyProperties(pageQuery,query);
-        query.setOperateGroupId(tokenGateway.getTokenInfo().getGroupId());
-        query.setCurrentSensorId(sensorInfo.getId());
-        List<AlertGroupDO> resultList = alertGroupMapper.selectAlertGroupBySort(query);
-        PageInfo<AlertGroupDO> pageInfo = new PageInfo<>(resultList);
-        List<AlertGroupCO> result = AlertGroupCoConvertor.toClientCollection(resultList);
-        return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+        PageHelperUtils<AlertGroupQuery, AlertGroupDO> pageHelper =
+                PageHelperUtils.<AlertGroupQuery,AlertGroupDO>builder()
+                        .pageFunction((groupQuery)->alertGroupMapper.selectAlertGroupBySort (initializeQuery(groupQuery))).build();
+        PageInfo<AlertGroupDO> page= pageHelper.getPageCollections(pageQuery);
+        List<AlertGroupCO> result = AlertGroupCoConvertor.toClientCollection(page.getList());
+        return PageResponse.of(result, (int)page.getTotal(),page.getPageSize(),pageQuery.getPageIndex());
     }
 
     @Override
@@ -131,5 +130,15 @@ public class IAlertGroupServiceImpl implements AlertGroupService {
         Assert.notNull(alertGroup,"预警分组不存在!");
         SensorDO sensorDO = sensorMapper.selectSensorById(alertGroup.getCurrentSensorId());
         return  sensorDO.getProjectId();
+    }
+
+    private AlertGroupDO initializeQuery(AlertGroupQuery pageQuery){
+        SensorDO sensorInfo = sensorMapper.selectSensorBySn(pageQuery.getCurrentDevice());
+        Assert.notNull(sensorInfo,"SENSOR_CODE_NOT_TRUE","设备码不存在!");
+        AlertGroupDO query = new AlertGroupDO();
+        BeanUtils.copyProperties(pageQuery,query);
+        query.setOperateGroupId(tokenGateway.getTokenInfo().getGroupId());
+        query.setCurrentSensorId(sensorInfo.getId());
+        return query;
     }
 }

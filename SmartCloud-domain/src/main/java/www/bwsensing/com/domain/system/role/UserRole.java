@@ -19,7 +19,7 @@ public class UserRole {
     private Integer roleSort;
     /**数据范围*/
     private DataScopeEnum dataScope;
-    /**角色状态，0正常，-1删除**/
+    /**角色状态，1正常，0删除**/
     private Boolean roleStatus;
     /**权限集合**/
     private List<Permission> permissionList;

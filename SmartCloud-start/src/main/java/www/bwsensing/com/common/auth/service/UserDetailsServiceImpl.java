@@ -1,10 +1,11 @@
 package www.bwsensing.com.common.auth.service;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.alibaba.cola.exception.BizException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
+import org.springframework.stereotype.Service;
+import com.alibaba.cola.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import top.dcenter.ums.security.core.oauth.enums.ErrorCodeEnum;
@@ -31,7 +31,6 @@ import www.bwsensing.com.domain.system.token.UserInfo;
 import www.bwsensing.com.domain.system.user.SystemUser;
 import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
-
 import javax.annotation.Resource;
 import java.util.*;
 

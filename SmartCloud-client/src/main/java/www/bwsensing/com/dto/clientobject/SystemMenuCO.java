@@ -41,6 +41,8 @@ public class SystemMenuCO extends DTO {
     private Boolean isBaseNode;
     /**上层节点*/
     private Integer upperNode;
+    /** 显示顺序 */
+    private Integer orderNum;
     /**子节点*/
     private List<SystemMenuCO> children;
     private String creator;

@@ -3,9 +3,7 @@ package www.bwsensing.com.service;
 import java.util.List;
 import javax.annotation.Resource;
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.exception.Assert;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.PageHelper;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.SingleResponse;
@@ -14,6 +12,7 @@ import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.SystemClientService;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.dto.clientobject.SystemClientCO;
 import www.bwsensing.com.dto.command.SystemClientSaveCmd;
 import www.bwsensing.com.convertor.SystemClientCoConvertor;
@@ -90,12 +89,18 @@ public class ISystemClientServiceImpl implements SystemClientService {
 
     @Override
     public PageResponse<SystemClientCO> queryClientPageBySort(SystemClientSortQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
+        PageHelperUtils<SystemClientSortQuery, SystemClientDO> pageHelper =
+                PageHelperUtils.<SystemClientSortQuery,SystemClientDO>builder()
+                        .pageFunction((groupQuery)->systemClientMapper.selectClientBySort(initializeQuery(pageQuery))).build();
+        PageInfo<SystemClientDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<SystemClientCO> result = SystemClientCoConvertor.toClientObjectArray(pageInfo.getList());
+        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+    }
+
+
+    private SystemClientDO initializeQuery(SystemClientSortQuery pageQuery){
         SystemClientDO querySortQuery = new SystemClientDO();
         BeanUtils.copyProperties(pageQuery,querySortQuery);
-        List<SystemClientDO> sortedTemplates = systemClientMapper.selectClientBySort(querySortQuery);
-        PageInfo<SystemClientDO> pageInfo = new PageInfo<>(sortedTemplates);
-        List<SystemClientCO> result = SystemClientCoConvertor.toClientObjectArray(sortedTemplates);
-        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+        return querySortQuery;
     }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import com.alibaba.cola.dto.Response;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.PageHelper;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.SingleResponse;
@@ -13,6 +12,7 @@ import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.SystemRoleService;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.role.UserRole;
 import www.bwsensing.com.common.constant.RoleConstant;
@@ -93,12 +93,11 @@ public class ISystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public PageResponse<SystemRoleCO> querySystemRolePage(SystemRolePageQuery query) {
-        PageHelper.startPage(query.getPageIndex(), query.getPageSize());
-        SystemRoleDO queryRole = new SystemRoleDO();
-        BeanUtils.copyProperties(query,queryRole);
-        List<SystemRoleDO> resultList = roleMapper.selectRoleBySort(queryRole);
-        PageInfo<SystemRoleDO> pageInfo = new PageInfo<>(resultList);
-        List<SystemRoleCO> result = SystemRoleCoConvertor.toClientObjectArray(resultList);
+        PageHelperUtils<SystemRolePageQuery, SystemRoleDO> pageHelper =
+                PageHelperUtils.<SystemRolePageQuery,SystemRoleDO>builder()
+                        .pageFunction((groupQuery)->roleMapper.selectRoleBySort(initializeQuery(groupQuery))).build();
+        PageInfo<SystemRoleDO> pageInfo= pageHelper.getPageCollections(query);
+        List<SystemRoleCO> result = SystemRoleCoConvertor.toClientObjectArray(pageInfo.getList());
         return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),query.getPageIndex() );
     }
 
@@ -107,5 +106,10 @@ public class ISystemRoleServiceImpl implements SystemRoleService {
         if (!RoleConstant.ROOT_ADMIN.equals(tokenData.getRole())){
             throw new BizException("AUTH_NOT_ALLOW","非超级管理员用户无权配置");
         }
+    }
+    private SystemRoleDO initializeQuery(SystemRolePageQuery query){
+        SystemRoleDO queryRole = new SystemRoleDO();
+        BeanUtils.copyProperties(query,queryRole);
+        return queryRole;
     }
 }

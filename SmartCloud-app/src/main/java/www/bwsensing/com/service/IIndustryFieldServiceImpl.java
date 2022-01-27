@@ -6,12 +6,11 @@ import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.SingleResponse;
-import com.alibaba.cola.exception.Assert;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.IndustryFieldService;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.convertor.IndustryFieldCoConvertor;
 import www.bwsensing.com.domain.monitor.industry.IndustryField;
 import www.bwsensing.com.dto.clientobject.IndustryFieldCO;
@@ -68,12 +67,17 @@ public class IIndustryFieldServiceImpl implements IndustryFieldService {
 
     @Override
     public PageResponse<IndustryFieldCO> selectIndustryFileBySortPage(IndustryFileSortQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
+        PageHelperUtils<IndustryFileSortQuery, IndustryFieldDO> pageHelper =
+                PageHelperUtils.<IndustryFileSortQuery, IndustryFieldDO>builder()
+                        .pageFunction((groupQuery)->industryFieldMapper.selectIndustryBySort(initializeQuery(pageQuery))).build();
+        PageInfo<IndustryFieldDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<IndustryFieldCO> result = IndustryFieldCoConvertor.toClientObjectList(pageInfo.getList());
+        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+    }
+
+    private IndustryFieldDO initializeQuery(IndustryFileSortQuery pageQuery){
         IndustryFieldDO querySortQuery = new IndustryFieldDO();
         BeanUtils.copyProperties(pageQuery,querySortQuery);
-        List<IndustryFieldDO> dataCollection = industryFieldMapper.selectIndustryBySort(querySortQuery);
-        PageInfo<IndustryFieldDO> pageInfo = new PageInfo<>(dataCollection);
-        List<IndustryFieldCO> result = IndustryFieldCoConvertor.toClientObjectList(dataCollection);
-        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+        return querySortQuery;
     }
 }

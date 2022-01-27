@@ -18,6 +18,7 @@ public class ViewMenuDO {
     /**图标*/
     private String icon;
     /**是否为前端视图菜单*/
+    @Deprecated
     private Boolean isView;
     /**视图类型*/
     private String menuKind;
@@ -33,6 +34,8 @@ public class ViewMenuDO {
     private Boolean hidden;
     /**是否长显示*/
     private Boolean alwaysShow;
+    /** 显示顺序 */
+    private Integer orderNum;
     /**重定向地址*/
     private String redirect;
     /**是否为根节点*/

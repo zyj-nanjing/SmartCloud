@@ -79,13 +79,13 @@
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.4.0</version>
+			<version>1.4.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-autoconfigure</artifactId>
-			<version>1.4.0</version>
+			<version>1.4.1</version>
 		</dependency>
 
 		<dependency>
@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.7.16</version>
+			<version>5.7.19</version>
 		</dependency>
 
 		<dependency>

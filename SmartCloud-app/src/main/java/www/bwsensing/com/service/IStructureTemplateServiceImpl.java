@@ -2,17 +2,16 @@ package www.bwsensing.com.service;
 
 import java.util.List;
 import javax.annotation.Resource;
-import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.exception.Assert;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.PageHelper;
 import com.alibaba.cola.dto.PageResponse;
+import com.alibaba.cola.dto.MultiResponse;
+import org.springframework.beans.BeanUtils;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.catchlog.CatchAndLog;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import www.bwsensing.com.api.StructureTemplateService;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.domain.gateway.IndustryFieldGateway;
 import www.bwsensing.com.dto.clientobject.StructureTemplateCO;
 import www.bwsensing.com.dto.command.StructureTemplateSaveCmd;
@@ -67,12 +66,11 @@ public class IStructureTemplateServiceImpl implements StructureTemplateService {
 
     @Override
     public PageResponse<StructureTemplateCO> pageQueryStructureTemplateBySort(StructureTemplateSortPageQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
-        SysStructureTemplateDO querySortQuery = new SysStructureTemplateDO();
-        BeanUtils.copyProperties(pageQuery,querySortQuery);
-        List<SysStructureTemplateDO> sortedTemplates = structureTemplateMapper.queryStructureTemplateBySort(querySortQuery);
-        PageInfo<SysStructureTemplateDO> pageInfo = new PageInfo<>(sortedTemplates);
-        List<StructureTemplateCO> result = StructureTemplateCoConvertor.toClientObjectArray(sortedTemplates);
+        PageHelperUtils<StructureTemplateSortPageQuery, SysStructureTemplateDO> pageHelper =
+                PageHelperUtils.<StructureTemplateSortPageQuery,SysStructureTemplateDO>builder()
+                        .pageFunction((groupQuery)->structureTemplateMapper.queryStructureTemplateBySort(initializeQuery(pageQuery))).build();
+        PageInfo<SysStructureTemplateDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<StructureTemplateCO> result = StructureTemplateCoConvertor.toClientObjectArray(pageInfo.getList());
         return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
     }
 
@@ -82,6 +80,12 @@ public class IStructureTemplateServiceImpl implements StructureTemplateService {
         BeanUtils.copyProperties(templateSortQuery,querySortQuery);
         List<SysStructureTemplateDO> sortedTemplates = structureTemplateMapper.queryStructureTemplateBySort(querySortQuery);
         return MultiResponse.of(StructureTemplateCoConvertor.toClientObjectArray(sortedTemplates));
+    }
+
+    private  SysStructureTemplateDO initializeQuery(StructureTemplateSortPageQuery pageQuery){
+        SysStructureTemplateDO querySortQuery = new SysStructureTemplateDO();
+        BeanUtils.copyProperties(pageQuery,querySortQuery);
+        return querySortQuery;
     }
 
 }

@@ -5,7 +5,6 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.BizException;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import www.bwsensing.com.api.ProjectMemberService;
@@ -14,6 +13,7 @@ import www.bwsensing.com.command.SensorSaveCmdExo;
 import www.bwsensing.com.command.SensorUpdateCmdExo;
 import www.bwsensing.com.command.query.SensorInMapQueryExo;
 import www.bwsensing.com.command.query.SensorSortQueryExo;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.convertor.FacilityReceiveCoConvertor;
 import www.bwsensing.com.convertor.SensorCoConvertor;
 import www.bwsensing.com.domain.gateway.TokenGateway;
@@ -65,13 +65,18 @@ public class ISensorServiceImpl implements SensorService {
 
     @Override
     public PageResponse<FacilityReceiveCO> queryFacilitySendsBySn(FacilityReceivePageQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
+        PageHelperUtils<FacilityReceivePageQuery, MonitorReceiveDO> pageHelper =
+                PageHelperUtils.<FacilityReceivePageQuery,MonitorReceiveDO>builder()
+                        .pageFunction((groupQuery)->monitorReceiveMapper.selectMonitorReceiveBySort(initializeQuery(groupQuery))).build();
+        PageInfo<MonitorReceiveDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<FacilityReceiveCO> result = FacilityReceiveCoConvertor.toClientObjectList(pageInfo.getList());
+        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+    }
+
+    private MonitorReceiveDO initializeQuery(FacilityReceivePageQuery pageQuery){
         MonitorReceiveDO querySortQuery = new MonitorReceiveDO();
         querySortQuery.setSn(pageQuery.getSn());
-        List<MonitorReceiveDO> receiveCollection = monitorReceiveMapper.selectMonitorReceiveBySort(querySortQuery);
-        PageInfo<MonitorReceiveDO> pageInfo = new PageInfo<>(receiveCollection);
-        List<FacilityReceiveCO> result = FacilityReceiveCoConvertor.toClientObjectList(receiveCollection);
-        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+        return querySortQuery;
     }
 
     @Override

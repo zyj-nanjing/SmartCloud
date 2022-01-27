@@ -1,7 +1,6 @@
 package www.bwsensing.com.common.utils;
 
 import www.bwsensing.com.common.auth.common.IGrantedAuthority;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -8,11 +8,11 @@ import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.Assert;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.NotificationService;
 import www.bwsensing.com.common.constant.NotificationConstant;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.convertor.NotificationCoConvertor;
 import www.bwsensing.com.convertor.NotificationMsgCoConvertor;
 import www.bwsensing.com.domain.gateway.TokenGateway;
@@ -24,11 +24,7 @@ import www.bwsensing.com.gatewayimpl.database.AlertGroupMapper;
 import www.bwsensing.com.gatewayimpl.database.AlertNotificationMapper;
 import www.bwsensing.com.gatewayimpl.database.CacheNotificationMapper;
 import www.bwsensing.com.gatewayimpl.database.SensorMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.AlertGroupDO;
-import www.bwsensing.com.gatewayimpl.database.dataobject.AlertNotificationDO;
-import www.bwsensing.com.gatewayimpl.database.dataobject.NotificationTag;
-import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO;
-
+import www.bwsensing.com.gatewayimpl.database.dataobject.*;
 
 
 /**
@@ -51,16 +47,21 @@ public class INotificationServiceImpl implements NotificationService {
 
     @Override
     public PageResponse<NotificationCO> selectNotificationByPage(NotificationQuery pageQuery) {
+        PageHelperUtils<NotificationQuery, AlertNotificationDO> pageHelper =
+                PageHelperUtils.<NotificationQuery,AlertNotificationDO>builder()
+                        .pageFunction((groupQuery)->alertNotificationMapper.selectNotificationBySort(initializeQuery(pageQuery))).build();
+        PageInfo<AlertNotificationDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<NotificationCO> result = NotificationCoConvertor.toClientCollection(pageInfo.getList());
+        return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex() );
+    }
+
+    private AlertNotificationDO initializeQuery(NotificationQuery pageQuery){
         AlertNotificationDO query = new AlertNotificationDO();
         SensorDO sensorInfo = sensorMapper.selectSensorBySn(pageQuery.getCurrentDevice());
         Assert.notNull(sensorInfo,"SENSOR_CODE_NOT_TRUE","设备码不存在!");
         query.setGroupId(tokenGateway.getTokenInfo().getGroupId());
         query.setSensorId(sensorInfo.getId());
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
-        List<AlertNotificationDO> resultList = alertNotificationMapper.selectNotificationBySort(query);
-        PageInfo<AlertNotificationDO> pageInfo = new PageInfo<>(resultList);
-        List<NotificationCO> result = NotificationCoConvertor.toClientCollection(pageInfo.getList());
-        return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex() );
+        return query;
     }
 
     @Override

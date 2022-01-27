@@ -1,9 +1,9 @@
 package www.bwsensing.com.command.query;
 
 import com.alibaba.cola.dto.PageResponse;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.convertor.SensorCoConvertor;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.dto.command.query.SensorSortQuery;
@@ -24,11 +24,12 @@ public class SensorSortQueryExo {
     private SensorMapper sensorMapper;
 
     public PageResponse<SensorCO> execute(SensorSortQuery sortQuery){
-        PageHelper.startPage(sortQuery.getPageIndex(), sortQuery.getPageSize());
-        List<SensorDO> sensorList =sensorMapper.selectSensorBySort(initSensorQuery(sortQuery));
-        PageInfo pageInfo = new PageInfo<>(sensorList);
-        List<SensorCO> result = SensorCoConvertor.toClientObjectArray(sensorList);
-        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),sortQuery.getPageIndex());
+        PageHelperUtils<SensorSortQuery, SensorDO> pageHelper =
+                PageHelperUtils.<SensorSortQuery,SensorDO>builder()
+                        .pageFunction((query)->sensorMapper.selectSensorBySort (initSensorQuery(query))).build();
+        PageInfo<SensorDO> page= pageHelper.getPageCollections(sortQuery);
+        List<SensorCO> result = SensorCoConvertor.toClientObjectArray(page.getList());
+        return PageResponse.of(result,(int)page.getTotal(),page.getPageSize(),sortQuery.getPageIndex());
     }
 
 

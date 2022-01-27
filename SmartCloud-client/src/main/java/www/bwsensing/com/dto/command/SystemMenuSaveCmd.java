@@ -62,6 +62,9 @@ public class SystemMenuSaveCmd extends Command {
     /**上层节点*/
     @ApiModelProperty(value = "上层节点")
     private Integer upperNode;
+    /** 显示顺序 */
+    @ApiModelProperty(value = "显示顺序")
+    private Integer orderNum;
     private String creator;
     private Date createTime;
 }

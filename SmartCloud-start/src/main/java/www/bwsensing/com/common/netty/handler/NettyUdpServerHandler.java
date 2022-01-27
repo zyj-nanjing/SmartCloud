@@ -49,6 +49,7 @@ public class NettyUdpServerHandler extends SimpleChannelInboundHandler<DatagramP
 
 
     public NettyUdpServerHandler(){
+
     }
 
     @PostConstruct

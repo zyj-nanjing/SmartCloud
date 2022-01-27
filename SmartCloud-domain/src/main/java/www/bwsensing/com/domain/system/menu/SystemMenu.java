@@ -30,6 +30,8 @@ public class SystemMenu {
     private String component;
     /**菜单类型*/
     private MenuKind menuKind;
+    /** 显示顺序 */
+    private Integer orderNum;
     /**是否隐藏*/
     private Boolean hidden;
     /**是否长显示*/

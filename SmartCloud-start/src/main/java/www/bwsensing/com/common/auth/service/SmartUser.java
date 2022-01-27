@@ -3,6 +3,7 @@ package www.bwsensing.com.common.auth.service;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 import www.bwsensing.com.common.auth.common.IGrantedAuthority;

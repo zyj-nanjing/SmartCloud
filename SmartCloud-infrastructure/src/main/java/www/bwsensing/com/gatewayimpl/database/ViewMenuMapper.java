@@ -16,6 +16,12 @@ public interface ViewMenuMapper {
     ViewMenuDO selectViewMenuById(Integer id);
 
     /**
+     * 获取所有路由
+     * @return
+     */
+    List<ViewMenuDO> getMenuList();
+
+    /**
      * 查询系统路由配置列表
      *
      * @param viewMenu 系统路由配置

@@ -7,26 +7,26 @@ import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import www.bwsensing.com.api.StructureModelService;
+import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
+import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
 import www.bwsensing.com.command.MonitorStructureModelSaveCmdExo;
 import www.bwsensing.com.command.MonitorStructureModelUpdateCmdExo;
-import www.bwsensing.com.command.StructureImportCmdExo;
 import www.bwsensing.com.domain.gateway.StructureModelGateway;
-import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.dto.export.PositionModelVo;
-import www.bwsensing.com.dto.export.StructureModelVo;
-import www.bwsensing.com.dto.clientobject.ImportResultCO;
-import www.bwsensing.com.dto.command.query.BaseQuery;
-import static java.util.stream.Collectors.toList;
 import www.bwsensing.com.dto.command.StructureModelSaveCmd;
 import www.bwsensing.com.dto.command.StructureModelUpdateCmd;
 import www.bwsensing.com.dto.clientobject.StructureModelCO;
-import www.bwsensing.com.gatewayimpl.database.MonitorStructureModelMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.MonitorStructureModelDO;
+import www.bwsensing.com.dto.clientobject.ImportResultCO;
+import www.bwsensing.com.command.StructureImportCmdExo;
+import www.bwsensing.com.common.utills.PageHelperUtils;
+import www.bwsensing.com.domain.gateway.TokenGateway;
+import www.bwsensing.com.dto.export.PositionModelVo;
+import www.bwsensing.com.dto.export.StructureModelVo;
+import www.bwsensing.com.dto.command.query.BaseQuery;
+import static java.util.stream.Collectors.toList;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
@@ -88,10 +88,11 @@ public class IStructureModelServiceImpl implements StructureModelService {
 
     @Override
     public PageResponse<StructureModelCO> selectStructurePages(BaseQuery baseQuery) {
-        PageHelper.startPage(baseQuery.getPageIndex(), baseQuery.getPageSize());
-        List<MonitorStructureModelDO> resultList = structureModelMapper.selectStructureModel(tokenGateway.getTokenInfo().getGroupId());
-        PageInfo<MonitorStructureModelDO> pageInfo = new PageInfo<>(resultList);
-        List<StructureModelCO> result = toClientObjects(resultList);
+        PageHelperUtils<BaseQuery, MonitorStructureModelDO> pageHelper =
+                PageHelperUtils.<BaseQuery,MonitorStructureModelDO>builder()
+                        .pageFunction((groupQuery)->structureModelMapper.selectStructureModel(tokenGateway.getTokenInfo().getGroupId())).build();
+        PageInfo<MonitorStructureModelDO> pageInfo= pageHelper.getPageCollections(baseQuery);
+        List<StructureModelCO> result = toClientObjects(pageInfo.getList());
         return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),baseQuery.getPageIndex() );
     }
 

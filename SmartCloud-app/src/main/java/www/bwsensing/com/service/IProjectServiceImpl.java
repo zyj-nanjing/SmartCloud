@@ -3,14 +3,13 @@ package www.bwsensing.com.service;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.api.ProjectMemberService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import www.bwsensing.com.command.ProjectMemberStorageCmdExo;
 import www.bwsensing.com.command.query.ProjectPositionQueryExo;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.convertor.ProjectCoConvertor;
 import www.bwsensing.com.convertor.ProjectMemberCoConvertor;
@@ -201,14 +200,15 @@ public class IProjectServiceImpl implements ProjectService {
     @Override
     public PageResponse<ProjectCO> projectPageQuery(BaseQuery pageQuery) {
         TokenData dataCo = tokenGateway.getTokenInfo();
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
-        AlertRoleDO query = new AlertRoleDO();
-        BeanUtils.copyProperties(pageQuery,query);
-        List<MonitorProjectDO> resultList = projectMapper.selectMonitorProject(dataCo.getUserId());
-        PageInfo<MonitorProjectDO> pageInfo = new PageInfo<>(resultList);
-        List<ProjectCO> result = ProjectCoConvertor.toClientCollection(resultList);
+        PageHelperUtils<BaseQuery, MonitorProjectDO> pageHelper =
+                PageHelperUtils.<BaseQuery,MonitorProjectDO>builder()
+                        .pageFunction((groupQuery)->projectMapper.selectMonitorProject(dataCo.getUserId())).build();
+        PageInfo<MonitorProjectDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<ProjectCO> result = ProjectCoConvertor.toClientCollection(pageInfo.getList());
         return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex() );
     }
+
+
 
     @Override
     public MultiResponse<UserInfoCO> queryCurrentGroupUsers(Integer projectId) {

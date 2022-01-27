@@ -61,7 +61,11 @@ public class SystemMenuUpdateCmd extends Command {
     @NotNull( message ="是否为根节点不能为空!")
     private Boolean isBaseNode;
     /**上层节点*/
+    @ApiModelProperty(value = "上层节点")
     private Integer upperNode;
+    /** 显示顺序 */
+    @ApiModelProperty(value = "显示顺序")
+    private Integer orderNum;
     private String update;
     private Date updateTime;
 }

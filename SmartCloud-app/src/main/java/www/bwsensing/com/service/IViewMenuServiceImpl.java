@@ -1,18 +1,17 @@
 package www.bwsensing.com.service;
 
 import java.util.*;
-
-import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.dto.SingleResponse;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
+import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.dto.MultiResponse;
+import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.SystemMenuService;
-import www.bwsensing.com.domain.gateway.SystemMenuGateway;
+import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.domain.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.menu.MenuKind;
 import www.bwsensing.com.domain.system.menu.SystemMenu;
@@ -21,9 +20,10 @@ import www.bwsensing.com.dto.clientobject.SystemMenuCO;
 import www.bwsensing.com.dto.clientobject.ViewMenuTreeCO;
 import www.bwsensing.com.dto.command.SystemMenuSaveCmd;
 import www.bwsensing.com.dto.command.SystemMenuUpdateCmd;
-import www.bwsensing.com.gatewayimpl.database.SystemRoleMapper;
 import www.bwsensing.com.convertor.SystemMenuCoConvertor;
+import www.bwsensing.com.domain.gateway.SystemMenuGateway;
 import www.bwsensing.com.gatewayimpl.database.ViewMenuMapper;
+import www.bwsensing.com.gatewayimpl.database.SystemRoleMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SystemRoleDO;
 import www.bwsensing.com.gatewayimpl.database.dataobject.ViewMenuDO;
 import static www.bwsensing.com.convertor.ViewMenuCoConvertor.initViewMenuTree;
@@ -54,10 +54,15 @@ public class IViewMenuServiceImpl implements SystemMenuService {
     @Override
     public MultiResponse<ViewMenuTreeCO> showViewMenuByAuth() {
         TokenData tokenData = tokenGateway.getTokenInfo();
-        SystemRoleDO role = roleMapper.getUserRoleByCode(tokenData.getRole());
-        Assert.notNull(role,"当前角色不存在!");
-        List<ViewMenuDO> dataCollection = menuMapper.selectViewMenusByRoleId(role.getId());
-        return MultiResponse.of(initViewMenuTree(dataCollection));
+        List<ViewMenuDO> dataCollection = new ArrayList<>();
+        if(tokenData.getIsAdmin()){
+            dataCollection.addAll(menuMapper.getMenuList());
+        } else {
+            SystemRoleDO role = roleMapper.getUserRoleByCode(tokenData.getRole());
+            Assert.notNull(role,"当前角色不存在!");
+            dataCollection.addAll(menuMapper.selectViewMenusByRoleId(role.getId()));
+        }
+        return MultiResponse.of(initViewMenuTree(dataCollection,false));
     }
 
     @Override
@@ -99,7 +104,7 @@ public class IViewMenuServiceImpl implements SystemMenuService {
                 Assert.notNull(validMenu.getRedirect(),"重定向位置不能为空!");
             }
             Assert.notNull(validMenu.getPath(),"路径不能为空!");
-            Assert.notNull(validMenu.getComponent(),"组件不能为空!");
+            Assert.isTrue(StringUtils.isNotEmpty(validMenu.getComponent()),"组件不能为空!");
         } else {
             Assert.notNull(validMenu.getApiPath(),"请求路由不能为空!");
         }

@@ -1,16 +1,17 @@
 package www.bwsensing.com.command.query;
 
-import com.alibaba.cola.dto.PageResponse;
-import com.github.pagehelper.PageHelper;
+import java.util.List;
+import javax.annotation.Resource;
 import com.github.pagehelper.PageInfo;
+import com.alibaba.cola.dto.PageResponse;
 import org.springframework.stereotype.Component;
+import www.bwsensing.com.common.utills.PageHelperUtils;
+import www.bwsensing.com.dto.clientobject.SensorDataCO;
 import www.bwsensing.com.convertor.SensorDataCoConvertor;
 import www.bwsensing.com.dto.command.query.SensorDataSortQuery;
-import www.bwsensing.com.dto.clientobject.SensorDataCO;
 import www.bwsensing.com.gatewayimpl.database.SensorDataMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.SensorDataDO;
-import javax.annotation.Resource;
-import java.util.List;
+
 
 /**
  * @author macos-zyj
@@ -21,14 +22,15 @@ public class SensorDataSortQueryExo {
     private SensorDataMapper sensorDataMapper;
 
     public PageResponse<SensorDataCO> execute(SensorDataSortQuery dataSortQuery){
-        PageHelper.startPage(dataSortQuery.getPageIndex(), dataSortQuery.getPageSize());
-        List<SensorDataDO> sensorDataList = sensorDataMapper.querySensorListBySort(initQuerySensorData(dataSortQuery));
-        PageInfo pageInfo = new PageInfo<>(sensorDataList);
-        List<SensorDataCO> result = SensorDataCoConvertor.toClientObjectArray(sensorDataList);
+        PageHelperUtils<SensorDataSortQuery, SensorDataDO> pageHelper =
+                PageHelperUtils.<SensorDataSortQuery,SensorDataDO>builder()
+                        .pageFunction((groupQuery)->sensorDataMapper.querySensorListBySort(initializeQuery(dataSortQuery))).build();
+        PageInfo<SensorDataDO> pageInfo= pageHelper.getPageCollections(dataSortQuery);
+        List<SensorDataCO> result = SensorDataCoConvertor.toClientObjectArray(pageInfo.getList());
         return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),dataSortQuery.getPageIndex() );
     }
 
-    private  SensorDataDO initQuerySensorData(SensorDataSortQuery query){
+    private  SensorDataDO initializeQuery(SensorDataSortQuery query){
         SensorDataDO queryData = new SensorDataDO();
         queryData.setSn(query.getSnCode());
         queryData.setStructureId(query.getStructureId());

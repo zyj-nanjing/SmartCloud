@@ -31,17 +31,18 @@ public class TokenGatewayImpl implements TokenGateway {
     @Override
     public TokenData getTokenInfo() {
         TokenData tokenData = new TokenData();
-        if (null == ehCacheService.getTemp("USER_INFO")){
-            SecurityContext securityContext = SecurityContextHolder.getContext();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication  authority = securityContext.getAuthentication();
+        String currentAccountName =(String) authority.getPrincipal();
+        if (null == ehCacheService.getTemp(currentAccountName)){
             if ( null == securityContext ){
                 throw new BizException("TOKEN_IS_NULL","token不能为空");
             }
-            Authentication  authority = securityContext.getAuthentication();
             initUserAuthInfo(tokenData,authority);
             setUserRoleAuth(tokenData,authority);
-            ehCacheService.putTemp("USER_INFO",tokenData);
+            ehCacheService.putTemp(currentAccountName,tokenData);
         } else {
-            Object cacheObj = ehCacheService.getTemp("USER_INFO");
+            Object cacheObj = ehCacheService.getTemp(currentAccountName);
             if (StringUtils.isNotNull(cacheObj))
             {
                 return StringUtils.cast(cacheObj);
@@ -62,5 +63,6 @@ public class TokenGatewayImpl implements TokenGateway {
         tokenData.setUserId(userData.getId());
         tokenData.setUserName(userData.getUserName());
         tokenData.setGroupId(userData.getOperateGroupId());
+        tokenData.setIsAdmin(userData.getIsAdmin());
     }
 }
