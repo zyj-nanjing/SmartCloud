@@ -13,6 +13,7 @@ public class BizScenarioCode {
     public static final String USE_CAUSE_UPDATE ="UPDATE";
     public static final String USER_CAUSE_NOTIFICATION ="NOTIFICATION";
     public static final String USER_CAUSE_ANALYSE = "ANALYSE";
+    public static final String SYSTEM_CLIENT = "SYSTEM_CLIENT";
     public static final String MANAGER_SCENARIO = "MANAGER";
     public static final String USER_SCENARIO = "USER";
     public static final String ROOT_MANAGER_SCENARIO = "ROOT_MANAGER";
@@ -21,6 +22,7 @@ public class BizScenarioCode {
     public static final String BATCH_SMS_SCENARIO = "BATCH_SMS";
     public static final String BATCH_SCENARIO = "NULL";
     public static final String ANALYSE_BW_ANGLE ="ANGLE_SENSOR";
+    public static final String UPDATE_DATA_ORDER = "LRU_UPDATE";
 
     public static String getOperateRegisterScenario(String role){
         if(RoleConstant.GROUP_ADMIN.equals(role)){

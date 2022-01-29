@@ -32,12 +32,12 @@ public class TokenGatewayImpl implements TokenGateway {
     public TokenData getTokenInfo() {
         TokenData tokenData = new TokenData();
         SecurityContext securityContext = SecurityContextHolder.getContext();
+        if ( null == securityContext ){
+            throw new BizException("TOKEN_IS_NULL","token不能为空");
+        }
         Authentication  authority = securityContext.getAuthentication();
         String currentAccountName =(String) authority.getPrincipal();
         if (null == ehCacheService.getTemp(currentAccountName)){
-            if ( null == securityContext ){
-                throw new BizException("TOKEN_IS_NULL","token不能为空");
-            }
             initUserAuthInfo(tokenData,authority);
             setUserRoleAuth(tokenData,authority);
             ehCacheService.putTemp(currentAccountName,tokenData);

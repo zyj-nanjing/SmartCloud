@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 23/01/2022 10:32:03
+ Date: 29/01/2022 21:26:31
 */
 
 SET NAMES utf8mb4;
@@ -855,6 +855,8 @@ CREATE TABLE `sys_client` (
   `updater` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `order_number` int(20) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `weight` int(20) unsigned NOT NULL DEFAULT '0' COMMENT '权级',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='客户信息';
 
@@ -862,9 +864,9 @@ CREATE TABLE `sys_client` (
 -- Records of sys_client
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL);
-INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL);
-INSERT INTO `sys_client` VALUES (21, '南京理工大泰州', 'NJLGTZ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-21 07:23:54', NULL);
+INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL, 3, 1);
+INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL, 2, 1);
+INSERT INTO `sys_client` VALUES (21, '南京理工大泰州', 'NJLGTZ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-21 07:23:54', NULL, 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -1008,7 +1010,7 @@ CREATE TABLE `sys_notification_cache` (
   `status` int(2) DEFAULT NULL COMMENT '状态',
   `reader_id` int(10) DEFAULT NULL COMMENT '处理人',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sys_notification_cache
@@ -1207,6 +1209,7 @@ CREATE TABLE `sys_view_menu` (
   `redirect` varchar(255) DEFAULT NULL COMMENT '定向地址',
   `is_base_node` int(2) DEFAULT '0' COMMENT '是否为根节点',
   `upper_node` int(11) DEFAULT NULL COMMENT '上层节点',
+  `order_num` int(2) NOT NULL DEFAULT '0' COMMENT '显示顺序',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `creator` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -1218,31 +1221,31 @@ CREATE TABLE `sys_view_menu` (
 -- Records of sys_view_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_view_menu` VALUES (1, 'UserInfo', '个人中心', 'peoples', NULL, 'C', NULL, NULL, '/user-info', 'Layout', 1, '0', '/user-info/index', 1, NULL, '2021-10-10 15:37:01', 'admin', '2021-10-10 15:37:08', 'admin');
-INSERT INTO `sys_view_menu` VALUES (2, 'UserIndex', '个人信息', 'lock', NULL, 'M', NULL, NULL, 'index', 'user-info/index', 0, '0', NULL, 0, 1, '2021-10-10 15:38:37', 'admin', '2021-10-10 15:38:39', 'admin');
-INSERT INTO `sys_view_menu` VALUES (3, 'PersonManager', '账号管理', 'peoples', NULL, 'C', NULL, NULL, '/person-manager', 'Layout', 0, '1', '/person-manager/index', 1, NULL, '2021-10-10 15:44:20', 'admin', '2021-10-10 15:44:22', 'admin');
-INSERT INTO `sys_view_menu` VALUES (4, 'CurdManager', '人员账号管理', 'el-icon-user', NULL, 'M', NULL, NULL, 'index', 'person-manager/curd', 0, '0', NULL, 0, 3, '2021-10-10 15:47:32', 'admin', '2021-10-10 15:47:34', 'admin');
-INSERT INTO `sys_view_menu` VALUES (5, 'GroupManager', '人员组管理', 'el-icon-s-check', NULL, 'M', NULL, NULL, 'group', 'person-manager/group', 0, '0', NULL, 0, 3, '2021-10-10 15:49:36', 'admin', '2021-10-10 15:49:38', 'admin');
-INSERT INTO `sys_view_menu` VALUES (6, 'ProjectManager', '项目管理', 'el-icon-s-management', NULL, 'C', NULL, NULL, '/project-manager', 'Layout', 0, '1', '/project-manager/overview', 1, NULL, '2021-10-10 15:56:54', 'admin', '2021-10-10 15:57:00', 'admin');
-INSERT INTO `sys_view_menu` VALUES (7, 'OverView', '项目总览', 'edit', NULL, 'M', NULL, NULL, 'overview', 'base-message/overview', 1, '0', NULL, 0, 6, '2021-10-10 16:01:08', 'admin', '2021-10-10 16:01:12', 'admin');
-INSERT INTO `sys_view_menu` VALUES (8, 'BaseMessage', '项目列表', 'el-icon-s-grid', NULL, 'M', NULL, NULL, 'index', 'base-message/index', 0, '0', NULL, 0, 6, '2021-10-10 16:02:35', 'admin', '2021-10-10 16:02:37', 'admin');
-INSERT INTO `sys_view_menu` VALUES (9, 'project-detail', '项目详情', NULL, NULL, 'M', NULL, NULL, 'detail', 'base-message/project-detail', 1, '0', NULL, 0, 6, '2021-10-10 16:07:48', 'admin', '2021-10-10 16:07:51', 'admin');
-INSERT INTO `sys_view_menu` VALUES (10, 'AddStructure', '新建项目', NULL, NULL, 'M', NULL, NULL, 'add', 'base-message/add-structure', 1, '0', NULL, 0, 6, '2021-10-10 16:34:42', 'admin', '2021-10-10 16:34:46', 'admin');
-INSERT INTO `sys_view_menu` VALUES (11, 'editorProject', '修改项目', NULL, NULL, 'M', NULL, NULL, 'editor', 'base-message/editor-structure', 1, '0', NULL, 0, 6, '2021-10-10 16:36:41', 'admin', '2021-10-10 16:36:44', 'admin');
-INSERT INTO `sys_view_menu` VALUES (12, 'TimeWatcher', '设备监测', 'el-icon-view', NULL, 'M', NULL, NULL, 'watcher', 'time-watcher/index', 0, '0', NULL, 0, 6, '2021-10-10 16:37:22', 'admin', '2021-10-10 16:37:24', 'admin');
-INSERT INTO `sys_view_menu` VALUES (13, 'DataAnalysis', '数据分析', 'el-icon-s-marketing', NULL, 'M', NULL, NULL, 'analysis', 'data-analysis/index', 0, '0', NULL, 0, 6, '2021-10-10 16:38:25', 'admin', '2021-10-10 16:38:27', 'admin');
-INSERT INTO `sys_view_menu` VALUES (14, 'WarnList', '预警列表', 'el-icon-message-solid', NULL, 'M', NULL, NULL, 'warn', 'warn/index', 0, '0', NULL, 0, 6, '2021-10-10 16:39:07', 'admin', '2021-10-10 16:39:09', 'admin');
-INSERT INTO `sys_view_menu` VALUES (15, 'WarnGroup', '预警组管理', 'el-icon-message-solid', NULL, 'M', NULL, NULL, 'warn-group', 'warn/group', 0, '0', NULL, 0, 6, '2021-10-10 16:39:48', 'admin', '2021-10-10 16:39:50', 'admin');
-INSERT INTO `sys_view_menu` VALUES (16, 'StructureManager', '行业模版', 'el-icon-office-building', NULL, 'C', NULL, NULL, '/structure-manager', 'Layout', 0, '1', '/structure-manager/index', 1, NULL, '2021-10-10 16:41:01', 'admin', '2021-10-10 16:42:34', 'dmin');
-INSERT INTO `sys_view_menu` VALUES (17, 'CheckStructure', '结构物管理', 'el-icon-s-grid', NULL, 'M', NULL, NULL, 'index', 'check-structure/index', 0, '0', NULL, 0, 16, '2021-10-10 16:43:29', 'admin', '2021-10-10 16:43:37', 'admin');
-INSERT INTO `sys_view_menu` VALUES (18, 'EditStructure', '修改结构物', 'edit', NULL, 'M', NULL, NULL, 'edit', 'check-structure/edit-structure', 1, '0', NULL, 0, 16, '2021-10-10 16:45:29', 'admin', '2021-10-10 16:45:31', 'admin');
-INSERT INTO `sys_view_menu` VALUES (19, 'SensorManager', '产品管理', 'el-icon-s-platform', NULL, 'C', NULL, NULL, '/sensor-manager', 'Layout', 0, '1', '/sensor-manager/index', 1, NULL, '2021-10-10 16:46:31', 'admin', '2021-10-10 16:46:33', 'admin');
-INSERT INTO `sys_view_menu` VALUES (20, 'SensorEdit', '设备管理', 'el-icon-s-help', NULL, 'M', NULL, NULL, 'index', 'sensor/index', 0, '0', NULL, 0, 19, '2021-10-10 16:49:01', 'admin', '2021-10-10 16:49:09', 'admin');
-INSERT INTO `sys_view_menu` VALUES (21, 'SensorModule', '型号管理', 'el-icon-s-order', NULL, 'M', NULL, NULL, 'sensor-model-module', 'sensor-model/index', 0, '0', NULL, 0, 19, '2021-10-10 16:49:04', 'admin', '2021-10-10 16:49:11', 'admin');
-INSERT INTO `sys_view_menu` VALUES (22, 'SystemManager', '系统管理', 'el-icon-s-tools', 1, 'C', NULL, NULL, '/system-manager', 'Layout', 0, '1', '/system-manager/manu', 1, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_view_menu` VALUES (24, 'Menu', '菜单管理', 'el-icon-menu', 1, 'M', NULL, NULL, 'menu', 'system-menu/index', 0, '0', '', 0, 22, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_view_menu` VALUES (25, 'Role', '角色管理', 'el-icon-s-custom', 1, 'M', NULL, NULL, 'role', 'system-role/index', 0, '0', '', 0, 22, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_view_menu` VALUES (26, 'login', '登录接口', NULL, 0, 'A', '/login', 'LOGIN', NULL, NULL, NULL, NULL, NULL, 0, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_view_menu` VALUES (1, 'UserInfo', '个人中心', 'peoples', NULL, 'C', NULL, NULL, '/user-info', 'Layout', 1, '0', '/user-info/index', 1, NULL, 1, '2021-10-10 15:37:01', 'admin', '2021-10-10 15:37:08', 'admin');
+INSERT INTO `sys_view_menu` VALUES (2, 'UserIndex', '个人信息', 'lock', NULL, 'M', NULL, NULL, 'index', 'user-info/index', 0, '0', NULL, 0, 1, 1, '2021-10-10 15:38:37', 'admin', '2021-10-10 15:38:39', 'admin');
+INSERT INTO `sys_view_menu` VALUES (3, 'PersonManager', '账号管理', 'peoples', NULL, 'C', NULL, NULL, '/person-manager', 'Layout', 0, '1', '/person-manager/index', 1, NULL, 1, '2021-10-10 15:44:20', 'admin', '2021-10-10 15:44:22', 'admin');
+INSERT INTO `sys_view_menu` VALUES (4, 'CurdManager', '人员账号管理', 'el-icon-user', NULL, 'M', NULL, NULL, 'index', 'person-manager/curd', 0, '0', NULL, 0, 3, 1, '2021-10-10 15:47:32', 'admin', '2021-10-10 15:47:34', 'admin');
+INSERT INTO `sys_view_menu` VALUES (5, 'GroupManager', '人员组管理', 'el-icon-s-check', NULL, 'M', NULL, NULL, 'group', 'person-manager/group', 0, '0', NULL, 0, 3, 1, '2021-10-10 15:49:36', 'admin', '2021-10-10 15:49:38', 'admin');
+INSERT INTO `sys_view_menu` VALUES (6, 'ProjectManager', '项目管理', 'el-icon-s-management', NULL, 'C', NULL, NULL, '/project-manager', 'Layout', 0, '1', '/project-manager/overview', 1, NULL, 1, '2021-10-10 15:56:54', 'admin', '2021-10-10 15:57:00', 'admin');
+INSERT INTO `sys_view_menu` VALUES (7, 'OverView', '项目总览', 'edit', NULL, 'M', NULL, NULL, 'overview', 'base-message/overview', 1, '0', NULL, 0, 6, 1, '2021-10-10 16:01:08', 'admin', '2021-10-10 16:01:12', 'admin');
+INSERT INTO `sys_view_menu` VALUES (8, 'BaseMessage', '项目列表', 'el-icon-s-grid', NULL, 'M', NULL, NULL, 'index', 'base-message/index', 0, '0', NULL, 0, 6, 1, '2021-10-10 16:02:35', 'admin', '2021-10-10 16:02:37', 'admin');
+INSERT INTO `sys_view_menu` VALUES (9, 'project-detail', '项目详情', NULL, NULL, 'M', NULL, NULL, 'detail', 'base-message/project-detail', 1, '0', NULL, 0, 6, 1, '2021-10-10 16:07:48', 'admin', '2021-10-10 16:07:51', 'admin');
+INSERT INTO `sys_view_menu` VALUES (10, 'AddStructure', '新建项目', NULL, NULL, 'M', NULL, NULL, 'add', 'base-message/add-structure', 1, '0', NULL, 0, 6, 1, '2021-10-10 16:34:42', 'admin', '2021-10-10 16:34:46', 'admin');
+INSERT INTO `sys_view_menu` VALUES (11, 'editorProject', '修改项目', NULL, NULL, 'M', NULL, NULL, 'editor', 'base-message/editor-structure', 1, '0', NULL, 0, 6, 1, '2021-10-10 16:36:41', 'admin', '2021-10-10 16:36:44', 'admin');
+INSERT INTO `sys_view_menu` VALUES (12, 'TimeWatcher', '设备监测', 'el-icon-view', NULL, 'M', NULL, NULL, 'watcher', 'time-watcher/index', 0, '0', NULL, 0, 6, 1, '2021-10-10 16:37:22', 'admin', '2021-10-10 16:37:24', 'admin');
+INSERT INTO `sys_view_menu` VALUES (13, 'DataAnalysis', '数据分析', 'el-icon-s-marketing', NULL, 'M', NULL, NULL, 'analysis', 'data-analysis/index', 0, '0', NULL, 0, 6, 1, '2021-10-10 16:38:25', 'admin', '2021-10-10 16:38:27', 'admin');
+INSERT INTO `sys_view_menu` VALUES (14, 'WarnList', '预警列表', 'el-icon-message-solid', NULL, 'M', NULL, NULL, 'warn', 'warn/index', 0, '0', NULL, 0, 6, 1, '2021-10-10 16:39:07', 'admin', '2021-10-10 16:39:09', 'admin');
+INSERT INTO `sys_view_menu` VALUES (15, 'WarnGroup', '预警组管理', 'el-icon-message-solid', NULL, 'M', NULL, NULL, 'warn-group', 'warn/group', 0, '0', NULL, 0, 6, 1, '2021-10-10 16:39:48', 'admin', '2021-10-10 16:39:50', 'admin');
+INSERT INTO `sys_view_menu` VALUES (16, 'StructureManager', '行业模版', 'el-icon-office-building', NULL, 'C', NULL, NULL, '/structure-manager', 'Layout', 0, '1', '/structure-manager/index', 1, NULL, 2, '2021-10-10 16:41:01', 'admin', '2021-10-10 16:42:34', 'dmin');
+INSERT INTO `sys_view_menu` VALUES (17, 'CheckStructure', '结构物管理', 'el-icon-s-grid', NULL, 'M', NULL, NULL, 'index', 'check-structure/index', 0, '0', NULL, 0, 16, 1, '2021-10-10 16:43:29', 'admin', '2021-10-10 16:43:37', 'admin');
+INSERT INTO `sys_view_menu` VALUES (18, 'EditStructure', '修改结构物', 'edit', NULL, 'M', NULL, NULL, 'edit', 'check-structure/edit-structure', 1, '0', NULL, 0, 16, 1, '2021-10-10 16:45:29', 'admin', '2021-10-10 16:45:31', 'admin');
+INSERT INTO `sys_view_menu` VALUES (19, 'SensorManager', '产品管理', 'el-icon-s-platform', NULL, 'C', NULL, NULL, '/sensor-manager', 'Layout', 0, '1', '/sensor-manager/index', 1, NULL, 3, '2021-10-10 16:46:31', 'admin', '2021-10-10 16:46:33', 'admin');
+INSERT INTO `sys_view_menu` VALUES (20, 'SensorEdit', '设备管理', 'el-icon-s-help', NULL, 'M', NULL, NULL, 'index', 'sensor/index', 0, '0', NULL, 0, 19, 1, '2021-10-10 16:49:01', 'admin', '2021-10-10 16:49:09', 'admin');
+INSERT INTO `sys_view_menu` VALUES (21, 'SensorModule', '型号管理', 'el-icon-s-order', NULL, 'M', NULL, NULL, 'sensor-model-module', 'sensor-model/index', 0, '0', NULL, 0, 19, 0, '2021-10-10 16:49:04', 'admin', '2021-10-10 16:49:11', 'admin');
+INSERT INTO `sys_view_menu` VALUES (22, 'SystemManager', '系统管理', 'el-icon-s-tools', 1, 'C', NULL, NULL, '/system-manager', 'Layout', 0, '1', '/system-manager/manu', 1, NULL, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_view_menu` VALUES (24, 'Menu', '菜单管理', 'el-icon-menu', 1, 'M', NULL, NULL, 'menu', 'system-menu/index', 0, '0', '', 0, 22, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_view_menu` VALUES (25, 'Role', '角色管理', 'el-icon-s-custom', 1, 'M', NULL, NULL, 'role', 'system-role/index', 0, '0', '', 0, 22, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_view_menu` VALUES (26, 'login', '登录接口', NULL, 0, 'A', '/login', 'LOGIN', NULL, NULL, NULL, NULL, NULL, 0, 1, 0, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1311,11 +1314,6 @@ CREATE TABLE `system_user` (
 BEGIN;
 INSERT INTO `system_user` VALUES (1, '100001', 'admin', '$2a$10$/6ArmS07S4n9gMLFN0ENpuEP5cq31AMIynEmRkUpvsvz4lko2OS/2', '北微-超级管理员', NULL, '1111111', '1', 'ROOT_ADMIN', 1, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, 0, 1);
 INSERT INTO `system_user` VALUES (6, '100001', 'tyler', '$2a$10$GkpWZqbiBpgHgUa4k5MTteEIrhhZ8Fic.DKRocsSV90.UE.USZnou', '北微-超级管理员', NULL, '111111', '1', 'ROOT_ADMIN', 3, NULL, 0, 1, 1, 1, NULL, NULL, NULL, NULL, 0, 1);
-INSERT INTO `system_user` VALUES (7, '100001', 'bwadmin', '$2a$10$709OEKRujh0f1yPS7ixUnOUVNCMBkGAAaHyj5Wfds.T8jTak6XLcm', '北微-超级管理员', NULL, '11111', '1', 'ROOT_ADMIN', 1, NULL, 0, 1, 1, 1, NULL, NULL, NULL, NULL, 0, 1);
-INSERT INTO `system_user` VALUES (11, '1001212', 'admintest', '$2a$10$RIc7RJY96SRVsz6KFlhsEuJ1H38Ha/kM8HOgk79Q.30n0a24wIsBC', '测试组测试管理员', NULL, '1212121212', '1', 'GROUP_ADMIN', 2, NULL, 0, 12, 1, 1, NULL, NULL, NULL, NULL, 1, 1);
-INSERT INTO `system_user` VALUES (17, '1213134131', 'test', '$2a$10$4oPGNEu4NMDM.Xa6cKNXwezfSWc3YW1WL3RHJ1hBX7IftRYicWxUu', '测试', NULL, '1214141', '1', 'GROUP_ADMIN', 2, NULL, 0, 12, 1, 1, NULL, NULL, NULL, NULL, 1, 1);
-INSERT INTO `system_user` VALUES (18, '0001', 'client', '$2a$10$53YrVMHZCv/NPyMtQQ/RBucrJS3SNJeKcR/8HnslEMtOdp7pcYP7K', '客户演示浏览', NULL, '111111', '1', 'USER', 3, NULL, 0, 1, 1, 1, NULL, NULL, NULL, NULL, 1, 1);
-INSERT INTO `system_user` VALUES (19, '654321', 'Client123', '$2a$10$xNR8d7U948h4f/DRqgfK3O7DhEdQvAegOhmYSVSaMB.g4iEkmbkXO', '广告牌测试', NULL, '1234456', '1', 'GROUP_ADMIN', 2, NULL, 0, 13, 1, 1, NULL, NULL, NULL, NULL, 1, 1);
 COMMIT;
 
 -- ----------------------------

@@ -51,4 +51,6 @@ public class SystemClientDO {
     private String updater;
     /**修改时间*/
     private Date updateTime;
+    /**排序*/
+    private Integer orderNumber;
 }

@@ -22,6 +22,7 @@
         <result property="updater"    column="updater"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="orderNumber" column="order_number" />
     </resultMap>
 
     <resultMap type="SystemClientDO" id="SystemClientInfo">
@@ -56,7 +57,7 @@
     <sql id="systemClientQuery">
         select id, client_name, client_short_name, client_logo, country, client_phone,
                client_fax, client_address, email, comes_from, level, client_type, client_status,
-               client_desc, creator, updater, create_time, update_time from sys_client
+               client_desc, creator, updater, create_time, update_time ,order_number,weight from sys_client
     </sql>
 
     <select id="selectClientBySort" parameterType="SystemClientDO" resultMap="SystemClientResult">
@@ -78,6 +79,7 @@
             <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
             <if test="updater != null  and updater != ''"> and updater = #{updater}</if>
         </where>
+        order by order_number desc
     </select>
 
     <select id="validSystemClientBySort" parameterType="SystemClientDO" resultMap="SystemClientResult">
@@ -181,4 +183,18 @@
     <delete id="deleteClientFieldRelate">
         delete from sys_client_field_relate where client_id = #{clientId}
     </delete>
+
+    <update id="updateClientOrder">
+        update sys_client set order_number = order_number + #{order} where id =#{id}
+    </update>
+
+    <update id="addClientWeight">
+        update sys_client set weight = weight + #{weight} where id =#{id}
+    </update>
+
+    <update id="clearClientOrder">
+        update sys_client set order_number =  0  where order_number != 0
+    </update>
+
+
 </mapper>

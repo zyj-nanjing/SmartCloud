@@ -12,6 +12,7 @@ import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.api.SystemClientService;
+import www.bwsensing.com.common.core.lru.RedisLruCache;
 import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.dto.clientobject.SystemClientCO;
 import www.bwsensing.com.dto.command.SystemClientSaveCmd;
@@ -33,6 +34,8 @@ import www.bwsensing.com.gatewayimpl.database.dataobject.SystemClientDO;
 @CatchAndLog
 @Component
 public class ISystemClientServiceImpl implements SystemClientService {
+    private static final String BIZ_ID = "SYSTEM_CLIENT";
+    private static final Integer MAX_LRU_SIZE = 20;
     @Resource
     private SystemClientGateway clientGateway;
     @Resource
@@ -41,6 +44,9 @@ public class ISystemClientServiceImpl implements SystemClientService {
     private IndustryFieldGateway industryFieldGateway;
     @Resource
     private SystemClientMapper systemClientMapper;
+    @Resource
+    private RedisLruCache redisLruCache;
+
 
     @Override
     public Response addSystemClient(SystemClientSaveCmd saveCmd) {
@@ -66,14 +72,23 @@ public class ISystemClientServiceImpl implements SystemClientService {
     public Response updateSystemClient(SystemClientUpdateCmd updateCmd) {
         SystemClient systemClient = new SystemClient();
         BeanUtils.copyProperties(updateCmd, systemClient);
+        systemClient.setReleaseFields(industryFieldGateway.getIndustryFieldsByIds(updateCmd.getReleaseFields()));
         clientGateway.updateSystemClient(systemClient);
         return Response.buildSuccess();
     }
 
     @Override
     public SingleResponse<SystemClientCO> getSystemClientInfo(Integer id) {
-        SystemClientDO systemClient = systemClientMapper.getClientById(id);
+        SystemClientDO systemClient =(SystemClientDO)redisLruCache.getCache(BIZ_ID,id+"");
+        boolean isCache = true;
+        if (null == systemClient){
+            systemClient = systemClientMapper.getClientById(id);
+            isCache = false;
+        }
         if ( null != systemClient) {
+            if (!isCache){
+                redisLruCache.setCache(BIZ_ID,id+"",systemClient,MAX_LRU_SIZE);
+            }
             return SingleResponse.of(SystemClientCoConvertor.toClientObject(systemClient));
         }
         return SingleResponse.of(new SystemClientCO());

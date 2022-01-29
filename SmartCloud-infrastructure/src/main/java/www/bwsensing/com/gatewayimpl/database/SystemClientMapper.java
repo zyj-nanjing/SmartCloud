@@ -75,6 +75,29 @@ public interface SystemClientMapper
      int addClientFieldRelate(@Param("clientId")Integer clientId, @Param("fieldId")Integer fieldId);
 
     /**
+     * 修改权重
+     * @param order
+     * @param id
+     * @return
+     */
+     int updateClientOrder(@Param("order")Integer order, @Param("id")Integer id);
+
+    /**
+     * 添加权值
+     * @param weight
+     * @param id
+     * @return
+     */
+     int addClientWeight(@Param("weight")Integer weight, @Param("id")Integer id);
+
+
+    /**
+     * 清空排序值 注意条件
+     * @return
+     */
+     int clearClientOrder();
+
+    /**
      * 删除关联
      * @param clientId
      * @return

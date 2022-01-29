@@ -50,6 +50,7 @@ public class SystemClientGatewayImpl implements SystemClientGateway {
         log.info("add client: client name:{}",systemClient.getClientName());
     }
 
+    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void updateSystemClient(SystemClient systemClient) {
         TokenData userData = tokenGateway.getTokenInfo();
@@ -57,6 +58,8 @@ public class SystemClientGatewayImpl implements SystemClientGateway {
         SystemClientDO dataObject = SystemClientConvertor.toDataObject(systemClient);
         dataObject.setUpdater(userData.getUserName());
         dataObject.setUpdateTime(new Date());
+        systemClientMapper.deleteClientFieldRelate(systemClient.getId());
+        systemClient.getReleaseFields().forEach(field -> systemClientMapper.addClientFieldRelate(dataObject.getId(), field.getId()) );
         systemClientMapper.updateClient(dataObject);
     }
 
