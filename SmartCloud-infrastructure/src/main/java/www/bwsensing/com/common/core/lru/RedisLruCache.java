@@ -1,11 +1,12 @@
 package www.bwsensing.com.common.core.lru;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.Md5Utils;
-import org.springframework.stereotype.Component;
-import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author macos-zyj
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class RedisLruCache {
-    protected static final String  LRU_PREFIX = "LRU_";
+    protected static final String  LRU_PREFIX = "LRU_CACHE_";
     protected static final Integer DEFAULT_LRU_SIZE = 10;
     protected static final Integer MAX_CAS_TIMES = 15;
 
@@ -28,9 +29,8 @@ public class RedisLruCache {
        if(null == redisService.getCacheObject(redisKey)){
            synchronized (this){
                if(null == redisService.getCacheObject(redisKey)) {
-                   LruLinkedCacheMap<K,V> cache = new LruLinkedCacheMap<>(capacity);
+                   LruCache<K,V> cache = new LruCache<>(capacity);
                    cache.put(key, value);
-                   redisService.setCacheObject(convertRedisPushKey(bizId),cache.getUuidVersionCode(),30L, TimeUnit.DAYS);
                    redisService.setCacheObject(redisKey,cache,30L, TimeUnit.DAYS);
                }
            }
@@ -48,12 +48,10 @@ public class RedisLruCache {
             return null;
         }
         String redisKey = convertRedisKey(bizId);
-        LruLinkedCacheMap<K,V> cache =  redisService.getCacheObject(redisKey);
+        LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null != cache){
-            Long codeValue = redisService.getCacheObject(convertRedisPushKey(bizId));
-            Object result = cache.get(key);
-            if(compareAndSet(bizId, codeValue,cache)){
-                return result;
+            if(compareAndSet(bizId,cache)){
+                return cache.get(key);
             } else {
                 return getCache(bizId, key, times+1);
             }
@@ -78,11 +76,10 @@ public class RedisLruCache {
             return;
         }
         String redisKey = convertRedisKey(bizId);
-        LruLinkedCacheMap<K,V> cache =  redisService.getCacheObject(redisKey);
+        LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null != cache) {
             cache.remove(key);
-            Long timestampCode = redisService.getCacheObject(convertRedisPushKey(bizId));
-            if(!compareAndSet(bizId, timestampCode,cache)){
+            if(!compareAndSet(bizId,cache)){
                 removeCache(bizId, key, times+1);
             }
         }
@@ -93,14 +90,13 @@ public class RedisLruCache {
             return;
         }
         String redisKey = convertRedisKey(bizId);
-        LruLinkedCacheMap<K,V> cache =  redisService.getCacheObject(redisKey);
+        LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null == cache) {
             initCacheAndAdd(bizId,maxSize,key,value);
         } else {
             cache.setCapacity(maxSize);
-            Long timestampCode = redisService.getCacheObject(convertRedisPushKey(bizId));
             cache.put(key, value);
-            if(!compareAndSet(bizId, timestampCode,cache)){
+            if(!compareAndSet(bizId,cache)){
                 setCache(bizId, key, value, times+1,maxSize);
             }
         }
@@ -111,28 +107,14 @@ public class RedisLruCache {
         return Md5Utils.convertMd5(redisKey);
     }
 
-
-    protected String convertRedisPushKey(String bizId){
-        String redisKey = LRU_PREFIX+"PUSH_" + bizId;
-        return Md5Utils.convertMd5(redisKey);
-    }
-
-
-    protected boolean compare(String redisPushKey,Long expectedValue) {
-        //读取Redis中的值
-        long oldValue = redisService.getCacheObject(redisPushKey);
-        log.info("redis value:{}.expect value:{}",oldValue,expectedValue);
-        return expectedValue.equals(oldValue);
-    }
-
-    protected<K,V> boolean compareAndSet(String bizId, Long oldVersion, LruLinkedCacheMap<K,V> cache){
-        String redisPushKey = convertRedisPushKey(bizId);
-        if (!compare(redisPushKey,oldVersion)) {
+    protected<K,V> boolean compareAndSet(String bizId,LruCache<K,V> cache){
+        String redisKey = convertRedisKey(bizId);
+        LruCache<K,V> currentCache =  redisService.getCacheObject(redisKey);
+        if (!cache.isEquals(currentCache.getVersionCode())) {
             return false;
         }
-        redisService.setCacheObject(convertRedisPushKey(bizId),cache.getUuidVersionCode(),30L, TimeUnit.DAYS);
         redisService.setCacheObject(convertRedisKey(bizId),cache,30L, TimeUnit.DAYS);
-        asyncCacheSetTask.pushCacheChange(bizId,cache);
+        asyncCacheSetTask.pushCacheChange(bizId,cache.getInnerCache());
         return true;
     }
 }

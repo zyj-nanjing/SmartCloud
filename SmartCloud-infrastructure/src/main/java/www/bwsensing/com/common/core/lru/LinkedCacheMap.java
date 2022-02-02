@@ -1,4 +1,5 @@
 package www.bwsensing.com.common.core.lru;
+
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,20 +10,19 @@ import java.util.Random;
  * 需要在外部进行版本号分配
  * @author macos-zyj
  */
-public class LruLinkedCacheMap<K,V> extends LinkedHashMap<K,V> implements Serializable {
+public class LinkedCacheMap<K,V> extends LinkedHashMap<K,V> implements Serializable {
     private static final long serialVersionUID = 25465L;
-    private static final Integer DEFAULT_CAPACITY = 10;
+    private static final Integer DEFAULT_CAPACITY = 8;
     /**
      * 定一缓存容量
      */
     private int capacity;
 
-    public LruLinkedCacheMap() {
+    public LinkedCacheMap() {
         this(DEFAULT_CAPACITY);
-        this.capacity = DEFAULT_CAPACITY;
     }
 
-    public LruLinkedCacheMap(int capacity){
+    public LinkedCacheMap(int capacity){
         // AccessOrder = true
         super(capacity,0.75f,true);
         this.capacity = capacity;

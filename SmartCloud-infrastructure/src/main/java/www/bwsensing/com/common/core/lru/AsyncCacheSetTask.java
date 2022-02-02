@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import www.bwsensing.com.common.core.event.DomainEventPublisher;
 import www.bwsensing.com.domainevent.LruCachePushEvent;
+
 import javax.annotation.Resource;
 
 /**
@@ -18,7 +19,7 @@ public class AsyncCacheSetTask {
 
 
     @Async
-    public<K,V> void pushCacheChange(String bizId,LruLinkedCacheMap<K,V> cache){
+    public<K,V> void pushCacheChange(String bizId, LinkedCacheMap<K,V> cache){
         log.debug("push to database:{}",bizId);
         LruCachePushEvent<K,V> pushEvent = new LruCachePushEvent<>();
         pushEvent.setBizId(bizId);
