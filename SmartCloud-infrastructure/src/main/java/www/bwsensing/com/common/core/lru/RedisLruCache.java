@@ -6,6 +6,7 @@ import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.Md5Utils;
 
 import javax.annotation.Resource;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +18,7 @@ public class RedisLruCache {
     protected static final String  LRU_PREFIX = "LRU_CACHE_";
     protected static final Integer DEFAULT_LRU_SIZE = 10;
     protected static final Integer MAX_CAS_TIMES = 15;
+    private static ConcurrentHashMap<String,String> CURRENT_KEY_MAP = new ConcurrentHashMap<>(16);
 
     @Resource
     protected RedisService redisService;
@@ -50,10 +52,16 @@ public class RedisLruCache {
         String redisKey = convertRedisKey(bizId);
         LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null != cache){
-            if(compareAndSet(bizId,cache)){
+            if (null != CURRENT_KEY_MAP.get(bizId)&&CURRENT_KEY_MAP.get(bizId).equals(key)){
                 return cache.get(key);
             } else {
-                return getCache(bizId, key, times+1);
+                cache.get(key);
+                if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
+                    CURRENT_KEY_MAP.put(bizId, key);
+                    return cache.get(key);
+                } else {
+                    return getCache(bizId, key, times + 1);
+                }
             }
         }
         return null;

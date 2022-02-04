@@ -23,6 +23,7 @@ public class LruCache<K,V> implements Serializable {
     public LruCache(Integer capacity) {
         this.capacity = capacity;
         this.innerCache = new LinkedCacheMap<>(capacity);
+        resetCode();
     }
 
     /**
@@ -36,7 +37,7 @@ public class LruCache<K,V> implements Serializable {
 
     public void resetCode() {
         long timeMillis = System.currentTimeMillis();
-        versionCode =  Math.abs(timeMillis-new Random().nextLong());
+        this.versionCode =  Math.abs(timeMillis-new Random().nextLong());
     }
 
     public  V get(Object key) {
@@ -59,7 +60,7 @@ public class LruCache<K,V> implements Serializable {
      * @return
      */
     public boolean isEquals(Long currentCode) {
-        if (0 == currentCode.compareTo(versionCode)){
+        if (null == currentCode ||0 == currentCode.compareTo(versionCode)){
             resetCode();
             return true;
         }
