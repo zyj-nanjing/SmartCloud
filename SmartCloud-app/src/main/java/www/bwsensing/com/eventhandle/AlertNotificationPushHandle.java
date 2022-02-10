@@ -20,6 +20,7 @@ import www.bwsensing.com.domainevent.AlertNotificationPushEvent;
 import www.bwsensing.com.extensionpoint.AlertNotificationExtPt;
 import www.bwsensing.com.common.constant.NotificationLimitConstant;
 /**
+ * 告警消息结束以及事件推送
  * @author macos-zyj
  */
 @CatchAndLog
@@ -42,7 +43,7 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
         BizScenario scenario = BizScenario.valueOf(BizScenarioCode.BIZ_ID_CLOUD, BizScenarioCode.USER_CAUSE_NOTIFICATION,scenarioCode);
         messagePushCmd.setBizScenario(scenario);
         notificationService.cacheNotification(pushEvent.getAlertGroupId(), pushEvent.getAlertMessage());
-        //扩展点 多重预警方式推送
+        //扩展点 多告警方式进行推送
         if (!checkPushIsLimit(pushEvent.getAlertGroupId())){
             extensionExecutor.executeVoid(AlertNotificationExtPt.class, messagePushCmd.getBizScenario(), extension -> extension.singleNotification(messagePushCmd));
             putNotificationLimit(pushEvent.getAlertGroupId());

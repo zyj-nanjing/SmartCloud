@@ -1,5 +1,6 @@
 package www.bwsensing.com.dto.command;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import com.alibaba.cola.dto.Command;
@@ -10,9 +11,10 @@ import java.util.Date;
 /**
  * @author macos-zyj
  */
+@ApiModel(description="菜单修改")
 @Data
 public class SystemMenuUpdateCmd extends Command {
-    @ApiModelProperty(name ="主键",required = true)
+    @ApiModelProperty(name ="主键",example = "1",required = true)
     @NotNull(message="菜单编号不能为空!")
     private Integer id;
     /**名称*/

@@ -1,14 +1,16 @@
 package www.bwsensing.com.common.scheduler;
 
-import lombok.extern.slf4j.Slf4j;
 import net.sf.ehcache.Cache;
+import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
 import net.sf.ehcache.CacheManager;
+import www.bwsensing.com.common.annotation.BizScheduled;
+import www.bwsensing.com.common.constant.EhCacheConstant;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import www.bwsensing.com.common.constant.EhCacheConstant;
+
 
 
 /**
@@ -26,7 +28,7 @@ public class ExpireLocalCacheScheduler {
      * 10分钟清除一次 系统缓存
      */
     @Scheduled(cron = "0 */10 * * * ?")
-    private void expiredLocalCache() {
+    public void expiredLocalCache() {
         try {
             CacheManager cacheManager = ehCacheManager.getCacheManager();
             assert cacheManager != null;
@@ -38,11 +40,18 @@ public class ExpireLocalCacheScheduler {
         }
     }
 
+    @BizScheduled(scheduleCode = "TEST")
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void testScheduled(){
+        log.info("定时事务测试开始");
+    }
+
+
     /**
      * 2分钟清除一次 授权缓存
      */
     @Scheduled(cron = "0 */2 * * * ?")
-    private void expiredTempCache() {
+    public void expiredTempCache() {
         try {
             CacheManager cacheManager = ehCacheManager.getCacheManager();
             assert cacheManager != null;
@@ -58,7 +67,7 @@ public class ExpireLocalCacheScheduler {
      * 4分钟清除一次 授权缓存
      */
     @Scheduled(cron = "0 */4 * * * ?")
-    private void expiredUserDetailCache() {
+    public void expiredUserDetailCache() {
         try {
             CacheManager cacheManager = ehCacheManager.getCacheManager();
             assert cacheManager != null;
@@ -74,7 +83,7 @@ public class ExpireLocalCacheScheduler {
      * 30分钟清除一次 授权缓存
      */
     @Scheduled(cron = "0 */30 * * * ?")
-    private void expiredConfigCache() {
+    public void expiredConfigCache() {
         try {
             CacheManager cacheManager = ehCacheManager.getCacheManager();
             assert cacheManager != null;

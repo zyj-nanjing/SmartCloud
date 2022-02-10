@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import www.bwsensing.com.common.netty.NettyTcpServer;
 import www.bwsensing.com.common.netty.NettyUdpServer;
 import www.bwsensing.com.common.thread.NamedThreadFactory;

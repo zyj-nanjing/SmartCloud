@@ -98,6 +98,7 @@ public class EhCacheService {
     public void removeTemp(String key){
         remove(EhCacheConstant.TEMP_CACHE_PREFIX, key);
     }
+
     /**
      * 获取缓存
      *

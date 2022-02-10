@@ -1,6 +1,8 @@
 package www.bwsensing.com.gatewayimpl.database.dataobject;
 
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Date;
  * @author macos-zyj
  */
 @Data
-public class IndustryFieldDO {
+public class IndustryFieldDO implements Serializable {
     /**主键*/
     private Integer id;
     /**名称*/

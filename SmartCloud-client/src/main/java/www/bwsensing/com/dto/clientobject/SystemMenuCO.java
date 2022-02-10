@@ -3,6 +3,8 @@ package www.bwsensing.com.dto.clientobject;
 import com.alibaba.cola.dto.DTO;
 import java.util.Date;
 import java.util.List;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,6 +14,7 @@ import lombok.Data;
 @SuppressWarnings("all")
 public class SystemMenuCO extends DTO {
     /**主键*/
+    @ApiModelProperty(value = "视图类别",example= "1")
     private Integer id;
     /**名称*/
     private String name;

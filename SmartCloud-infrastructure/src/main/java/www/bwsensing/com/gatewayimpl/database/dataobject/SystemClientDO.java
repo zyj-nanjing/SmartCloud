@@ -1,6 +1,8 @@
 package www.bwsensing.com.gatewayimpl.database.dataobject;
 
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * @author macos-zyj
  */
 @Data
-public class SystemClientDO {
+public class SystemClientDO implements Serializable {
     /**主键Id*/
     private Integer id;
     /**客户名称*/

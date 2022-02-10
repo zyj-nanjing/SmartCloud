@@ -39,6 +39,7 @@
 			<artifactId>javassist</artifactId>
 		</dependency>
 
+
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-dm</artifactId>
@@ -97,7 +98,7 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.7.19</version>
+			<version>5.7.20</version>
 		</dependency>
 
 		<dependency>

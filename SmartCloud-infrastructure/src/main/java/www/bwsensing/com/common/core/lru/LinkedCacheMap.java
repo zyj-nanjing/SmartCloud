@@ -1,9 +1,8 @@
 package www.bwsensing.com.common.core.lru;
-
-import java.io.Serializable;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.Serializable;
 import java.util.Random;
+import java.util.Map;
 
 /**
  * 注意千万不能在里面直接分配版本号 否则每次序列化的时候都会改变版本号

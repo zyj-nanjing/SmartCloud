@@ -1,9 +1,8 @@
 package www.bwsensing.com.common.core.lru;
 
 import lombok.Data;
-
-import java.io.Serializable;
 import java.util.Random;
+import java.io.Serializable;
 
 /**
  * Map 结构封装以及业务扩展

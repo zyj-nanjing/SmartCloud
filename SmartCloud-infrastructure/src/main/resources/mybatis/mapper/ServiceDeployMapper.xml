@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.ServiceDeployMapper">
+
+    <resultMap type="ServiceDeploy" id="ServiceDeployResult">
+        <result property="id"    column="id"    />
+        <result property="hostName"    column="host_name"    />
+        <result property="weight"    column="weight"    />
+        <result property="location"    column="location"    />
+        <result property="configure"    column="configure"    />
+        <result property="ipv4"    column="ipv4"    />
+        <result property="ipv4Inner"    column="ipv4_inner"    />
+        <result property="isHealthy" column="is_healthy" />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectServiceDeployVo">
+        select id, host_name, weight, location, configure, ipv4, ipv4_inner,is_healthy, remark from service_deploy_config
+    </sql>
+
+    <select id="selectServiceDeployList" parameterType="ServiceDeploy" resultMap="ServiceDeployResult">
+        <include refid="selectServiceDeployVo"/>
+        <where>
+            <if test="hostName != null  and hostName != ''"> and host_name like concat('%', #{hostName}, '%')</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="configure != null  and configure != ''"> and configure = #{configure}</if>
+            <if test="ipv4 != null  and ipv4 != ''"> and ipv4 = #{ipv4}</if>
+            <if test="isHealthy != null "> and is_healthy = #{isHealthy}</if>
+            <if test="ipv4Inner != null  and ipv4Inner != ''"> and ipv4_inner = #{ipv4Inner}</if>
+        </where>
+    </select>
+
+    <select id="selectServiceDeployById" parameterType="Integer" resultMap="ServiceDeployResult">
+        <include refid="selectServiceDeployVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectServiceDeployByWeight" resultMap="ServiceDeployResult">
+        <include refid="selectServiceDeployVo"/>
+         WHERE id in (select service_id from  schedule_service_release where weight &lt; #{weight} and schedule_id = #{scheduleId})
+    </select>
+
+    <insert id="insertServiceDeploy" parameterType="ServiceDeploy" useGeneratedKeys="true" keyProperty="id">
+        insert into service_deploy_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hostName != null and hostName != ''">host_name,</if>
+            <if test="weight != null">weight,</if>
+            <if test="location != null">location,</if>
+            <if test="configure != null">configure,</if>
+            <if test="ipv4 != null">ipv4,</if>
+            <if test="ipv4Inner != null">ipv4_inner,</if>
+            <if test="isHealthy != null">is_healthy,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hostName != null and hostName != ''">#{hostName},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="location != null">#{location},</if>
+            <if test="configure != null">#{configure},</if>
+            <if test="ipv4 != null">#{ipv4},</if>
+            <if test="ipv4Inner != null">#{ipv4Inner},</if>
+            <if test="isHealthy != null">#{isHealthy},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateServiceDeploy" parameterType="ServiceDeploy">
+        update service_deploy_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hostName != null and hostName != ''">host_name = #{hostName},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="configure != null">configure = #{configure},</if>
+            <if test="ipv4 != null">ipv4 = #{ipv4},</if>
+            <if test="ipv4Inner != null">ipv4_inner = #{ipv4Inner},</if>
+            <if test="isHealthy != null">is_healthy = #{isHealthy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceDeployById" parameterType="Integer">
+        delete from service_deploy_config where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceDeployByIds" parameterType="String">
+        delete from service_deploy_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

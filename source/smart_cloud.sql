@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 29/01/2022 21:26:31
+ Date: 10/02/2022 13:07:51
 */
 
 SET NAMES utf8mb4;
@@ -52,6 +52,30 @@ CREATE TABLE `auth_token` (
 -- Records of auth_token
 -- ----------------------------
 BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for biz_scheduled_config
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_scheduled_config`;
+CREATE TABLE `biz_scheduled_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `schedule_code` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '事务Code',
+  `scheduled_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '事务名称',
+  `check_interval` int(10) DEFAULT NULL COMMENT '检查间隔',
+  `biz_id` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '业务线编码',
+  `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  `creator` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `CODE` (`schedule_code`) USING BTREE COMMENT '事务编码不能唯一'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统业务定时事务配置(单体多机部署环境)';
+
+-- ----------------------------
+-- Records of biz_scheduled_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `biz_scheduled_config` VALUES (1, 'TEST', 'DEFAULT_SCHEDULE', 100, 'TEST', '测试', 'admin', '2022-02-09 10:16:15');
 COMMIT;
 
 -- ----------------------------
@@ -483,6 +507,27 @@ INSERT INTO `proto_type_item` VALUES (8, 3, 8);
 COMMIT;
 
 -- ----------------------------
+-- Table structure for schedule_service_release
+-- ----------------------------
+DROP TABLE IF EXISTS `schedule_service_release`;
+CREATE TABLE `schedule_service_release` (
+  `schedule_id` int(10) unsigned NOT NULL COMMENT '主键',
+  `service_id` int(11) NOT NULL COMMENT '系统编号',
+  `weight` double NOT NULL COMMENT '优先执行权级',
+  `shift_weight` double unsigned NOT NULL DEFAULT '0' COMMENT '优先级偏移量',
+  UNIQUE KEY `UNIQUE_WEIGHT` (`schedule_id`,`weight`) USING BTREE COMMENT '权重不能一致',
+  UNIQUE KEY `UNIQUE_SERVICE` (`schedule_id`,`service_id`) USING BTREE COMMENT '服务器不能重复'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='定时任务与服务器关联';
+
+-- ----------------------------
+-- Records of schedule_service_release
+-- ----------------------------
+BEGIN;
+INSERT INTO `schedule_service_release` VALUES (1, 1, 0, 0);
+INSERT INTO `schedule_service_release` VALUES (1, 2, 4, 0);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sensor_model
 -- ----------------------------
 DROP TABLE IF EXISTS `sensor_model`;
@@ -530,6 +575,31 @@ INSERT INTO `sensor_model_type` VALUES (48, 2, 2);
 INSERT INTO `sensor_model_type` VALUES (49, 1, 1);
 INSERT INTO `sensor_model_type` VALUES (50, 1, 2);
 INSERT INTO `sensor_model_type` VALUES (51, 1, 3);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for service_deploy_config
+-- ----------------------------
+DROP TABLE IF EXISTS `service_deploy_config`;
+CREATE TABLE `service_deploy_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `host_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '主机名称',
+  `weight` double NOT NULL COMMENT '权级',
+  `location` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '地理区域',
+  `configure` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '配置',
+  `ipv4` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'IP地址',
+  `ipv4_inner` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '内部IP地址\n(单地区部署尽量同网段部署，多部署需要避免两地网段一致)',
+  `is_healthy` int(2) NOT NULL DEFAULT '1' COMMENT '是否健康',
+  `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统部署信息表';
+
+-- ----------------------------
+-- Records of service_deploy_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `service_deploy_config` VALUES (1, 'MacOs-Zyj.local', 0, '江苏南京', '8/16', ' 223.65.100.63', '192.168.31.190', 1, '开发环境');
+INSERT INTO `service_deploy_config` VALUES (2, 'TEST', 1, '南京', '1', ' 223.65.100.62', '192.168.31.191', 1, '测试');
 COMMIT;
 
 -- ----------------------------
@@ -864,9 +934,9 @@ CREATE TABLE `sys_client` (
 -- Records of sys_client
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL, 3, 1);
-INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL, 2, 1);
-INSERT INTO `sys_client` VALUES (21, '南京理工大泰州', 'NJLGTZ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-21 07:23:54', NULL, 1, 0);
+INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL, 0, 16);
+INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL, 1, 8);
+INSERT INTO `sys_client` VALUES (21, '南京理工大泰州', 'NJLGTZ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-21 07:23:54', NULL, 0, 34);
 COMMIT;
 
 -- ----------------------------
@@ -1306,7 +1376,7 @@ CREATE TABLE `system_user` (
   `account_non_expired` int(2) DEFAULT '1' COMMENT '账户是否过期',
   PRIMARY KEY (`id`),
   UNIQUE KEY `INDEX` (`account_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of system_user

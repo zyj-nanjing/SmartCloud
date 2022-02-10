@@ -59,6 +59,14 @@
            statistics="false">
     </cache>
 
+    <!-- LRU缓存 -->
+    <cache name="lru_cache_config"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
+
 
 </ehcache>
 	

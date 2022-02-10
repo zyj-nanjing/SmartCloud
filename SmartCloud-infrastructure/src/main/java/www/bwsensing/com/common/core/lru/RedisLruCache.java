@@ -1,13 +1,12 @@
 package www.bwsensing.com.common.core.lru;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.Md5Utils;
-
-import javax.annotation.Resource;
+import org.springframework.stereotype.Component;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author macos-zyj
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisLruCache {
     protected static final String  LRU_PREFIX = "LRU_CACHE_";
     protected static final Integer DEFAULT_LRU_SIZE = 10;
-    protected static final Integer MAX_CAS_TIMES = 15;
+    protected static final Integer MAX_CAS_TIMES = 14;
     private static ConcurrentHashMap<String,String> CURRENT_KEY_MAP = new ConcurrentHashMap<>(16);
 
     @Resource
@@ -40,74 +39,53 @@ public class RedisLruCache {
     }
 
 
-    public Object getCache(String bizId, String key){
-        return getCache(bizId, key, 0);
-    }
-
-
-    public <K,V> Object getCache(String bizId, String key,Integer times){
-        if(times > MAX_CAS_TIMES){
-            return null;
-        }
+    public  <K,V>Object getCache(String bizId, String key){
         String redisKey = convertRedisKey(bizId);
         LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null != cache){
-            if (null != CURRENT_KEY_MAP.get(bizId)&&CURRENT_KEY_MAP.get(bizId).equals(key)){
+//            if (null != CURRENT_KEY_MAP.get(bizId)&&CURRENT_KEY_MAP.get(bizId).equals(key)){
+//                return cache.get(key);
+//            } else {
+//                cache.get(key);
+//                if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
+//                    CURRENT_KEY_MAP.put(bizId, key);
+//                    return cache.get(key);
+//                }
+//            }
+            cache.get(key);
+            if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
+                CURRENT_KEY_MAP.put(bizId, key);
                 return cache.get(key);
-            } else {
-                cache.get(key);
-                if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
-                    CURRENT_KEY_MAP.put(bizId, key);
-                    return cache.get(key);
-                } else {
-                    return getCache(bizId, key, times + 1);
-                }
             }
         }
         return null;
     }
 
     public<K,V> void setCache(String bizId,K key,V value){
-        setCache(bizId,key,value,0,DEFAULT_LRU_SIZE);
+        setCache(bizId,key,value,DEFAULT_LRU_SIZE);
     }
 
-    public<K,V> void setCache(String bizId,K key,V value,Integer maxSize){
-        setCache(bizId,key,value,0,maxSize);
-    }
-
-    public<K,V> void removeCache(String bizId,K key){
-        removeCache(bizId,key,0);
-    }
-
-    private<K,V> void removeCache(String bizId,K key,Integer times){
-        if(times > MAX_CAS_TIMES){
-            return;
-        }
-        String redisKey = convertRedisKey(bizId);
-        LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
-        if(null != cache) {
-            cache.remove(key);
-            if(!compareAndSet(bizId,cache)){
-                removeCache(bizId, key, times+1);
-            }
-        }
-    }
-
-    private<K,V> void setCache(String bizId,K key,V value,Integer times,Integer maxSize){
-        if(times > MAX_CAS_TIMES){
-            return;
-        }
+    public<K,V> boolean setCache(String bizId,K key,V value,Integer maxSize){
         String redisKey = convertRedisKey(bizId);
         LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null == cache) {
             initCacheAndAdd(bizId,maxSize,key,value);
+            return true;
         } else {
             cache.setCapacity(maxSize);
             cache.put(key, value);
-            if(!compareAndSet(bizId,cache)){
-                setCache(bizId, key, value, times+1,maxSize);
-            }
+            return compareAndSet(bizId, cache);
         }
+    }
+
+    public<K,V> boolean removeCache(String bizId,K key){
+        String redisKey = convertRedisKey(bizId);
+        LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
+        if(null != cache) {
+            cache.remove(key);
+            return compareAndSet(bizId, cache);
+        }
+        return false;
     }
 
     protected String convertRedisKey(String bizId){
@@ -116,13 +94,35 @@ public class RedisLruCache {
     }
 
     protected<K,V> boolean compareAndSet(String bizId,LruCache<K,V> cache){
+        return compareAndSet(bizId,cache,0);
+    }
+
+    protected<K,V> boolean compareAndSet(String bizId,LruCache<K,V> cache,Integer times){
+        boolean needCompare = times < MAX_CAS_TIMES;
+        String redisKey = convertRedisKey(bizId);
+        LruCache<K,V> currentCache =  redisService.getCacheObject(redisKey);
+        if(needCompare){
+            if (!cache.isEquals(currentCache.getVersionCode())) {
+                return compareAndSet(bizId,cache,times+1);
+            } else {
+                redisService.setCacheObject(convertRedisKey(bizId),cache,30L, TimeUnit.DAYS);
+                asyncCacheSetTask.pushCacheChange(bizId,cache.getInnerCache());
+                return true;
+            }
+        } else {
+            return syncCompareAndSet(bizId,cache);
+        }
+    }
+
+    protected synchronized <K,V>  boolean syncCompareAndSet(String bizId,LruCache<K,V> cache){
         String redisKey = convertRedisKey(bizId);
         LruCache<K,V> currentCache =  redisService.getCacheObject(redisKey);
         if (!cache.isEquals(currentCache.getVersionCode())) {
             return false;
+        } else {
+            redisService.setCacheObject(convertRedisKey(bizId),cache,30L, TimeUnit.DAYS);
+            asyncCacheSetTask.pushCacheChange(bizId,cache.getInnerCache());
+            return true;
         }
-        redisService.setCacheObject(convertRedisKey(bizId),cache,30L, TimeUnit.DAYS);
-        asyncCacheSetTask.pushCacheChange(bizId,cache.getInnerCache());
-        return true;
     }
 }

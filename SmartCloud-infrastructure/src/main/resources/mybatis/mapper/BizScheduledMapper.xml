@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.BizScheduledMapper">
+
+    <resultMap type="BizScheduledConfig" id="BizScheduledConfigResult">
+        <result property="id"    column="id"    />
+        <result property="scheduleCode" column="schedule_code"/>
+        <result property="scheduledName"    column="scheduled_name"    />
+        <result property="checkInterval"    column="check_interval"    />
+        <result property="bizId"    column="biz_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="shiftWeight"    column="shift_weight"    />
+        <result property="remark"    column="remark"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBizScheduledConfigVo">
+        select id,schedule_code, scheduled_name, check_interval, biz_id, remark, creator, create_time from biz_scheduled_config
+    </sql>
+
+    <select id="selectBizScheduledConfigList" parameterType="BizScheduledConfig" resultMap="BizScheduledConfigResult">
+        <include refid="selectBizScheduledConfigVo"/>
+        <where>
+            <if test="scheduledName != null  and scheduledName != ''"> and scheduled_name like concat('%', #{scheduledName}, '%')</if>
+            <if test="checkInterval != null "> and check_interval = #{checkInterval}</if>
+            <if test="bizId != null "> and biz_id = #{bizId}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+        </where>
+    </select>
+
+    <select id="selectBizScheduledConfigById" parameterType="Integer" resultMap="BizScheduledConfigResult">
+        <include refid="selectBizScheduledConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBizScheduledConfig" parameterType="BizScheduledConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_scheduled_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scheduleCode != null and scheduleCode != ''">schedule_code,</if>
+            <if test="scheduledName != null and scheduledName != ''">scheduled_name,</if>
+            <if test="checkInterval != null ">check_interval,</if>
+            <if test="bizId != null">biz_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scheduleCode != null and scheduleCode != ''">#{scheduleCode},</if>
+            <if test="scheduledName != null and scheduledName != ''">#{scheduledName},</if>
+            <if test="checkInterval != null ">#{checkInterval},</if>
+            <if test="bizId != null">#{bizId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizScheduledConfig" parameterType="BizScheduledConfig">
+        update biz_scheduled_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="scheduledName != null and scheduledName != ''">scheduled_name = #{scheduledName},</if>
+            <if test="checkInterval != null ">check_interval = #{checkInterval},</if>
+            <if test="bizId != null">biz_id = #{bizId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizScheduledConfigById" parameterType="Integer">
+        delete from biz_scheduled_config where id = #{id}
+    </delete>
+
+    <delete id="deleteBizScheduledConfigByIds" parameterType="String">
+        delete from biz_scheduled_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryScheduleByCode" resultMap="BizScheduledConfigResult">
+        SELECT * FROM biz_scheduled_config,schedule_service_release where id = schedule_id and service_id = #{serviceId} and schedule_code = #{code}
+            LOCK IN SHARE MODE;
+    </select>
+
+
+
+    <update id="updateScheduleRelease">
+        UPDATE schedule_service_release set shift_weight = 0 where weight > #{weight} and schedule_id = #{scheduleId}
+    </update>
+
+    <update id="updateScheduleReleaseShift">
+        UPDATE schedule_service_release set shift_weight = #{intervalWeight}  where weight >= #{weight} and schedule_id = #{scheduleId}
+    </update>
+
+    <select id="queryScheduleByWeight" resultMap="BizScheduledConfigResult">
+        select * from  schedule_service_release where weight &lt; #{weight} and schedule_id = #{scheduleId} order by weight limit 1
+    </select>
+
+</mapper>

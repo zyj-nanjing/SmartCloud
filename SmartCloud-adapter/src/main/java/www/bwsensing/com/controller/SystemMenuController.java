@@ -28,8 +28,7 @@ import www.bwsensing.com.dto.command.SystemMenuUpdateCmd;
 public class SystemMenuController {
     @Autowired
     private SystemMenuService viewMenuService;
-    @Autowired
-    private SystemMenuGateway menuGateway;
+
     @Autowired
     private PermissionGateway permissionGateway;
 
