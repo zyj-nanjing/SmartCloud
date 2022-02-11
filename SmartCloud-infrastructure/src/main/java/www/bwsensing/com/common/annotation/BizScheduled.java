@@ -22,6 +22,7 @@ public @interface BizScheduled {
      * @return
      */
     String scheduleCode();
+
     /**
      * 检查时间间隔 超过间隔后直接调用下一层级
      * @return 检查时间间隔

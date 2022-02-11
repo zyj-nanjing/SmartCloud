@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 10/02/2022 13:07:51
+ Date: 11/02/2022 14:53:51
 */
 
 SET NAMES utf8mb4;
@@ -504,6 +504,35 @@ INSERT INTO `proto_type_item` VALUES (5, 2, 5);
 INSERT INTO `proto_type_item` VALUES (6, 2, 6);
 INSERT INTO `proto_type_item` VALUES (7, 3, 7);
 INSERT INTO `proto_type_item` VALUES (8, 3, 8);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for schedule_execute_log
+-- ----------------------------
+DROP TABLE IF EXISTS `schedule_execute_log`;
+CREATE TABLE `schedule_execute_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `schedule_id` int(11) NOT NULL COMMENT '事务编号',
+  `service_id` int(11) NOT NULL COMMENT '服务编号',
+  `check_time` datetime NOT NULL COMMENT '检查时间',
+  `is_end` int(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否终止',
+  `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='事务执行日志';
+
+-- ----------------------------
+-- Records of schedule_execute_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `schedule_execute_log` VALUES (13, 1, 1, '2022-02-11 06:27:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (14, 1, 1, '2022-02-11 06:29:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (15, 1, 1, '2022-02-11 06:32:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (16, 1, 1, '2022-02-11 06:33:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (17, 1, 1, '2022-02-11 06:34:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (18, 1, 1, '2022-02-11 06:35:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (19, 1, 1, '2022-02-11 06:36:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (20, 1, 1, '2022-02-11 06:37:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (21, 1, 1, '2022-02-11 06:40:00', 1, '2022-02-11 06:40:00');
 COMMIT;
 
 -- ----------------------------

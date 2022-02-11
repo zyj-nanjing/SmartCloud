@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.gatewayimpl.database.ScheduledExecuteMapper">
+    <resultMap id="ScheduledExecuteDO"  type="ScheduledExecute">
+        <result column="id" property="id"/>
+        <result column="schedule_id" property="scheduleId"/>
+        <result column="service_id" property="serviceId"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="is_end" property="isEnd"/>
+        <result column="end_time" property="endTime"/>
+    </resultMap>
+
+    <sql id="SCHEDULE_EXECUTE_SELECT">
+        select  id,schedule_id,service_id,check_time,is_end,end_time from schedule_execute_log
+    </sql>
+
+    <select id="queryScheduledExecute" resultMap="ScheduledExecuteDO" parameterType="ScheduledExecute">
+        <include refid="SCHEDULE_EXECUTE_SELECT"/>
+        <where>
+            <if test="scheduleId != null">and schedule_id =#{scheduleId}</if>
+            <if test="serviceId != null">and service_id =#{serviceId}</if>
+            <if test="isEnd != null">and is_end =#{isEnd}</if>
+            <if test="checkInterval != null">
+                and TIMESTAMPDIFF(MICROSECOND,check_time,NOW()) &lt;= #{checkInterval} order by check_time DESC
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="saveScheduledExecute" parameterType="ScheduledExecute" useGeneratedKeys="true" keyColumn="id">
+        insert into schedule_execute_log(
+            schedule_id,
+            service_id,
+            check_time,
+            is_end
+        ) values (
+             #{scheduleId},
+             #{serviceId},
+             now(),
+             0
+        )
+    </insert>
+
+    <update id="updateScheduledExecute" parameterType="ScheduledExecute">
+        update schedule_execute_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceId != null ">
+                service_id = #{serviceId},
+            </if>
+            <if test="isEnd != null ">
+                is_end = #{isEnd},
+            </if>
+            <if test="checkTime != null ">
+                check_time = #{checkTime},
+            </if>
+            <if test="endTime != null ">
+                end_time = #{endTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>
