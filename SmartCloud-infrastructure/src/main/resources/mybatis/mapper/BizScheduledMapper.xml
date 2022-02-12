@@ -87,7 +87,10 @@
             LOCK IN SHARE MODE;
     </select>
 
-
+    <select id="queryScheduleByServiceId" resultMap="BizScheduledConfigResult">
+        SELECT * FROM biz_scheduled_config,schedule_service_release where id = schedule_id and
+                id IN (SELECT schedule_id FROM schedule_service_release where service_id =#{serviceId}) and service_id = #{serviceId}
+    </select>
 
     <update id="updateScheduleRelease">
         UPDATE schedule_service_release set shift_weight = 0 where weight > #{weight} and schedule_id = #{scheduleId}
@@ -101,4 +104,8 @@
         select * from  schedule_service_release where weight &lt; #{weight} and schedule_id = #{scheduleId} order by weight limit 1
     </select>
 
+
+    <update id="updateScheduleHealth">
+        update schedule_service_release set is_healthy =#{isHealthy}  where service_id = #{serviceId} and schedule_id = #{scheduleId}
+    </update>
 </mapper>

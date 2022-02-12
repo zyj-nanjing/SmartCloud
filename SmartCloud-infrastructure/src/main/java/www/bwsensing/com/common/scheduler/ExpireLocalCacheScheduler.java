@@ -46,6 +46,11 @@ public class ExpireLocalCacheScheduler {
         log.info("定时事务测试开始");
     }
 
+    @BizScheduled(scheduleCode = "TEST1")
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void testScheduled1(){
+        log.info("定时事务测试开始");
+    }
 
     /**
      * 2分钟清除一次 授权缓存

@@ -1,26 +1,27 @@
 package www.bwsensing.com.common.scheduler;
 
-import java.net.SocketException;
-import java.util.Date;
-import java.util.List;
-
-import com.alibaba.cola.exception.SysException;
-import lombok.extern.slf4j.Slf4j;
-import javax.annotation.Resource;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.ProceedingJoinPoint;
 import com.alibaba.cola.exception.BizException;
+import com.alibaba.cola.exception.SysException;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.annotation.BizScheduled;
-import www.bwsensing.com.common.utills.NetworkInterfaceUtil;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import www.bwsensing.com.common.annotation.BizScheduled;
+import www.bwsensing.com.common.utills.NetworkInterfaceUtil;
 import www.bwsensing.com.gatewayimpl.database.BizScheduledMapper;
 import www.bwsensing.com.gatewayimpl.database.ScheduledExecuteMapper;
 import www.bwsensing.com.gatewayimpl.database.ServiceDeployMapper;
 import www.bwsensing.com.gatewayimpl.database.dataobject.BizScheduledConfig;
 import www.bwsensing.com.gatewayimpl.database.dataobject.ScheduledExecute;
 import www.bwsensing.com.gatewayimpl.database.dataobject.ServiceDeploy;
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import java.net.SocketException;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -59,32 +60,30 @@ public class BizScheduledAspect {
     @Transactional(isolation = Isolation.SERIALIZABLE,rollbackFor=Exception.class)
     @Around(value = "pointcut() && @annotation(scheduled)", argNames = "pjp,scheduled")
     public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException, SocketException {
-        String ipAddress = NetworkInterfaceUtil.getIp4Address();
+        String ipAddress = NetworkInterfaceUtil.getHostIp();
         String hostname = NetworkInterfaceUtil.getHostName();
         log.info("---- 开始执行分布式多机定时事务, 定时事务名称:{},   Ip地址:{},   主机名:{}", scheduled.scheduledName(),ipAddress,hostname);
         ServiceDeploy deploy = getCurrentServiceDeploy(ipAddress,hostname);
         BizScheduledConfig scheduledConfig;
         Object obj;
-        if (deploy.getIsHealthy()){
-            scheduledConfig = checkAndGetConfig(deploy,scheduled);
-            try{
-                if (null != scheduledConfig){
+        scheduledConfig = checkAndGetConfig(deploy,scheduled);
+        if (null != scheduledConfig){
+            if (scheduledConfig.getIsHealthy()){
+                try{
                     obj = pjp.proceed();
                     endExecute(scheduledConfig,deploy.getId());
-                    log.info("---- 分布式多机定时事务结束, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
+                    log.info("---- 分布式多机定时事务结束, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), ipAddress);
+                    return obj;
+                } catch (Throwable throwable) {
+                    obj=throwable.toString();
                     return obj;
                 }
-
-            } catch (Throwable throwable) {
-                obj=throwable.toString();
-                return obj;
+            }else {
+                updateDeploy(deploy,scheduledConfig);
+                log.info("---- 分布式多机定时事务 重新激活,暂不执行定时任务! 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
             }
-            return null;
-        } else {
-            updateDeploy(scheduled,deploy);
-            log.info("---- 分布式多机定时事务 重新激活, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
-            throw new BizException("SERVICE_FIRST_ONLINE","部署节点刚恢复暂不执行定时任务!");
         }
+        return null;
     }
 
     private BizScheduledConfig checkAndGetConfig(ServiceDeploy deploy,BizScheduled scheduled) throws InterruptedException {
@@ -98,7 +97,7 @@ public class BizScheduledAspect {
                 if (!checkExecuted(scheduler)){
                     offlineDeploy(scheduler);
                 } else {
-                   return null;
+                    return null;
                 }
             }
             setScheduledExecute(scheduler,deploy);
@@ -152,16 +151,12 @@ public class BizScheduledAspect {
 
     /**
      * 修改设备状态 重新计算偏移量
-     * @param scheduled
+     * 注意 对于多事务的情况需要重置所有相关的定时任务的不能只关一个
      * @param deploy
      */
-    private void updateDeploy(BizScheduled scheduled,ServiceDeploy deploy){
-        deploy.setIsHealthy(true);
-        serviceDeployMapper.updateServiceDeploy(deploy);
-        BizScheduledConfig scheduler = getSchedulerConfig(scheduled.scheduleCode(),deploy.getId());
-        if (null != scheduler) {
-            countScheduleReleaseShift(scheduler.getWeight(),scheduler.getId());
-        }
+    private void updateDeploy(ServiceDeploy deploy,BizScheduledConfig scheduler){
+        scheduledMapper.updateScheduleHealth(deploy.getId(),scheduler.getId(),true);
+        countScheduleReleaseShift(scheduler.getWeight(),scheduler.getId());
     }
 
     /**
@@ -174,8 +169,7 @@ public class BizScheduledAspect {
         List<ServiceDeploy> deploys = serviceDeployMapper.selectServiceDeployByWeight(scheduler.getWeight(),scheduler.getId());
         if (null != deploys && deploys.size() > 0 ){
             for (ServiceDeploy deploy : deploys){
-                deploy.setIsHealthy(false);
-                serviceDeployMapper.updateServiceDeploy(deploy);
+                scheduledMapper.updateScheduleHealth(deploy.getId(),scheduler.getId(),false);
             }
         }
         countScheduleReleaseShift(scheduler.getWeight(),scheduler.getId());

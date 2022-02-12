@@ -28,6 +28,7 @@ public class ServiceDeploy {
     /** 内部IP地址(单地区部署尽量同网段部署，多部署需要避免两地网段一致) */
     private String ipv4Inner;
 
+    @Deprecated
     private Boolean isHealthy;
 
     /** 备注 */

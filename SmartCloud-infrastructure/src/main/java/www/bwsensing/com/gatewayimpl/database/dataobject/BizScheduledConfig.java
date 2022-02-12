@@ -28,6 +28,8 @@ public class BizScheduledConfig {
     /** 偏移权级 */
     private Double shiftWeight;
 
+    private Boolean isHealthy;
+
     /** 备注 */
     private String remark;
 

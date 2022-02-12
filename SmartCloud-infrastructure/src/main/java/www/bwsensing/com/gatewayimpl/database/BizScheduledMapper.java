@@ -79,6 +79,13 @@ public interface BizScheduledMapper {
      */
     void updateScheduleReleaseShift(@Param("intervalWeight")Double intervalWeight,@Param("weight")Double weight,@Param("scheduleId")Integer scheduleId);
 
+    /**
+     * 修改对应状态
+     * @param serverId
+     * @param scheduleId
+     * @param isHealthy
+     */
+    void updateScheduleHealth(@Param("serviceId")Integer serverId, @Param("scheduleId")Integer scheduleId, @Param("isHealthy")Boolean isHealthy);
 
     /**
      * 获取对应的上一个Schedule权重
@@ -87,4 +94,11 @@ public interface BizScheduledMapper {
      * @return
      */
     List<BizScheduledConfig> queryScheduleByWeight(@Param("weight")Double weight,@Param("scheduleId")Integer scheduleId);
+
+    /**
+     * 查询事务配置
+     * @param serviceId
+     * @return
+     */
+    List<BizScheduledConfig> queryScheduleByServiceId(Integer serviceId);
 }
