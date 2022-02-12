@@ -59,7 +59,7 @@ public class BizScheduledAspect {
     @Transactional(isolation = Isolation.SERIALIZABLE,rollbackFor=Exception.class)
     @Around(value = "pointcut() && @annotation(scheduled)", argNames = "pjp,scheduled")
     public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException, SocketException {
-        String ipAddress = NetworkInterfaceUtil.getIp4Addresses().get(1);
+        String ipAddress = NetworkInterfaceUtil.getIp4Address();
         String hostname = NetworkInterfaceUtil.getHostName();
         log.info("---- 开始执行分布式多机定时事务, 定时事务名称:{},   Ip地址:{},   主机名:{}", scheduled.scheduledName(),ipAddress,hostname);
         ServiceDeploy deploy = getCurrentServiceDeploy(ipAddress,hostname);
