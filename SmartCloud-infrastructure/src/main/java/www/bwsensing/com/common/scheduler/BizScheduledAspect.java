@@ -1,5 +1,6 @@
 package www.bwsensing.com.common.scheduler;
 
+import java.net.SocketException;
 import java.util.Date;
 import java.util.List;
 
@@ -57,8 +58,8 @@ public class BizScheduledAspect {
      */
     @Transactional(isolation = Isolation.SERIALIZABLE,rollbackFor=Exception.class)
     @Around(value = "pointcut() && @annotation(scheduled)", argNames = "pjp,scheduled")
-    public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException {
-        String ipAddress = NetworkInterfaceUtil.getHostIp();
+    public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException, SocketException {
+        String ipAddress = NetworkInterfaceUtil.getIp4Addresses().get(1);
         String hostname = NetworkInterfaceUtil.getHostName();
         log.info("---- 开始执行分布式多机定时事务, 定时事务名称:{},   Ip地址:{},   主机名:{}", scheduled.scheduledName(),ipAddress,hostname);
         ServiceDeploy deploy = getCurrentServiceDeploy(ipAddress,hostname);
@@ -66,21 +67,24 @@ public class BizScheduledAspect {
         Object obj;
         if (deploy.getIsHealthy()){
             scheduledConfig = checkAndGetConfig(deploy,scheduled);
+            try{
+                if (null != scheduledConfig){
+                    obj = pjp.proceed();
+                    endExecute(scheduledConfig,deploy.getId());
+                    log.info("---- 分布式多机定时事务结束, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
+                    return obj;
+                }
+
+            } catch (Throwable throwable) {
+                obj=throwable.toString();
+                return obj;
+            }
+            return null;
         } else {
             updateDeploy(scheduled,deploy);
             log.info("---- 分布式多机定时事务 重新激活, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
             throw new BizException("SERVICE_FIRST_ONLINE","部署节点刚恢复暂不执行定时任务!");
         }
-        try{
-            obj = pjp.proceed();
-            if (null != scheduledConfig){
-                endExecute(scheduledConfig,deploy.getId());
-            }
-            log.info("---- 分布式多机定时事务结束, 定时事务名称:{},   地址:{}", scheduled.scheduledName(), NetworkInterfaceUtil.getHostIp());
-        } catch (Throwable throwable) {
-            obj=throwable.toString();
-        }
-        return obj;
     }
 
     private BizScheduledConfig checkAndGetConfig(ServiceDeploy deploy,BizScheduled scheduled) throws InterruptedException {
@@ -93,6 +97,8 @@ public class BizScheduledAspect {
                 Thread.sleep((int) interval);
                 if (!checkExecuted(scheduler)){
                     offlineDeploy(scheduler);
+                } else {
+                   return null;
                 }
             }
             setScheduledExecute(scheduler,deploy);
