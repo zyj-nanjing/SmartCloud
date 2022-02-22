@@ -14,15 +14,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.api.UserAuthService;
+import www.bwsensing.com.system.api.UserAuthService;
 import www.bwsensing.com.common.utills.Md5Utils;
 import www.bwsensing.com.common.utils.ServletUtils;
 import www.bwsensing.com.common.constant.TokenConstant;
 import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.utills.TokenUtils;
 import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.domain.gateway.SystemUserGateway;
-import www.bwsensing.com.dto.command.UserLoginCmd;
+import www.bwsensing.com.domain.system.gateway.SystemUserGateway;
+import www.bwsensing.com.system.dto.command.UserLoginCmd;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 

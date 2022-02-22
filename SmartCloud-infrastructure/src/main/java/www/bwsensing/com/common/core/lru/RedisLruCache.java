@@ -43,15 +43,15 @@ public class RedisLruCache {
         String redisKey = convertRedisKey(bizId);
         LruCache<K,V> cache =  redisService.getCacheObject(redisKey);
         if(null != cache){
-//            if (null != CURRENT_KEY_MAP.get(bizId)&&CURRENT_KEY_MAP.get(bizId).equals(key)){
-//                return cache.get(key);
-//            } else {
-//                cache.get(key);
-//                if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
-//                    CURRENT_KEY_MAP.put(bizId, key);
-//                    return cache.get(key);
-//                }
-//            }
+            if (null != CURRENT_KEY_MAP.get(bizId)&&CURRENT_KEY_MAP.get(bizId).equals(key)){
+                return cache.get(key);
+            } else {
+                cache.get(key);
+                if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
+                    CURRENT_KEY_MAP.put(bizId, key);
+                    return cache.get(key);
+                }
+            }
             cache.get(key);
             if (compareAndSet(bizId, cache) || CURRENT_KEY_MAP.get(bizId).equals(key)) {
                 CURRENT_KEY_MAP.put(bizId, key);

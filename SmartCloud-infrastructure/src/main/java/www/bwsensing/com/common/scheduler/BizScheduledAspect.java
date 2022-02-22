@@ -7,19 +7,18 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.common.annotation.BizScheduled;
 import www.bwsensing.com.common.utills.NetworkInterfaceUtil;
-import www.bwsensing.com.gatewayimpl.database.BizScheduledMapper;
-import www.bwsensing.com.gatewayimpl.database.ScheduledExecuteMapper;
-import www.bwsensing.com.gatewayimpl.database.ServiceDeployMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.BizScheduledConfig;
-import www.bwsensing.com.gatewayimpl.database.dataobject.ScheduledExecute;
-import www.bwsensing.com.gatewayimpl.database.dataobject.ServiceDeploy;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+import www.bwsensing.com.common.scheduler.database.BizScheduledMapper;
+import www.bwsensing.com.common.scheduler.database.ScheduledExecuteMapper;
+import www.bwsensing.com.common.scheduler.database.ServiceDeployMapper;
+import www.bwsensing.com.common.scheduler.database.dataobject.BizScheduledConfig;
+import www.bwsensing.com.common.scheduler.database.dataobject.ScheduledExecute;
+import www.bwsensing.com.common.scheduler.database.dataobject.ServiceDeploy;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
-import java.net.SocketException;
 import java.util.Date;
 import java.util.List;
 
@@ -52,14 +51,10 @@ public class BizScheduledAspect {
      * 默认为优先级最高的先执行 后续服务默认按照优先级及偏移量暂停 暂停结束后 检测该任务是否执行完成
      * 若完成则不执行。 若未完成则需要设置前面所有节点的健康状态并且重新计算偏移量 减少下一次执行所带来的停顿
      * 若高优先级节点恢复则重新计算偏移量并改变状态 但是为了保证状态不乱则当前不执行 由后续节点先执行
-     * @param pjp
-     * @param scheduled
-     * @return
-     * @throws InterruptedException
      */
     @Transactional(isolation = Isolation.SERIALIZABLE,rollbackFor=Exception.class)
     @Around(value = "pointcut() && @annotation(scheduled)", argNames = "pjp,scheduled")
-    public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException, SocketException {
+    public Object  aroundPointcut(ProceedingJoinPoint pjp, BizScheduled scheduled) throws InterruptedException {
         String ipAddress = NetworkInterfaceUtil.getHostIp();
         String hostname = NetworkInterfaceUtil.getHostName();
         log.info("---- 开始执行分布式多机定时事务, 定时事务名称:{},   Ip地址:{},   主机名:{}", scheduled.scheduledName(),ipAddress,hostname);

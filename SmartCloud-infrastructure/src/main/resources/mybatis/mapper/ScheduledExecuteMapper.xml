@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.ScheduledExecuteMapper">
+<mapper namespace="www.bwsensing.com.common.scheduler.database.ScheduledExecuteMapper">
     <resultMap id="ScheduledExecuteDO"  type="ScheduledExecute">
         <result column="id" property="id"/>
         <result column="schedule_id" property="scheduleId"/>
@@ -26,6 +26,7 @@
         </where>
 
     </select>
+
 
     <insert id="saveScheduledExecute" parameterType="ScheduledExecute" useGeneratedKeys="true" keyColumn="id">
         insert into schedule_execute_log(

@@ -10,7 +10,7 @@ import org.mockito.internal.util.MockUtil;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import www.bwsensing.com.domain.device.alert.AlertParam;
+import www.bwsensing.com.domain.device.model.alert.AlertParam;
 
 
 @PowerMockIgnore

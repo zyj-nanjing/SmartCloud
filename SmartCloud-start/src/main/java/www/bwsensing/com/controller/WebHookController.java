@@ -8,10 +8,10 @@ import java.text.SimpleDateFormat;
 import reactor.core.publisher.Flux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.domain.device.alert.AlertNotification;
-import www.bwsensing.com.domain.device.alert.webhook.Notification;
-import www.bwsensing.com.domain.gateway.AlertNotificationGateway;
-import www.bwsensing.com.domain.device.alert.webhook.AlertManager;
+import www.bwsensing.com.domain.device.model.alert.AlertNotification;
+import www.bwsensing.com.domain.device.model.alert.webhook.Notification;
+import www.bwsensing.com.domain.device.gateway.AlertNotificationGateway;
+import www.bwsensing.com.domain.device.model.alert.webhook.AlertManager;
 
 /**
  * @author macos-zyj

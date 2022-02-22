@@ -1,0 +1,174 @@
+smartcloud:
+  # 名称
+  name: SmartCloud
+  # 版本
+  version: 0.2.1
+  # 版权年份
+  copyrightYear: 2022
+
+server:
+  port: 8066
+  weight: 1
+  location: nanjin
+  remark: 测试环境
+  configure: 8核32G MacOS
+
+###producer
+#该应用是否启用生产者
+rocketmq:
+  nameServer: 127.0.0.1:9876
+  producer:
+    #发送同一类消息的设置为同一个group，保证唯一,默认不需要设置，rocketmq会使用ip@pid(pid代表jvm名字)作为唯一标示
+    group: ${spring.application.name}
+    #mq的nameserver地址
+    #消息最大长度 默认1024*4(4M)
+    maxMessageSize: 4096
+    #发送消息超时时间,默认3000
+    #发送消息失败重试次数，默认2
+    retryTimesWhenSendFailed: 2
+    send-message-timeout: 3000
+
+  ###consumer
+  ##该应用是否启用消费者
+  consumer:
+    group: ${spring.application.name}
+    #该消费者订阅的主题和tags("*"号表示订阅该主题下所有的tags),格式：topic~tag1||tag2||tag3;topic2~*;
+    topic: futaotopic~*;
+
+
+logging:
+  file:
+    path: /usr/log/mqproductservice/mqproductservice.log
+  level:
+    root: INFO
+    com.anran.projectmanage.mapper: DEBUG
+
+spring:
+  jackson:
+    time-zone: GMT+8
+  application:
+    name: SmartCloud
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  cache:
+    #ehcache配置文件路径
+    ehcache:
+      config: classpath:/ehcache/ehcache.xml
+    #指定缓存类型，可加可不加
+    #type: ehcache
+  datasource:
+    # 数据库驱动：
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+      username: root
+      password: BeiWei123@!
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 5
+      max-active: 30
+      min-idle: 5
+      max-wait: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      filters: stat,wall
+      use-global-data-source-stat: true
+      webStatFilter:
+        enabled: true
+        statViewServlet:
+          enabled: true
+          # 设置白名单，不填则允许所有访问
+          allow:
+          url-pattern: /monitor/druid/*
+        filter:
+          stat:
+            enabled: true
+            # 慢SQL记录
+            log-slow-sql: true
+            slow-sql-millis: 1000
+            merge-sql: true
+          wall:
+            config:
+              multi-statement-allow: true
+    # ums core
+  ums:
+    one-click-login:
+      enable: false
+      # ================ 第三方授权登录相关配置 ================
+      oauth:
+        # 是否支持第三方授权登录功能, 默认: true
+        enabled: true
+        # 抑制反射警告, 支持 JDK11, 默认: false , 在确认 WARNING: An illegal reflective access operation has occurred 安全后, 可以打开此设置, 可以抑制反射警告.
+        suppress-reflect-warning: true
+        # 第三方服务商: providerId, 支持所有 JustAuth 支持的第三方授权登录, 目前有 32 家第三方授权登录
+        # 第三方登录授权登录 url 前缀, 不包含 ServletContextPath，默认为 /auth2/authorization.
+        auth-login-url-prefix: /auth2/authorization
+        # 第三方登录回调处理 url 前缀 ，也就是 RedirectUrl 的前缀, 不包含 ServletContextPath，默认为 /auth2/login.
+        redirect-url-prefix: /auth2/login
+        # 第三方登录回调的域名, 例如：http://localhost:9090 默认为 "http://127.0.0.1"，
+        # redirectUrl 直接由 {domain}/{servletContextPath}/{redirectUrlPrefix}/{providerId}(ums.oauth.[qq/gitee/weibo])组成
+        domain: http://localhost:${server.port}
+        # 第三方授权登录成功后的默认权限, 多个权限用逗号分开, 默认为: "ROLE_USER"
+        default-authorities: ROLE_USER
+        # 用于 JustAuth 的代理(HttpClient)设置
+        proxy:
+          # 用于国内代理(HttpClient)超时, 默认 PT3S
+          timeout: PT3S
+          # 用于国外网站代理(HttpClient)超时, 默认 PT15S
+          foreign-timeout: PT150S
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+alibaba :
+  cloud :
+    # 密钥 ID
+    access-key : --------------------------
+    # 密钥  secret
+    secret-key : --------------------------
+    mail:
+      regionId : cn-hangzhou
+      host : dm.aliyuncs.com
+      version : 2015-11-23
+
+system:
+  visualization:
+    decimal: 3
+  alert:
+    prefix: http://
+    server-host: 127.0.0.1
+    port: 8100
+    forward: 1h
+  encrypt:
+    key: --------------------------
+    vector: --------------------------
+  token:
+    secret: --------------------------
+    iss: --------------------------
+    exist_time: 8
+    head: Authorization
+    prefix: Bearer
+  notification:
+    max_last: 30
+    prefix: NOTIFICATION_
+  netty:
+    tcp_port: 9874
+    udp_port: 9875
+    read_timeout: 4
+    wait_timeout: 0
+    all_timeout: 8
+  udp:
+    port: 9875
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+

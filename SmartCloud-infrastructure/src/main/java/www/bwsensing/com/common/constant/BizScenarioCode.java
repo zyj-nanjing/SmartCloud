@@ -1,6 +1,6 @@
 package www.bwsensing.com.common.constant;
 
-import www.bwsensing.com.domain.device.alert.NotificationMethod;
+import www.bwsensing.com.domain.device.model.alert.NotificationMethod;
 
 /**
  * 业务编号配置

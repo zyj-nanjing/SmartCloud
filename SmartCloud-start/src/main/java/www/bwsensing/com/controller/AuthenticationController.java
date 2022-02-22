@@ -9,8 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.api.UserAuthService;
-import www.bwsensing.com.dto.command.UserLoginCmd;
+import www.bwsensing.com.system.api.UserAuthService;
+import www.bwsensing.com.system.dto.command.UserLoginCmd;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

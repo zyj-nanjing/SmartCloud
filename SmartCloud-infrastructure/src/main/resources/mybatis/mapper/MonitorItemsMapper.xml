@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorItemsMapper">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper">
     <resultMap id="MonitorItems" type="MonitorItemsDO">
         <result column="id" property="id"/>
         <result column="item_name" property="itemName"/>

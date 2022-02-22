@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.MonitorProjectMapper">
+<mapper namespace="www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper">
     <resultMap id="MonitorProjectShow" type="MonitorProjectDO">
         <id property="id" column="id"/>
         <id property="name" column="name"/>

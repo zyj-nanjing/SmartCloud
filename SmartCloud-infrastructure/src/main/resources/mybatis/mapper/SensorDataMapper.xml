@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.SensorDataMapper">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.SensorDataMapper">
     <resultMap id="SensorDataResult" type="SensorDataDO">
         <result column="id" property="id"/>
         <result column="raw" property="raw"/>
@@ -92,7 +92,7 @@
 
 
     <select id="querySensorListBySort" resultMap="SensorDataResult"
-            parameterType="www.bwsensing.com.gatewayimpl.database.dataobject.SensorDO">
+            parameterType="www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO">
         <include refid="SENSOR_DATA_SELECT"/>
         <where>
             <if test="sn != null  and sn != '' "> and sn = #{sn}</if>

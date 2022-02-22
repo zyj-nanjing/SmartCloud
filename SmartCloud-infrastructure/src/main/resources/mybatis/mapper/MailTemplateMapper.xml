@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.MailTemplateMapper">
+<mapper namespace="www.bwsensing.com.common.mail.database.MailTemplateMapper">
 
     <resultMap type="MailTemplateDO" id="TemplateResult">
         <result property="id"    column="id"    />

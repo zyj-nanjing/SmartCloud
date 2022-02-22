@@ -1,9 +1,9 @@
 package www.bwsensing.com.common.boot;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.core.event.EventHandler;
 import www.bwsensing.com.common.core.event.EventHandlerI;
+import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Map;
 

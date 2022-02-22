@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.BizScheduledMapper">
+<mapper namespace="www.bwsensing.com.common.scheduler.database.BizScheduledMapper">
 
     <resultMap type="BizScheduledConfig" id="BizScheduledConfigResult">
         <result property="id"    column="id"    />
@@ -12,6 +12,7 @@
         <result property="bizId"    column="biz_id"    />
         <result property="weight"    column="weight"    />
         <result property="shiftWeight"    column="shift_weight"    />
+        <result property="isHealthy"    column="is_healthy"    />
         <result property="remark"    column="remark"    />
         <result property="creator"    column="creator"    />
         <result property="createTime"    column="create_time"    />
@@ -106,6 +107,6 @@
 
 
     <update id="updateScheduleHealth">
-        update schedule_service_release set is_healthy =#{isHealthy}  where service_id = #{serviceId} and schedule_id = #{scheduleId}
+        update schedule_service_release set is_healthy = #{isHealthy}  where service_id = #{serviceId} and schedule_id = #{scheduleId}
     </update>
 </mapper>

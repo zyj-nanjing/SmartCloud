@@ -2,12 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.SystemStructureMapper">
+<mapper namespace="www.bwsensing.com.system.gatewayimpl.database.SystemStructureMapper">
 
     <resultMap type="SystemStructureDO" id="StructureResult">
         <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
         <result property="name"    column="name"    />
         <result property="ownerId" column="owner_id"/>
+        <result property="allowInvitation" column="allow_invitation"/>
+        <result property="invitationCode" column="invitation_code"/>
         <result property="typeId" column="type_id"/>
         <result property="creator"    column="creator"    />
         <result property="createTime"    column="create_time"    />
@@ -16,7 +19,7 @@
     </resultMap>
 
     <sql id="selectStructureQuery">
-        select id, name,owner_id,type_id, creator, create_time, updater, update_time from sys_structure
+        select id,code, name,owner_id,allow_invitation,invitation_code,type_id, creator, create_time, updater, update_time from sys_structure
     </sql>
 
     <select id="selectStructureByQuery" parameterType="SystemStructureDO" resultMap="StructureResult">
@@ -33,11 +36,24 @@
         where id = #{id}
     </select>
 
+    <select id="getStructureByCode" parameterType="String" resultMap="StructureResult">
+        <include refid="selectStructureQuery"/>
+        where code = #{code}
+    </select>
+
+    <select id="selectStructureByUserId" parameterType="Integer" resultMap="StructureResult">
+        <include refid="selectStructureQuery"/>
+        where id in(SELECT organization_id from sys_user_organization where user_id = #{userId})
+    </select>
+
     <insert id="addStructure" parameterType="SystemStructureDO" useGeneratedKeys="true" keyProperty="id">
         insert into sys_structure
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">code,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="ownerId != null">owner_id,</if>
+            <if test="allowInvitation != null">allow_invitation,</if>
+            <if test="invitationCode != null and invitationCode != ''">invitation_code,</if>
             <if test="typeId != null">type_id,</if>
             <if test="creator != null">creator,</if>
             <if test="createTime != null">create_time,</if>
@@ -45,8 +61,11 @@
             <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">#{code},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="ownerId != null">#{ownerId},</if>
+            <if test="allowInvitation != null">#{allowInvitation},</if>
+            <if test="invitationCode != null and invitationCode != ''">#{invitationCode},</if>
             <if test="typeId != null">#{typeId},</if>
             <if test="creator != null">#{creator},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -60,6 +79,8 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="ownerId != null">owner_id ={ownerId},</if>
+            <if test="allowInvitation != null">allow_invitation = #{allowInvitation},</if>
+            <if test="invitationCode != null and invitationCode != ''">invitation_code = #{invitationCode},</if>
             <if test="typeId != null">type_id ={typeId},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
@@ -80,4 +101,9 @@
         </foreach>
     </delete>
 
+
+    <insert id="addOrganizationMember" keyColumn="id" useGeneratedKeys="true">
+        insert into sys_user_organization (organization_id,user_id)
+        values (#{organizationId},#{memberId})
+    </insert>
 </mapper>

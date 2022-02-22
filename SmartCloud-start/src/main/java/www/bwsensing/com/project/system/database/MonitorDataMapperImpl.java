@@ -7,8 +7,8 @@ import com.alibaba.cola.exception.BizException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.tdengine.common.BaseMapper;
-import www.bwsensing.com.domain.device.data.MonitorData;
-import www.bwsensing.com.gatewayimpl.tdengin.MonitorDataMapper;
+import www.bwsensing.com.domain.device.model.data.MonitorData;
+import www.bwsensing.com.device.tdengin.MonitorDataMapper;
 
 
 /**

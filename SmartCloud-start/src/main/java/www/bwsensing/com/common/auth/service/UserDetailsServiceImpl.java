@@ -26,11 +26,11 @@ import www.bwsensing.com.common.auth.common.IGrantedAuthority;
 import www.bwsensing.com.common.constant.SecurityConstants;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.common.utils.IGrantedAuthorityUtils;
-import www.bwsensing.com.domain.gateway.AuthenticationGateway;
-import www.bwsensing.com.domain.system.token.UserInfo;
-import www.bwsensing.com.domain.system.user.SystemUser;
-import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
+import www.bwsensing.com.domain.system.gateway.AuthenticationGateway;
+import www.bwsensing.com.domain.system.model.token.UserInfo;
+import www.bwsensing.com.domain.system.model.user.SystemUser;
+import www.bwsensing.com.system.gatewayimpl.database.SystemUserMapper;
+import www.bwsensing.com.system.gatewayimpl.database.dataobject.SystemUserDO;
 import javax.annotation.Resource;
 import java.util.*;
 

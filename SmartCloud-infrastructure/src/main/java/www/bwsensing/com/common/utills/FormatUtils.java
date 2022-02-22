@@ -1,6 +1,7 @@
 package www.bwsensing.com.common.utills;
 
 import com.alibaba.cola.exception.BizException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,11 @@ public class FormatUtils {
             logger.info("格式错误");
         }
         return false;
+    }
+
+
+    public static String getOrganizationCode(){
+        return RandomStringUtils.randomAlphanumeric(10);
     }
 
     /**

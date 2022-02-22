@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.ServiceDeployMapper">
+<mapper namespace="www.bwsensing.com.common.scheduler.database.ServiceDeployMapper">
 
     <resultMap type="ServiceDeploy" id="ServiceDeployResult">
         <result property="id"    column="id"    />
@@ -23,7 +23,7 @@
     <select id="selectServiceDeployList" parameterType="ServiceDeploy" resultMap="ServiceDeployResult">
         <include refid="selectServiceDeployVo"/>
         <where>
-            <if test="hostName != null  and hostName != ''"> and host_name like concat('%', #{hostName}, '%')</if>
+            <if test="hostName != null  and hostName != ''"> and host_name = #{hostName}</if>
             <if test="weight != null "> and weight = #{weight}</if>
             <if test="location != null  and location != ''"> and location = #{location}</if>
             <if test="configure != null  and configure != ''"> and configure = #{configure}</if>

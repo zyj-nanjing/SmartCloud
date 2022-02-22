@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import www.bwsensing.com.common.auth.common.IGrantedAuthority;
-import www.bwsensing.com.common.auth.service.SmartUser;
 import www.bwsensing.com.common.cache.redis.RedisService;
-import www.bwsensing.com.common.utills.Md5Utils;
+import www.bwsensing.com.common.auth.service.SmartUser;
 import www.bwsensing.com.common.utills.StringUtils;
+import www.bwsensing.com.common.utills.Md5Utils;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,7 @@ public class RedisUserCache implements UserCache {
         String key = USER_NAME_KEY+username;
         return Md5Utils.encryptMd5(key);
     }
+
     private List<IGrantedAuthority> toAuthorities(JSONObject jsonObject) {
         List<IGrantedAuthority> authorities = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("authorities");

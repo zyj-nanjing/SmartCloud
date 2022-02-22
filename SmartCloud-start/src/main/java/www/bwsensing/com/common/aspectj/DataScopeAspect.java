@@ -7,10 +7,10 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.common.annotation.DataScope;
-import www.bwsensing.com.domain.gateway.TokenGateway;
-import www.bwsensing.com.domain.system.role.UserRole;
-import www.bwsensing.com.domain.system.token.TokenData;
-import www.bwsensing.com.gatewayimpl.database.dataobject.BaseDataObject;
+import www.bwsensing.com.domain.system.gateway.TokenGateway;
+import www.bwsensing.com.domain.system.model.role.UserRole;
+import www.bwsensing.com.domain.system.model.token.TokenData;
+import www.bwsensing.com.common.core.data.BaseDataObject;
 
 /**
  * 数据过滤处理

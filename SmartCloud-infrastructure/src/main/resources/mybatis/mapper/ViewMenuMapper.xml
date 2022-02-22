@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="www.bwsensing.com.gatewayimpl.database.ViewMenuMapper">
-    <resultMap type="www.bwsensing.com.gatewayimpl.database.dataobject.ViewMenuDO" id="ViewMenuResult">
+<mapper namespace="www.bwsensing.com.system.gatewayimpl.database.ViewMenuMapper">
+    <resultMap type="www.bwsensing.com.system.gatewayimpl.database.dataobject.ViewMenuDO" id="ViewMenuResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
         <result property="title"    column="title"    />

@@ -58,11 +58,11 @@
 
     <!--应用日志-->
     <!--这个logger没有指定appender，它会继承root节点中定义的那些appender-->
-    <logger name="com.alibaba.cola.catchlog" level="debug"/>
+    <logger name="com.alibaba.cola.catchlog" level="info"/>
 <!--    <logger name="com.alibaba.cola.catchlog" level="warn"/>-->
 <!--    <logger name="com.alibaba.cola.catchlog" level="error"/>-->
     <!-- 系统模块日志级别控制  -->
-    <logger name="www.bwsensing.com" level="debug" />
+<!--    <logger name="www.bwsensing.com" level="debug" />-->
     <!-- Spring日志级别控制  -->
     <logger name="org.springframework" level="warn" />
     <root level="info">

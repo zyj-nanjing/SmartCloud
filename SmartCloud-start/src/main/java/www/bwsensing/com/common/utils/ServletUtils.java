@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 客户端工具类
@@ -109,23 +106,5 @@ public class ServletUtils
             e.printStackTrace();
         }
         return null;
-    }
-
-
-
-    public static Map<String, String> getMap(HttpServletRequest req) {
-        Map<String, String> map=new HashMap<String, String>(16);
-        Enumeration enu = req.getParameterNames();
-        while(enu.hasMoreElements()) {
-            String paramName = (String)enu.nextElement();
-            String[] paramValues = req.getParameterValues(paramName);
-            if (paramValues.length == 1) {
-                String paramValue = paramValues[0];
-                if (paramValue.length() != 0) {
-                    map.put(paramName, paramValue);
-                }
-            }
-        }
-        return map;
     }
 }

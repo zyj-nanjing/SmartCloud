@@ -29,6 +29,6 @@ public class PageHelperUtils<P,R> {
 
     public PageInfo<R> getPageCollections(P request){
         List<R> dataCollection = this.getCollections(request);
-        return new PageInfo<R>(dataCollection);
+        return new PageInfo<>(dataCollection);
     }
 }

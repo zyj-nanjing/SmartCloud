@@ -14,7 +14,11 @@
     </settings>
     <typeAliases>
         <!--项目DataObject对应的包名-->
-        <package name="www.bwsensing.com.gatewayimpl.database"/>
+        <package name="www.bwsensing.com.common"/>
+        <package name="www.bwsensing.com.device"/>
+        <package name="www.bwsensing.com.monitor"/>
+        <package name="www.bwsensing.com.project"/>
+        <package name="www.bwsensing.com.system"/>
     </typeAliases>
 </configuration>
 

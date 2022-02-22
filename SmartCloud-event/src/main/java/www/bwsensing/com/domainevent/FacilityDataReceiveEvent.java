@@ -35,4 +35,9 @@ public class FacilityDataReceiveEvent implements DomainEventI {
      * 接收的数据
      */
     private List<DataMessage> receiveData;
+
+    @Override
+    public String getTopic() {
+        return "Facility";
+    }
 }

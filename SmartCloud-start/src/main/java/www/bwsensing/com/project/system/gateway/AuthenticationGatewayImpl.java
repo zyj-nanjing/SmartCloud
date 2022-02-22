@@ -1,34 +1,33 @@
 package www.bwsensing.com.project.system.gateway;
 
-
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.cola.exception.BizException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
+import java.util.List;
 import net.sf.ehcache.Cache;
+import java.util.Collection;
 import net.sf.ehcache.Element;
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
+import cn.hutool.core.util.StrUtil;
+import java.util.stream.Collectors;
+import cn.hutool.core.util.ArrayUtil;
+import com.alibaba.cola.exception.BizException;
+import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import www.bwsensing.com.system.gatewayimpl.database.dataobject.PermissionDO;
+import www.bwsensing.com.system.gatewayimpl.database.dataobject.SystemUserDO;
+import www.bwsensing.com.system.gatewayimpl.database.PermissionMapper;
+import www.bwsensing.com.system.gatewayimpl.database.SystemUserMapper;
+import www.bwsensing.com.domain.system.gateway.AuthenticationGateway;
 import www.bwsensing.com.common.cache.ehcache.EhCacheService;
+import www.bwsensing.com.domain.system.gateway.PermissionGateway;
 import www.bwsensing.com.common.constant.EhCacheConstant;
-import www.bwsensing.com.convertor.SystemUserConvertor;
-import www.bwsensing.com.domain.gateway.AuthenticationGateway;
-import www.bwsensing.com.domain.gateway.PermissionGateway;
-import www.bwsensing.com.domain.system.role.Permission;
-import www.bwsensing.com.domain.system.role.UserRole;
-import www.bwsensing.com.domain.system.token.UserInfo;
-import www.bwsensing.com.domain.system.user.SystemUser;
-import www.bwsensing.com.gatewayimpl.database.PermissionMapper;
-import www.bwsensing.com.gatewayimpl.database.SystemUserMapper;
-import www.bwsensing.com.gatewayimpl.database.dataobject.PermissionDO;
-import www.bwsensing.com.gatewayimpl.database.dataobject.SystemUserDO;
-import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import www.bwsensing.com.system.convertor.SystemUserConvertor;
+import www.bwsensing.com.domain.system.model.token.UserInfo;
+import www.bwsensing.com.domain.system.model.user.SystemUser;
+import www.bwsensing.com.domain.system.model.role.Permission;
+import www.bwsensing.com.domain.system.model.role.UserRole;
 
 /**
  * @author macos-zyj
@@ -48,6 +47,16 @@ public class AuthenticationGatewayImpl implements AuthenticationGateway {
 
     @Resource
     private PermissionMapper permissionMapper;
+
+    @Override
+    public String getAccountName() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if ( null == securityContext ){
+            throw new BizException("TOKEN_IS_NULL","token不能为空");
+        }
+        Authentication authority = securityContext.getAuthentication();
+        return (String) authority.getPrincipal();
+    }
 
     @Override
     public UserInfo getCurrentUser() {
