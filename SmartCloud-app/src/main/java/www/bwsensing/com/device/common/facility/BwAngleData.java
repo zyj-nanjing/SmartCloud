@@ -81,7 +81,7 @@ public class BwAngleData {
         monitorData.setTimeStamp(timestamp);
         monitorData.setType("avg");
         monitorData.setDataId(dataId);
-        monitorData.setDataIdValue(value);
+        monitorData.setDataIdValue((double) value);
         return monitorData;
     }
 }

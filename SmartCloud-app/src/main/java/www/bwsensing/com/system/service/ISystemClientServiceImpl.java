@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import www.bwsensing.com.system.api.SystemClientService;
 import www.bwsensing.com.common.core.lru.EhCacheLruService;
 import www.bwsensing.com.common.utills.PageHelperUtils;
+import www.bwsensing.com.system.convertor.SystemClientConvertor;
 import www.bwsensing.com.system.dto.clientobject.SystemClientCO;
 import www.bwsensing.com.system.dto.command.SystemClientSaveCmd;
 import www.bwsensing.com.system.convertor.SystemClientCoConvertor;
@@ -82,7 +83,8 @@ public class ISystemClientServiceImpl implements SystemClientService {
         SystemClientDO systemClient =(SystemClientDO)ehCacheLruService.getCache(BIZ_ID,id+"");
         boolean isCache = true;
         if (null == systemClient){
-            systemClient = systemClientMapper.getClientById(id);
+            SystemClient client = clientGateway.getSystemClientById(id);
+            systemClient = SystemClientConvertor.toDataObject(client);
             isCache = false;
         }
         if ( null != systemClient) {

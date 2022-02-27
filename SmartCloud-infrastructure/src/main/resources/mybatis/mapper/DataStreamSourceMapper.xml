@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.common.client.database.DataStreamSourceMapper">
+   <resultMap id="DataStreamSource" type="DataStreamSource">
+       <result column="id" property="id"/>
+       <result column="namespace" property="namespace"/>
+       <result column="job_name" property="jobName"/>
+   </resultMap>
+
+    <insert id="saveDataStream" parameterType="DataStreamSource" useGeneratedKeys="true" keyProperty="id">
+         insert into data_stream_source_config
+         (
+             namespace,
+             job_name
+         ) values (
+             #{namespace},
+             #{jobName}
+         )
+    </insert>
+
+    <insert id="insertMqttTopic" useGeneratedKeys="true" keyColumn="id">
+        insert into mqtt_stream_config(
+            topic,
+            config_id
+        ) values (
+            #{topic},
+            #{configId}
+        )
+    </insert>
+
+    <select id="queryDataStreamSource" resultMap="DataStreamSource">
+        select  * from data_stream_source_config
+        where namespace =#{namespace} and job_name =#{jobName}
+    </select>
+
+
+    <select id="checkMqttTopicExist" resultType="int">
+        select  count(0) from mqtt_stream_config
+        where topic =#{topic} and config_id =#{configId}
+    </select>
+</mapper>

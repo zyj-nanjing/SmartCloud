@@ -58,7 +58,7 @@ public class MonitorDataMapperImpl extends BaseMapper implements MonitorDataMapp
                     ps.setInt(4,dataCollection.get(i).getGroupId());
                     ps.setString(5,dataCollection.get(i).getDataId());
                     ps.setTimestamp(6, dataCollection.get(i).getTimeStamp());
-                    ps.setFloat(7, dataCollection.get(i).getDataIdValue());
+                    ps.setDouble(7, dataCollection.get(i).getDataIdValue());
                 }
 
                 @Override

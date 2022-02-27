@@ -1,5 +1,7 @@
 package www.bwsensing.com.common.listener;
 
+import org.springframework.context.annotation.Profile;
+import www.bwsensing.com.common.client.ClientScheduler;
 import www.bwsensing.com.common.scheduler.database.dataobject.ServiceDeploy;
 import www.bwsensing.com.common.scheduler.database.ServiceDeployMapper;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -37,6 +39,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Cont
     @Resource
     private ServiceDeployMapper serviceDeployMapper;
 
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
@@ -62,4 +65,6 @@ public class ApplicationStartedEventListener implements ApplicationListener<Cont
             serviceDeployMapper.insertServiceDeploy(deploy);
         }
     }
+
+
 }

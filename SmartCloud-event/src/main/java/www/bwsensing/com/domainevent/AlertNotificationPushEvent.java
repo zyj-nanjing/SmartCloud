@@ -30,14 +30,11 @@ public class AlertNotificationPushEvent implements DomainEventI {
      * 告警信息
      */
     private String alertMessage;
+
     private String color;
     /**
      * 推送方式
      */
     private Integer pushMethod;
 
-    @Override
-    public String getTopic() {
-        return "ALERT";
-    }
 }

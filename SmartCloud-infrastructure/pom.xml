@@ -28,7 +28,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
-
 		<!-- 阿里云 SDK 服务 -->
 		<dependency>
 			<groupId>com.aliyun</groupId>
@@ -120,6 +119,36 @@
 			<artifactId>netty-codec-http</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-streams-clients</artifactId>
+			<version>1.0.0-preview</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-stream</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-mqtt</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

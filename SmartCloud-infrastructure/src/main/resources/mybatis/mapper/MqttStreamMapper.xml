@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.common.mqtt.database.MqttStreamMapper">
+    <resultMap id="MqttStreamConfig" type="MqttStreamConfig">
+        <result property="id" column="id"/>
+        <result property="topic" column="topic"/>
+        <result property="configId" column="config_id"/>
+        <result property="namespace" column="namespace"/>
+        <result property="jobName" column="job_name"/>
+    </resultMap>
+
+    <select id="getMqttStreamConfigs" resultMap="MqttStreamConfig">
+        SELECT mqtt.id,mqtt.topic,mqtt.config_id,stream.namespace,stream.job_name
+        FROM mqtt_stream_config mqtt INNER JOIN data_stream_source_config  stream on mqtt.config_id = stream.id
+    </select>
+
+</mapper>

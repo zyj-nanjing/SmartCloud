@@ -2,9 +2,10 @@ smartcloud:
   # 名称
   name: SmartCloud
   # 版本
-  version: 0.2.1
+  version: 0.8.4
   # 版权年份
   copyrightYear: 2022
+
 
 server:
   port: 8066
@@ -12,29 +13,8 @@ server:
   location: nanjin
   remark: 测试环境
   configure: 8核32G MacOS
-
-###producer
-#该应用是否启用生产者
-rocketmq:
-  nameServer: 127.0.0.1:9876
-  producer:
-    #发送同一类消息的设置为同一个group，保证唯一,默认不需要设置，rocketmq会使用ip@pid(pid代表jvm名字)作为唯一标示
-    group: ${spring.application.name}
-    #mq的nameserver地址
-    #消息最大长度 默认1024*4(4M)
-    maxMessageSize: 4096
-    #发送消息超时时间,默认3000
-    #发送消息失败重试次数，默认2
-    retryTimesWhenSendFailed: 2
-    send-message-timeout: 3000
-
-  ###consumer
-  ##该应用是否启用消费者
-  consumer:
-    group: ${spring.application.name}
-    #该消费者订阅的主题和tags("*"号表示订阅该主题下所有的tags),格式：topic~tag1||tag2||tag3;topic2~*;
-    topic: futaotopic~*;
-
+  # 命名空间
+  namespace: cloudspace
 
 logging:
   file:
@@ -57,12 +37,28 @@ spring:
       config: classpath:/ehcache/ehcache.xml
     #指定缓存类型，可加可不加
     #type: ehcache
+  mqtt:
+    #MQTT-服务器连接地址，如果有多个，用逗号隔开，如：tcp://127.0.0.1:61613，tcp://192.168.2.133:61613
+    host: tcp://127.0.0.1:1883
+    #MQTT-连接服务器默认客户端ID
+    clientId: --------------------------------
+    #MQTT-用户名
+    username: --------------------------------
+    #MQTT-密码
+    password: --------------------------------
+    #MQTT-默认的消息推送主题，实际可在调用接口时指定
+    topic: Topic
+    #连接超时
+    timeout: 1000
+    #设置会话心跳时间
+    keepalive: 100
+
   datasource:
     # 数据库驱动：
     druid:
       url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
       username: root
-      password: BeiWei123@!
+      password: --------------------------------
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       max-active: 30
@@ -130,9 +126,9 @@ pagehelper:
 alibaba :
   cloud :
     # 密钥 ID
-    access-key : --------------------------
+    access-key : --------------------------------
     # 密钥  secret
-    secret-key : --------------------------
+    secret-key : --------------------------------
     mail:
       regionId : cn-hangzhou
       host : dm.aliyuncs.com
@@ -147,11 +143,11 @@ system:
     port: 8100
     forward: 1h
   encrypt:
-    key: --------------------------
-    vector: --------------------------
+    key: --------------------------------
+    vector: --------------------------------
   token:
-    secret: --------------------------
-    iss: --------------------------
+    secret: --------------------------------
+    iss: BEI_WEI
     exist_time: 8
     head: Authorization
     prefix: Bearer

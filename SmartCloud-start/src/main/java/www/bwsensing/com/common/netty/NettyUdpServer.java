@@ -1,16 +1,16 @@
 package www.bwsensing.com.common.netty;
 
+import lombok.extern.slf4j.Slf4j;
+import javax.annotation.Resource;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import org.springframework.stereotype.Service;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import www.bwsensing.com.common.constant.NettyConstants;
 import www.bwsensing.com.common.netty.initializer.NettyUdpInitializer;
-import javax.annotation.Resource;
 
 /**
  * @author macos-zyj
@@ -24,7 +24,7 @@ public class NettyUdpServer {
     public void run() {
         log.info("Udp service init!");
         EventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap udpServer = new Bootstrap();;
+        Bootstrap udpServer = new Bootstrap();
         try {
             udpServer.group(group)
                     .channel(NioDatagramChannel.class)

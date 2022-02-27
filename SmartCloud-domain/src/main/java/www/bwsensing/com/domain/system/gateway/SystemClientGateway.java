@@ -27,5 +27,10 @@ public interface SystemClientGateway {
      */
     void deleteSystemClient(Integer clientId);
 
-
+    /**
+     * 根据编号获取客户信息
+     * @param id
+     * @return
+     */
+    SystemClient getSystemClientById(Integer id);
 }

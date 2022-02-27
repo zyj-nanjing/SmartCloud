@@ -3,6 +3,7 @@ package www.bwsensing.com.common.core.event;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import www.bwsensing.com.event.ClientStreamEventI;
 import www.bwsensing.com.event.DomainEventI;
 import javax.annotation.Resource;
 
@@ -24,6 +25,11 @@ public class DevDomainEventPublisherImpl implements DomainEventPublisher{
     @Override
     public void publish(DomainEventI domainEvent) {
         eventBus.fire(domainEvent);
+    }
+
+    @Override
+    public void publishStream(ClientStreamEventI streamEvent) {
+
     }
 
     @Override

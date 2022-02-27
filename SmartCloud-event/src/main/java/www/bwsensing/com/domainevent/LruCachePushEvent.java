@@ -13,8 +13,4 @@ public class LruCachePushEvent<K,V> implements DomainEventI {
     private long timestamp;
     private LinkedHashMap<K,V> cache;
 
-    @Override
-    public String getTopic() {
-        return "LRU";
-    }
 }

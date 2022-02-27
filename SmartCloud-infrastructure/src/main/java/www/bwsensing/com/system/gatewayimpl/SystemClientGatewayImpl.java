@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.system.gatewayimpl.database.SystemClientMapper;
 import www.bwsensing.com.domain.system.model.organization.StructureTypeEnum;
 import www.bwsensing.com.domain.system.model.organization.SystemStructure;
+import www.bwsensing.com.system.gatewayimpl.database.SystemStructureMapper;
 import www.bwsensing.com.system.gatewayimpl.database.dataobject.SystemClientDO;
+import www.bwsensing.com.system.gatewayimpl.database.dataobject.SystemStructureDO;
 
 
 /**
@@ -30,6 +32,8 @@ public class SystemClientGatewayImpl implements SystemClientGateway {
     private SystemClientMapper systemClientMapper;
     @Resource
     private SystemStructureGateway systemStructureGateway;
+    @Resource
+    private SystemStructureMapper systemStructureMapper;
     @Resource
     private TokenGateway tokenGateway;
 
@@ -66,6 +70,21 @@ public class SystemClientGatewayImpl implements SystemClientGateway {
     @Override
     public void deleteSystemClient(Integer clientId) {
 
+    }
+
+    @Override
+    public SystemClient getSystemClientById(Integer id) {
+        SystemClientDO systemClient = systemClientMapper.getClientById(id);
+        if (null == systemClient ) {
+            return null;
+        }
+        SystemStructureDO queryStructure = new SystemStructureDO();
+        queryStructure.setOwnerId(systemClient.getId());
+        List<SystemStructureDO> structures = systemStructureMapper.selectStructureByQuery(queryStructure);
+        if(null != structures && structures.size() >0){
+            systemClient.setInnerStructure(structures.get(0));
+        }
+        return SystemClientConvertor.toDomain(systemClient);
     }
 
     private void filterSystemClient(SystemClient systemClient){

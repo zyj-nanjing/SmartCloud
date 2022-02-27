@@ -20,6 +20,8 @@ public class ServiceConfig implements InitializingBean {
 
     public static String CONFIGURATION;
 
+    public static String NAMESPACE;
+
     /**权重*/
     @Value("${server.weight}")
     private  String weight;
@@ -36,6 +38,9 @@ public class ServiceConfig implements InitializingBean {
     @Value("${server.configure}")
     private String configure;
 
+    /**命名空间*/
+    @Value("${server.namespace}")
+    private String namespace;
 
     @Override
     public void afterPropertiesSet() {
@@ -43,5 +48,6 @@ public class ServiceConfig implements InitializingBean {
         ServiceConfig.LOCATION = location;
         ServiceConfig.REMARK = remark;
         ServiceConfig.CONFIGURATION = configure;
+        ServiceConfig.NAMESPACE = namespace;
     }
 }

@@ -36,8 +36,4 @@ public class FacilityDataReceiveEvent implements DomainEventI {
      */
     private List<DataMessage> receiveData;
 
-    @Override
-    public String getTopic() {
-        return "Facility";
-    }
 }

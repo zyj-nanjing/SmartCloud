@@ -1,6 +1,8 @@
 package www.bwsensing.com.system.gatewayimpl.database.dataobject;
 
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  * @date 2022-01-13
  */
 @Data
-public class SystemStructureDO
+public class SystemStructureDO implements Serializable
 {
     /** 主键 */
     private Integer id;

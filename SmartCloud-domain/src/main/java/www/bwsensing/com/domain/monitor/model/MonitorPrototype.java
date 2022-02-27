@@ -14,6 +14,8 @@ import java.util.List;
 public class MonitorPrototype {
     /**主键*/
     private Integer id;
+    /**类型编码*/
+    private String typeCode;
     /**类型名称*/
     private String  typeName;
     /**创建人**/
@@ -32,6 +34,10 @@ public class MonitorPrototype {
 
     public MonitorPrototype() {
 
+    }
+
+    public MonitorPrototype(String typeCode) {
+        this.typeCode = typeCode;
     }
 
     public void create(){

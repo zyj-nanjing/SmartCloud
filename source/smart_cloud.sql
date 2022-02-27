@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 12/02/2022 14:32:15
+ Date: 27/02/2022 19:47:04
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `auth_token` (
   `oauthCallbackConfirmed` varchar(64) DEFAULT NULL COMMENT 'Twitter附带属性',
   `expireTime` bigint(20) DEFAULT '-1' COMMENT '过期时间, 基于 1970-01-01T00:00:00Z, 无过期时间默认为 -1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限配置';
 
 -- ----------------------------
 -- Records of auth_token
@@ -77,6 +77,25 @@ CREATE TABLE `biz_scheduled_config` (
 BEGIN;
 INSERT INTO `biz_scheduled_config` VALUES (1, 'TEST', 'DEFAULT_SCHEDULE', 100, 'TEST', '测试', 'admin', '2022-02-09 10:16:15');
 INSERT INTO `biz_scheduled_config` VALUES (2, 'TEST1', 'DEFAULT_SCHEDULE', 100, 'TEST', '测试1', 'admin', '2022-02-11 15:29:31');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for data_stream_source_config
+-- ----------------------------
+DROP TABLE IF EXISTS `data_stream_source_config`;
+CREATE TABLE `data_stream_source_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `namespace` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '命名空间',
+  `job_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '任务名称',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE` (`namespace`,`job_name`) USING HASH COMMENT '唯一'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据流配置';
+
+-- ----------------------------
+-- Records of data_stream_source_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `data_stream_source_config` VALUES (1, 'cloudspace', 'test_job');
 COMMIT;
 
 -- ----------------------------
@@ -397,6 +416,48 @@ INSERT INTO `monitor_structure_model` VALUES (60, '桥梁', 'http://beiwei-smart
 COMMIT;
 
 -- ----------------------------
+-- Table structure for mqtt_receive_record
+-- ----------------------------
+DROP TABLE IF EXISTS `mqtt_receive_record`;
+CREATE TABLE `mqtt_receive_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `job_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务名称',
+  `handler_code` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '处理编码',
+  `message` varchar(1000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '消息',
+  `is_handle` int(2) unsigned DEFAULT '0' COMMENT '是否处理',
+  `add_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `handle_time` datetime DEFAULT NULL COMMENT '处理时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Mqtt消息记录';
+
+-- ----------------------------
+-- Records of mqtt_receive_record
+-- ----------------------------
+BEGIN;
+INSERT INTO `mqtt_receive_record` VALUES (4, NULL, NULL, 'HELLO', NULL, NULL, NULL);
+INSERT INTO `mqtt_receive_record` VALUES (5, NULL, NULL, 'HELLO', NULL, NULL, NULL);
+INSERT INTO `mqtt_receive_record` VALUES (6, NULL, NULL, 'HELLO', NULL, NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for mqtt_stream_config
+-- ----------------------------
+DROP TABLE IF EXISTS `mqtt_stream_config`;
+CREATE TABLE `mqtt_stream_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `topic` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'topic',
+  `config_id` int(10) DEFAULT NULL COMMENT '配置编号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='mqtt 配置';
+
+-- ----------------------------
+-- Records of mqtt_stream_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `mqtt_stream_config` VALUES (2, 'test', 1);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for operate_group
 -- ----------------------------
 DROP TABLE IF EXISTS `operate_group`;
@@ -425,6 +486,81 @@ INSERT INTO `operate_group` VALUES (11, 'test', ' 23213', 0, 0, 'r w s r', 0, '2
 INSERT INTO `operate_group` VALUES (12, '测试组', '1000002', 0, 0, '平台测试', 1, '2021-12-10 16:53:01');
 INSERT INTO `operate_group` VALUES (13, '广告牌监测', '产品测试', 0, 0, '测试', 1, '2021-12-14 15:00:59');
 INSERT INTO `operate_group` VALUES (14, '培训熟悉', '999', 0, 1, 'BSL', 0, '2021-12-14 15:53:18');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for product_data_model
+-- ----------------------------
+DROP TABLE IF EXISTS `product_data_model`;
+CREATE TABLE `product_data_model` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_id` int(11) NOT NULL COMMENT '产品型号编号',
+  `name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据模型名称',
+  `message_type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据形式',
+  `carry_system` int(10) NOT NULL COMMENT '进制',
+  `split_method` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '分隔方式',
+  `separator` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '分隔符',
+  `base_data_size` double DEFAULT NULL COMMENT '基础数据单元长度',
+  `remark` varchar(1000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接入设备数据模型';
+
+-- ----------------------------
+-- Records of product_data_model
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_data_model` VALUES (1, 1, '含倾角数据模型', 'ASCII', 10, '', NULL, NULL, NULL);
+INSERT INTO `product_data_model` VALUES (2, 1, '不含倾角数据模型', 'ASCII', 10, '', NULL, NULL, NULL);
+INSERT INTO `product_data_model` VALUES (3, 1, '含倾角数据模型', 'HEX', 16, '', NULL, NULL, 'HEX解析');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for product_data_model_item
+-- ----------------------------
+DROP TABLE IF EXISTS `product_data_model_item`;
+CREATE TABLE `product_data_model_item` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_id` int(11) NOT NULL COMMENT '产品数据模型编号',
+  `prototype_id` int(11) DEFAULT NULL COMMENT '监测项项编号',
+  `item_kind` int(11) NOT NULL COMMENT '编码类型',
+  `unique_code_size` double DEFAULT NULL COMMENT '唯一编码长度',
+  `data_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据位名称',
+  `data_order` int(11) DEFAULT NULL COMMENT '数据位置',
+  `data_length` int(11) DEFAULT NULL COMMENT '数据位长度',
+  `data_type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据类型',
+  `need_transform` int(255) DEFAULT NULL COMMENT '是否需要计算',
+  `calculation_formula` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '计算公式',
+  `placeholder` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '占位符',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE` (`model_id`,`data_order`) USING HASH COMMENT '唯一字段'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接入设备数据模型数据项';
+
+-- ----------------------------
+-- Records of product_data_model_item
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for product_data_web_config
+-- ----------------------------
+DROP TABLE IF EXISTS `product_data_web_config`;
+CREATE TABLE `product_data_web_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_id` int(11) NOT NULL COMMENT '产品型号编号',
+  `name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `receive_type` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '接收方式',
+  `port` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '端口',
+  `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE` (`model_id`,`receive_type`) USING HASH COMMENT '唯一方式',
+  UNIQUE KEY `UNIQUE_PORT` (`port`) USING HASH COMMENT '唯一端口'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='产品型号与传输方式关联';
+
+-- ----------------------------
+-- Records of product_data_web_config
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -519,145 +655,26 @@ CREATE TABLE `schedule_execute_log` (
   `is_end` int(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否终止',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='事务执行日志';
+) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='事务执行日志';
 
 -- ----------------------------
 -- Records of schedule_execute_log
 -- ----------------------------
 BEGIN;
-INSERT INTO `schedule_execute_log` VALUES (114, 2, 1, '2022-02-12 04:48:00', 1, '2022-02-12 04:48:00');
-INSERT INTO `schedule_execute_log` VALUES (115, 1, 1, '2022-02-12 04:49:00', 1, '2022-02-12 04:49:00');
-INSERT INTO `schedule_execute_log` VALUES (116, 2, 1, '2022-02-12 04:49:00', 1, '2022-02-12 04:49:00');
-INSERT INTO `schedule_execute_log` VALUES (117, 2, 1, '2022-02-12 04:50:00', 1, '2022-02-12 04:50:00');
-INSERT INTO `schedule_execute_log` VALUES (118, 1, 1, '2022-02-12 04:50:00', 1, '2022-02-12 04:50:00');
-INSERT INTO `schedule_execute_log` VALUES (119, 1, 2, '2022-02-12 04:51:00', 1, '2022-02-12 04:51:01');
-INSERT INTO `schedule_execute_log` VALUES (120, 1, 2, '2022-02-12 04:52:00', 1, '2022-02-12 04:52:00');
-INSERT INTO `schedule_execute_log` VALUES (121, 1, 2, '2022-02-12 04:52:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (122, 2, 2, '2022-02-12 04:52:00', 1, '2022-02-12 04:52:00');
-INSERT INTO `schedule_execute_log` VALUES (123, 2, 2, '2022-02-12 04:53:00', 1, '2022-02-12 04:53:00');
-INSERT INTO `schedule_execute_log` VALUES (124, 1, 2, '2022-02-12 04:53:00', 1, '2022-02-12 04:53:00');
-INSERT INTO `schedule_execute_log` VALUES (125, 1, 2, '2022-02-12 04:53:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (126, 1, 2, '2022-02-12 04:54:00', 1, '2022-02-12 04:54:00');
-INSERT INTO `schedule_execute_log` VALUES (127, 2, 1, '2022-02-12 04:54:00', 1, '2022-02-12 04:54:00');
-INSERT INTO `schedule_execute_log` VALUES (128, 2, 1, '2022-02-12 04:55:00', 1, '2022-02-12 04:55:00');
-INSERT INTO `schedule_execute_log` VALUES (129, 1, 1, '2022-02-12 04:55:00', 1, '2022-02-12 04:55:00');
-INSERT INTO `schedule_execute_log` VALUES (130, 1, 1, '2022-02-12 04:56:00', 1, '2022-02-12 04:56:00');
-INSERT INTO `schedule_execute_log` VALUES (131, 2, 1, '2022-02-12 04:56:00', 1, '2022-02-12 04:56:00');
-INSERT INTO `schedule_execute_log` VALUES (132, 1, 1, '2022-02-12 04:57:00', 1, '2022-02-12 04:57:00');
-INSERT INTO `schedule_execute_log` VALUES (133, 2, 1, '2022-02-12 04:57:00', 1, '2022-02-12 04:57:00');
-INSERT INTO `schedule_execute_log` VALUES (134, 2, 2, '2022-02-12 04:57:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (135, 2, 1, '2022-02-12 04:58:00', 1, '2022-02-12 04:58:00');
-INSERT INTO `schedule_execute_log` VALUES (136, 1, 1, '2022-02-12 04:58:00', 1, '2022-02-12 04:58:00');
-INSERT INTO `schedule_execute_log` VALUES (137, 1, 1, '2022-02-12 04:59:00', 1, '2022-02-12 04:59:00');
-INSERT INTO `schedule_execute_log` VALUES (138, 2, 1, '2022-02-12 04:59:00', 1, '2022-02-12 04:59:00');
-INSERT INTO `schedule_execute_log` VALUES (139, 1, 2, '2022-02-12 05:00:00', 1, '2022-02-12 05:00:00');
-INSERT INTO `schedule_execute_log` VALUES (140, 2, 2, '2022-02-12 05:00:00', 1, '2022-02-12 05:00:01');
-INSERT INTO `schedule_execute_log` VALUES (141, 2, 2, '2022-02-12 05:01:00', 1, '2022-02-12 05:01:00');
-INSERT INTO `schedule_execute_log` VALUES (142, 1, 2, '2022-02-12 05:01:00', 1, '2022-02-12 05:01:00');
-INSERT INTO `schedule_execute_log` VALUES (143, 1, 2, '2022-02-12 05:02:00', 1, '2022-02-12 05:02:00');
-INSERT INTO `schedule_execute_log` VALUES (144, 2, 2, '2022-02-12 05:02:00', 1, '2022-02-12 05:02:00');
-INSERT INTO `schedule_execute_log` VALUES (145, 2, 1, '2022-02-12 05:02:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (146, 1, 1, '2022-02-12 05:03:00', 1, '2022-02-12 05:03:00');
-INSERT INTO `schedule_execute_log` VALUES (147, 2, 1, '2022-02-12 05:03:00', 1, '2022-02-12 05:03:00');
-INSERT INTO `schedule_execute_log` VALUES (148, 2, 2, '2022-02-12 05:03:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (149, 1, 1, '2022-02-12 05:04:00', 1, '2022-02-12 05:04:00');
-INSERT INTO `schedule_execute_log` VALUES (150, 2, 1, '2022-02-12 05:04:00', 1, '2022-02-12 05:04:00');
-INSERT INTO `schedule_execute_log` VALUES (151, 2, 2, '2022-02-12 05:04:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (152, 2, 2, '2022-02-12 05:05:00', 1, '2022-02-12 05:05:00');
-INSERT INTO `schedule_execute_log` VALUES (153, 1, 2, '2022-02-12 05:05:00', 1, '2022-02-12 05:05:01');
-INSERT INTO `schedule_execute_log` VALUES (154, 2, 2, '2022-02-12 05:06:00', 1, '2022-02-12 05:06:00');
-INSERT INTO `schedule_execute_log` VALUES (155, 1, 2, '2022-02-12 05:06:00', 1, '2022-02-12 05:06:00');
-INSERT INTO `schedule_execute_log` VALUES (156, 1, 2, '2022-02-12 05:07:00', 1, '2022-02-12 05:07:00');
-INSERT INTO `schedule_execute_log` VALUES (157, 2, 2, '2022-02-12 05:07:00', 1, '2022-02-12 05:07:00');
-INSERT INTO `schedule_execute_log` VALUES (158, 1, 2, '2022-02-12 05:08:00', 1, '2022-02-12 05:08:00');
-INSERT INTO `schedule_execute_log` VALUES (159, 2, 2, '2022-02-12 05:08:00', 1, '2022-02-12 05:08:00');
-INSERT INTO `schedule_execute_log` VALUES (160, 2, 2, '2022-02-12 05:09:00', 1, '2022-02-12 05:09:00');
-INSERT INTO `schedule_execute_log` VALUES (161, 1, 2, '2022-02-12 05:09:00', 1, '2022-02-12 05:09:00');
-INSERT INTO `schedule_execute_log` VALUES (162, 2, 2, '2022-02-12 05:10:00', 1, '2022-02-12 05:10:00');
-INSERT INTO `schedule_execute_log` VALUES (163, 1, 2, '2022-02-12 05:10:00', 1, '2022-02-12 05:10:00');
-INSERT INTO `schedule_execute_log` VALUES (164, 2, 2, '2022-02-12 05:11:00', 1, '2022-02-12 05:11:00');
-INSERT INTO `schedule_execute_log` VALUES (165, 1, 2, '2022-02-12 05:11:00', 1, '2022-02-12 05:11:00');
-INSERT INTO `schedule_execute_log` VALUES (166, 1, 2, '2022-02-12 05:12:00', 1, '2022-02-12 05:12:00');
-INSERT INTO `schedule_execute_log` VALUES (167, 2, 2, '2022-02-12 05:12:00', 1, '2022-02-12 05:12:00');
-INSERT INTO `schedule_execute_log` VALUES (168, 1, 2, '2022-02-12 05:13:00', 1, '2022-02-12 05:13:00');
-INSERT INTO `schedule_execute_log` VALUES (169, 2, 2, '2022-02-12 05:13:00', 1, '2022-02-12 05:13:00');
-INSERT INTO `schedule_execute_log` VALUES (170, 1, 2, '2022-02-12 05:14:00', 1, '2022-02-12 05:14:00');
-INSERT INTO `schedule_execute_log` VALUES (171, 2, 2, '2022-02-12 05:14:00', 1, '2022-02-12 05:14:00');
-INSERT INTO `schedule_execute_log` VALUES (172, 1, 2, '2022-02-12 05:15:00', 1, '2022-02-12 05:15:00');
-INSERT INTO `schedule_execute_log` VALUES (173, 2, 2, '2022-02-12 05:15:00', 1, '2022-02-12 05:15:00');
-INSERT INTO `schedule_execute_log` VALUES (174, 1, 2, '2022-02-12 05:16:00', 1, '2022-02-12 05:16:00');
-INSERT INTO `schedule_execute_log` VALUES (175, 2, 2, '2022-02-12 05:16:00', 1, '2022-02-12 05:16:00');
-INSERT INTO `schedule_execute_log` VALUES (176, 2, 2, '2022-02-12 05:17:00', 1, '2022-02-12 05:17:00');
-INSERT INTO `schedule_execute_log` VALUES (177, 1, 2, '2022-02-12 05:17:00', 1, '2022-02-12 05:17:00');
-INSERT INTO `schedule_execute_log` VALUES (178, 1, 2, '2022-02-12 05:18:00', 1, '2022-02-12 05:18:00');
-INSERT INTO `schedule_execute_log` VALUES (179, 2, 2, '2022-02-12 05:18:00', 1, '2022-02-12 05:18:00');
-INSERT INTO `schedule_execute_log` VALUES (180, 1, 2, '2022-02-12 05:19:00', 1, '2022-02-12 05:19:00');
-INSERT INTO `schedule_execute_log` VALUES (181, 2, 2, '2022-02-12 05:19:00', 1, '2022-02-12 05:19:00');
-INSERT INTO `schedule_execute_log` VALUES (182, 2, 2, '2022-02-12 05:20:00', 1, '2022-02-12 05:20:01');
-INSERT INTO `schedule_execute_log` VALUES (183, 1, 2, '2022-02-12 05:20:00', 1, '2022-02-12 05:20:01');
-INSERT INTO `schedule_execute_log` VALUES (184, 2, 2, '2022-02-12 05:21:00', 1, '2022-02-12 05:21:00');
-INSERT INTO `schedule_execute_log` VALUES (185, 1, 2, '2022-02-12 05:21:00', 1, '2022-02-12 05:21:00');
-INSERT INTO `schedule_execute_log` VALUES (186, 1, 2, '2022-02-12 05:22:00', 1, '2022-02-12 05:22:00');
-INSERT INTO `schedule_execute_log` VALUES (187, 2, 2, '2022-02-12 05:22:00', 1, '2022-02-12 05:22:00');
-INSERT INTO `schedule_execute_log` VALUES (188, 1, 2, '2022-02-12 05:23:00', 1, '2022-02-12 05:23:00');
-INSERT INTO `schedule_execute_log` VALUES (189, 2, 2, '2022-02-12 05:23:00', 1, '2022-02-12 05:23:00');
-INSERT INTO `schedule_execute_log` VALUES (190, 1, 2, '2022-02-12 05:24:00', 1, '2022-02-12 05:24:00');
-INSERT INTO `schedule_execute_log` VALUES (191, 2, 2, '2022-02-12 05:24:00', 1, '2022-02-12 05:24:00');
-INSERT INTO `schedule_execute_log` VALUES (192, 2, 2, '2022-02-12 05:25:00', 1, '2022-02-12 05:25:00');
-INSERT INTO `schedule_execute_log` VALUES (193, 1, 2, '2022-02-12 05:25:00', 1, '2022-02-12 05:25:00');
-INSERT INTO `schedule_execute_log` VALUES (194, 2, 2, '2022-02-12 05:26:00', 1, '2022-02-12 05:26:00');
-INSERT INTO `schedule_execute_log` VALUES (195, 1, 2, '2022-02-12 05:26:00', 1, '2022-02-12 05:26:00');
-INSERT INTO `schedule_execute_log` VALUES (196, 2, 2, '2022-02-12 05:27:00', 1, '2022-02-12 05:27:00');
-INSERT INTO `schedule_execute_log` VALUES (197, 1, 2, '2022-02-12 05:27:00', 1, '2022-02-12 05:27:00');
-INSERT INTO `schedule_execute_log` VALUES (198, 2, 1, '2022-02-12 05:29:00', 1, '2022-02-12 05:29:00');
-INSERT INTO `schedule_execute_log` VALUES (199, 2, 1, '2022-02-12 05:29:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (200, 1, 1, '2022-02-12 05:30:00', 1, '2022-02-12 05:30:00');
-INSERT INTO `schedule_execute_log` VALUES (201, 2, 1, '2022-02-12 05:30:00', 1, '2022-02-12 05:30:00');
-INSERT INTO `schedule_execute_log` VALUES (202, 2, 1, '2022-02-12 05:31:00', 1, '2022-02-12 05:31:00');
-INSERT INTO `schedule_execute_log` VALUES (203, 1, 1, '2022-02-12 05:31:00', 1, '2022-02-12 05:31:00');
-INSERT INTO `schedule_execute_log` VALUES (204, 1, 1, '2022-02-12 05:33:00', 1, '2022-02-12 05:33:00');
-INSERT INTO `schedule_execute_log` VALUES (205, 1, 1, '2022-02-12 05:33:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (206, 2, 1, '2022-02-12 05:33:00', 1, '2022-02-12 05:33:00');
-INSERT INTO `schedule_execute_log` VALUES (207, 2, 1, '2022-02-12 05:33:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (208, 1, 1, '2022-02-12 05:34:00', 1, '2022-02-12 05:34:00');
-INSERT INTO `schedule_execute_log` VALUES (209, 2, 1, '2022-02-12 05:34:00', 1, '2022-02-12 05:34:00');
-INSERT INTO `schedule_execute_log` VALUES (210, 2, 1, '2022-02-12 05:34:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (211, 1, 1, '2022-02-12 05:34:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (212, 1, 1, '2022-02-12 05:35:00', 1, '2022-02-12 05:35:00');
-INSERT INTO `schedule_execute_log` VALUES (213, 1, 1, '2022-02-12 05:35:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (214, 2, 1, '2022-02-12 05:35:00', 1, '2022-02-12 05:35:00');
-INSERT INTO `schedule_execute_log` VALUES (215, 2, 1, '2022-02-12 05:35:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (216, 2, 1, '2022-02-12 05:36:00', 1, '2022-02-12 05:36:00');
-INSERT INTO `schedule_execute_log` VALUES (217, 1, 1, '2022-02-12 05:36:00', 1, '2022-02-12 05:36:00');
-INSERT INTO `schedule_execute_log` VALUES (218, 2, 1, '2022-02-12 05:36:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (219, 1, 1, '2022-02-12 05:36:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (220, 2, 1, '2022-02-12 05:37:00', 1, '2022-02-12 05:37:00');
-INSERT INTO `schedule_execute_log` VALUES (221, 1, 1, '2022-02-12 05:37:00', 1, '2022-02-12 05:37:00');
-INSERT INTO `schedule_execute_log` VALUES (222, 2, 2, '2022-02-12 05:37:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (223, 1, 2, '2022-02-12 05:37:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (224, 1, 1, '2022-02-12 05:38:00', 1, '2022-02-12 05:38:00');
-INSERT INTO `schedule_execute_log` VALUES (225, 2, 1, '2022-02-12 05:38:00', 1, '2022-02-12 05:38:00');
-INSERT INTO `schedule_execute_log` VALUES (226, 1, 1, '2022-02-12 05:39:00', 1, '2022-02-12 05:39:00');
-INSERT INTO `schedule_execute_log` VALUES (227, 2, 1, '2022-02-12 05:39:00', 1, '2022-02-12 05:39:00');
-INSERT INTO `schedule_execute_log` VALUES (228, 1, 2, '2022-02-12 05:40:00', 1, '2022-02-12 05:40:00');
-INSERT INTO `schedule_execute_log` VALUES (229, 2, 2, '2022-02-12 05:40:00', 1, '2022-02-12 05:40:01');
-INSERT INTO `schedule_execute_log` VALUES (230, 2, 2, '2022-02-12 05:41:00', 1, '2022-02-12 05:41:00');
-INSERT INTO `schedule_execute_log` VALUES (231, 1, 2, '2022-02-12 05:41:00', 1, '2022-02-12 05:41:00');
-INSERT INTO `schedule_execute_log` VALUES (232, 1, 2, '2022-02-12 05:42:00', 1, '2022-02-12 05:42:00');
-INSERT INTO `schedule_execute_log` VALUES (233, 2, 2, '2022-02-12 05:42:00', 1, '2022-02-12 05:42:00');
-INSERT INTO `schedule_execute_log` VALUES (234, 2, 1, '2022-02-12 05:42:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (235, 2, 1, '2022-02-12 05:43:00', 1, '2022-02-12 05:43:00');
-INSERT INTO `schedule_execute_log` VALUES (236, 1, 1, '2022-02-12 05:43:00', 1, '2022-02-12 05:43:00');
-INSERT INTO `schedule_execute_log` VALUES (237, 1, 2, '2022-02-12 06:29:00', 1, '2022-02-12 06:29:01');
-INSERT INTO `schedule_execute_log` VALUES (238, 2, 2, '2022-02-12 06:29:00', 1, '2022-02-12 06:29:01');
-INSERT INTO `schedule_execute_log` VALUES (239, 2, 2, '2022-02-12 06:30:00', 1, '2022-02-12 06:30:00');
-INSERT INTO `schedule_execute_log` VALUES (240, 1, 2, '2022-02-12 06:30:00', 1, '2022-02-12 06:30:00');
-INSERT INTO `schedule_execute_log` VALUES (241, 2, 1, '2022-02-12 06:30:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (242, 1, 1, '2022-02-12 06:30:00', 0, NULL);
-INSERT INTO `schedule_execute_log` VALUES (243, 1, 2, '2022-02-12 06:31:00', 1, '2022-02-12 06:31:00');
-INSERT INTO `schedule_execute_log` VALUES (244, 2, 2, '2022-02-12 06:31:00', 1, '2022-02-12 06:31:01');
-INSERT INTO `schedule_execute_log` VALUES (245, 1, 2, '2022-02-12 06:32:00', 1, '2022-02-12 06:32:00');
-INSERT INTO `schedule_execute_log` VALUES (246, 2, 2, '2022-02-12 06:32:00', 1, '2022-02-12 06:32:00');
+INSERT INTO `schedule_execute_log` VALUES (259, 1, 1, '2022-02-12 06:51:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (260, 1, 2, '2022-02-12 06:51:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (261, 2, 2, '2022-02-12 06:51:00', 1, '2022-02-12 06:51:00');
+INSERT INTO `schedule_execute_log` VALUES (262, 2, 1, '2022-02-12 06:51:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (263, 1, 1, '2022-02-12 06:52:00', 1, '2022-02-12 06:52:00');
+INSERT INTO `schedule_execute_log` VALUES (264, 2, 1, '2022-02-12 06:52:00', 1, '2022-02-12 06:52:00');
+INSERT INTO `schedule_execute_log` VALUES (265, 2, 2, '2022-02-12 06:53:00', 1, '2022-02-12 06:53:00');
+INSERT INTO `schedule_execute_log` VALUES (266, 1, 2, '2022-02-12 06:53:00', 1, '2022-02-12 06:53:01');
+INSERT INTO `schedule_execute_log` VALUES (267, 2, 2, '2022-02-12 06:53:59', 1, '2022-02-12 06:54:00');
+INSERT INTO `schedule_execute_log` VALUES (268, 1, 2, '2022-02-12 06:54:00', 1, '2022-02-12 06:54:00');
+INSERT INTO `schedule_execute_log` VALUES (269, 1, 1, '2022-02-12 06:54:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (270, 2, 1, '2022-02-12 06:54:00', 0, NULL);
+INSERT INTO `schedule_execute_log` VALUES (271, 1, 1, '2022-02-12 06:55:00', 1, '2022-02-12 06:55:00');
+INSERT INTO `schedule_execute_log` VALUES (272, 2, 1, '2022-02-12 06:55:00', 1, '2022-02-12 06:55:00');
 COMMIT;
 
 -- ----------------------------
@@ -678,10 +695,10 @@ CREATE TABLE `schedule_service_release` (
 -- Records of schedule_service_release
 -- ----------------------------
 BEGIN;
-INSERT INTO `schedule_service_release` VALUES (1, 1, 0, 0, 0);
-INSERT INTO `schedule_service_release` VALUES (1, 2, 4, 4, 1);
-INSERT INTO `schedule_service_release` VALUES (2, 1, 0, 0, 0);
-INSERT INTO `schedule_service_release` VALUES (2, 2, 1, 1, 1);
+INSERT INTO `schedule_service_release` VALUES (1, 1, 0, 0, 1);
+INSERT INTO `schedule_service_release` VALUES (1, 2, 4, 0, 1);
+INSERT INTO `schedule_service_release` VALUES (2, 1, 0, 0, 1);
+INSERT INTO `schedule_service_release` VALUES (2, 2, 1, 0, 1);
 COMMIT;
 
 -- ----------------------------
@@ -749,14 +766,16 @@ CREATE TABLE `service_deploy_config` (
   `is_healthy` int(2) NOT NULL DEFAULT '1' COMMENT '是否健康',
   `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统部署信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统部署信息表';
 
 -- ----------------------------
 -- Records of service_deploy_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `service_deploy_config` VALUES (1, 'MacOs-Zyj.local', 0, '江苏南京', '8/16', ' 223.65.100.63', '192.168.31.190', 1, '开发环境');
+INSERT INTO `service_deploy_config` VALUES (1, 'MacOs-Zyj.local', 1, 'nanjin', '8核16G MacOs', NULL, '192.168.31.190', 1, '本地开发环境');
 INSERT INTO `service_deploy_config` VALUES (2, 'MacOs-Zyj.local', 1, '江苏南京', '1', ' 223.65.100.62', '192.168.31.76', 1, '开发环境');
+INSERT INTO `service_deploy_config` VALUES (3, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.31.228', 1, '测试环境');
+INSERT INTO `service_deploy_config` VALUES (4, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.30.9', 1, '测试环境');
 COMMIT;
 
 -- ----------------------------
@@ -1091,8 +1110,8 @@ CREATE TABLE `sys_client` (
 -- Records of sys_client
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL, 0, 16);
-INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL, 1, 8);
+INSERT INTO `sys_client` VALUES (16, '南京理工大学', 'NJLG', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 09:28:03', NULL, 0, 17);
+INSERT INTO `sys_client` VALUES (18, '南京理工大紫金学院', 'NJLGZJ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-20 12:39:58', NULL, 1, 20);
 INSERT INTO `sys_client` VALUES (21, '南京理工大泰州', 'NJLGTZ', 'https://bkimg.cdn.bcebos.com/pic/a6efce1b9d16fdfaaf51668f55c79b5494eef01fcd33?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg', NULL, NULL, NULL, NULL, NULL, '合作', NULL, '持久客户', NULL, NULL, '北微-超级管理员', NULL, '2022-01-21 07:23:54', NULL, 0, 34);
 COMMIT;
 
@@ -1376,23 +1395,27 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_structure`;
 CREATE TABLE `sys_structure` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `code` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '唯一编码',
   `name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '组织名称',
   `owner_id` int(11) DEFAULT NULL COMMENT '所属编号',
+  `allow_invitation` int(11) NOT NULL DEFAULT '0' COMMENT '是否允许邀请',
+  `invitation_code` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邀请码',
   `type_id` int(11) DEFAULT NULL COMMENT '所属类型编号',
   `creator` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `updater` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '修改人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE` (`code`) USING HASH COMMENT '唯一编码用于确定所属组织结构'
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统组织';
 
 -- ----------------------------
 -- Records of sys_structure
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_structure` VALUES (14, '南京理工大学的组织', 16, 2, '北微-超级管理员', '2022-01-20 09:28:03', NULL, NULL);
-INSERT INTO `sys_structure` VALUES (15, '南京理工大紫金学院的组织', 18, 2, '北微-超级管理员', '2022-01-20 12:39:58', NULL, NULL);
-INSERT INTO `sys_structure` VALUES (16, '南京理工大泰州的组织', 21, 2, '北微-超级管理员', '2022-01-21 07:23:54', NULL, NULL);
+INSERT INTO `sys_structure` VALUES (14, '1213xaaw', '南京理工大学的组织', 16, 0, NULL, 2, '北微-超级管理员', '2022-01-20 09:28:03', NULL, NULL);
+INSERT INTO `sys_structure` VALUES (15, 'wdada1213', '南京理工大紫金学院的组织', 18, 0, NULL, 2, '北微-超级管理员', '2022-01-20 12:39:58', NULL, NULL);
+INSERT INTO `sys_structure` VALUES (16, '12123awdd', '南京理工大泰州的组织', 21, 0, NULL, 2, '北微-超级管理员', '2022-01-21 07:23:54', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1414,6 +1437,24 @@ CREATE TABLE `sys_structure_template` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_structure_template` VALUES (7, '测试行业组织结构', '北微-超级管理员', '2022-01-18 12:56:23', '北微-超级管理员', '2022-01-18 12:57:25');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_user_organization
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_organization`;
+CREATE TABLE `sys_user_organization` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(11) NOT NULL COMMENT '用户编号',
+  `organization_id` int(11) NOT NULL COMMENT '组织编号',
+  `is_select` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '是否为当前团队',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户与组织结构关联';
+
+-- ----------------------------
+-- Records of sys_user_organization
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------

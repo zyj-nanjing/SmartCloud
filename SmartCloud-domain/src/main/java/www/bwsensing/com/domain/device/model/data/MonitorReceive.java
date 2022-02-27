@@ -43,7 +43,7 @@ public class MonitorReceive {
      */
     private Integer sendCount;
     /**
-     * 发送地址
+     * 发送消息
      */
     private String receiveMessage;
     /**

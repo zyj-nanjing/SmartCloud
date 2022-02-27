@@ -150,7 +150,7 @@ public class MailAlertNotificationExtPtExp implements AlertNotificationExtPt {
 
 
     private String getInputStreamToHtmlBody(InputStream mailTemplateStream){
-        Scanner scanner = new Scanner(mailTemplateStream, StandardCharsets.UTF_8);
+        Scanner scanner = new Scanner(mailTemplateStream, String.valueOf(StandardCharsets.UTF_8));
         StringBuilder htmlBody = new StringBuilder();
         while (scanner.hasNextLine()) {
             //去除空格 否则调用接口会报异常

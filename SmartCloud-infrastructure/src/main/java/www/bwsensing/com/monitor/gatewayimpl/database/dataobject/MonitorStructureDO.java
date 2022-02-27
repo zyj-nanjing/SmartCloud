@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorPositionDO;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author macos-zyj
  */
 @Data
-public class MonitorStructureDO {
+public class MonitorStructureDO implements Serializable {
     /**主键*/
     private Integer id;
     /**项目编号*/

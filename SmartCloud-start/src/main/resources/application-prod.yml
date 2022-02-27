@@ -12,6 +12,9 @@ server:
   location: nanjin
   remark: 线上环境
   configure: 2核16G
+  # 命名空间
+  namespace: cloudspace
+
 spring:
   jackson:
     time-zone: GMT+8
@@ -31,7 +34,7 @@ spring:
     druid:
       url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
       username: root
-      password: root
+      password: --------------------------------
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       max-active: 30
@@ -99,9 +102,9 @@ pagehelper:
 alibaba :
   cloud :
     # 密钥 ID
-    access-key : --------------------------
+    access-key : --------------------------------
     # 密钥  secret
-    secret-key : --------------------------
+    secret-key : --------------------------------
     mail:
       regionId : cn-hangzhou
       host : dm.aliyuncs.com
@@ -116,11 +119,11 @@ system:
     port: 8100
     forward: 1h
   encrypt:
-    key: --------------------------
-    vector: --------------------------
+    key: --------------------------------
+    vector: --------------------------------
   token:
-    secret: --------------------------
-    iss: --------------------------
+    secret: --------------------------------
+    iss: --------------------------------
     exist_time: 8
     head: Authorization
     prefix: Bearer

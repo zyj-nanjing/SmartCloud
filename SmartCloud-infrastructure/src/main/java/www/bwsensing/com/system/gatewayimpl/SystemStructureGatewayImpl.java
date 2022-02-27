@@ -158,8 +158,8 @@ public class SystemStructureGatewayImpl implements SystemStructureGateway {
         int structureId = 0;
         if ( null != dept.getId()){
             SystemDeptDO dataResult = systemDeptMapper.getSystemDeptById(dept.getId());
-            structureId = dataResult.getStructureId();
-            if (StringUtils.isNotEmpty(dataResult.getDeptName())){
+            if (null != dataResult&& StringUtils.isNotEmpty(dataResult.getDeptName())){
+                structureId = dataResult.getStructureId();
                 if ( dataResult.getDeptName().equals(dept.getDeptName()) ){
                     return;
                 }

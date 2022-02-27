@@ -42,11 +42,13 @@ public class SystemClientSaveCmd extends Command {
     private String clientType;
     /**客户描述*/
     private String clientDesc;
+
     /**相关行业领域*/
     @Valid
     @NotNull(message = "数据列表不能为空")
     @Size(min = 1, message = "列表至少包含一个行业")
     private List<Integer> releaseFields;
+
     /**组织结构模板*/
     private Integer structureTemplateId;
 }
