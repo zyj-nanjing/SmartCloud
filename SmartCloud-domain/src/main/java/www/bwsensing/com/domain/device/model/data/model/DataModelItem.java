@@ -1,14 +1,15 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
 
-import lombok.Data;
-import java.math.BigInteger;
-import java.util.regex.Pattern;
 import com.alibaba.cola.exception.Assert;
-import org.apache.commons.lang3.StringUtils;
 import com.alibaba.cola.exception.BizException;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import www.bwsensing.com.domain.common.math.Calculator;
 import www.bwsensing.com.domain.monitor.model.MonitorPrototype;
+
+import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 
 /**
@@ -99,6 +100,15 @@ public class DataModelItem implements Comparable<DataModelItem>{
         this.needTransform = false;
     }
 
+    public DataModelItem(Integer dataOrder, DataItemKind dataItemKind,
+                         DataType dataType,Integer dataLength) {
+        this.dataOrder = dataOrder;
+        this.itemKind = dataItemKind;
+        this.dataType = dataType;
+        this.needTransform = false;
+        this.dataLength = dataLength;
+    }
+
     public DataModelItem(Integer uniqueCodeSize, Integer dataOrder,
                          Integer dataLength, String dataFormat,
                          DataType dataType) {
@@ -113,7 +123,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
 
     public DataModelItem(MonitorPrototype prototype, Integer dataOrder,
                          Integer dataLength,DataType dataType) {
-        this.itemKind = DataItemKind.FUNCTION_CODE;
+        this.itemKind = DataItemKind.DATA_INDEX;
         this.prototype = prototype;
         this.dataOrder = dataOrder;
         this.dataLength = dataLength;
@@ -125,7 +135,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
     public DataModelItem(MonitorPrototype prototype, Integer dataOrder,
                          Integer dataLength, DataType dataType,
                          String calculationFormula, String placeholder) {
-        this.itemKind = DataItemKind.FUNCTION_CODE;
+        this.itemKind = DataItemKind.DATA_INDEX;
         this.prototype = prototype;
         this.dataOrder = dataOrder;
         this.dataLength = dataLength;
@@ -149,7 +159,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
             int codeSn = mathCalculation(splitData, carrySystem).intValue();
             String snNumbers = Integer.toString(codeSn);
             StringBuilder result = new StringBuilder();
-            for (int i = 1; i < uniqueCodeSize - snNumbers.length(); i++) {
+            for (int i = 0; i < uniqueCodeSize - snNumbers.length(); i++) {
                 result.append("0");
             }
             resultCode = result.append(snNumbers).toString();

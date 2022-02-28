@@ -1,22 +1,21 @@
 package com.bwsensing.com.domain;
 
-import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.ArrayList;
 import org.junit.runner.RunWith;
-import lombok.extern.slf4j.Slf4j;
 import org.mockito.internal.util.MockUtil;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import www.bwsensing.com.domain.device.model.data.model.DataItemKind;
 import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
 import www.bwsensing.com.domain.device.model.data.model.DataType;
-import www.bwsensing.com.domain.monitor.model.MonitorPrototype;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import www.bwsensing.com.domain.device.model.data.model.ProductDataModel;
+import www.bwsensing.com.domain.monitor.model.MonitorPrototype;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @PowerMockIgnore
@@ -56,6 +55,17 @@ public class ProductDataModelTest {
             "MonitorData(groupId=null, dataId=elect, dataIdValue=27.0, sn=100000005, type=null, timeStamp=null), " +
             "MonitorData(groupId=null, dataId=temp, dataIdValue=9.0, sn=100000005, type=null, timeStamp=null)])";
 
+    private static final String HEX_ACC_EXPECT = "MonitorReceive(sn=000000001, channelId=null, ip=null, receiveTime=null, phoneNumber=null," +
+            " electricity=null, temperature=null, receiveSize=1, sendCount=8, receiveMessage=null, totalSize=null, " +
+            "dataCollection=[MonitorData(groupId=null, dataId=x_ang, dataIdValue=20191.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=y_ang, dataIdValue=20064.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=z_ang, dataIdValue=28798.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=x_acc, dataIdValue=20330.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=y_acc, dataIdValue=20110.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=z_acc, dataIdValue=29907.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=elect, dataIdValue=22805.0, sn=000000001, type=null, timeStamp=null), " +
+            "MonitorData(groupId=null, dataId=temp, dataIdValue=9.0, sn=000000001, type=null, timeStamp=null)])";
+
     static {
         noAccProducts.add(new MonitorPrototype("x_ang"));
         noAccProducts.add(new MonitorPrototype("y_ang"));
@@ -85,6 +95,14 @@ public class ProductDataModelTest {
         }
         asciiItemsWithAcc.add(new DataModelItem(9, DataItemKind.IDENTIFY_CODE,DataType.INT));
         asciiWithAcc.setDataItems(asciiItemsWithAcc);
+        List<DataModelItem> hexItemsWithAcc = new ArrayList<>();
+        hexItemsWithAcc.add(new DataModelItem(9,0,1,dataFormat, DataType.INT));
+        hexItemsWithAcc.add(new DataModelItem(1, DataItemKind.FUNCTION_CODE,DataType.INT,1));
+        hexItemsWithAcc.add(new DataModelItem(2, DataItemKind.DATA_SIZE,DataType.INT,1));
+        for(int i=0;i<8;i++){
+            hexItemsWithAcc.add(new DataModelItem(accProducts.get(i),i*2+3,2,DataType.DOUBLE));
+        }
+        hexModel.setDataItems(hexItemsWithAcc);
     }
 
     @Test
@@ -93,5 +111,7 @@ public class ProductDataModelTest {
         Assert.assertEquals("BW ASCII 不含加速度解析错误", ASCII_NO_ACC_EXPECT,asciiWithNoAcc.messageAnalyse(testNoAccAscii).toString());
         String testAccAscii = "100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,1440033931560";
         Assert.assertEquals("BW ASCII 含加速度解析错误", ASCII_ACC_EXPECT,asciiWithAcc.messageAnalyse(testAccAscii).toString());
+        String hexWithAcc ="01 03 10 4E DF 4E 60 70 7E 4F 6A 4E 8E 74 D3 59 15 00 09 9D E7";
+        Assert.assertEquals("BW HEX 含加速度解析错误", HEX_ACC_EXPECT,hexModel.messageAnalyse(hexWithAcc).toString());
     }
 }

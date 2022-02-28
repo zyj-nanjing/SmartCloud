@@ -1,14 +1,15 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
-import www.bwsensing.com.domain.device.model.data.MonitorReceive;
-import www.bwsensing.com.domain.device.model.data.MonitorData;
-import com.alibaba.cola.exception.BizException;
 import com.alibaba.cola.exception.Assert;
-import java.util.Collections;
+import com.alibaba.cola.exception.BizException;
+import lombok.Data;
+import www.bwsensing.com.domain.device.model.data.MonitorData;
+import www.bwsensing.com.domain.device.model.data.MonitorReceive;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import lombok.Data;
 
 
 /**
@@ -105,7 +106,7 @@ public class ProductDataModel {
                     case UNIQUE_SN:
                         dataReceive.setSn(currentItem.geyUniqueCode(dataSplits.get(i),carrySystem));
                         break;
-                    case FUNCTION_CODE:
+                    case DATA_INDEX:
                         MonitorData data = new MonitorData();
                         Double result = currentItem.mathCalculation(dataSplits.get(i),carrySystem);
                         data.setSn(dataReceive.getSn());
@@ -139,26 +140,33 @@ public class ProductDataModel {
                 splitCollects.addAll(Arrays.asList(dataArray));
                 break;
             case BY_DATA_LENGTH:
-                Assert.notNull(baseDataSize,"通过数据长度进行分隔时数据字长不能为空!");
-                List<Integer>  codeFormat =  new ArrayList<>();
-                for (DataModelItem dataItem : dataItems) {
-                    Assert.notNull(dataItem.getDataLength(), "通过数据长度进行分隔时数据项长度不能为空!");
-                    codeFormat.add(dataItem.getDataLength());
-                }
-                try {
-                    int index = 0;
-                    for (int i : codeFormat) {
-                        int endIndex = index + baseDataSize * i;
-                        String currentBitCode = receiveMessage.substring(index, endIndex);
-                        splitCollects.add(currentBitCode);
-                        index = endIndex;
-                    }
-                }  catch (StringIndexOutOfBoundsException exception){
-                    throw new BizException("HEX_FORMAT_NOT_TRUE","接收数据格式不正确");
-                }
+                splitCollects.addAll(dataLengthSplit(receiveMessage));
                 break;
             default:
                 break;
+        }
+        return splitCollects;
+    }
+
+    private List<String> dataLengthSplit(String receiveMessage) {
+        List<String> splitCollects =  new ArrayList<>();
+        Assert.notNull(baseDataSize,"通过数据长度进行分隔时数据字长不能为空!");
+        List<Integer>  codeFormat =  new ArrayList<>();
+        for (DataModelItem dataItem : dataItems) {
+            Assert.notNull(dataItem.getDataLength(), "通过数据长度进行分隔时数据项长度不能为空!");
+            codeFormat.add(dataItem.getDataLength());
+        }
+        String toNoNull = receiveMessage.replaceAll(" ","");
+        try {
+            int index = 0;
+            for (int i : codeFormat) {
+                int endIndex = index + baseDataSize * i;
+                String currentBitCode = toNoNull.substring(index, endIndex);
+                splitCollects.add(currentBitCode);
+                index = endIndex;
+            }
+        }  catch (StringIndexOutOfBoundsException exception){
+            throw new BizException("HEX_FORMAT_NOT_TRUE","接收数据格式不正确");
         }
         return splitCollects;
     }
