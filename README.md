@@ -5,6 +5,8 @@
 <http://121.41.96.206:8080/> </p>
 管理员 账户 admin Admin123@! </p>
 前端功能在不断完善中 在不断实现服务端提供的以已有能
+### 数据采集转换以及可定制化接收器
+https://gitee.com/zhuyongjie1212/data-collection
 # 使用方式  
 该项目需要使用的组件以及对应的数据库备份文件以及放置在根目录下的source文件夹下</p>
 ### TDengine 
