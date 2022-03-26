@@ -12,7 +12,6 @@ import www.bwsensing.com.common.thread.NamedThreadFactory;
  * @author macos-zyj
  */
 @Slf4j
-@Profile("test")
 @Configuration
 public class StreamsClientConfiguration{
     /**
@@ -33,6 +32,8 @@ public class StreamsClientConfiguration{
             new LinkedBlockingQueue<>(1000),
             new NamedThreadFactory("ASYNC-STREAM-EXECUTE-POOL"));
 
+    private static final ConcurrentHashMap<String,MqttClient> MQTT_CLIENT_MAP = new ConcurrentHashMap<>(16);
+
     @Resource
     private MqttConfiguration config;
 
@@ -44,17 +45,20 @@ public class StreamsClientConfiguration{
 
 
     public  void addMqttClient(String topic,String namespace,String jobName){
-        MqttClient client = new MqttClient();
-        client.setUrl(config.getHost());
-        client.setClientId(config.getClientId());
-        client.setUsername(config.getUsername());
-        client.setPassword(config.getPassword());
-        client.setTopic(topic);
-        client.setNamespace(namespace);
-        client.setJobName(jobName);
-        client.setMapFunction(clientUserFunction.getUserFunction(namespace, jobName));
-        STREAM_EXECUTOR.submit(client::run);
-        EXECUTE_EXECUTOR.submit(streamExecute::execute);
+        if (null == MQTT_CLIENT_MAP.get(topic+namespace)){
+            MqttClient client = new MqttClient();
+            client.setUrl(config.getHost());
+            client.setClientPrefix(config.getClientPrefix());
+            client.setUsername(config.getUsername());
+            client.setPassword(config.getPassword());
+            client.setTopic(topic);
+            client.setNamespace(namespace);
+            client.setJobName(jobName);
+            client.setMapFunction(clientUserFunction.getUserFunction(namespace, jobName));
+            STREAM_EXECUTOR.submit(client::run);
+            EXECUTE_EXECUTOR.submit(streamExecute::execute);
+            MQTT_CLIENT_MAP.put(topic+namespace,client);
+        }
     }
 
 }

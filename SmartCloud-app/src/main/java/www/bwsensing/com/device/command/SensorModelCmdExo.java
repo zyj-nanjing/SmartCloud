@@ -26,7 +26,7 @@ import java.util.*;
 @Slf4j
 @Component
 public class SensorModelCmdExo {
-    private static final List<MonitorPrototypeDO> prototypeCache = new ArrayList<>();
+    private static final List<MonitorPrototypeDO> PROTOTYPE_CACHE = new ArrayList<>();
 
     @Resource
     private SensorModelGateway sensorModelGateway;
@@ -106,15 +106,15 @@ public class SensorModelCmdExo {
 
     private Boolean prototypeFilter(String prototype){
         if (StringUtils.isNotEmpty(prototype)){
-            if (prototypeCache.isEmpty()){
-                prototypeCache.addAll(prototypeMapper.selectPrototypeBySort(new MonitorPrototypeDO()));
+            if (PROTOTYPE_CACHE.isEmpty()){
+                PROTOTYPE_CACHE.addAll(prototypeMapper.selectPrototypeBySort(new MonitorPrototypeDO()));
             }
             String[] prototypes = prototype.split("\\|");
             if (prototypes.length <=0) {
                 return false;
             }
             for (String  type:prototypes){
-                if (prototypeCache.stream().
+                if (PROTOTYPE_CACHE.stream().
                         noneMatch(typeData -> typeData.getTypeName().equals(type)))
                 {
                     return false;
@@ -133,7 +133,7 @@ public class SensorModelCmdExo {
     private  List<MonitorPrototype> prototypeHandle(List<String> typeCollection){
         List<MonitorPrototype> prototypeList = new ArrayList<>();
         typeCollection.forEach(prototype->{
-            prototypeCache.forEach(cache->{
+            PROTOTYPE_CACHE.forEach(cache->{
                 if (cache.getTypeName().equals(prototype)){
                     prototypeList.add(PrototypeConvertor.toDomain(cache));
                 }

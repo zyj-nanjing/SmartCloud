@@ -1,4 +1,4 @@
-package www.bwsensing.com.domainevent.object;
+package www.bwsensing.com.stream.object;
 
 import lombok.Data;
 import java.sql.Timestamp;

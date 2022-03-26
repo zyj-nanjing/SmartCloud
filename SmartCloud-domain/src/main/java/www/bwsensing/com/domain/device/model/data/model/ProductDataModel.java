@@ -1,15 +1,15 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
-import com.alibaba.cola.exception.Assert;
-import com.alibaba.cola.exception.BizException;
-import lombok.Data;
-import www.bwsensing.com.domain.device.model.data.MonitorData;
 import www.bwsensing.com.domain.device.model.data.MonitorReceive;
-
+import www.bwsensing.com.domain.device.model.data.MonitorData;
+import com.alibaba.cola.exception.BizException;
+import com.alibaba.cola.exception.Assert;
+import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import lombok.Data;
 
 
 /**
@@ -49,14 +49,29 @@ public class ProductDataModel {
     private String separator;
 
     /**
+     * 排序
+     */
+    private Integer weight;
+
+    /**
      * 基础数据单元长度
      */
     private Integer baseDataSize;
 
     /**
+     * 期待数据长度
+     */
+    private Integer expectDataSize;
+
+    /**
      * 数据项
      */
     private List<DataModelItem> dataItems;
+
+    /**
+     * 对应数据格式的正则
+     */
+    private String dataFormat;
 
     /**
      * 备注
@@ -67,25 +82,28 @@ public class ProductDataModel {
     public ProductDataModel() {
     }
 
-    public ProductDataModel(Integer carrySystem,String separator) {
+    public ProductDataModel(Integer carrySystem,String separator, String dataFormat) {
         this.carrySystem = carrySystem;
         this.splitMethod = SplitMethod.BY_SEPARATOR;
         this.separator = separator;
+        this.dataFormat = dataFormat;
     }
 
-    public ProductDataModel(Integer carrySystem, Integer baseDataSize) {
+    public ProductDataModel(Integer carrySystem, Integer baseDataSize,String dataFormat) {
         this.carrySystem = carrySystem;
         this.splitMethod = SplitMethod.BY_DATA_LENGTH;
         this.baseDataSize = baseDataSize;
+        this.dataFormat = dataFormat;
     }
 
     /**
      * @// TODO: 2022/2/27  后续增加对于校验码的适配
      * @param receiveMessage 接收的消息
+     * @param timestamp 时间戳
      * @return
      */
-    public MonitorReceive messageAnalyse(String receiveMessage){
-        return messageAnalyse(Collections.singletonList(receiveMessage));
+    public MonitorReceive messageAnalyse(String receiveMessage,Timestamp timestamp){
+        return messageAnalyse(Collections.singletonList(receiveMessage),Collections.singletonList(timestamp));
     }
 
     /**
@@ -93,13 +111,15 @@ public class ProductDataModel {
      * @param receives 接收的消息
      * @return
      */
-    public MonitorReceive messageAnalyse(List<String> receives){
+    public MonitorReceive messageAnalyse(List<String> receives,List<Timestamp> timestamps ){
         MonitorReceive dataReceive = new MonitorReceive();
         List<MonitorData> dataCollection = new ArrayList<>();
         Assert.notEmpty(dataItems,"DATA_ITEM_NOT_SET","数据项未设立!");
         Collections.sort(dataItems);
-        for (String  receiveMessage:receives){
+        for(int index = 0; index < receives.size(); index++){
+            String receiveMessage = receives.get(index);
             List<String> dataSplits = getSplitCollects(receiveMessage);
+            int dataSize = 0;
             for (int i =0; i<dataItems.size(); i++){
                 DataModelItem currentItem = dataItems.get(i);
                 switch (currentItem.getItemKind()){
@@ -111,8 +131,10 @@ public class ProductDataModel {
                         Double result = currentItem.mathCalculation(dataSplits.get(i),carrySystem);
                         data.setSn(dataReceive.getSn());
                         data.setDataIdValue(result);
-                        data.setDataId(currentItem.getPrototype().getTypeCode());
+                        data.setDataId(currentItem.getProtoItem().getDataId());
+                        data.setTimeStamp(timestamps.get(index));
                         dataCollection.add(data);
+                        dataSize++;
                         break;
                     case IDENTIFY_CODE:
                         dataReceive.setPhoneNumber(currentItem.getIdentifyCode(dataSplits.get(i)));
@@ -120,7 +142,9 @@ public class ProductDataModel {
                         break;
                 }
             }
+            Assert.isTrue(dataSize == expectDataSize,"解析结果与期待值不同!");
         }
+
         dataReceive.setDataCollection(dataCollection);
         dataReceive.setSendCount(dataReceive.getDataCollection().size());
         dataReceive.setReceiveSize(receives.size());

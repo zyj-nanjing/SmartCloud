@@ -1,13 +1,16 @@
 package www.bwsensing.com.common.cache.redis;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
+import www.bwsensing.com.common.thread.NamedThreadFactory;
 
 /**
  * spring redis 工具类
@@ -16,8 +19,22 @@ import org.springframework.stereotype.Component;
  **/
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Component
+@Slf4j
 public class RedisService
 {
+    private static Long DELETE_WAIT_TIME = 200L;
+
+    /**
+     * 默认线程池
+     *     如果处理器无定制线程池，则使用此默认
+     */
+    private static final ExecutorService DEFAULT_EXECUTOR = new ThreadPoolExecutor(
+            Runtime.getRuntime().availableProcessors() + 1,
+            Runtime.getRuntime().availableProcessors() + 1,
+            0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(1000),
+            new NamedThreadFactory("ASYNC-REDIS-POOL"));
+
     @Autowired
     public RedisTemplate redisTemplate;
 
@@ -95,12 +112,26 @@ public class RedisService
 
     /**
      * 删除单个对象
-     *
+     * 为了保证多机部署的并发问题需要执行延迟双删操作
      * @param key
      */
     public boolean deleteObject(final String key)
     {
-        return redisTemplate.delete(key);
+        boolean result = Boolean.TRUE.equals(redisTemplate.delete(key));
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(new Supplier<Boolean>() {
+            @Override
+            public Boolean get() {
+                log.info("===redis task start===");
+                try {
+                    Thread.sleep(DELETE_WAIT_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return Boolean.TRUE.equals(redisTemplate.delete(key));
+            }
+        }, DEFAULT_EXECUTOR);
+        future.thenAccept(e ->{});
+        return result;
     }
 
     /**

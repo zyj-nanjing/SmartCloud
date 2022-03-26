@@ -1,20 +1,19 @@
 package www.bwsensing.com.device.gatewayimpl;
 
+import java.util.List;
 import javax.annotation.Resource;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import www.bwsensing.com.monitor.convertor.MonitorReceiveConvertor;
+import www.bwsensing.com.device.tdengin.MonitorDataMapper;
 import www.bwsensing.com.domain.device.model.data.MonitorData;
+import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.domain.device.model.data.MonitorReceive;
+import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.monitor.convertor.MonitorReceiveConvertor;
 import www.bwsensing.com.domain.monitor.gateway.MonitorReceiveGateway;
 import www.bwsensing.com.device.gatewayimpl.database.MonitorReceiveMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
-import www.bwsensing.com.device.tdengin.MonitorDataMapper;
 
-import java.util.List;
 
 /**
  * @author macos-zyj
@@ -55,9 +54,9 @@ public class MonitorReceiveGatewayImpl implements MonitorReceiveGateway {
 
     private void updateSensor(MonitorReceive receive) {
         SensorDO dataObject = sensorMapper.selectSensorBySn(receive.getSn());
-        dataObject.setElectricity(receive.getElectricity());
-        dataObject.setPhoneNumber(receive.getPhoneNumber());
-        dataObject.setTemperature(receive.getTemperature());
+        if(null == dataObject){
+            return;
+        }
         if (null == dataObject.getFirstOnlineTime()) {
             dataObject.setFirstOnlineTime(receive.getReceiveTime());
         }

@@ -31,13 +31,15 @@ spring:
     #type: ehcache
   mqtt:
     #MQTT-服务器连接地址，如果有多个，用逗号隔开，如：tcp://127.0.0.1:61613，tcp://192.168.2.133:61613
-    host: tcp://127.0.0.1:1883
+    host: tcp://XXXXXXXXX:1883
     #MQTT-连接服务器默认客户端ID
-    clientId: --------------------------------
+    clientId: smartcloud-XXXXXXXXX
+    #MQTT-服务前缀
+    clientPrefix: smartcloud-
     #MQTT-用户名
-    username: --------------------------------
+    username: XXXXXXXXX
     #MQTT-密码
-    password: --------------------------------@!
+    password: XXXXXXXXX
     #MQTT-默认的消息推送主题，实际可在调用接口时指定
     topic: Topic
     #连接超时
@@ -47,9 +49,9 @@ spring:
   datasource:
     # 数据库驱动：
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
-      username: --------------------------------
-      password: --------------------------------
+      url: jdbc:mysql://---------:3306/smart_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+      username: XXXXXXXXX
+      password: XXXXXXXXX
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5
       max-active: 30
@@ -117,9 +119,9 @@ pagehelper:
 alibaba :
   cloud :
     # 密钥 ID
-    access-key : --------------------------------
+    access-key : XXXXXXXXX
     # 密钥  secret
-    secret-key : --------------------------------
+    secret-key : XXXXXXXXX
     mail:
       regionId : cn-hangzhou
       host : dm.aliyuncs.com
@@ -134,11 +136,11 @@ system:
     port: 8100
     forward: 1h
   encrypt:
-    key: --------------------------------
-    vector: --------------------------------
+    key: XXXXXXXXX
+    vector: XXXXXXXXX
   token:
-    secret: --------------------------------
-    iss: BEI_WEI
+    secret: XXXXXXXXX
+    iss: XXXXXXXXX
     exist_time: 8
     head: Authorization
     prefix: Bearer

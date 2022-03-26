@@ -3,6 +3,7 @@ import cn.hutool.core.text.StrFormatter;
 import www.bwsensing.com.common.constant.Constants;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -209,6 +210,22 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
             return template;
         }
         return StrFormatter.format(template, params);
+    }
+
+    public static String randomHex(int len)  {
+        try {
+            StringBuilder result = new StringBuilder();
+            for(int i=0;i<len;i++) {
+                result.append(Integer.toHexString(new Random().nextInt(16)));
+            }
+            return result.toString().toLowerCase();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
     }
 
     /**

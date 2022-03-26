@@ -34,7 +34,7 @@ public class HexDecoder extends ByteToMessageDecoder {
     }
 
     public static String toHexString(byte[] b) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (byte value : b) {
             buffer.append(toHexString(value));
         }

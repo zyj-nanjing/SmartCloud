@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.DataModelMapper">
+
+    <resultMap type="DataModelDO" id="DataModelResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="name"    column="name"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="carrySystem"    column="carry_system"    />
+        <result property="splitMethod"    column="split_method"    />
+        <result property="separator"    column="separator"    />
+        <result property="weight"    column="weight"    />
+        <result property="expectDataSize" column="expect_data_size" />
+        <result property="baseDataSize"    column="base_data_size"    />
+        <result property="remark"    column="remark"    />
+        <collection property="dataItems" ofType="DataModelItemResult" column="id" select="queryModelItemByModelId"/>
+    </resultMap>
+
+    <resultMap type="DataModelItemDO" id="DataModelItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="prototypeId"    column="prototype_id"    />
+        <result property="itemKind"    column="item_kind"    />
+        <result property="uniqueCodeSize"    column="unique_code_size"    />
+        <result property="dataName"    column="data_name"    />
+        <result property="dataFormat" column="data_format"/>
+        <result property="dataOrder"    column="data_order"    />
+        <result property="dataLength"    column="data_length"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+        <association property="protoItem" javaType="MonitorItemsDO">
+            <result column="p_id" property="id"/>
+            <result column="p_item_name" property="itemName"/>
+            <result column="p_data_id" property="dataId"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectDataModelVo">
+        select * from product_data_model
+    </sql>
+
+    <select id="queryDataModelBySort" parameterType="DataModelDO" resultMap="DataModelResult">
+        <include refid="selectDataModelVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
+            <if test="carrySystem != null "> and carry_system = #{carrySystem}</if>
+            <if test="splitMethod != null  and splitMethod != ''"> and split_method = #{splitMethod}</if>
+            <if test="separator != null  and separator != ''"> and separator = #{separator}</if>
+            <if test="baseDataSize != null "> and base_data_size = #{baseDataSize}</if>
+        </where>
+    </select>
+
+    <select id="queryDataModelById" parameterType="Integer" resultMap="DataModelResult">
+        <include refid="selectDataModelVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="queryModelItemByModelId" resultMap="DataModelItemResult">
+        select item.id,m_item.id p_id ,m_item.item_name p_item_name,m_item.data_id p_data_id, model_id, prototype_id, item_kind, unique_code_size, data_name, data_order, data_length,data_format, item.data_type, need_transform,
+               calculation_formula, placeholder from product_data_model_item item left  join monitor_items m_item on
+            item.prototype_id = m_item.id where  item.model_id =#{modelId}
+    </select>
+
+    <insert id="saveDataModel" parameterType="DataModelDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_data_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="name != null">name,</if>
+            <if test="messageType != null">message_type,</if>
+            <if test="carrySystem != null">carry_system,</if>
+            <if test="splitMethod != null and splitMethod != ''">split_method,</if>
+            <if test="separator != null">separator,</if>
+            <if test="weight != null">weight,</if>
+            <if test="baseDataSize != null">base_data_size,</if>
+            <if test="expectDataSize != null">expect_data_size,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="messageType != null">#{messageType},</if>
+            <if test="carrySystem != null">#{carrySystem},</if>
+            <if test="splitMethod != null and splitMethod != ''">#{splitMethod},</if>
+            <if test="separator != null">#{separator},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="baseDataSize != null">#{baseDataSize},</if>
+            <if test="expectDataSize != null">#{expectDataSize},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDataModel" parameterType="DataModelDO">
+        update product_data_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="messageType != null">message_type = #{messageType},</if>
+            <if test="carrySystem != null">carry_system = #{carrySystem},</if>
+            <if test="splitMethod != null and splitMethod != ''">split_method = #{splitMethod},</if>
+            <if test="separator != null">separator = #{separator},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="baseDataSize != null">base_data_size = #{baseDataSize},</if>
+            <if test="expectDataSize != null">expect_data_size = #{expectDataSize},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataModelById" parameterType="Integer">
+        delete from product_data_model where id = #{id}
+    </delete>
+
+    <delete id="deleteDataModelByIds" parameterType="String">
+        delete from product_data_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getDataModelByWebId" parameterType="Integer" resultMap="DataModelResult">
+        <include refid="selectDataModelVo"/>
+        where id in (select model_id from product_model_web_model_link where model_web_id =#{modelWebId})
+        order by weight
+    </select>
+
+</mapper>

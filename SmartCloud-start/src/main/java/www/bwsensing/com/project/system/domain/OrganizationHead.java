@@ -20,7 +20,7 @@ public class OrganizationHead implements OrganizationFilter {
 
     private  static Map<String,String> USER_ID_ORGANIZATION_MAP = new ConcurrentHashMap<>();
 
-    private Map<String,SystemStructure>  CODE_ORGANIZATION_MAP = new ConcurrentHashMap<>();
+    private static Map<String,SystemStructure>  CODE_ORGANIZATION_MAP = new ConcurrentHashMap<>();
 
     @Resource
     private AuthenticationGateway authenticationGateway;

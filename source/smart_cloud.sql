@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 27/02/2022 19:47:04
+ Date: 26/03/2022 20:30:57
 */
 
 SET NAMES utf8mb4;
@@ -89,13 +89,13 @@ CREATE TABLE `data_stream_source_config` (
   `job_name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '任务名称',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`namespace`,`job_name`) USING HASH COMMENT '唯一'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据流配置';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据流配置';
 
 -- ----------------------------
 -- Records of data_stream_source_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `data_stream_source_config` VALUES (1, 'cloudspace', 'test_job');
+INSERT INTO `data_stream_source_config` VALUES (3, 'datacollection', 'DATA_RECEIVE_2');
 COMMIT;
 
 -- ----------------------------
@@ -134,7 +134,7 @@ CREATE TABLE `device_sensor_equipment` (
 -- Records of device_sensor_equipment
 -- ----------------------------
 BEGIN;
-INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, 21, 1, 1, 16, 120.2884098730, '31.513274820947032', 1, '2021-09-08 10:26:04', 5, 778588, '40', '39.144.7.127', '2021-12-14 09:54:26', 617935, '8.746', '1440018057609\r', NULL, NULL);
+INSERT INTO `device_sensor_equipment` VALUES (14, '100000005', '倾角传感器1', 10010, 1, 21, 1, 1, 16, 120.2884098730, '31.513274820947032', 1, '2021-09-08 10:26:04', 9, 778764, '36', '192.168.30.7', '2022-03-26 10:12:43', 140, '8.746', '1440018057609\r', NULL, NULL);
 INSERT INTO `device_sensor_equipment` VALUES (15, '100000003', '倾角传感器2', NULL, 1, 22, 1, 1, 17, 120.2879807196, '31.5145919130638', 0, '2021-09-09 05:07:42', 1, 0, '0', '89.248.165.181', '2022-01-13 06:53:03', NULL, '0.0', NULL, NULL, NULL);
 INSERT INTO `device_sensor_equipment` VALUES (16, '100000067', '倾角传感器3', NULL, 1, 23, 1, 1, 18, 120.2868649207, '31.51550654944506', 0, '2021-09-12 07:16:44', 1, 0, '0', '101.133.138.230', '2021-10-14 01:41:18', NULL, '0.0', NULL, NULL, NULL);
 INSERT INTO `device_sensor_equipment` VALUES (17, '100000071', '倾角传感器4', NULL, 1, 22, 1, 1, 28, 120.2857920370, '31.516238252104156', 0, '2021-09-12 07:14:04', 1, 112, '0', '172.104.140.107', '2022-01-11 10:26:20', 112, '-199.99', NULL, NULL, NULL);
@@ -448,13 +448,13 @@ CREATE TABLE `mqtt_stream_config` (
   `topic` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'topic',
   `config_id` int(10) DEFAULT NULL COMMENT '配置编号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='mqtt 配置';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='mqtt 配置';
 
 -- ----------------------------
 -- Records of mqtt_stream_config
 -- ----------------------------
 BEGIN;
-INSERT INTO `mqtt_stream_config` VALUES (2, 'test', 1);
+INSERT INTO `mqtt_stream_config` VALUES (6, 'MacOs-Zyj.local-UDP-9875-192.168.30.7', 3);
 COMMIT;
 
 -- ----------------------------
@@ -501,6 +501,8 @@ CREATE TABLE `product_data_model` (
   `split_method` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '分隔方式',
   `separator` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '分隔符',
   `base_data_size` double DEFAULT NULL COMMENT '基础数据单元长度',
+  `expect_data_size` double DEFAULT NULL COMMENT '预期数据字长',
+  `weight` int(10) unsigned DEFAULT '9' COMMENT '排序',
   `remark` varchar(1000) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接入设备数据模型';
@@ -509,9 +511,9 @@ CREATE TABLE `product_data_model` (
 -- Records of product_data_model
 -- ----------------------------
 BEGIN;
-INSERT INTO `product_data_model` VALUES (1, 1, '含倾角数据模型', 'ASCII', 10, '', NULL, NULL, NULL);
-INSERT INTO `product_data_model` VALUES (2, 1, '不含倾角数据模型', 'ASCII', 10, '', NULL, NULL, NULL);
-INSERT INTO `product_data_model` VALUES (3, 1, '含倾角数据模型', 'HEX', 16, '', NULL, NULL, 'HEX解析');
+INSERT INTO `product_data_model` VALUES (1, 1, '含倾角数据模型', 'ASCII', 10, '0', ',', NULL, 8, 1, NULL);
+INSERT INTO `product_data_model` VALUES (2, 1, '不含倾角数据模型', 'ASCII', 10, '0', ',', NULL, 4, 2, NULL);
+INSERT INTO `product_data_model` VALUES (3, 1, '含倾角数据模型', 'HEX', 16, '1', NULL, 2, 8, 3, 'HEX解析');
 COMMIT;
 
 -- ----------------------------
@@ -527,18 +529,46 @@ CREATE TABLE `product_data_model_item` (
   `data_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据位名称',
   `data_order` int(11) DEFAULT NULL COMMENT '数据位置',
   `data_length` int(11) DEFAULT NULL COMMENT '数据位长度',
+  `data_format` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据格式',
   `data_type` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据类型',
   `need_transform` int(255) DEFAULT NULL COMMENT '是否需要计算',
   `calculation_formula` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '计算公式',
   `placeholder` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '占位符',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE` (`model_id`,`data_order`) USING HASH COMMENT '唯一字段'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接入设备数据模型数据项';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='接入设备数据模型数据项';
 
 -- ----------------------------
 -- Records of product_data_model_item
 -- ----------------------------
 BEGIN;
+INSERT INTO `product_data_model_item` VALUES (1, 3, NULL, 0, 9, '唯一编码', 0, 1, '^\\d{{size}}$', 'Int', 0, '', '');
+INSERT INTO `product_data_model_item` VALUES (2, 3, NULL, 1, NULL, '功能编码', 1, 1, NULL, 'Int', 0, '', NULL);
+INSERT INTO `product_data_model_item` VALUES (3, 3, NULL, 2, NULL, '字节数', 2, 1, NULL, 'Int', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (4, 3, 1, 3, NULL, 'X轴倾角', 3, 2, NULL, 'Double', 1, '(#{data}-20000)/100', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (5, 3, 2, 3, NULL, 'Y轴倾角', 4, 2, NULL, 'Double', 1, '(#{data}-20000)/100', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (6, 3, 3, 3, NULL, 'Z轴倾角', 5, 2, NULL, 'Double', 1, '(#{data}-20000)/100', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (7, 3, 4, 3, NULL, 'X加速度', 6, 2, NULL, 'Double', 1, '(#{data}-20000)/10000', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (8, 3, 5, 3, NULL, 'Y加速度', 7, 2, NULL, 'Double', 1, '(#{data}-20000)/10000', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (9, 3, 6, 3, NULL, 'Z加速度', 8, 2, NULL, 'Double', 1, '(#{data}-20000)/10000', '#{data}');
+INSERT INTO `product_data_model_item` VALUES (10, 3, 7, 3, NULL, '电量', 10, 2, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (11, 3, 8, 3, NULL, '温度', 9, 2, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (12, 3, NULL, 4, NULL, '校验码', 11, 2, NULL, 'Int', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (13, 2, NULL, 0, 9, '唯一编码', 0, NULL, '^\\d{{size}}$', 'String', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (14, 2, 1, 3, NULL, 'X轴倾角', 1, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (15, 2, 2, 3, NULL, 'Y轴倾角', 2, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (16, 2, 8, 3, NULL, '温度', 3, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (17, 2, 7, 3, NULL, '电量', 4, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (18, 1, NULL, 0, 9, '唯一编码', 0, NULL, '^\\d{{size}}$', 'String', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (19, 1, 1, 3, NULL, 'X轴倾角', 1, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (20, 1, 2, 3, NULL, 'Y轴倾角', 2, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (21, 1, 3, 3, NULL, 'Z轴倾角', 3, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (22, 1, 4, 3, NULL, 'X加速度', 4, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (23, 1, 5, 3, NULL, 'Y加速度', 5, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (24, 1, 6, 3, NULL, 'Z加速度', 6, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (25, 1, 8, 3, NULL, '温度', 7, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (26, 1, 7, 3, NULL, '电量', 8, NULL, NULL, 'Double', 0, NULL, NULL);
+INSERT INTO `product_data_model_item` VALUES (27, 1, NULL, 5, NULL, '身份码', 9, NULL, NULL, 'String', 0, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -550,17 +580,40 @@ CREATE TABLE `product_data_web_config` (
   `model_id` int(11) NOT NULL COMMENT '产品型号编号',
   `name` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
   `receive_type` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '接收方式',
-  `port` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '端口',
+  `service_value` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '服务配置值(web service 为端口 mqtt 为 topic)',
+  `hostname` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT '部署机 hostname',
+  `address` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部署机地址',
   `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQUE` (`model_id`,`receive_type`) USING HASH COMMENT '唯一方式',
-  UNIQUE KEY `UNIQUE_PORT` (`port`) USING HASH COMMENT '唯一端口'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='产品型号与传输方式关联';
+  UNIQUE KEY `UNIQUE_PORT` (`service_value`) USING HASH COMMENT '唯一端口'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='产品型号与传输方式关联';
 
 -- ----------------------------
 -- Records of product_data_web_config
 -- ----------------------------
 BEGIN;
+INSERT INTO `product_data_web_config` VALUES (2, 1, '无线倾角传感器 UDP', 'UDP', '9875', 'MacOs-Zyj.local', '192.168.30.7', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for product_model_web_model_link
+-- ----------------------------
+DROP TABLE IF EXISTS `product_model_web_model_link`;
+CREATE TABLE `product_model_web_model_link` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `model_web_id` int(11) DEFAULT NULL COMMENT '网络配置编号',
+  `model_id` int(11) DEFAULT NULL COMMENT '数据模型编号',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE` (`model_web_id`,`model_id`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='数据模型网络端口有数据模型关联';
+
+-- ----------------------------
+-- Records of product_model_web_model_link
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_model_web_model_link` VALUES (1, 2, 1);
+INSERT INTO `product_model_web_model_link` VALUES (2, 2, 2);
+INSERT INTO `product_model_web_model_link` VALUES (3, 2, 3);
 COMMIT;
 
 -- ----------------------------
@@ -715,6 +768,7 @@ CREATE TABLE `sensor_model` (
   `create_time` datetime DEFAULT NULL,
   `version` varchar(255) DEFAULT NULL,
   `is_effective` int(11) DEFAULT NULL,
+  `is_in_use` int(11) DEFAULT NULL COMMENT '是否在使用',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='传感器模板\n';
 
@@ -722,8 +776,8 @@ CREATE TABLE `sensor_model` (
 -- Records of sensor_model
 -- ----------------------------
 BEGIN;
-INSERT INTO `sensor_model` VALUES (1, '倾角传感器', 'ANGLE_SENSOR', '100001', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', '倾角传感器', '2021-08-22 16:21:44', '0.1', 1);
-INSERT INTO `sensor_model` VALUES (2, '倾角传感器二代', 'ANGLE_SENSOR', '100002', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', '倾角传感器二代', '2021-08-22 16:21:48', '1', 1);
+INSERT INTO `sensor_model` VALUES (1, '倾角传感器', 'ANGLE_SENSOR', '100001', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', '倾角传感器', '2021-08-22 16:21:44', '0.1', 1, NULL);
+INSERT INTO `sensor_model` VALUES (2, '倾角传感器二代', 'ANGLE_SENSOR', '100002', 'http://www.bwsensing.com.cn/upload/Images/201807/201807111623548.png', '倾角传感器二代', '2021-08-22 16:21:48', '1', 1, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -766,7 +820,7 @@ CREATE TABLE `service_deploy_config` (
   `is_healthy` int(2) NOT NULL DEFAULT '1' COMMENT '是否健康',
   `remark` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统部署信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='系统部署信息表';
 
 -- ----------------------------
 -- Records of service_deploy_config
@@ -776,6 +830,9 @@ INSERT INTO `service_deploy_config` VALUES (1, 'MacOs-Zyj.local', 1, 'nanjin', '
 INSERT INTO `service_deploy_config` VALUES (2, 'MacOs-Zyj.local', 1, '江苏南京', '1', ' 223.65.100.62', '192.168.31.76', 1, '开发环境');
 INSERT INTO `service_deploy_config` VALUES (3, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.31.228', 1, '测试环境');
 INSERT INTO `service_deploy_config` VALUES (4, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.30.9', 1, '测试环境');
+INSERT INTO `service_deploy_config` VALUES (5, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.30.10', 1, '测试环境');
+INSERT INTO `service_deploy_config` VALUES (6, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.30.8', 1, '测试环境');
+INSERT INTO `service_deploy_config` VALUES (7, 'MacOs-Zyj.local', 1, 'nanjin', '8核32G MacOS', NULL, '192.168.30.7', 1, '测试环境');
 COMMIT;
 
 -- ----------------------------
@@ -1236,12 +1293,22 @@ CREATE TABLE `sys_monitor_receive_log` (
   `receive_message` text COMMENT '接收地址',
   `total_size` int(11) DEFAULT NULL COMMENT '保存后总数据量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='传感器接收日志';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='传感器接收日志';
 
 -- ----------------------------
 -- Records of sys_monitor_receive_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_monitor_receive_log` VALUES (3, '000000001', NULL, NULL, NULL, 6, 48, NULL, 336);
+INSERT INTO `sys_monitor_receive_log` VALUES (4, '000000001', NULL, NULL, NULL, 5, 40, NULL, 376);
+INSERT INTO `sys_monitor_receive_log` VALUES (5, '000000001', NULL, NULL, NULL, 5, 40, NULL, 416);
+INSERT INTO `sys_monitor_receive_log` VALUES (6, '000000001', NULL, NULL, NULL, 3, 24, NULL, 440);
+INSERT INTO `sys_monitor_receive_log` VALUES (7, '100000005', NULL, NULL, NULL, 5, 20, NULL, 20);
+INSERT INTO `sys_monitor_receive_log` VALUES (8, '100000005', NULL, NULL, NULL, 4, 16, NULL, 36);
+INSERT INTO `sys_monitor_receive_log` VALUES (9, '100000005', NULL, NULL, NULL, 4, 16, NULL, 52);
+INSERT INTO `sys_monitor_receive_log` VALUES (10, '100000005', NULL, NULL, NULL, 13, 52, NULL, 104);
+INSERT INTO `sys_monitor_receive_log` VALUES (11, '100000005', NULL, NULL, NULL, 9, 36, NULL, 140);
+INSERT INTO `sys_monitor_receive_log` VALUES (12, '100000005', '9875', '192.168.30.7', '2022-03-26 10:12:43', 9, 36, '100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n100000005,+003.4982,+000.5570,+086.4531,+000.0601,+000.0097,+000.9823,+027.0000,9,144003393156001\n', 140);
 COMMIT;
 
 -- ----------------------------
@@ -1387,6 +1454,26 @@ INSERT INTO `sys_role_menu` VALUES (3, 10);
 INSERT INTO `sys_role_menu` VALUES (3, 11);
 INSERT INTO `sys_role_menu` VALUES (3, 12);
 INSERT INTO `sys_role_menu` VALUES (3, 13);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_sms_config
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_sms_config`;
+CREATE TABLE `sys_sms_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `config_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '配置名称',
+  `sign_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '签名名称',
+  `template_code` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '模板编码',
+  `is_open` int(2) DEFAULT NULL COMMENT '开启开关',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='阿里云短信配置';
+
+-- ----------------------------
+-- Records of sys_sms_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_sms_config` VALUES (1, '告警推送', '北微传感器告警推送', 'SMS_237216282', 1);
 COMMIT;
 
 -- ----------------------------

@@ -27,4 +27,10 @@ public class MonitorItem {
     /**HEX除 偏移量*/
     private Integer  divideNumber;
 
+    public MonitorItem() {
+    }
+
+    public MonitorItem(String dataId) {
+        this.dataId = dataId;
+    }
 }

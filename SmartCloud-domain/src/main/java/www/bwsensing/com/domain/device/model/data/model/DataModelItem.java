@@ -1,15 +1,14 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
 
-import com.alibaba.cola.exception.Assert;
-import com.alibaba.cola.exception.BizException;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import www.bwsensing.com.domain.common.math.Calculator;
-import www.bwsensing.com.domain.monitor.model.MonitorPrototype;
-
 import java.math.BigInteger;
 import java.util.regex.Pattern;
+import com.alibaba.cola.exception.Assert;
+import org.apache.commons.lang3.StringUtils;
+import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.domain.common.math.Calculator;
+import www.bwsensing.com.domain.monitor.model.MonitorItem;
 
 
 /**
@@ -44,7 +43,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
     /**
      * 监测因素
      */
-    private MonitorPrototype prototype;
+    private MonitorItem protoItem;
 
     /**
      * 数据位名称
@@ -121,10 +120,10 @@ public class DataModelItem implements Comparable<DataModelItem>{
         this.needTransform = false;
     }
 
-    public DataModelItem(MonitorPrototype prototype, Integer dataOrder,
+    public DataModelItem(MonitorItem protoItem, Integer dataOrder,
                          Integer dataLength,DataType dataType) {
         this.itemKind = DataItemKind.DATA_INDEX;
-        this.prototype = prototype;
+        this.protoItem = protoItem;
         this.dataOrder = dataOrder;
         this.dataLength = dataLength;
         this.dataType = dataType;
@@ -132,11 +131,11 @@ public class DataModelItem implements Comparable<DataModelItem>{
     }
 
 
-    public DataModelItem(MonitorPrototype prototype, Integer dataOrder,
+    public DataModelItem(MonitorItem protoItem, Integer dataOrder,
                          Integer dataLength, DataType dataType,
                          String calculationFormula, String placeholder) {
         this.itemKind = DataItemKind.DATA_INDEX;
-        this.prototype = prototype;
+        this.protoItem = protoItem;
         this.dataOrder = dataOrder;
         this.dataLength = dataLength;
         this.dataType = dataType;

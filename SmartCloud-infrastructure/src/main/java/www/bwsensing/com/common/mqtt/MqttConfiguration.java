@@ -20,6 +20,7 @@ public class MqttConfiguration {
     public static final  String PREFIX="spring.mqtt";
     private String host;
     private String clientId;
+    private String clientPrefix;
     private String username;
     private String password;
     private String topic;
@@ -88,6 +89,14 @@ public class MqttConfiguration {
 
     public int getKeepalive() {
         return keepalive;
+    }
+
+    public String getClientPrefix() {
+        return clientPrefix;
+    }
+
+    public void setClientPrefix(String clientPrefix) {
+        this.clientPrefix = clientPrefix;
     }
 
     public void setKeepalive(int keepalive) {

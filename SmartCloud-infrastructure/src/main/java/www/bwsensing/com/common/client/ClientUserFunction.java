@@ -1,7 +1,6 @@
 package www.bwsensing.com.common.client;
 
 import org.apache.rocketmq.streams.common.functions.MapFunction;
-
 import java.io.Serializable;
 
 /**

@@ -13,6 +13,7 @@ public class BizScenarioCode {
     public static final String USE_CAUSE_UPDATE ="UPDATE";
     public static final String USER_CAUSE_NOTIFICATION ="NOTIFICATION";
     public static final String USER_CAUSE_ANALYSE = "ANALYSE";
+    public static final String CLIENT_STREAM_MESSAGE = "CLIENT_MESSAGE";
     public static final String SYSTEM_CLIENT = "SYSTEM_CLIENT";
     public static final String MANAGER_SCENARIO = "MANAGER";
     public static final String USER_SCENARIO = "USER";

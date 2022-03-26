@@ -3,7 +3,7 @@ package www.bwsensing.com.domainevent;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
-import www.bwsensing.com.domainevent.object.DataMessage;
+import www.bwsensing.com.stream.object.DataMessage;
 import www.bwsensing.com.event.DomainEventI;
 
 

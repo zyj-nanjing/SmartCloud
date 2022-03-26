@@ -14,7 +14,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import org.springframework.stereotype.Service;
-import www.bwsensing.com.domainevent.object.DataMessage;
+import www.bwsensing.com.stream.object.DataMessage;
 import www.bwsensing.com.common.cache.redis.RedisService;
 import www.bwsensing.com.common.thread.NamedThreadFactory;
 import www.bwsensing.com.common.utills.StringUtils;

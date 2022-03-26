@@ -11,6 +11,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
 
+/**
+ * @author macos-zyj
+ */
 @Slf4j
 @PowerMockIgnore
 @RunWith(PowerMockRunner.class)

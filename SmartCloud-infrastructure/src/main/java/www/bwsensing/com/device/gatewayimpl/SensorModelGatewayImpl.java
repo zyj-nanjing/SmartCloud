@@ -2,18 +2,23 @@ package www.bwsensing.com.device.gatewayimpl;
 
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.device.convertor.SensorModelConvertor;
+import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.domain.device.model.SensorModel;
-import www.bwsensing.com.domain.device.gateway.SensorModelGateway;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.model.token.TokenData;
+import www.bwsensing.com.device.convertor.DataModelConvertor;
+import org.springframework.transaction.annotation.Transactional;
+import www.bwsensing.com.device.convertor.SensorModelConvertor;
+import www.bwsensing.com.domain.device.gateway.SensorModelGateway;
+import www.bwsensing.com.device.gatewayimpl.database.DataModelMapper;
+import www.bwsensing.com.domain.device.model.data.model.ProductDataModel;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataModelDO;
 import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.device.gatewayimpl.database.SensorModelMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorModelDO;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author macos-zyj
@@ -22,8 +27,13 @@ import javax.annotation.Resource;
 public class SensorModelGatewayImpl implements SensorModelGateway {
     @Resource
     private SensorModelMapper sensorModelMapper;
+
+    @Resource
+    private DataModelMapper dataModelMapper;
+
     @Resource
     private SensorMapper sensorMapper;
+
     @Resource
     private TokenGateway tokenGateway;
 
@@ -73,5 +83,11 @@ public class SensorModelGatewayImpl implements SensorModelGateway {
             throw new BizException("NO_ALLOW_DELETE","该型号下有实例化传感器无法进行删除!");
         }
         sensorModelMapper.deleteModel(modelId);
+    }
+
+    @Override
+    public List<ProductDataModel> getDataModelByWebId(Integer webModelId) {
+        List<DataModelDO> dataModels = dataModelMapper.getDataModelByWebId(webModelId);
+        return DataModelConvertor.toDomainArray(dataModels);
     }
 }

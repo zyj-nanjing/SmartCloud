@@ -1,7 +1,5 @@
 package www.bwsensing.com.common.listener;
 
-import org.springframework.context.annotation.Profile;
-import www.bwsensing.com.common.client.ClientScheduler;
 import www.bwsensing.com.common.scheduler.database.dataobject.ServiceDeploy;
 import www.bwsensing.com.common.scheduler.database.ServiceDeployMapper;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -42,11 +40,6 @@ public class ApplicationStartedEventListener implements ApplicationListener<Cont
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        ApplicationContext applicationContext = event.getApplicationContext();
-        NettyTcpServer nettyTcpServer = applicationContext.getBean(NettyTcpServer.class);
-        NettyUdpServer nettyUdpServer = applicationContext.getBean(NettyUdpServer.class);
-        DEFAULT_EXECUTOR.submit(nettyTcpServer::run);
-        DEFAULT_EXECUTOR.submit(nettyUdpServer::run);
         registerService();
     }
 

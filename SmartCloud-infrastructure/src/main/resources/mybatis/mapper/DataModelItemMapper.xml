@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.DataModelItemMapper">
+
+    <resultMap type="DataModelItemDO" id="DataModelItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="prototypeId"    column="prototype_id"    />
+        <result property="itemKind"    column="item_kind"    />
+        <result property="uniqueCodeSize"    column="unique_code_size"    />
+        <result property="dataName"    column="data_name"    />
+        <result property="dataOrder"    column="data_order"    />
+        <result property="dataLength"    column="data_length"    />
+        <result property="dataFormat" column="data_format"/>
+        <result property="dataType"    column="data_type"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <sql id="selectProductDataModelItemVo">
+        select id, model_id, prototype_id, item_kind, unique_code_size, data_name, data_order, data_length,data_format, data_type, need_transform,
+               calculation_formula, placeholder from product_data_model_item
+    </sql>
+
+    <select id="queryDataModelItemBySort" parameterType="DataModelItemDO" resultMap="DataModelItemResult">
+        <include refid="selectProductDataModelItemVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="prototypeId != null "> and prototype_id = #{prototypeId}</if>
+            <if test="itemKind != null "> and item_kind = #{itemKind}</if>
+            <if test="uniqueCodeSize != null "> and unique_code_size = #{uniqueCodeSize}</if>
+            <if test="dataName != null  and dataName != ''"> and data_name like concat('%', #{dataName}, '%')</if>
+            <if test="dataOrder != null "> and data_order = #{dataOrder}</if>
+            <if test="dataLength != null "> and data_length = #{dataLength}</if>
+            <if test="dataFormat != null  and dataFormat != ''"> and data_format = #{dataFormat}</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+            <if test="needTransform != null "> and need_transform = #{needTransform}</if>
+            <if test="calculationFormula != null  and calculationFormula != ''"> and calculation_formula = #{calculationFormula}</if>
+            <if test="placeholder != null  and placeholder != ''"> and placeholder = #{placeholder}</if>
+        </where>
+    </select>
+
+    <select id="queryDataModelItemById" parameterType="Integer" resultMap="DataModelItemResult">
+        <include refid="selectProductDataModelItemVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="saveDataModelItem" parameterType="DataModelItemDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_data_model_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="prototypeId != null">prototype_id,</if>
+            <if test="itemKind != null">item_kind,</if>
+            <if test="uniqueCodeSize != null">unique_code_size,</if>
+            <if test="dataName != null">data_name,</if>
+            <if test="dataOrder != null">data_order,</if>
+            <if test="dataLength != null">data_length,</if>
+            <if test="dataFormat != null and dataFormat != ''">data_format,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="needTransform != null">need_transform,</if>
+            <if test="calculationFormula != null">calculation_formula,</if>
+            <if test="placeholder != null">placeholder,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="prototypeId != null">#{prototypeId},</if>
+            <if test="itemKind != null">#{itemKind},</if>
+            <if test="uniqueCodeSize != null">#{uniqueCodeSize},</if>
+            <if test="dataName != null">#{dataName},</if>
+            <if test="dataOrder != null">#{dataOrder},</if>
+            <if test="dataLength != null">#{dataLength},</if>
+            <if test="dataFormat != null and dataFormat != ''">#{dataFormat},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="needTransform != null">#{needTransform},</if>
+            <if test="calculationFormula != null">#{calculationFormula},</if>
+            <if test="placeholder != null">#{placeholder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDataModelItem" parameterType="DataModelItemDO">
+        update product_data_model_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="prototypeId != null">prototype_id = #{prototypeId},</if>
+            <if test="itemKind != null">item_kind = #{itemKind},</if>
+            <if test="uniqueCodeSize != null">unique_code_size = #{uniqueCodeSize},</if>
+            <if test="dataName != null">data_name = #{dataName},</if>
+            <if test="dataOrder != null">data_order = #{dataOrder},</if>
+            <if test="dataLength != null">data_length = #{dataLength},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="dataFormat != null and dataFormat != ''">data_format = #{dataFormat},</if>
+            <if test="needTransform != null">need_transform = #{needTransform},</if>
+            <if test="calculationFormula != null">calculation_formula = #{calculationFormula},</if>
+            <if test="placeholder != null">placeholder = #{placeholder},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataModelItemById" parameterType="Integer">
+        delete from product_data_model_item where id = #{id}
+    </delete>
+
+    <delete id="deleteDataModelItemByIds" parameterType="String">
+        delete from product_data_model_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

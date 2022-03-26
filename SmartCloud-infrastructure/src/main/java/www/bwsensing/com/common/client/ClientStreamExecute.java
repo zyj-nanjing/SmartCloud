@@ -12,7 +12,6 @@ import java.io.Serializable;
  */
 @Slf4j
 @Component
-@Profile("test")
 public class ClientStreamExecute implements Serializable {
 
     @Resource

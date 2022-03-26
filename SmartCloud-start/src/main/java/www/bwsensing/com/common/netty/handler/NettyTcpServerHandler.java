@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
-import www.bwsensing.com.domainevent.object.DataMessage;
+import www.bwsensing.com.stream.object.DataMessage;
 import javax.annotation.Resource;
 import java.util.Date;
 /**

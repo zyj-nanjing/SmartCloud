@@ -12,10 +12,8 @@ import www.bwsensing.com.common.command.CommonCommand;
  */
 @Data
 public class FacilityDataCmd extends CommonCommand implements Serializable {
-    /**
-     * 设备Sn编码
-     */
-    private String sn;
+
+    private Integer modelWebId;
     /**
      * 分析种类
      */
@@ -28,8 +26,4 @@ public class FacilityDataCmd extends CommonCommand implements Serializable {
      * 时间戳
      */
     private List<Timestamp> dataTimestamp;
-    /**
-     * 用例场景
-     */
-    private BizScenario bizScenario;
 }

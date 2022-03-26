@@ -1,17 +1,14 @@
 package www.bwsensing.com.event;
 
-import java.io.Serializable;
-
 /**
  * @author macos-zyj
  */
-public interface ClientStreamEventI extends DomainEventI, Serializable {
+public interface ClientStreamEventI extends DomainEventI {
     /**
      * 获取任务名称
      * @return
      */
     String getJobName();
-
 
     /**
      * 获取对应的Topic
@@ -30,4 +27,10 @@ public interface ClientStreamEventI extends DomainEventI, Serializable {
      * @return
      */
     String getHandlerCode();
+
+    /**
+     * 获取对应的数据消息
+     * @return
+     */
+    String getMessage();
 }
