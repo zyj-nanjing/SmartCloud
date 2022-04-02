@@ -1,6 +1,9 @@
 package www.bwsensing.com.device.gatewayimpl.database;
 
+import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertNotificationDO;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +24,14 @@ public interface AlertNotificationMapper {
      * @return
      */
     AlertNotificationDO getNotificationById(Integer id);
+
+    /**
+     * 按照时间查询记录
+     * @param roleName
+     * @param time
+     * @return
+     */
+    Integer countNotificationByRoleNameAndTime(@Param("roleName")String roleName,@Param("alertTime") Date time);
 
     /**
      * 保存

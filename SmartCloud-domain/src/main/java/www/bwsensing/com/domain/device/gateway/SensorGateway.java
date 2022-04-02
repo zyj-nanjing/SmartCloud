@@ -1,6 +1,8 @@
 package www.bwsensing.com.domain.device.gateway;
 
 import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.monitor.model.MonitorItem;
+
 import java.util.List;
 
 /**
@@ -50,4 +52,11 @@ public interface SensorGateway {
      * @return
      */
     SensorInfo getSensorInfoById(Integer sensorId);
+
+    /**
+     * 根据设备唯一编码查询关联的对应数据项
+     * @param uniqueId
+     * @return
+     */
+    List<MonitorItem> getMonitorItemByUniqueId(Integer uniqueId);
 }

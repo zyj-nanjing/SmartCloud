@@ -22,6 +22,8 @@ public class SystemUserDO {
     private Integer operateGroupId;
     private Boolean enabled;
     private Boolean isAdmin;
+    /**公钥*/
+    private String publicKey;
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Date lastLoginTime;

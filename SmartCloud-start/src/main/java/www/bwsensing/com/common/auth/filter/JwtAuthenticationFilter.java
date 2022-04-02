@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String username = TokenUtils.getUserName(token);
         // 获得权限 添加到权限上去
         String role = TokenUtils.getUserRole(token);
-        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> roles = new ArrayList<>();
         roles.add((GrantedAuthority) () -> role);
         if(username != null){
             return new UsernamePasswordAuthenticationToken(username, null,roles);

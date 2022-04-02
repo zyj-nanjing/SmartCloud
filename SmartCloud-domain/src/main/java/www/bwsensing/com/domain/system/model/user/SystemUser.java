@@ -56,6 +56,10 @@ public class SystemUser {
 
     /**角色*/
     private String role;
+
+    /**公钥*/
+    private String publicKey;
+
     /***
      * 所属角色列表
      */

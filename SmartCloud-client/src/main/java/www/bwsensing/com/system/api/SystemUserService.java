@@ -2,6 +2,7 @@ package www.bwsensing.com.system.api;
 
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
+import www.bwsensing.com.common.clientobject.RSAKeyCO;
 import www.bwsensing.com.system.dto.command.UserRegisterCmd;
 import www.bwsensing.com.system.dto.command.UserUpdateCmd;
 import www.bwsensing.com.system.dto.clientobject.UserInfoCO;
@@ -37,4 +38,10 @@ public interface SystemUserService {
      * @return
      */
     SingleResponse<UserInfoCO> getUserInfo();
+
+    /**
+     * 生成并修改当前用户的公钥私钥
+     * @return
+     */
+    SingleResponse<RSAKeyCO> getAccountRsaKey();
 }

@@ -1,7 +1,7 @@
 package www.bwsensing.com.project.visualization.mapper;
 
-import www.bwsensing.com.project.visualization.domain.MonitorQuery;
 import www.bwsensing.com.project.visualization.domain.StatisticsData;
+import www.bwsensing.com.project.visualization.domain.MonitorQuery;
 import java.util.List;
 
 /**
@@ -19,9 +19,18 @@ public interface StatisticsDataMapper {
 
 
     /**
-     * 平均查询
+     * 极值查询
      * @param query
      * @return
      */
     List<StatisticsData> listStatisticsSpreadData(MonitorQuery query);
+
+
+    /**
+     * 获取当前最新数据
+     * @param uniqueCode
+     * @param dataId
+     * @return
+     */
+    StatisticsData getLastStatisticsData(String  uniqueCode,String dataId);
 }

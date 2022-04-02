@@ -20,6 +20,8 @@ public class OperateGroup {
     private Integer personNumber;
     /**行业领域**/
     private IndustryField industryField;
+    /**公钥*/
+    private String publicKey;
     /**是否为内部部门*/
     private Boolean isInner;
     /**公司名称*/

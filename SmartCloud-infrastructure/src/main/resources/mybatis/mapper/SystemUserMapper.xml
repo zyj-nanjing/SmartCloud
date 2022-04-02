@@ -13,6 +13,7 @@
         <result property="position" column="position"/>
         <result property="roleId" column="role_id"/>
         <result property="role" column="role"/>
+        <result property="publicKey" column="public_key"/>
         <result property="operateGroupId" column="operate_group_id"/>
         <result property="enabled" column="enabled"/>
         <result property="isAdmin" column="is_admin"/>
@@ -26,7 +27,7 @@
     </resultMap>
 
     <sql id="SELECT_SYSTEM_USER">
-        select id,work_number,account_name,password,role,role_id,
+        select id,work_number,account_name,password,role,public_key,role_id,
                user_name,avatar,mobile,email,position,operate_group_id,enabled,is_admin,account_non_locked,account_non_expired,
                last_login_time,last_lease,lease_start_time,lease_time,enable_notification from system_user
     </sql>
@@ -129,6 +130,9 @@
             <if test="role != null and role != '' ">
                 role =#{role},
             </if>
+            <if test="publicKey != null and publicKey != '' ">
+                public_key =#{publicKey},
+            </if>
             <if test="operateGroupId != null ">
                 operate_group_id =#{operateGroupId},
             </if>
@@ -139,6 +143,7 @@
                 enable_notification =#{enableNotification},
             </if>
         </trim>
+        where id =#{id}
     </update>
 
     <update id="banUser" parameterType="int">

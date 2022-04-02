@@ -55,6 +55,10 @@
         and alert_group_id IN (SELECT alert_group_id from sys_alert_notification_member where user_id = #{userId})
     </select>
 
+    <select id="countNotificationByRoleNameAndTime" resultType="int">
+        select count(id) from sys_alert_notification where role_name =#{roleName} and alert_time =#{alertTime}
+    </select>
+
     <insert id="saveNotification" parameterType="AlertNotificationDO" useGeneratedKeys="true" keyProperty="id">
         insert into sys_alert_notification
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -36,6 +36,13 @@ public interface AlertGroupMapper {
     List<String> getGroupNotificationMembers(Integer groupId);
 
     /**
+     * 获取当前分组需要推送的邮箱集合
+     * @param groupId
+     * @return
+     */
+    List<String> getNotificationPhones(Integer groupId);
+
+    /**
      * 数据插入
      * @param saveAlertGroup
      */

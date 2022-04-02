@@ -32,7 +32,6 @@ public class ClientScheduler {
      */
     @Scheduled(cron = "0 */1 * * * ?")
     public void mqttClientScheduler(){
-        log.info("------------同步客户端流式处理信息--------------");
         List<MqttStreamConfig> configs = mqttStreamMapper.getMqttStreamConfigs();
         if (null != configs && configs.size() >0){
             configs.forEach(config -> clientConfig.addMqttClient(config.getTopic(),config.getNamespace(), config.getJobName()));

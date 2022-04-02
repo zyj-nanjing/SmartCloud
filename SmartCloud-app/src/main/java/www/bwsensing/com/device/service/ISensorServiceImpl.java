@@ -1,20 +1,29 @@
 package www.bwsensing.com.device.service;
 
+import cn.hutool.core.lang.Assert;
 import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.BizException;
+import com.alibaba.cola.exception.SysException;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import www.bwsensing.com.device.dto.clientobject.FacilityReceiveCO;
-import www.bwsensing.com.device.dto.clientobject.SensorBindCO;
-import www.bwsensing.com.device.dto.clientobject.SensorCO;
-import www.bwsensing.com.device.dto.clientobject.SensorMapCO;
-import www.bwsensing.com.project.api.ProjectMemberService;
+import www.bwsensing.com.common.api.ITimeSeriesDataService;
+import www.bwsensing.com.common.clientobject.DataItemsCO;
+import www.bwsensing.com.common.utills.Base64Utils;
+import www.bwsensing.com.common.utills.RSAUtils;
+import www.bwsensing.com.device.dto.clientobject.*;
 import www.bwsensing.com.device.api.SensorService;
 import www.bwsensing.com.device.command.SensorSaveCmdExo;
 import www.bwsensing.com.device.command.SensorUpdateCmdExo;
+import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
+import www.bwsensing.com.domain.system.gateway.SystemUserGateway;
+import www.bwsensing.com.domain.system.model.user.SystemUser;
+import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
+import www.bwsensing.com.project.api.ProjectMemberService;
 import www.bwsensing.com.device.command.query.SensorInMapQueryExo;
 import www.bwsensing.com.device.command.query.SensorSortQueryExo;
 import www.bwsensing.com.common.utills.PageHelperUtils;
@@ -34,7 +43,9 @@ import www.bwsensing.com.device.gatewayimpl.database.dataobject.MonitorReceiveDO
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
 import com.alibaba.cola.dto.Response;
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -48,6 +59,8 @@ public class ISensorServiceImpl implements SensorService {
     @Resource
     private TokenGateway tokenGateway;
     @Resource
+    private SystemUserGateway userGateway;
+    @Resource
     private ProjectMemberService projectMemberService;
     @Resource
     private SensorMapper sensorMapper;
@@ -59,6 +72,10 @@ public class ISensorServiceImpl implements SensorService {
     private SensorUpdateCmdExo sensorUpdateCmdExo;
     @Resource
     private MonitorReceiveMapper monitorReceiveMapper;
+    @Resource
+    private MonitorItemsMapper itemsMapper;
+    @Resource
+    private ITimeSeriesDataService timeSeriesService;
 
 
     @Override
@@ -74,6 +91,54 @@ public class ISensorServiceImpl implements SensorService {
         PageInfo<MonitorReceiveDO> pageInfo= pageHelper.getPageCollections(pageQuery);
         List<FacilityReceiveCO> result = FacilityReceiveCoConvertor.toClientObjectList(pageInfo.getList());
         return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+    }
+
+    @Override
+    public SingleResponse<String> getCurrentSensorData() {
+        TokenData tokenData = tokenGateway.getTokenInfo();
+        SystemUser systemUser = userGateway.getUserInfoContainRole(tokenData.getUserId());
+        List<SensorDO> sensorList = sensorMapper.selectSensorByGroupId(systemUser.getGroupId());
+        List<SensorApiCO> results = getSensorDataCollection(sensorList);
+        String jsonString = JSONArray.parseArray(JSON.toJSONString(results)).toString();
+        Assert.notNull(systemUser.getPublicKey(),"当前用户的公钥为生成!");
+        try {
+            String decryptedData = RSAUtils.encryptHexByPublicKey(jsonString.getBytes(),systemUser.getPublicKey());
+            return SingleResponse.of(decryptedData);
+        } catch (Exception  ex){
+            ex.printStackTrace();
+            throw new SysException("加密失败!");
+        }
+    }
+
+
+    private List<SensorApiCO> getSensorDataCollection(List<SensorDO> dataCollection){
+        List<SensorApiCO> sensorDataCollection = new ArrayList<>();
+        dataCollection.forEach(currentSensor -> sensorDataCollection.add(toApiDataFormat(currentSensor)));
+        return sensorDataCollection;
+    }
+
+    private SensorApiCO toApiDataFormat(SensorDO currentSensor){
+        SensorApiCO apiData = new SensorApiCO();
+        apiData.setUniqueCode(currentSensor.getSn());
+        apiData.setName(currentSensor.getName());
+        apiData.setModelName(currentSensor.getModelName());
+        apiData.setDataItems(new ArrayList<>());
+        apiData.setDataMap(new LinkedHashMap<>());
+        List<MonitorItemsDO> itemData = itemsMapper.selectItemsByModelId(currentSensor.getModelId());
+        itemData.forEach(item ->{
+            apiData.getDataItems().add(toDataItemsCo(item));
+            apiData.getDataMap().put(item.getDataId(), timeSeriesService.getLastStatisticsData(currentSensor.getSn(),item.getDataId()));
+        });
+        return apiData;
+    }
+
+    private DataItemsCO toDataItemsCo(MonitorItemsDO dataItemsDo){
+        DataItemsCO clientObject = new DataItemsCO();
+        clientObject.setId(dataItemsDo.getId());
+        clientObject.setItemName(dataItemsDo.getItemName());
+        clientObject.setDataId(dataItemsDo.getDataId());
+        clientObject.setUnit(dataItemsDo.getUnit());
+        return clientObject;
     }
 
     private MonitorReceiveDO initializeQuery(FacilityReceivePageQuery pageQuery){

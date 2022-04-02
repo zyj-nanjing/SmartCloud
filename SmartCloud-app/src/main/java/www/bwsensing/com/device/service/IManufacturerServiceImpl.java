@@ -6,10 +6,10 @@ import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.Assert;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.device.api.ManufacturerService;
 import www.bwsensing.com.device.convertor.ManufacturerCoConvertor;
 import www.bwsensing.com.domain.device.model.manufacturer.ProductManufacturer;
@@ -69,12 +69,17 @@ public class IManufacturerServiceImpl implements ManufacturerService {
 
     @Override
     public PageResponse<ManufacturerCO> selectManufactureBySort(ManufacturerSortQuery pageQuery) {
-        PageHelper.startPage(pageQuery.getPageIndex(), pageQuery.getPageSize());
-        ProductManufacturerDO querySortQuery = new ProductManufacturerDO();
-        BeanUtils.copyProperties(pageQuery,querySortQuery);
-        List<ProductManufacturerDO> manufacturers = manufacturerMapper.selectManufacturesBySort(querySortQuery);
-        PageInfo<ProductManufacturerDO> pageInfo = new PageInfo<>(manufacturers);
-        List<ManufacturerCO> result = ManufacturerCoConvertor.toClientObjectCollection(manufacturers);
-        return PageResponse.of(result,(int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex());
+        PageHelperUtils<ManufacturerSortQuery, ProductManufacturerDO> pageHelper =
+                PageHelperUtils.<ManufacturerSortQuery, ProductManufacturerDO>builder()
+                        .pageFunction((groupQuery)->manufacturerMapper.selectManufacturesBySort (initializeQuery(pageQuery))).build();
+        PageInfo<ProductManufacturerDO> pageInfo= pageHelper.getPageCollections(pageQuery);
+        List<ManufacturerCO> result = ManufacturerCoConvertor.toClientObjectCollection(pageInfo.getList());
+        return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex() );
+    }
+
+    private ProductManufacturerDO initializeQuery(ManufacturerSortQuery pageQuery){
+        ProductManufacturerDO query = new ProductManufacturerDO();
+        BeanUtils.copyProperties(pageQuery,query);
+        return query;
     }
 }

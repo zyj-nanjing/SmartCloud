@@ -40,6 +40,10 @@
         SELECT email from system_user where id IN (SELECT user_id from sys_alert_notification_member where alert_group_id =#{groupId}) and enable_notification = 1
     </select>
 
+    <select id="getNotificationPhones" resultType="String">
+        SELECT mobile from system_user where id IN (SELECT user_id from sys_alert_notification_member where alert_group_id =#{groupId}) and enable_notification = 1
+    </select>
+
     <select id="queryAlertGroupByCurrent" resultMap="AlertGroupResult" parameterType="int">
         SELECT
             alert_group.id,

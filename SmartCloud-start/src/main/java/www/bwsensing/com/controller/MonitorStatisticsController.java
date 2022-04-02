@@ -1,13 +1,12 @@
 package www.bwsensing.com.controller;
 
 import java.util.Map;
-
-import com.alibaba.cola.dto.SingleResponse;
 import io.swagger.annotations.Api;
+import com.alibaba.cola.dto.SingleResponse;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.project.visualization.domain.MonitorQuery;
 import www.bwsensing.com.project.visualization.domain.StatisticsResult;
 import www.bwsensing.com.project.visualization.service.IMonitorStatisticsService;

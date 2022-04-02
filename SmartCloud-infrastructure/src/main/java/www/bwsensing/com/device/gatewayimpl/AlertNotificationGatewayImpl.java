@@ -48,11 +48,12 @@ public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
 
     @Override
     public void receiveNotification(AlertNotification alertNotification) {
-        saveNotificationMessage(alertNotification);
-        domainEventPublisher.publish(initNotificationPushEvent(alertNotification));
+        if (saveNotificationMessage(alertNotification)){
+            domainEventPublisher.publish(initNotificationPushEvent(alertNotification));
+        }
     }
 
-    private void  saveNotificationMessage(AlertNotification alertNotification){
+    private boolean  saveNotificationMessage(AlertNotification alertNotification){
         AlertRoleDO alertRoleDo = alertRoleMapper.getAlertRoleByRoleName(alertNotification.getRoleName());
         if (null == alertRoleDo){
             throw new BizException("CURRENT_ROLE_DELETED","当前规则已被删除无需录入日志");
@@ -70,8 +71,13 @@ public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
         if (null != sensorDo.getProjectId()){
             alertNotification.setProjectName(projectMapper.selectMonitorProjectById(sensorDo.getProjectId()).getName());
         }
-        notificationMapper.saveNotification(NotificationConvertor.toDataObject(alertNotification));
-        log.info("告警消息接收 Alert Time:{} --- 消息内容:{}",alertNotification.getAlertTime(),alertNotification.getSummary());
+        if (notificationMapper.countNotificationByRoleNameAndTime(alertNotification.getRoleName(),alertNotification.getAlertTime())>0){
+            return  false;
+        } else {
+            notificationMapper.saveNotification(NotificationConvertor.toDataObject(alertNotification));
+            log.info("告警消息接收 Alert Time:{} --- 消息内容:{}",alertNotification.getAlertTime(),alertNotification.getSummary());
+            return  true;
+        }
     }
 
     private AlertNotificationPushEvent initNotificationPushEvent(AlertNotification alertNotification){

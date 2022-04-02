@@ -175,7 +175,7 @@ public class AlertRole {
             this.label = template.getNamePrefix();
         } else{
             this.initRandom(AUTO_ROLE_NAME + sensorInfo.getMemberGroupId());
-            this.label = AUTO_ROLE_NAME;
+            this.label = AUTO_ROLE_NAME+getRandomNameId();
         }
         this.labels = new  Labels(this.label);
     }
@@ -198,7 +198,7 @@ public class AlertRole {
         } else {
             this.name = setName + rangeId;
         }
-        this.alertName = this.alertParam.getAlertName()+rangeId;
+        this.alertName = this.alertParam.getAlertName();
         this.roleName = this.alertParam.getAlertName();
     }
 

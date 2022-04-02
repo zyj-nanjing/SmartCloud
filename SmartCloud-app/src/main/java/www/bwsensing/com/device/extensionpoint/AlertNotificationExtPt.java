@@ -19,7 +19,7 @@ public interface AlertNotificationExtPt extends ExtensionPointI {
      * 批量推送
      * @param message
      */
-    void singleNotification(NotificationMessageCmd message);
+    void singleNotification(NotificationMessageCmd message) ;
     /**
      * 批量阿里云模板发送
      * @param message

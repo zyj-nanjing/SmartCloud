@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import www.bwsensing.com.device.convertor.SensorConvertor;
 import www.bwsensing.com.domain.device.model.SensorInfo;
 import www.bwsensing.com.domain.device.gateway.SensorGateway;
+import www.bwsensing.com.domain.monitor.model.MonitorItem;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
@@ -63,5 +64,14 @@ public class SensorGatewayImpl implements SensorGateway {
             }
         }
         throw new BizException("SENSOR_NOT_FOUND","传感器不存在");
+    }
+
+    @Override
+    public List<MonitorItem> getMonitorItemByUniqueId(Integer uniqueId) {
+        SensorDO sensorDo = sensorMapper.selectSensorById(uniqueId);
+        if(null != sensorDo){
+
+        }
+        return null;
     }
 }

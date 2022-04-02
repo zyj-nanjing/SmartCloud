@@ -33,4 +33,11 @@ public class StatisticDataMapperImpl extends BaseMapper implements StatisticsDat
                 replace("[interval]",query.getInterval());
         return jdbcTemplate.query(checkSql,new BeanPropertyRowMapper<>(StatisticsData.class));
     }
+
+    @Override
+    public StatisticsData getLastStatisticsData(String uniqueCode, String dataId) {
+        String sql = "select ts,data_value value from data_[device]_[code] order by ts desc  limit 1";
+        String checkSql = sql.replace("[device]",uniqueCode).replace("[code]",dataId);
+        return jdbcTemplate.queryForObject(checkSql, new BeanPropertyRowMapper<>(StatisticsData.class));
+    }
 }

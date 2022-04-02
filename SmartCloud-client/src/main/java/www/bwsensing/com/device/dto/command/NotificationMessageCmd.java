@@ -1,8 +1,8 @@
 package www.bwsensing.com.device.dto.command;
 
-import com.alibaba.cola.dto.Command;
 import com.alibaba.cola.extension.BizScenario;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alibaba.cola.dto.Command;
 import java.util.Date;
 import lombok.Data;
 

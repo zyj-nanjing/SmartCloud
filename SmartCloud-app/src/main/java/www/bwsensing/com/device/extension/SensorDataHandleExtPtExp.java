@@ -55,7 +55,7 @@ public class SensorDataHandleExtPtExp implements ClientMessageHandleExtPt {
                     dataResult.setReceiveTime(new Date());
                     monitorReceiveGateway.storageMonitorReceive(dataResult);
                     break;
-                } catch (BizException ex){
+                } catch (Exception ex){
                     ex.printStackTrace();
                 }
             }

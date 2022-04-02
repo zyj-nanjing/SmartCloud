@@ -1,18 +1,18 @@
 package www.bwsensing.com.device.api;
 
+import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
-import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-import www.bwsensing.com.device.dto.clientobject.FacilityReceiveCO;
-import www.bwsensing.com.device.dto.command.SensorProjectBindCmd;
 import www.bwsensing.com.device.dto.command.SensorSaveCmd;
+import www.bwsensing.com.device.dto.command.SensorProjectBindCmd;
+import www.bwsensing.com.device.dto.clientobject.FacilityReceiveCO;
 import www.bwsensing.com.device.dto.command.query.FacilityReceivePageQuery;
 import www.bwsensing.com.device.dto.command.query.SensorSortQuery;
-import www.bwsensing.com.device.dto.command.SensorUpdateCmd;
 import www.bwsensing.com.device.dto.clientobject.SensorBindCO;
-import www.bwsensing.com.device.dto.clientobject.SensorCO;
 import www.bwsensing.com.device.dto.clientobject.SensorMapCO;
+import www.bwsensing.com.device.dto.command.SensorUpdateCmd;
+import www.bwsensing.com.device.dto.clientobject.SensorCO;
 /**
  * @author macos-zyj
  */
@@ -30,6 +30,13 @@ public interface SensorService {
      * @return
      */
     PageResponse<FacilityReceiveCO> queryFacilitySendsBySn(FacilityReceivePageQuery receivePageQuery);
+
+
+    /**
+     * 获取企业下当前传感器数据
+     * @return
+     */
+    SingleResponse<String> getCurrentSensorData();
 
     /**
      * ID 查询
