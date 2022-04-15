@@ -38,15 +38,17 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
     @Override
     public Response execute(AlertNotificationPushEvent pushEvent) {
         NotificationMessageCmd  messagePushCmd = new NotificationMessageCmd();
-        Assert.notNull(pushEvent.getPushMethod(),"发送方式不能为空!");
+        Assert.notEmpty(pushEvent.getPushMethods(),"发送方式不能为空!");
         BeanUtils.copyProperties(pushEvent,messagePushCmd);
-        String scenarioCode = BizScenarioCode.getNotification(NotificationMethod.getNotificationMethod(pushEvent.getPushMethod()));
-        BizScenario scenario = BizScenario.valueOf(BizScenarioCode.BIZ_ID_CLOUD, BizScenarioCode.USER_CAUSE_NOTIFICATION,scenarioCode);
-        messagePushCmd.setBizScenario(scenario);
         notificationService.cacheNotification(pushEvent.getAlertGroupId(), pushEvent.getAlertMessage());
         //扩展点 多告警方式进行推送
         if (!checkPushIsLimit(pushEvent.getAlertGroupId())){
-            extensionExecutor.executeVoid(AlertNotificationExtPt.class, messagePushCmd.getBizScenario(), extension -> extension.singleNotification(messagePushCmd));
+            for (Integer typeId:pushEvent.getPushMethods()) {
+                String scenarioCode = BizScenarioCode.getNotification(NotificationMethod.getNotificationMethod(typeId));
+                BizScenario scenario = BizScenario.valueOf(BizScenarioCode.BIZ_ID_CLOUD, BizScenarioCode.USER_CAUSE_NOTIFICATION,scenarioCode);
+                messagePushCmd.setBizScenario(scenario);
+                extensionExecutor.executeVoid(AlertNotificationExtPt.class, messagePushCmd.getBizScenario(), extension -> extension.singleNotification(messagePushCmd));
+            }
             putNotificationLimit(pushEvent.getAlertGroupId());
         }
         return Response.buildSuccess();
@@ -73,6 +75,4 @@ public class AlertNotificationPushHandle implements EventHandlerI<Response, Aler
             redisService.setCacheObject(securityKey,count+1, NotificationLimitConstant.CHECK_LAST, NotificationLimitConstant.TIME_UNIT);
         }
     }
-
-
 }

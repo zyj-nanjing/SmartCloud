@@ -9,6 +9,7 @@
         <result property="modelId"    column="model_id"    />
         <result property="name"    column="name"    />
         <result property="messageType"    column="message_type"    />
+        <result property="dataForm"    column="data_form"    />
         <result property="carrySystem"    column="carry_system"    />
         <result property="splitMethod"    column="split_method"    />
         <result property="separator"    column="separator"    />
@@ -48,6 +49,7 @@
         <include refid="selectDataModelVo"/>
         <where>
             <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="dataForm != null "> and data_form = #{dataForm}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
             <if test="carrySystem != null "> and carry_system = #{carrySystem}</if>
@@ -73,6 +75,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="modelId != null">model_id,</if>
             <if test="name != null">name,</if>
+            <if test="dataForm != null">data_form,</if>
             <if test="messageType != null">message_type,</if>
             <if test="carrySystem != null">carry_system,</if>
             <if test="splitMethod != null and splitMethod != ''">split_method,</if>
@@ -85,6 +88,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="modelId != null">#{modelId},</if>
             <if test="name != null">#{name},</if>
+            <if test="dataForm != null">#{dataForm},</if>
             <if test="messageType != null">#{messageType},</if>
             <if test="carrySystem != null">#{carrySystem},</if>
             <if test="splitMethod != null and splitMethod != ''">#{splitMethod},</if>
@@ -101,6 +105,7 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="modelId != null">model_id = #{modelId},</if>
             <if test="name != null">name = #{name},</if>
+            <if test="dataForm != null">data_form = #{dataForm},</if>
             <if test="messageType != null">message_type = #{messageType},</if>
             <if test="carrySystem != null">carry_system = #{carrySystem},</if>
             <if test="splitMethod != null and splitMethod != ''">split_method = #{splitMethod},</if>
@@ -127,7 +132,7 @@
 
     <select id="getDataModelByWebId" parameterType="Integer" resultMap="DataModelResult">
         <include refid="selectDataModelVo"/>
-        where id in (select model_id from product_model_web_model_link where model_web_id =#{modelWebId})
+        where model_id in (select model_id from product_model_web_model_link where model_web_id =#{modelWebId})
         order by weight
     </select>
 

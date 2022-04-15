@@ -22,4 +22,11 @@ public interface ItemsService {
      * @return
      */
     MultiResponse<MonitorItemsCO>  selectMonitorItemsBySn(String sn);
+
+    /**
+     * 按照Id查询 数据可视化替换使用
+     * @param sensorId
+     * @return
+     */
+    MultiResponse<MonitorItemsCO>  selectMonitorItemsBySensorId(Integer sensorId);
 }

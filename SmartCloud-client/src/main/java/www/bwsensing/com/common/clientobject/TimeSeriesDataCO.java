@@ -8,7 +8,13 @@ import java.sql.Timestamp;
  */
 @SuppressWarnings("all")
 public class TimeSeriesDataCO extends DTO {
+    /**
+     * 时间戳
+     */
     private Timestamp ts;
+    /**
+     * 数值
+     */
     private Float dataValue;
 
     public TimeSeriesDataCO() {

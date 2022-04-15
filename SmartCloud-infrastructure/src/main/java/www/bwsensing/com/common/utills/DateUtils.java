@@ -1,10 +1,10 @@
 package www.bwsensing.com.common.utills;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-
 import java.lang.management.ManagementFactory;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -84,6 +84,32 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         {
             throw new RuntimeException(e);
         }
+    }
+    /**
+     * 获取指定日期的开始时间
+     *
+     * @param certainDate
+     *          指定日期
+     * @param flex
+     *          正负整数，正数表示指定日期的后几天，负数表示指定日期的前几天
+     * @return
+     */
+    public final static Date getStartTime(Date certainDate, int flex) {
+        return DateUtils.truncate(DateUtils.addDays(certainDate, flex), Calendar.DATE);
+    }
+
+    /**
+     * 获取指定日期的结束时间
+     *
+     * @param certainDate
+     *          指定日期
+     * @param flex
+     *          正负整数，正数表示指定日期的后几天，负数表示指定日期的前几天
+     * @return
+     */
+    public final static Date getEndTime(Date certainDate, int flex) {
+        return DateUtils.addMilliseconds(
+                DateUtils.truncate(DateUtils.addDays(certainDate, flex + 1), Calendar.DATE), -1);
     }
 
     /**

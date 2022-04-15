@@ -46,4 +46,14 @@ public class IItemsServiceImpl implements ItemsService {
         }
         throw new BizException("SENSOR_SN_NOT_FOUND","传感器SN编号不存在");
     }
+
+    @Override
+    public MultiResponse<MonitorItemsCO> selectMonitorItemsBySensorId(Integer sensorId) {
+        SensorDO sensorDo = sensorMapper.selectSensorById(sensorId);
+        if(null != sensorDo){
+            List<MonitorItemsDO> itemData = itemsMapper.selectItemsByModelId(sensorDo.getModelId());
+            return MultiResponse.of(ItemsCoConvertor.toClientObjectList(itemData));
+        }
+        throw new BizException("SENSOR_ID_NOT_FOUND","传感器编号不存在");
+    }
 }

@@ -2,11 +2,10 @@ package www.bwsensing.com.device.command;
 
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.exception.Assert;
-import com.alibaba.cola.exception.BizException;
 import org.springframework.beans.BeanUtils;
+import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import static java.util.stream.Collectors.toList;
-
 import www.bwsensing.com.common.utills.StringUtils;
 import www.bwsensing.com.monitor.convertor.ItemsConvertor;
 import www.bwsensing.com.domain.device.gateway.AlertGroupGateway;
@@ -25,8 +24,8 @@ import www.bwsensing.com.device.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.device.dto.command.AlertRoleAddCmd;
 import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
-
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,7 +64,10 @@ public class AlertGroupSaveCmdExo {
             saveGroup = new AlertGroup(saveCmd.getGroupName(),selectedSensor,currentUser,paramList);
         }
         saveGroup.setOperateGroupId(tokenData.getGroupId());
-        saveGroup.setNotificationMethod(NotificationMethod.getNotificationMethod(saveCmd.getPushMethod()));
+        saveGroup.setNotificationMethods(new ArrayList<>());
+        for (Integer pushId:saveCmd.getPushMethods()){
+            saveGroup.getNotificationMethods().add(NotificationMethod.getNotificationMethod(pushId));
+        }
         alertGroupGateway.saveGroup(saveGroup);
         return Response.buildSuccess();
     }

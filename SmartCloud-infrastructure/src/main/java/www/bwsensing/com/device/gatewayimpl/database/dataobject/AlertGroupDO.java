@@ -26,7 +26,11 @@ public class AlertGroupDO {
     private Integer templateId;
 
     /**推送方式*/
+    @Deprecated
     private Integer pushType;
+
+    /**推送方式*/
+    private  String pushTypes;
 
     /** 创建者 */
     private String creator;

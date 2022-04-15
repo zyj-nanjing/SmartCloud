@@ -11,12 +11,13 @@
         <result property="currentSensorId"    column="current_sensor_id"    />
         <result property="templateId"    column="template_id"    />
         <result property="pushType"    column="push_type"    />
+        <result property="pushTypes"    column="push_types"    />
         <result property="creator"    column="creator"    />
         <result property="createTime"    column="create_time"    />
     </resultMap>
 
     <sql id="selectAlertGroupVo">
-        select id, group_name, operate_group_id, current_sensor_id, template_id,push_type, creator, create_time from sys_alert_group
+        select id, group_name, operate_group_id, current_sensor_id, template_id,push_type,push_types, creator, create_time from sys_alert_group
     </sql>
 
     <select id="selectAlertGroupBySort" parameterType="AlertGroupDO" resultMap="AlertGroupResult">
@@ -52,6 +53,7 @@
             current_sensor_id,
             template_id,
             push_type,
+            push_types,
             creator,
             create_time
         FROM
@@ -70,6 +72,7 @@
             <if test="currentSensorId != null">current_sensor_id,</if>
             <if test="templateId != null">template_id,</if>
             <if test="pushType != null">push_type,</if>
+            <if test="pushTypes != null and pushTypes !=''">push_types,</if>
             <if test="creator != null">creator,</if>
             <if test="createTime != null">create_time,</if>
         </trim>
@@ -79,6 +82,7 @@
             <if test="currentSensorId != null">#{currentSensorId},</if>
             <if test="templateId != null">#{templateId},</if>
             <if test="pushType != null">#{pushType},</if>
+            <if test="pushTypes != null and pushTypes != ''">#{pushTypes},</if>
             <if test="creator != null">#{creator},</if>
             <if test="createTime != null">#{createTime},</if>
         </trim>
@@ -92,6 +96,7 @@
             <if test="currentSensorId != null">current_sensor_id = #{currentSensorId},</if>
             <if test="templateId != null">template_id = #{templateId},</if>
             <if test="pushType != null">push_type = #{pushType},</if>
+            <if test="pushTypes != null and pushTypes != ''">push_types=#{pushTypes},</if>
             <if test="creator != null">creator = #{creator},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
         </trim>

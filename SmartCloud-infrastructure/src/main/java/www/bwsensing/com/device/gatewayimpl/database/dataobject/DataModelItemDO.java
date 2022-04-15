@@ -21,6 +21,11 @@ public class DataModelItemDO {
     private Integer prototypeId;
 
     /**
+     * JSON key
+     */
+    private String keyName;
+
+    /**
      * 编码类型
      */
     private String itemKind;

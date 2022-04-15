@@ -1,8 +1,6 @@
 package www.bwsensing.com.device.extension;
 
 import java.util.List;
-
-import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
@@ -10,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.util.Assert;
 import com.alibaba.cola.extension.Extension;
 import www.bwsensing.com.common.sms.ISmsService;
+import www.bwsensing.com.common.utills.DateUtils;
 import www.bwsensing.com.common.utills.StringUtils;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
 import www.bwsensing.com.common.constant.BizScenarioCode;
@@ -71,7 +70,7 @@ public class SmsAlertNotificationExtPtExp implements AlertNotificationExtPt {
         SmsNotificationTemplateJson notificationTemplate = new SmsNotificationTemplateJson();
         notificationTemplate.setAlertName(message.getAlertName());
         notificationTemplate.setModel(message.getSensorModel());
-        notificationTemplate.setTime(message.getAlertTime());
+        notificationTemplate.setTime(DateUtils.parseDateToStr("yyyy-MM-dd HH:mm:ss",message.getAlertTime()));
         notificationTemplate.setProject(message.getCurrentProject());
         notificationTemplate.setUniqueCode(message.getSensorSn());
         return JSON.toJSONString(notificationTemplate);

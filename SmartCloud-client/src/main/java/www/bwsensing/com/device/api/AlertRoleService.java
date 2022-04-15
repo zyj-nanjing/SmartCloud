@@ -2,6 +2,7 @@ package www.bwsensing.com.device.api;
 
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import www.bwsensing.com.device.dto.command.AlertRoleAddCmd;
 import www.bwsensing.com.device.dto.command.AlertRoleBindCmd;
 import www.bwsensing.com.device.dto.command.AlertRoleUpdateCmd;
@@ -38,6 +39,13 @@ public interface AlertRoleService {
      * @return
      */
     PageResponse<AlertRoleCO> selectAlertRole(AlertRoleQuery query);
+
+    /**
+     * 根据id获取规则编号
+     * @param id
+     * @return
+     */
+    SingleResponse<AlertRoleCO> getAlertRoleById(Integer id);
 
     /**
      * 删除

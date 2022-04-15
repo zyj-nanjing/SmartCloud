@@ -161,3 +161,8 @@ swagger:
   # 是否开启swagger
   enabled: true
 
+xxl:
+  mq:
+    accessToken:
+    admin:
+      address: http://175.178.153.131:8080/xxl-mq-admin

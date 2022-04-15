@@ -28,6 +28,11 @@ public class AlertGroup {
     /**
      * 消息推送方式
      */
+    private List<NotificationMethod> notificationMethods;
+    /**
+     * 消息推送方式
+     */
+    @Deprecated
     private NotificationMethod notificationMethod;
     /**当前用户*/
     private SystemUser currentUser;

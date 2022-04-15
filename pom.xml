@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>www.bwsensing.com</groupId>
     <artifactId>SmartCloud</artifactId>
-    <version>0.8.6</version>
+    <version>0.8.7</version>
     <packaging>pom</packaging>
     <name>SmartCloud</name>
     <description> CQRS project for Spring Boot</description>

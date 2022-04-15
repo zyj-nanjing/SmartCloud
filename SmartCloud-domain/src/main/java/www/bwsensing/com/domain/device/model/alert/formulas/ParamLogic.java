@@ -33,4 +33,8 @@ public enum ParamLogic {
         }
         throw new BizException("PARAM_LOGIC_NOT_FOUND","该逻辑运算不支持");
     }
+
+    public static void main(String[] args) {
+        System.out.println(getParamLogic("||"));
+    }
 }

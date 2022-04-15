@@ -24,6 +24,15 @@ public interface SensorService {
      */
     PageResponse<SensorCO> querySensorBySort(SensorSortQuery sortQuery);
 
+
+    /**
+     * 传感器分页查询
+     * @param sortQuery
+     * @return
+     */
+    MultiResponse<SensorCO> querySensorAllBySort(SensorSortQuery sortQuery);
+
+
     /**
      * 查询数据接收日志
      * @param receivePageQuery

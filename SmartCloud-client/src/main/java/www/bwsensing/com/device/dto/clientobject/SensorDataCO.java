@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.alibaba.cola.dto.DTO;
 import java.util.Date;
 
+/**
+ * @author macos-zyj
+ */
 @SuppressWarnings("all")
 public class SensorDataCO extends DTO {
     private  Integer id;

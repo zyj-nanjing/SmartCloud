@@ -21,7 +21,7 @@ public class SmsNotificationTemplateJson extends SmsTemplateJson {
     /**
      * 触发时间
      */
-    private Date time;
+    private String time;
 
     /**
      * 告警名称

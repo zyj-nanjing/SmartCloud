@@ -9,6 +9,7 @@
         <result property="modelId"    column="model_id"    />
         <result property="prototypeId"    column="prototype_id"    />
         <result property="itemKind"    column="item_kind"    />
+        <result property="keyName" column="key_name"/>
         <result property="uniqueCodeSize"    column="unique_code_size"    />
         <result property="dataName"    column="data_name"    />
         <result property="dataOrder"    column="data_order"    />
@@ -21,7 +22,7 @@
     </resultMap>
 
     <sql id="selectProductDataModelItemVo">
-        select id, model_id, prototype_id, item_kind, unique_code_size, data_name, data_order, data_length,data_format, data_type, need_transform,
+        select id, model_id, prototype_id, item_kind,key_name, unique_code_size, data_name, data_order, data_length,data_format, data_type, need_transform,
                calculation_formula, placeholder from product_data_model_item
     </sql>
 
@@ -54,6 +55,7 @@
             <if test="modelId != null">model_id,</if>
             <if test="prototypeId != null">prototype_id,</if>
             <if test="itemKind != null">item_kind,</if>
+            <if test="keyName != null and keyName != ''">key_name,</if>
             <if test="uniqueCodeSize != null">unique_code_size,</if>
             <if test="dataName != null">data_name,</if>
             <if test="dataOrder != null">data_order,</if>
@@ -68,6 +70,7 @@
             <if test="modelId != null">#{modelId},</if>
             <if test="prototypeId != null">#{prototypeId},</if>
             <if test="itemKind != null">#{itemKind},</if>
+            <if test="keyName != null and keyName != ''">#{keyName},</if>
             <if test="uniqueCodeSize != null">#{uniqueCodeSize},</if>
             <if test="dataName != null">#{dataName},</if>
             <if test="dataOrder != null">#{dataOrder},</if>
@@ -86,6 +89,7 @@
             <if test="modelId != null">model_id = #{modelId},</if>
             <if test="prototypeId != null">prototype_id = #{prototypeId},</if>
             <if test="itemKind != null">item_kind = #{itemKind},</if>
+            <if test="keyName != null and keyName != ''">key_name=#{keyName},</if>
             <if test="uniqueCodeSize != null">unique_code_size = #{uniqueCodeSize},</if>
             <if test="dataName != null">data_name = #{dataName},</if>
             <if test="dataOrder != null">data_order = #{dataOrder},</if>

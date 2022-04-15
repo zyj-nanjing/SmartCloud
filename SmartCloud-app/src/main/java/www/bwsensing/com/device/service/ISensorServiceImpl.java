@@ -1,32 +1,31 @@
 package www.bwsensing.com.device.service;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.cola.catchlog.CatchAndLog;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageInfo;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import com.alibaba.cola.exception.BizException;
 import com.alibaba.cola.exception.SysException;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import www.bwsensing.com.common.api.ITimeSeriesDataService;
-import www.bwsensing.com.common.clientobject.DataItemsCO;
-import www.bwsensing.com.common.utills.Base64Utils;
+import com.alibaba.cola.catchlog.CatchAndLog;
 import www.bwsensing.com.common.utills.RSAUtils;
 import www.bwsensing.com.device.dto.clientobject.*;
 import www.bwsensing.com.device.api.SensorService;
+import www.bwsensing.com.common.utills.PageHelperUtils;
+import www.bwsensing.com.project.api.ProjectMemberService;
 import www.bwsensing.com.device.command.SensorSaveCmdExo;
 import www.bwsensing.com.device.command.SensorUpdateCmdExo;
-import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
-import www.bwsensing.com.domain.system.gateway.SystemUserGateway;
+import www.bwsensing.com.common.api.ITimeSeriesDataService;
+import www.bwsensing.com.common.clientobject.DataItemsCO;
 import www.bwsensing.com.domain.system.model.user.SystemUser;
+import www.bwsensing.com.domain.system.gateway.SystemUserGateway;
+import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
-import www.bwsensing.com.project.api.ProjectMemberService;
 import www.bwsensing.com.device.command.query.SensorInMapQueryExo;
 import www.bwsensing.com.device.command.query.SensorSortQueryExo;
-import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.device.convertor.FacilityReceiveCoConvertor;
 import www.bwsensing.com.device.convertor.SensorCoConvertor;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
@@ -43,10 +42,11 @@ import www.bwsensing.com.device.gatewayimpl.database.dataobject.MonitorReceiveDO
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
 import com.alibaba.cola.dto.Response;
 import javax.annotation.Resource;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static www.bwsensing.com.common.convertor.DataItemsCoConvertor.toDataItemsCo;
 
 /**
  * @author macos-zyj
@@ -81,6 +81,11 @@ public class ISensorServiceImpl implements SensorService {
     @Override
     public PageResponse<SensorCO> querySensorBySort(SensorSortQuery sortQuery) {
         return sortQueryExo.execute(sortQuery);
+    }
+
+    @Override
+    public MultiResponse<SensorCO> querySensorAllBySort(SensorSortQuery sortQuery) {
+        return sortQueryExo.executeTotal(sortQuery);
     }
 
     @Override
@@ -130,15 +135,6 @@ public class ISensorServiceImpl implements SensorService {
             apiData.getDataMap().put(item.getDataId(), timeSeriesService.getLastStatisticsData(currentSensor.getSn(),item.getDataId()));
         });
         return apiData;
-    }
-
-    private DataItemsCO toDataItemsCo(MonitorItemsDO dataItemsDo){
-        DataItemsCO clientObject = new DataItemsCO();
-        clientObject.setId(dataItemsDo.getId());
-        clientObject.setItemName(dataItemsDo.getItemName());
-        clientObject.setDataId(dataItemsDo.getDataId());
-        clientObject.setUnit(dataItemsDo.getUnit());
-        return clientObject;
     }
 
     private MonitorReceiveDO initializeQuery(FacilityReceivePageQuery pageQuery){

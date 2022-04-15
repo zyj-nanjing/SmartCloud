@@ -204,9 +204,8 @@ public class AlertRole {
 
 
     private Integer getRandomNameId(){
-        int max=10000,min=1;
         long randomNum = System.currentTimeMillis();
-        return (int) (randomNum%(max-min)+min);
+        return (int) (randomNum);
     }
 
 

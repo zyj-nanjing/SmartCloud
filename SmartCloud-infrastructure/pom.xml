@@ -4,7 +4,7 @@
 	<parent>
         <groupId>www.bwsensing.com</groupId>
         <artifactId>SmartCloud</artifactId>
-		<version>0.8.6</version>
+		<version>0.8.7</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>SmartCloud-infrastructure</artifactId>
@@ -47,6 +47,11 @@
 			<version>2.2.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.aliyun</groupId>
@@ -126,7 +131,13 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>5.7.20</version>
+			<version>5.7.22</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.xuxueli</groupId>
+			<artifactId>xxl-mq-client</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 
 		<dependency>

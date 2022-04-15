@@ -59,7 +59,7 @@ public class DataStreamReceive extends ClientStream {
 
     @Override
     public String getJobName() {
-        return JOB_NAME + modelId;
+        return JOB_NAME +modelId+"_"+receiveMethod;
     }
 
     @Override

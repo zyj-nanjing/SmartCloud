@@ -1,7 +1,7 @@
 package www.bwsensing.com.system.web;
 
-import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.MultiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

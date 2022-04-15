@@ -2,6 +2,7 @@ package www.bwsensing.com.domain.device.model.alert;
 
 import lombok.Data;
 import java.util.List;
+import java.util.regex.Pattern;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.device.model.alert.formulas.ParamFunction;
@@ -15,6 +16,7 @@ import www.bwsensing.com.domain.monitor.model.MonitorItem;
  */
 @Data
 public class AlertParam {
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
     private static final Integer MAX_FORMULA_LENGTH =4;
     private static final String NULL = " ";
     private static final String DATA_NAME = "data_value";
@@ -71,12 +73,7 @@ public class AlertParam {
 
 
     public boolean isNumeric(String str) {
-        for (int i = str.length();--i>=0;){
-            if (!Character.isDigit(str.charAt(i))){
-                return false;
-            }
-        }
-        return true;
+        return str != null && NUMBER_PATTERN.matcher(str).matches();
     }
 
     public String toAlertSql(String sn){

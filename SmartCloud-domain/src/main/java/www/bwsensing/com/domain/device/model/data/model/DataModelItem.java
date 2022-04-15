@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.common.math.Calculator;
 import www.bwsensing.com.domain.monitor.model.MonitorItem;
-
-
 /**
  * @author macos-zyj
  */
@@ -44,6 +42,11 @@ public class DataModelItem implements Comparable<DataModelItem>{
      * 监测因素
      */
     private MonitorItem protoItem;
+
+    /**
+     * JSON key名称
+     */
+    private String keyName;
 
     /**
      * 数据位名称
@@ -151,7 +154,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
     public String geyUniqueCode(String splitData,Integer carrySystem) {
         Assert.notNull(dataFormat,"唯一编码数据位校验有误!");
         Assert.notNull(dataType,"数据类型不能为空有误!");
-        String resultCode = "";
+        String resultCode;
         if (dataType == DataType.STRING) {
             resultCode = splitData;
         } else {

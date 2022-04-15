@@ -13,13 +13,10 @@ import org.junit.runner.RunWith;
 import lombok.extern.slf4j.Slf4j;
 import org.mockito.internal.util.MockUtil;
 import org.powermock.modules.junit4.PowerMockRunner;
-import www.bwsensing.com.domain.device.model.data.model.DataItemKind;
-import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
-import www.bwsensing.com.domain.device.model.data.model.DataType;
+import www.bwsensing.com.domain.device.model.data.model.*;
 import www.bwsensing.com.domain.monitor.model.MonitorItem;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import www.bwsensing.com.domain.device.model.data.model.ProductDataModel;
 
 
 /**
@@ -74,6 +71,9 @@ public class ProductDataModelTest {
             "dataIdValue=9.0, sn=000000001, type=null, timeStamp=2022-04-02 15:36:58.512)])";
 
     static {
+        ASCII_WITH_NO_ACC.setDataForm(DataForm.DOUBLE_LINE_DATA);
+        ASCII_WITH_ACC.setDataForm(DataForm.SINGLE_LINE_DATA);
+        HEX_MODEL.setDataForm(DataForm.SINGLE_LINE_DATA);
         noAccProducts.add(new MonitorItem("x_ang"));
         noAccProducts.add(new MonitorItem("y_ang"));
         noAccProducts.add(new MonitorItem("temp"));

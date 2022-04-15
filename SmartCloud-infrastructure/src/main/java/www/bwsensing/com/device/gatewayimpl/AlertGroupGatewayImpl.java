@@ -2,9 +2,14 @@ package www.bwsensing.com.device.gatewayimpl;
 
 import java.util.List;
 import javax.annotation.Resource;
+
+import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.common.constant.RoleConstant;
+import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.domain.project.model.ProjectRoleEnum;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.model.token.TokenData;
 import www.bwsensing.com.device.convertor.AlertGroupConvertor;
@@ -17,6 +22,7 @@ import www.bwsensing.com.device.gatewayimpl.database.NotificationMemberMapper;
 import www.bwsensing.com.device.gatewayimpl.database.AlertGroupMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertGroupDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertRoleDO;
+import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
 
 /**
  * @author macos-zyj
@@ -31,6 +37,10 @@ public class AlertGroupGatewayImpl implements AlertGroupGateway {
     private AlertRoleGateway alertRoleGateway;
     @Resource
     private NotificationMemberMapper memberMapper;
+    @Resource
+    private MonitorProjectMapper projectMapper;
+    @Resource
+    private SensorMapper sensorMapper;
     @Resource
     private TokenGateway tokenGateway;
 
@@ -56,15 +66,21 @@ public class AlertGroupGatewayImpl implements AlertGroupGateway {
     @Override
     public void deleteGroup(Integer id) {
         TokenData tokenData = tokenGateway.getTokenInfo();
-        if(null == alertGroupMapper.getAlertGroupById(id)){
-            throw new BizException("NO_GROUP_FOUND","该组织不存在!");
+        AlertGroupDO alertGroup = alertGroupMapper.getAlertGroupById(id);
+        if(null == alertGroup){
+            throw new BizException("NO_GROUP_FOUND","该告警分组不存在!");
         }
-        if (!RoleConstant.ROOT_ADMIN.equals(tokenData.getRole())){
+        SensorDO device = sensorMapper.selectSensorById(alertGroup.getCurrentSensorId());
+        String projectCode = projectMapper.getProjectRoleByUserId(device.getProjectId(), tokenData.getUserId());
+        Assert.notNull(projectCode,"无权进行删除");
+        ProjectRoleEnum projectRole = ProjectRoleEnum.getProjectRoleByCode(projectCode);
+        if (ProjectRoleEnum.PROJECT_OWNER.equals(projectRole)||ProjectRoleEnum.PROJECT_MANAGER.equals(projectRole)){
+            alertGroupMapper.deleteAlertGroupById(id);
+            memberMapper.deleteNotificationMemberByGroupId(id);
+            List<AlertRoleDO> roleCollection = alertRoleMapper.selectAlertRoleByGroupId(id);
+            roleCollection.forEach(role->alertRoleGateway.deleteAlertRole(role.getId()));
+        } else {
             throw new BizException("NO_PERMISSION_DELETE","无权进行删除!");
         }
-        alertGroupMapper.deleteAlertGroupById(id);
-        memberMapper.deleteNotificationMemberByGroupId(id);
-        List<AlertRoleDO> roleCollection = alertRoleMapper.selectAlertRoleByGroupId(id);
-        roleCollection.forEach(role->alertRoleGateway.deleteAlertRole(role.getId()));
     }
 }

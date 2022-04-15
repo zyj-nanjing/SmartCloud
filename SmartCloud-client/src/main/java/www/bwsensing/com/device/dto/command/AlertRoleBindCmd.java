@@ -14,7 +14,7 @@ public class AlertRoleBindCmd extends Command {
     /**
      * 模板编号
      */
-    @NotNull(message = "预警模板名称不能为空@")
+    @NotNull(message = "预警模板名称不能为空!")
     private Integer templateId;
 
     /**

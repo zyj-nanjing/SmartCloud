@@ -38,6 +38,7 @@ public class AlertRoleAddCmdExo {
         MonitorItemsDO itemsDo = itemMapper.selectItemById(alertParam.getParamNo());
         alertParam.setMonitorItem(ItemsConvertor.toDomain(itemsDo));
         AlertRole saveRole = new AlertRole(sensorInfo,alertParam);
+        saveRole.setAlertGroupId(saveCmd.getAlertGroupId());
         alertRoleGateway.saveAlertRole(saveRole);
         return Response.buildSuccess();
     }

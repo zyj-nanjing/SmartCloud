@@ -2,8 +2,11 @@ package www.bwsensing.com.device.dto.command;
 
 import lombok.Data;
 import com.alibaba.cola.dto.Command;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -25,8 +28,10 @@ public class AlertGroupSaveCmd extends Command {
     /**
      * 推送方式
      */
-    @NotNull(message="推送方式不能为空!")
-    private Integer pushMethod;
+    @Valid
+    @NotNull(message = "推送方式不能为空")
+    @Size(min = 1, message = "至少要有一个推送方式")
+    private List<Integer> pushMethods;
     /**
      * 模板编号
      */

@@ -8,8 +8,12 @@ import org.mockito.internal.util.MockUtil;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import www.bwsensing.com.common.utills.HexUtils;
 import www.bwsensing.com.common.utills.RSAUtils;
 
+/**
+ * @author macos-zyj
+ */
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.crypto.*")
 @PrepareForTest({MockUtil.class,SensorApiDataRsaTest.class,RSAUtils.class})
@@ -69,9 +73,21 @@ public class SensorApiDataRsaTest {
             "{\"itemName\":\"电量\",\"dataId\":\"elect\",\"id\":7},{\"itemName\":\"温度\",\"unit\":\"°C \",\"dataId\":\"temp\",\"id\":8}],\"dataMap\":{\"y_ang\":{},\"temp\":{},\"x_ang\":{}," +
             "\"z_ang\":{},\"x_acc\":{},\"y_acc\":{},\"elect\":{},\"z_acc\":{}},\"name\":\"成都测试用传感器\"}]";
 
+    private static final String SIGN_DATA = "www.bwsensing.com";
+
+
+
     @Test
     public void testDataRsa() throws Exception {
         Assert.assertEquals(new String(RSAUtils.decryptByPrivateKey(ENCRYPT_HEX_STRING, TEST_PRIVATE_KEY)),EXPECT_DATA_RESULT);
+    }
+
+
+    @Test
+    public void testSignatureRsa() throws Exception {
+        byte[] data = SIGN_DATA.getBytes();
+        System.out.println(HexUtils.bytesToHexString(data));
+        System.out.println(RSAUtils.sign(data,TEST_PRIVATE_KEY));
     }
 
 }

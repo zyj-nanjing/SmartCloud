@@ -14,7 +14,7 @@ public enum DataType {
     DOUBLE("Double"),
     INT("Int");
 
-    private String type;
+    private final String type;
 
     DataType(String type) {
         this.type = type;
@@ -23,6 +23,7 @@ public enum DataType {
     public String getType() {
         return type;
     }
+
     public static DataType getDataType(String dataType){
         for (DataType  currentType : values()){
             if (currentType.getType().equals(dataType)){

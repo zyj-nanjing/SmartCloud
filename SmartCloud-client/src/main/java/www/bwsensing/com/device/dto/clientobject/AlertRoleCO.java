@@ -41,6 +41,9 @@ public class AlertRoleCO extends DTO {
      * 标签
      */
     private String label;
+
+    private String color;
+
     /**
      * 提示信息
      */
@@ -158,5 +161,13 @@ public class AlertRoleCO extends DTO {
 
     public void setCheckPeriod(String checkPeriod) {
         this.checkPeriod = checkPeriod;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

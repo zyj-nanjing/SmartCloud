@@ -1,5 +1,6 @@
 package www.bwsensing.com.device.command.query;
 
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,11 @@ public class SensorSortQueryExo {
         return PageResponse.of(result,(int)page.getTotal(),page.getPageSize(),sortQuery.getPageIndex());
     }
 
+    public MultiResponse<SensorCO> executeTotal(SensorSortQuery sortQuery){
+        List<SensorDO> sensorCollection= sensorMapper.selectSensorBySort (initSensorQuery(sortQuery));
+        List<SensorCO> result = SensorCoConvertor.toClientObjectArray(sensorCollection);
+        return MultiResponse.of(result);
+    }
 
     private SensorDO initSensorQuery(SensorSortQuery sortQuery){
         SensorDO query = new SensorDO();

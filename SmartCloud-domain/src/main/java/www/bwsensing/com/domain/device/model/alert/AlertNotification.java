@@ -2,6 +2,8 @@ package www.bwsensing.com.domain.device.model.alert;
 
 import lombok.Data;
 import java.util.Date;
+import java.util.List;
+
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.device.model.SensorInfo;
 import www.bwsensing.com.domain.device.model.SensorModel;
@@ -84,7 +86,7 @@ public class AlertNotification {
     /**
      * 发送方式
      */
-    private Integer pushMethod;
+    private List<Integer> pushMethods;
 
 
     public AlertNotification() {

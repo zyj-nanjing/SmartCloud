@@ -3,6 +3,7 @@ package www.bwsensing.com.domainevent;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import www.bwsensing.com.event.DomainEventI;
 import java.util.Date;
+import java.util.List;
 import lombok.Data;
 
 
@@ -35,6 +36,11 @@ public class AlertNotificationPushEvent implements DomainEventI {
     /**
      * 推送方式
      */
+    @Deprecated
     private Integer pushMethod;
+    /**
+     * 推送方式
+     */
+    private List<Integer> pushMethods;
 
 }

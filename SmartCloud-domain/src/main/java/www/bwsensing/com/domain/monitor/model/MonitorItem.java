@@ -16,16 +16,11 @@ public class MonitorItem {
     private String dataId;
     /**单位**/
     private String unit;
-    /**ASCII 解析标位*/
-    private Integer asciiIndex;
-    /**HEX 解析标位*/
-    private Integer hexIndex;
-    /**ASCII 解析前缀*/
-    private String asciiPrefix;
-    /**HEX减 偏移量*/
-    private Integer  reduceNumber;
-    /**HEX除 偏移量*/
-    private Integer  divideNumber;
+    /**
+     * 数据项类型
+     */
+    private MonitorItemKind itemKind;
+
 
     public MonitorItem() {
     }

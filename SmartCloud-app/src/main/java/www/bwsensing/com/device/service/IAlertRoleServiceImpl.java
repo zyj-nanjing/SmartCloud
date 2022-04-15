@@ -3,6 +3,7 @@ package www.bwsensing.com.device.service;
 import javax.annotation.Resource;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import com.github.pagehelper.PageInfo;
 import com.alibaba.cola.dto.PageResponse;
 import org.springframework.beans.BeanUtils;
@@ -70,6 +71,12 @@ public class IAlertRoleServiceImpl implements AlertRoleService {
         PageInfo<AlertRoleDO> pageInfo= pageHelper.getPageCollections(pageQuery);
         List<AlertRoleCO> result = AlertRoleCoConvertor.toClientCollection(pageInfo.getList());
         return PageResponse.of(result, (int)pageInfo.getTotal(),pageInfo.getPageSize(),pageQuery.getPageIndex() );
+    }
+
+    @Override
+    public SingleResponse<AlertRoleCO> getAlertRoleById(Integer id) {
+        AlertRoleDO alertRole = alertRoleMapper.getAlertRoleById(id);
+        return SingleResponse.of(AlertRoleCoConvertor.toClientObject(alertRole));
     }
 
     @Override

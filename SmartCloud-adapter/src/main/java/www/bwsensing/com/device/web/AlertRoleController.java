@@ -2,6 +2,7 @@ package www.bwsensing.com.device.web;
 
 import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class AlertRoleController {
     public Response addAlertRole(@Valid @RequestBody AlertRoleAddCmd saveCmd){
         return alertRoleService.saveAlertRole(saveCmd);
     }
+
+    @ApiOperation("查看告警规则")
+    @GetMapping("/{id}")
+    public SingleResponse<AlertRoleCO> getAlertRole(@PathVariable Integer id){
+        return alertRoleService.getAlertRoleById(id);
+    }
+
 
     @ApiOperation("修改告警规则")
     @PostMapping("/update")

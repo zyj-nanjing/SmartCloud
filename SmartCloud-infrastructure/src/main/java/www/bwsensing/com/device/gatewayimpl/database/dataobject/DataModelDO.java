@@ -2,7 +2,6 @@ package www.bwsensing.com.device.gatewayimpl.database.dataobject;
 
 import lombok.Data;
 import java.util.List;
-import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
 
 /**
  * @author macos-zyj
@@ -15,6 +14,11 @@ public class DataModelDO {
     private Integer id;
 
     private Integer modelId;
+
+    /**
+     * 数据形式
+     */
+    private Integer dataForm;
 
     /**
      * 名称

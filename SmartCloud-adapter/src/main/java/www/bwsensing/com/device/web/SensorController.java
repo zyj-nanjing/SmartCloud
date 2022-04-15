@@ -41,6 +41,12 @@ public class SensorController {
         return sensorService.querySensorBySort(sensorSortQuery);
     }
 
+    @ApiOperation("传感器查询(条件查询)")
+    @PostMapping("/total/query/sort")
+    public MultiResponse<SensorCO> querySensorAllBySort(@RequestBody SensorSortQuery sensorSortQuery){
+        return sensorService.querySensorAllBySort(sensorSortQuery);
+    }
+
     @ApiOperation("传感器上报日志查询(分页/条件查询)")
     @PostMapping("/log/query")
     public PageResponse<FacilityReceiveCO> queryFacilitySends(@Valid @RequestBody FacilityReceivePageQuery receivePageQuery){

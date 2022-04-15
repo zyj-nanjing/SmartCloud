@@ -23,6 +23,10 @@ import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.system.gatewayimpl.database.OperateGroupMapper;
 import www.bwsensing.com.system.gatewayimpl.database.dataobject.OperateGroupDO;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author macos-zyj
  */
@@ -66,7 +70,8 @@ public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
         OperateGroupDO operateGroup = operateGroupMapper.selectGroupById(alertNotification.getGroupId());
         AlertGroupDO alertGroup = alertGroupMapper.getAlertGroupById(alertNotification.getAlertGroupId());
         alertNotification.setAlertGroupName(alertGroup.getGroupName());
-        alertNotification.setPushMethod(alertGroup.getPushType());
+        List<String> pushMethods = Arrays.asList(alertGroup.getPushTypes().split("#"));
+        alertNotification.setPushMethods(pushMethods.stream().map(Integer::parseInt).collect(Collectors.toList()));
         alertNotification.initGroupInfo(OperateGroupConvertor.toDomain(operateGroup));
         if (null != sensorDo.getProjectId()){
             alertNotification.setProjectName(projectMapper.selectMonitorProjectById(sensorDo.getProjectId()).getName());
@@ -92,7 +97,7 @@ public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
         pushEvent.setColor(alertNotification.getColor());
         pushEvent.setAlertGroupName(alertNotification.getAlertGroupName());
         pushEvent.setAlertMessage(alertNotification.getSummary());
-        pushEvent.setPushMethod(alertNotification.getPushMethod());
+        pushEvent.setPushMethods(alertNotification.getPushMethods());
         return pushEvent;
     }
 }
