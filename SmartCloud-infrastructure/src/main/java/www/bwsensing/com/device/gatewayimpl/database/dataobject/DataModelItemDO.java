@@ -2,7 +2,6 @@ package www.bwsensing.com.device.gatewayimpl.database.dataobject;
 
 
 import lombok.Data;
-import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
 
 /**
  * @author macos-zyj
@@ -16,9 +15,7 @@ public class DataModelItemDO {
 
     private Integer modelId;
 
-    /**监测因素编号 暂时没考虑好先放这边*/
-    @Deprecated
-    private Integer prototypeId;
+    private Integer dataItemId;
 
     /**
      * JSON key
@@ -28,7 +25,7 @@ public class DataModelItemDO {
     /**
      * 编码类型
      */
-    private String itemKind;
+    private Integer itemKind;
 
 
     /***
@@ -39,7 +36,7 @@ public class DataModelItemDO {
     /**
      * 监测因素
      */
-    private MonitorItemsDO protoItem;
+    private ProductDataItemDO protoItem;
 
     /**
      * 数据位名称

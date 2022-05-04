@@ -16,7 +16,7 @@ public class MonitorReceiveDO {
     /**
      * Sn编码
      */
-    private String sn;
+    private String uniqueCode;
     /**
      * 频道编号
      */

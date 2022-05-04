@@ -8,7 +8,7 @@ import com.alibaba.cola.exception.Assert;
 import org.apache.commons.lang3.StringUtils;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.common.math.Calculator;
-import www.bwsensing.com.domain.monitor.model.MonitorItem;
+import www.bwsensing.com.domain.device.model.ProductDataItem;
 /**
  * @author macos-zyj
  */
@@ -23,9 +23,11 @@ public class DataModelItem implements Comparable<DataModelItem>{
      */
     private Integer id;
 
-    /**监测因素编号 暂时没考虑好先放这边*/
-    @Deprecated
-    private Integer prototypeId;
+    private Integer modelId;
+    /**
+     * 监测因素编号
+      */
+    private Integer dataItemId;
 
     /**
      * 编码类型
@@ -41,7 +43,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
     /**
      * 监测因素
      */
-    private MonitorItem protoItem;
+    private ProductDataItem protoItem;
 
     /**
      * JSON key名称
@@ -123,8 +125,8 @@ public class DataModelItem implements Comparable<DataModelItem>{
         this.needTransform = false;
     }
 
-    public DataModelItem(MonitorItem protoItem, Integer dataOrder,
-                         Integer dataLength,DataType dataType) {
+    public DataModelItem(ProductDataItem protoItem, Integer dataOrder,
+                         Integer dataLength, DataType dataType) {
         this.itemKind = DataItemKind.DATA_INDEX;
         this.protoItem = protoItem;
         this.dataOrder = dataOrder;
@@ -134,7 +136,7 @@ public class DataModelItem implements Comparable<DataModelItem>{
     }
 
 
-    public DataModelItem(MonitorItem protoItem, Integer dataOrder,
+    public DataModelItem(ProductDataItem protoItem, Integer dataOrder,
                          Integer dataLength, DataType dataType,
                          String calculationFormula, String placeholder) {
         this.itemKind = DataItemKind.DATA_INDEX;

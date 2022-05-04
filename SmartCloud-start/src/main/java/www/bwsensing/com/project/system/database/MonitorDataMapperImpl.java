@@ -24,16 +24,16 @@ public class MonitorDataMapperImpl extends BaseMapper implements MonitorDataMapp
 
     @Override
     public int createNewDataTable(MonitorData monitorData) {
-        String prefix = "create table if not exists smart_cloud.data_"+monitorData.getSn()+"_"+monitorData.getDataId() ;
+        String prefix = "create table if not exists smart_cloud.data_"+monitorData.getUniqueCode()+"_"+monitorData.getDataId() ;
         return jdbcTemplate.update(
                 prefix +" using smart_cloud.sensor_data tags(?,?,?)",
-                monitorData.getSn(), monitorData.getGroupId(),monitorData.getDataId()
+                monitorData.getUniqueCode(), monitorData.getGroupId(),monitorData.getDataId()
         );
     }
 
     @Override
     public int insertMonitorData(MonitorData monitorData) {
-        String prefix = "insert into smart_cloud.data_"+monitorData.getSn()+"_"+monitorData.getDataId();
+        String prefix = "insert into smart_cloud.data_"+monitorData.getUniqueCode()+"_"+monitorData.getDataId();
         return jdbcTemplate.update(
                 prefix +" (ts, data_value) VALUES(?,?)",
                 monitorData.getTimeStamp(), monitorData.getDataIdValue()
@@ -52,9 +52,9 @@ public class MonitorDataMapperImpl extends BaseMapper implements MonitorDataMapp
             return jdbcTemplate.batchUpdate("insert into smart_cloud.data_?_? using smart_cloud.sensor_data tags (?,?,?)  VALUES(?,?)", new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
-                    ps.setString(1,dataCollection.get(i).getSn());
+                    ps.setString(1,dataCollection.get(i).getUniqueCode());
                     ps.setString(2,dataCollection.get(i).getDataId());
-                    ps.setString(3,dataCollection.get(i).getSn());
+                    ps.setString(3,dataCollection.get(i).getUniqueCode());
                     ps.setInt(4,1);
                     ps.setString(5,dataCollection.get(i).getDataId());
                     ps.setTimestamp(6, dataCollection.get(i).getTimeStamp());

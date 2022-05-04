@@ -1,6 +1,8 @@
 package www.bwsensing.com.monitor.gatewayimpl.database.dataobject;
 
 import lombok.Data;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDataItemDO;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class MonitorPrototypeDO {
     /**类型名称*/
     private String  typeName;
     /**检测项集合*/
-    private List<MonitorItemsDO> itemCollection;
+    private List<ProductDataItemDO> itemCollection;
     /**创建人**/
     private String creator;
     /**创建时间**/

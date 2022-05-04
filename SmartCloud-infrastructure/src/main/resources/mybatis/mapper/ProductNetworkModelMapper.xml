@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ProductNetworkModelMapper">
+
+    <resultMap type="ProductNetworkModelDO" id="NetworkModelResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="name"    column="name"    />
+        <result property="receiveType"    column="receive_type"    />
+        <result property="serviceValue"    column="service_value"    />
+        <result property="hostname"    column="hostname"    />
+        <result property="address"    column="address"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="ProductNetworkModelVo">
+        select id, model_id, name, receive_type, service_value, hostname, address, remark from product_data_web_config
+    </sql>
+
+    <select id="queryNetworkModelBySort" parameterType="ProductNetworkModelDO" resultMap="NetworkModelResult">
+        <include refid="ProductNetworkModelVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="receiveType != null  and receiveType != ''"> and receive_type = #{receiveType}</if>
+            <if test="serviceValue != null  and serviceValue != ''"> and service_value = #{serviceValue}</if>
+            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+
+    <select id="getNetworkModelById" parameterType="Integer" resultMap="NetworkModelResult">
+        <include refid="ProductNetworkModelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="saveNetworkModel" parameterType="ProductNetworkModelDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_data_web_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="receiveType != null and receiveType != ''">receive_type,</if>
+            <if test="serviceValue != null">service_value,</if>
+            <if test="hostname != null and hostname != ''">hostname,</if>
+            <if test="address != null">address,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="receiveType != null and receiveType != ''">#{receiveType},</if>
+            <if test="serviceValue != null">#{serviceValue},</if>
+            <if test="hostname != null and hostname != ''">#{hostname},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNetworkModel" parameterType="ProductNetworkModelDO">
+        update product_data_web_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="receiveType != null and receiveType != ''">receive_type = #{receiveType},</if>
+            <if test="serviceValue != null">service_value = #{serviceValue},</if>
+            <if test="hostname != null and hostname != ''">hostname = #{hostname},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNetworkModelById" parameterType="Integer">
+        delete from product_data_web_config where id = #{id}
+    </delete>
+
+    <delete id="deleteNetworkModelByIds" parameterType="String">
+        delete from product_data_web_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

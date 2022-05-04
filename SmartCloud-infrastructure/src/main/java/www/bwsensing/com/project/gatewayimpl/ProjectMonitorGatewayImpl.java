@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.project.model.MonitorProject;
 import www.bwsensing.com.domain.project.model.ProjectMember;
@@ -19,7 +19,7 @@ import www.bwsensing.com.domain.system.model.token.TokenData;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.MonitorProjectDO;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorStructureDO;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.ProjectMemberDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
 import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.system.gatewayimpl.database.SystemUserMapper;
 
@@ -37,7 +37,7 @@ public class ProjectMonitorGatewayImpl implements ProjectMonitorGateway {
     @Resource
     private MonitorPositionMapper positionMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
     @Resource
     private SystemUserMapper userMapper;
     @Resource
@@ -101,7 +101,7 @@ public class ProjectMonitorGatewayImpl implements ProjectMonitorGateway {
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void deleteProject(Integer projectId) {
-        List<SensorDO> sensors = sensorMapper.selectSensorByProjectId(projectId);
+        List<ProductDeviceDO> sensors = productDeviceMapper.selectSensorByProjectId(projectId);
         if ( null !=sensors&& sensors.size() > 0){
             throw new BizException("PROJECT_CONTAIN_SENSOR","项目中已经包含传感器请先解绑!");
         }

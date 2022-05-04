@@ -28,7 +28,7 @@ public class MonitorData {
     /**
      *Sn编码
      */
-    private String sn;
+    private String uniqueCode;
 
     /**
      *查询类型

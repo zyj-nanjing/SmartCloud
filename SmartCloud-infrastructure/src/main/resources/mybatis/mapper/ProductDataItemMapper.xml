@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ProductDataItemMapper">
+    <resultMap type="ProductDataItemDO" id="ProductDataItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="dataId"    column="data_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="decimalSize"    column="decimal_size"    />
+        <result property="itemKind"    column="item_kind"    />
+        <result property="itemAttribute"    column="item_attribute"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <sql id="productDataItemVo">
+        select id, model_id, item_name, data_id, unit, decimal_size,
+               item_kind, item_attribute, need_transform, calculation_formula, placeholder from product_data_item
+    </sql>
+
+    <select id="queryProductDataItemBySort" parameterType="ProductDataItemDO" resultMap="ProductDataItemResult">
+        <include refid="productDataItemVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+            <if test="dataId != null  and dataId != ''"> and data_id = #{dataId}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="decimalSize != null "> and decimal_size = #{decimalSize}</if>
+            <if test="itemKind != null "> and item_kind = #{itemKind}</if>
+            <if test="itemAttribute != null "> and item_attribute = #{itemAttribute}</if>
+            <if test="needTransform != null "> and need_transform = #{needTransform}</if>
+            <if test="calculationFormula != null  and calculationFormula != ''"> and calculation_formula = #{calculationFormula}</if>
+            <if test="placeholder != null  and placeholder != ''"> and placeholder = #{placeholder}</if>
+        </where>
+    </select>
+
+    <select id="selectItemsByModelId" resultMap="ProductDataItemResult">
+        <include refid="productDataItemVo"/>
+        where model_id =#{modelId}
+    </select>
+
+    <select id="getProductDataItemById" parameterType="Integer" resultMap="ProductDataItemResult">
+        <include refid="productDataItemVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="queryProductItemByDataId" resultMap="ProductDataItemResult">
+        <include refid="productDataItemVo"/>
+        where data_id = #{dataId}
+    </select>
+
+    <select id="queryProductItemsByUniqueCode" resultMap="ProductDataItemResult" parameterType="String">
+        <include refid="productDataItemVo"/>
+        WHERE model_id in  (SELECT model_id FROM product_device WHERE unique_code=#{uniqueCode})
+    </select>
+
+    <select id="selectItemsByDataId" resultMap="ProductDataItemResult" parameterType="String">
+        <include refid="productDataItemVo"/>
+        WHERE data_id =#{dataId}
+    </select>
+
+    <select id="queryProductDataItemByIds" resultMap="ProductDataItemResult">
+        <include refid="productDataItemVo"/>
+        where id in
+        <foreach item="itemId" index="index" collection="list" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
+    </select>
+
+    <insert id="saveDataItem" parameterType="ProductDataItemDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_data_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="itemName != null">item_name,</if>
+            <if test="dataId != null">data_id,</if>
+            <if test="unit != null">unit,</if>
+            <if test="decimalSize != null">decimal_size,</if>
+            <if test="itemKind != null">item_kind,</if>
+            <if test="itemAttribute != null">item_attribute,</if>
+            <if test="needTransform != null">need_transform,</if>
+            <if test="calculationFormula != null">calculation_formula,</if>
+            <if test="placeholder != null">placeholder,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="itemName != null">#{itemName},</if>
+            <if test="dataId != null">#{dataId},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="decimalSize != null">#{decimalSize},</if>
+            <if test="itemKind != null">#{itemKind},</if>
+            <if test="itemAttribute != null">#{itemAttribute},</if>
+            <if test="needTransform != null">#{needTransform},</if>
+            <if test="calculationFormula != null">#{calculationFormula},</if>
+            <if test="placeholder != null">#{placeholder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDataItem" parameterType="ProductDataItemDO">
+        update product_data_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="itemName != null">item_name = #{itemName},</if>
+            <if test="dataId != null">data_id = #{dataId},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="decimalSize != null">decimal_size = #{decimalSize},</if>
+            <if test="itemKind != null">item_kind = #{itemKind},</if>
+            <if test="itemAttribute != null">item_attribute = #{itemAttribute},</if>
+            <if test="needTransform != null">need_transform = #{needTransform},</if>
+            <if test="calculationFormula != null">calculation_formula = #{calculationFormula},</if>
+            <if test="placeholder != null">placeholder = #{placeholder},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataItemById" parameterType="Integer">
+        delete from product_data_item where id = #{id}
+    </delete>
+
+    <delete id="deleteDataItemByIds" parameterType="String">
+        delete from product_data_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

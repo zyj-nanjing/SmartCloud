@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import static java.util.stream.Collectors.toList;
 import org.springframework.cglib.beans.BeanCopier;
-import www.bwsensing.com.domain.device.model.data.model.DataForm;
-import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
-import www.bwsensing.com.domain.device.model.data.model.ProductDataModel;
+import www.bwsensing.com.domain.device.model.data.model.*;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataModelDO;
-import www.bwsensing.com.domain.device.model.data.model.SplitMethod;
 
 /**
  * @author macos-zyj
@@ -20,8 +17,9 @@ public class DataModelConvertor {
     public static DataModelDO toDataObject(ProductDataModel dataModel){
         DataModelDO dataModelDo = new DataModelDO();
         MODEL_COPIER.copy(dataModel,dataModelDo,null);
-        dataModelDo.setSplitMethod(dataModel.getSplitMethod().getType()+"");
+        dataModelDo.setSplitMethod(dataModel.getSplitMethod().getType());
         dataModelDo.setDataForm(dataModel.getDataForm().getType());
+        dataModelDo.setMessageType(dataModel.getMessageType().getType());
         return dataModelDo;
     }
 
@@ -47,8 +45,9 @@ public class DataModelConvertor {
         if( null != items){
             dataModel.setDataItems(items);
         }
-        dataModel.setSplitMethod(SplitMethod.getSplitMethod(Integer.parseInt(dataObject.getSplitMethod())));
+        dataModel.setSplitMethod(SplitMethod.getSplitMethod(dataObject.getSplitMethod()));
         dataModel.setDataForm(DataForm.getDataForm(dataObject.getDataForm()));
+        dataModel.setMessageType(MessageFormat.getMessageFormat(dataObject.getMessageType()));
         return dataModel;
     }
 }

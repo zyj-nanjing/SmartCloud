@@ -7,7 +7,7 @@
     <resultMap type="DataModelItemDO" id="DataModelItemResult">
         <result property="id"    column="id"    />
         <result property="modelId"    column="model_id"    />
-        <result property="prototypeId"    column="prototype_id"    />
+        <result property="dataItemId"    column="data_item_id"    />
         <result property="itemKind"    column="item_kind"    />
         <result property="keyName" column="key_name"/>
         <result property="uniqueCodeSize"    column="unique_code_size"    />
@@ -22,7 +22,7 @@
     </resultMap>
 
     <sql id="selectProductDataModelItemVo">
-        select id, model_id, prototype_id, item_kind,key_name, unique_code_size, data_name, data_order, data_length,data_format, data_type, need_transform,
+        select id, model_id, data_item_id, item_kind,key_name, unique_code_size, data_name, data_order, data_length,data_format, data_type, need_transform,
                calculation_formula, placeholder from product_data_model_item
     </sql>
 
@@ -30,7 +30,7 @@
         <include refid="selectProductDataModelItemVo"/>
         <where>
             <if test="modelId != null "> and model_id = #{modelId}</if>
-            <if test="prototypeId != null "> and prototype_id = #{prototypeId}</if>
+            <if test="dataItemId != null "> and data_item_id = #{dataItemId}</if>
             <if test="itemKind != null "> and item_kind = #{itemKind}</if>
             <if test="uniqueCodeSize != null "> and unique_code_size = #{uniqueCodeSize}</if>
             <if test="dataName != null  and dataName != ''"> and data_name like concat('%', #{dataName}, '%')</if>
@@ -49,11 +49,17 @@
         where id = #{id}
     </select>
 
+    <select id="queryDataModelItemByModelId" parameterType="Integer" resultMap="DataModelItemResult">
+        <include refid="selectProductDataModelItemVo"/>
+        where model_id = #{modelId}
+    </select>
+
+
     <insert id="saveDataModelItem" parameterType="DataModelItemDO" useGeneratedKeys="true" keyProperty="id">
         insert into product_data_model_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="modelId != null">model_id,</if>
-            <if test="prototypeId != null">prototype_id,</if>
+            <if test="dataItemId != null">data_item_id,</if>
             <if test="itemKind != null">item_kind,</if>
             <if test="keyName != null and keyName != ''">key_name,</if>
             <if test="uniqueCodeSize != null">unique_code_size,</if>
@@ -68,7 +74,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="modelId != null">#{modelId},</if>
-            <if test="prototypeId != null">#{prototypeId},</if>
+            <if test="dataItemId != null">#{dataItemId},</if>
             <if test="itemKind != null">#{itemKind},</if>
             <if test="keyName != null and keyName != ''">#{keyName},</if>
             <if test="uniqueCodeSize != null">#{uniqueCodeSize},</if>
@@ -87,7 +93,7 @@
         update product_data_model_item
         <trim prefix="SET" suffixOverrides=",">
             <if test="modelId != null">model_id = #{modelId},</if>
-            <if test="prototypeId != null">prototype_id = #{prototypeId},</if>
+            <if test="dataItemId != null">data_item_id = #{dataItemId},</if>
             <if test="itemKind != null">item_kind = #{itemKind},</if>
             <if test="keyName != null and keyName != ''">key_name=#{keyName},</if>
             <if test="uniqueCodeSize != null">unique_code_size = #{uniqueCodeSize},</if>
@@ -109,8 +115,8 @@
 
     <delete id="deleteDataModelItemByIds" parameterType="String">
         delete from product_data_model_item where id in
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
+        <foreach item="itemId" index="index" collection="list" open="(" separator="," close=")">
+            #{itemId}
         </foreach>
     </delete>
 

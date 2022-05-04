@@ -13,13 +13,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import www.bwsensing.com.domain.device.model.alert.AlertParam;
 
 
+
+/**
+ * @author macos-zyj
+ */
 @PowerMockIgnore
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MockUtil.class,AlertParamTest.class})
 @Slf4j
-/**
- * @author macos-zyj
- */
 public class AlertParamTest {
     private static final String ALERT_EXPR_EXPECT = "max(data_value) > 80 || min(data_value) < 10";
     @Test

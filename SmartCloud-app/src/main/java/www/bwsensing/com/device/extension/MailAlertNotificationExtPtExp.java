@@ -1,36 +1,36 @@
 package www.bwsensing.com.device.extension;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.TimeUnit;
 import java.net.MalformedURLException;
 import org.springframework.util.Assert;
+import java.nio.charset.StandardCharsets;
 import com.alibaba.cola.extension.Extension;
 import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.common.utills.io.IoUtils;
+import www.bwsensing.com.common.mail.IMailService;
+import www.bwsensing.com.common.core.text.Convert;
+import www.bwsensing.com.common.utills.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import www.bwsensing.com.common.constant.BizScenarioCode;
-import www.bwsensing.com.common.core.text.Convert;
 import www.bwsensing.com.common.cache.redis.RedisService;
-import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.common.utills.io.IoUtils;
-import www.bwsensing.com.common.mail.convertor.MailConfigConvertor;
 import com.aliyuncs.dm.model.v20151123.SingleSendMailRequest;
+import www.bwsensing.com.common.mail.database.MailConfigMapper;
+import www.bwsensing.com.common.mail.database.MailTemplateMapper;
+import www.bwsensing.com.common.mail.convertor.MailConfigConvertor;
 import www.bwsensing.com.device.dto.command.NotificationMessageCmd;
 import www.bwsensing.com.device.extensionpoint.AlertNotificationExtPt;
 import www.bwsensing.com.device.gatewayimpl.database.AlertGroupMapper;
-import www.bwsensing.com.common.mail.database.MailConfigMapper;
-import www.bwsensing.com.common.mail.database.MailTemplateMapper;
 import www.bwsensing.com.common.mail.database.dataobject.MailConfigDO;
 import www.bwsensing.com.common.mail.database.dataobject.MailTemplateDO;
-import www.bwsensing.com.common.mail.IMailService;
 
 
 /**

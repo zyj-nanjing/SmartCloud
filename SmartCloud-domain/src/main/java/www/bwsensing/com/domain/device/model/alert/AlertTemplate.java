@@ -4,8 +4,8 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
-import www.bwsensing.com.domain.device.model.SensorInfo;
-import www.bwsensing.com.domain.device.model.SensorModel;
+import www.bwsensing.com.domain.device.model.ProductDevice;
+import www.bwsensing.com.domain.device.model.ProductModel;
 
 /**
  * 告警模板
@@ -20,7 +20,7 @@ public class AlertTemplate {
     /**
      * 传感器型号
      */
-    private SensorModel sensorModel;
+    private ProductModel sensorModel;
     /**业务组编号*/
     private Integer groupId;
     /**模型名称*/
@@ -53,17 +53,17 @@ public class AlertTemplate {
         }
     }
 
-    public List<AlertRole> initializeRole(SensorInfo sensorInfo){
+    public List<AlertRole> initializeRole(ProductDevice sensorInfo){
         List<AlertRole> sensorAlertRole = new ArrayList<>();
         this.getAlertParams().forEach(alertParam -> sensorAlertRole.add(new AlertRole(sensorInfo,alertParam,this)));
         return sensorAlertRole;
     }
 
-    public String getDesignSummary(AlertParam altParam,SensorInfo sensor){
+    public String getDesignSummary(AlertParam altParam, ProductDevice sensor){
         return this.summaryModel.replace("${alertName}",altParam.getAlertName())
                 .replace("${dataNumber}","{{$values.data_value}}")
                 .replace("${altParam}",altParam.getMonitorItem().getItemName())
-                .replace("${sensorModel}",sensor.getModelName())
+                .replace("${sensorModel}",sensor.getSensorModel().getProductName())
                 .replace("${sensor}",sensor.getName())
                 .replace("${paramName}",altParam.getMonitorItem().getItemName());
     }

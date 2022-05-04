@@ -32,7 +32,7 @@ public class StructureCO extends DTO {
     /***有效性*/
     private Boolean effective;
     /**测点合集*/
-    private List<SensorPositionCO> positionList;
+    private List<ProductWithPositionCO> positionList;
     /**创建人*/
     private String creator;
     /**创建时间*/
@@ -124,11 +124,11 @@ public class StructureCO extends DTO {
         this.effective = effective;
     }
 
-    public List<SensorPositionCO> getPositionList() {
+    public List<ProductWithPositionCO> getPositionList() {
         return positionList;
     }
 
-    public void setPositionList(List<SensorPositionCO> positionList) {
+    public void setPositionList(List<ProductWithPositionCO> positionList) {
         this.positionList = positionList;
     }
 

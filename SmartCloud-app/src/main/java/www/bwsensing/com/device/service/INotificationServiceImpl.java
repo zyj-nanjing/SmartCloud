@@ -1,33 +1,33 @@
 package www.bwsensing.com.device.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import javax.annotation.Resource;
-import com.alibaba.cola.catchlog.CatchAndLog;
-import com.alibaba.cola.dto.MultiResponse;
-import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.exception.Assert;
 import com.github.pagehelper.PageInfo;
+import com.alibaba.cola.exception.Assert;
+import com.alibaba.cola.dto.PageResponse;
+import com.alibaba.cola.dto.MultiResponse;
+import com.alibaba.cola.catchlog.CatchAndLog;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.device.api.NotificationService;
-import www.bwsensing.com.common.constant.NotificationConstant;
 import www.bwsensing.com.common.utills.PageHelperUtils;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertGroupDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertNotificationDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.NotificationTag;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
-import www.bwsensing.com.project.convertor.NotificationCoConvertor;
-import www.bwsensing.com.project.convertor.NotificationMsgCoConvertor;
+import www.bwsensing.com.device.api.NotificationService;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.model.token.TokenData;
+import www.bwsensing.com.common.constant.NotificationConstant;
 import www.bwsensing.com.device.dto.clientobject.NotificationCO;
 import www.bwsensing.com.device.dto.clientobject.NotificationMsgCO;
 import www.bwsensing.com.device.dto.command.query.NotificationQuery;
+import www.bwsensing.com.project.convertor.NotificationCoConvertor;
+import www.bwsensing.com.project.convertor.NotificationMsgCoConvertor;
 import www.bwsensing.com.device.gatewayimpl.database.AlertGroupMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
 import www.bwsensing.com.device.gatewayimpl.database.AlertNotificationMapper;
 import www.bwsensing.com.device.gatewayimpl.database.CacheNotificationMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertGroupDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.NotificationTag;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertNotificationDO;
 
 
 /**
@@ -40,7 +40,7 @@ public class INotificationServiceImpl implements NotificationService {
     @Resource
     private AlertGroupMapper alertGroupMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
     @Resource
     private TokenGateway tokenGateway;
     @Resource
@@ -60,7 +60,7 @@ public class INotificationServiceImpl implements NotificationService {
 
     private AlertNotificationDO initializeQuery(NotificationQuery pageQuery){
         AlertNotificationDO query = new AlertNotificationDO();
-        SensorDO sensorInfo = sensorMapper.selectSensorBySn(pageQuery.getCurrentDevice());
+        ProductDeviceDO sensorInfo = productDeviceMapper.getProductDetailByUniqueCode(pageQuery.getCurrentDevice());
         Assert.notNull(sensorInfo,"SENSOR_CODE_NOT_TRUE","设备码不存在!");
         query.setGroupId(tokenGateway.getTokenInfo().getGroupId());
         query.setSensorId(sensorInfo.getId());

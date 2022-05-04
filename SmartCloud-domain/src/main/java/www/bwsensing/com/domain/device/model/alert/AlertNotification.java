@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.alibaba.cola.exception.BizException;
-import www.bwsensing.com.domain.device.model.SensorInfo;
-import www.bwsensing.com.domain.device.model.SensorModel;
+import www.bwsensing.com.domain.device.model.ProductDevice;
+import www.bwsensing.com.domain.device.model.ProductModel;
 import www.bwsensing.com.domain.system.model.user.OperateGroup;
 /**
  * 告警通知
@@ -116,15 +116,15 @@ public class AlertNotification {
         this.isHandle = false;
     }
 
-    public void initSensorInfo(SensorInfo sensorInfo){
-        this.sn = sensorInfo.getSn();
+    public void initSensorInfo(ProductDevice sensorInfo){
+        this.sn = sensorInfo.getUniqueCode();
         this.sensorId = sensorInfo.getId();
         this.sensorName = sensorInfo.getName();
         this.modelId = sensorInfo.getModelId();
     }
 
-    public void initSensorModel(SensorModel model){
-        this.sensorModel = model.getModelName();
+    public void initSensorModel(ProductModel model){
+        this.sensorModel = model.getProductName();
         this.modelId = model.getId();
     }
 

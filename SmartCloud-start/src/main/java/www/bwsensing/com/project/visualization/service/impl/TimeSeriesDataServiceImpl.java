@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import www.bwsensing.com.common.api.ITimeSeriesDataService;
 import www.bwsensing.com.common.clientobject.TimeSeriesDataCO;
-import www.bwsensing.com.device.dto.clientobject.SensorDynamicColumnCO;
+import www.bwsensing.com.device.dto.clientobject.ProductDynamicColumnCO;
 import www.bwsensing.com.project.visualization.domain.StatisticsData;
 import www.bwsensing.com.project.visualization.domain.StatisticsQuery;
 import www.bwsensing.com.project.visualization.mapper.StatisticsDataMapper;
@@ -42,8 +42,8 @@ public class TimeSeriesDataServiceImpl implements ITimeSeriesDataService {
     }
 
     @Override
-    public List<SensorDynamicColumnCO> getSensorDynamicColumns(List<String> dataIds, Date selectDate, String uniqueCode) {
-        List<SensorDynamicColumnCO> columnCollection = new ArrayList<>();
+    public List<ProductDynamicColumnCO> getSensorDynamicColumns(List<String> dataIds, Date selectDate, String uniqueCode) {
+        List<ProductDynamicColumnCO> columnCollection = new ArrayList<>();
         Map<String,List<StatisticsData>> dataMap = new LinkedHashMap<>(10);
         List<Timestamp> timestampList = new ArrayList<>();
         //封装数据并初始化
@@ -70,13 +70,14 @@ public class TimeSeriesDataServiceImpl implements ITimeSeriesDataService {
      * @param dataCollection
      * @param sortedTimestamp
      */
-    private void setColumnCollection(String dataId,List<StatisticsData> dataCollection,List<Timestamp> sortedTimestamp,List<SensorDynamicColumnCO> columnCollection){
+    private void setColumnCollection(String dataId,List<StatisticsData> dataCollection,
+                                     List<Timestamp> sortedTimestamp,List<ProductDynamicColumnCO> columnCollection){
         AtomicInteger currentIndex = new AtomicInteger();
         AtomicInteger countIndex = new AtomicInteger();
         sortedTimestamp.forEach(timestamp -> {
             int index = countIndex.getAndIncrement();
             if(columnCollection.size()<=index){
-                SensorDynamicColumnCO columnCo = new SensorDynamicColumnCO();
+                ProductDynamicColumnCO columnCo = new ProductDynamicColumnCO();
                 columnCo.setDataMap(new LinkedHashMap<>());
                 columnCollection.add(columnCo);
             }
@@ -99,7 +100,6 @@ public class TimeSeriesDataServiceImpl implements ITimeSeriesDataService {
                 columnCollection.get(index).getDataMap().put(dataId,dataCo);
             }
         });
-
     }
 
     private TimeSeriesDataCO toTimeSeriesData(StatisticsData statisticsData){

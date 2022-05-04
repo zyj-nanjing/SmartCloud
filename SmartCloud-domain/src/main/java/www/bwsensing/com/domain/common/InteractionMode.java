@@ -1,5 +1,8 @@
 package www.bwsensing.com.domain.common;
 
+import com.alibaba.cola.exception.BizException;
+import www.bwsensing.com.domain.device.model.DataItemSourceKind;
+
 /**
  * 交互方式 后续可酌情变为数据对象 暂为枚举
  * @author macos-zyj
@@ -15,15 +18,31 @@ public enum InteractionMode {
     /**
      * 模型编码
      */
-    private String modeCode;
+    private final String modeCode;
     /**
      * 备注
      */
-    private String remark;
+    private final String remark;
 
     InteractionMode(String modeCode, String remark) {
         this.modeCode = modeCode;
         this.remark = remark;
     }
 
+    public String getModeCode() {
+        return modeCode;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public static InteractionMode getInteractionMode(String modeCode){
+        for (InteractionMode current:values()){
+            if (current.getModeCode().equals(modeCode)) {
+                return current;
+            }
+        }
+        throw new BizException("interaction_mode_not_found","交互方式类型不存在");
+    }
 }

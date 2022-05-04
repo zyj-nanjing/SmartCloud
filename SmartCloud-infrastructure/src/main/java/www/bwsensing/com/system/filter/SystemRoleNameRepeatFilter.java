@@ -22,12 +22,12 @@ public class SystemRoleNameRepeatFilter implements Filter<UserRole> {
     @Override
     public void doFilter(UserRole context, FilterInvoker nextFilter) {
         if (null == context.getId()){
-            validateFilter(context.getRoleCode());
+            validateFilter(context.getRoleName());
         } else {
             SystemRoleDO systemRole = roleMapper.getUserRoleById(context.getId());
             if (StringUtils.isNotEmpty(context.getRoleName())){
                 if (!systemRole.getRoleName().equals(context.getRoleName())){
-                    validateFilter(context.getRoleCode());
+                    validateFilter(context.getRoleName());
                 }
             }
         }

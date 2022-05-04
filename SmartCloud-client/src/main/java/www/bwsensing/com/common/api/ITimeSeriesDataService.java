@@ -1,7 +1,7 @@
 package www.bwsensing.com.common.api;
 
 import www.bwsensing.com.common.clientobject.TimeSeriesDataCO;
-import www.bwsensing.com.device.dto.clientobject.SensorDynamicColumnCO;
+import www.bwsensing.com.device.dto.clientobject.ProductDynamicColumnCO;
 import java.util.Date;
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface ITimeSeriesDataService {
      * @param uniqueCode
      * @return
      */
-    List<SensorDynamicColumnCO> getSensorDynamicColumns(List<String> dataIds, Date selectDate,String uniqueCode);
+    List<ProductDynamicColumnCO> getSensorDynamicColumns(List<String> dataIds, Date selectDate, String uniqueCode);
 }

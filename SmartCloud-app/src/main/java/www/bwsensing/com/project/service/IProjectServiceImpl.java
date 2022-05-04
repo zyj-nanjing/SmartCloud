@@ -6,7 +6,7 @@ import com.alibaba.cola.exception.BizException;
 import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.common.clientobject.TreeCO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
 import www.bwsensing.com.project.api.ProjectMemberService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import www.bwsensing.com.project.command.ProjectMemberStorageCmdExo;
@@ -21,8 +21,8 @@ import www.bwsensing.com.project.dto.clientobject.ProjectPositionCO;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.MonitorProjectDO;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.ProjectMemberDO;
 import www.bwsensing.com.system.convertor.UserDataCoConvertor;
-import www.bwsensing.com.domain.device.gateway.SensorGateway;
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.gateway.ProductDeviceGateway;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.monitor.gateway.StructureGateway;
 import www.bwsensing.com.domain.monitor.gateway.StructureModelGateway;
 import www.bwsensing.com.domain.monitor.model.MonitorStructure;
@@ -36,7 +36,7 @@ import www.bwsensing.com.project.dto.command.ProjectMemberDeleteCmd;
 import www.bwsensing.com.project.dto.command.ProjectMemberStorageCmd;
 import www.bwsensing.com.common.command.BaseQuery;
 import www.bwsensing.com.monitor.gatewayimpl.database.MonitorStructureModelMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
 import www.bwsensing.com.system.gatewayimpl.database.SystemUserMapper;
 import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.domain.system.model.token.TokenData;
@@ -85,9 +85,9 @@ public class IProjectServiceImpl implements ProjectService {
     @Resource
     private ProjectPositionQueryExo positionQueryExo;
     @Resource
-    private SensorGateway sensorGateway;
+    private ProductDeviceGateway productDeviceGateway;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
 
 
     @Override
@@ -108,12 +108,12 @@ public class IProjectServiceImpl implements ProjectService {
             TreeCO baseTree = new TreeCO();
             baseTree.setId(project.getId());
             baseTree.setLable(project.getName());
-            List<SensorDO> sensorList = sensorMapper.selectSensorByProjectId(project.getId());
+            List<ProductDeviceDO> sensorList = productDeviceMapper.selectSensorByProjectId(project.getId());
             List<TreeCO> childrenArray = new ArrayList<>();
             sensorList.forEach(node -> {
                 TreeCO children = new TreeCO();
                 children.setId(node.getId());
-                children.setValue(node.getSn());
+                children.setValue(node.getUniqueCode());
                 children.setLable(node.getName());
                 childrenArray.add(children);
             });
@@ -166,29 +166,28 @@ public class IProjectServiceImpl implements ProjectService {
         String structureCode = structureModelMapper.getStructureCodeById(currentStructure.getModelId());
         MonitorStructureModel lastStructureModel = structureModelGateway.getMonitorStructureModelByCode(structureCode);
         Assert.notNull(lastStructureModel,"同步失败,结构物模板不存在请确认配置!");
-        List<SensorInfo> currentSensorCollection = sensorGateway.getSensorsByMonitorStructure(modelId);
+        List<ProductDevice> currentSensorCollection = productDeviceGateway.getSensorsByMonitorStructure(modelId);
         currentStructure.updateStructureVersion(lastStructureModel,currentSensorCollection);
         structureGateway.updateStructure(currentStructure);
-        sensorGateway.updateSensors(currentSensorCollection);
+        productDeviceGateway.updateProductDevices(currentSensorCollection);
         return Response.buildSuccess();
     }
 
     @Override
     public Response bindPosition(PositionBindCmd bindCmd) {
         if (checkPositionExist(bindCmd.getPositionId())<=0){
-            SensorDO bindSensor = new SensorDO();
+            ProductDeviceDO bindSensor = new ProductDeviceDO();
             bindSensor.setId(bindCmd.getSensorId());
-            bindSensor.setProjectId(bindCmd.getProjectId());
             bindSensor.setPositionId(bindCmd.getPositionId());
             if (checkPositionExist(bindCmd.getPositionId())<=0) {
-                sensorMapper.bindSensorMethod(bindSensor);
+                productDeviceMapper.bindDeviceWithPosition(bindSensor);
             }
         }
         return Response.buildSuccess();
     }
 
     private Integer checkPositionExist(Integer positionId) {
-        return sensorMapper.countByPositionId(positionId);
+        return productDeviceMapper.countByPositionId(positionId);
     }
     @Override
     public MultiResponse<ProjectCO> selectProjectByPermission() {

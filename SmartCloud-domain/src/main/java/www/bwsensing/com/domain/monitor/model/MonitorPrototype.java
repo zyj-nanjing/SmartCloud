@@ -2,6 +2,7 @@ package www.bwsensing.com.domain.monitor.model;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import www.bwsensing.com.domain.device.model.ProductDataItem;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class MonitorPrototype {
     /**修改时间**/
     private Date  updateTime;
     /**监测项目合集**/
-    private List<MonitorItem> itemsList;
+    private List<ProductDataItem> itemsList;
     /**是否有效**/
     private boolean isEffective;
     private Integer orderSort;

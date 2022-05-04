@@ -2,7 +2,7 @@ package www.bwsensing.com.domain.device.model.alert;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class AlertRole {
     /**
      * 设备信息
      */
-    private SensorInfo sensorInfo;
+    private ProductDevice sensorInfo;
     /**
      * 小组编号
      */
@@ -132,20 +132,20 @@ public class AlertRole {
 
     }
 
-    public AlertRole(SensorInfo sensorInfo, AlertParam alertParam) {
+    public AlertRole(ProductDevice sensorInfo, AlertParam alertParam) {
         this(sensorInfo, alertParam,null);
     }
 
-    public AlertRole(SensorInfo sensorInfo, AlertParam alertParam, AlertTemplate template) {
+    public AlertRole(ProductDevice sensorInfo, AlertParam alertParam, AlertTemplate template) {
         this.alertParam = alertParam;
         this.alertTemplate = template;
         this.sensorInfo = sensorInfo;
         initRoleLabel(template);
         this.sensorId = sensorInfo.getId();
-        this.operateGroupId = sensorInfo.getMemberGroupId();
+        this.operateGroupId = sensorInfo.getOrganizationId();
         this.initSummaryAndAnnotation();
         this.initAlertRoleParam();
-        this.templateSql = alertParam.toAlertSql(sensorInfo.getSn());
+        this.templateSql = alertParam.toAlertSql(sensorInfo.getUniqueCode());
         this.alertStatus = true;
     }
 
@@ -174,7 +174,7 @@ public class AlertRole {
             this.initRandom(null);
             this.label = template.getNamePrefix();
         } else{
-            this.initRandom(AUTO_ROLE_NAME + sensorInfo.getMemberGroupId());
+            this.initRandom(AUTO_ROLE_NAME + sensorInfo.getOrganizationId());
             this.label = AUTO_ROLE_NAME+getRandomNameId();
         }
         this.labels = new  Labels(this.label);
@@ -213,7 +213,7 @@ public class AlertRole {
         this.summary = getRoleSummary();
         Annotations annotations = new Annotations();
         annotations.setSummary(summary);
-        String alertInfo = this.sensorInfo.getSn()+"|"+this.operateGroupId +"|"+this.name;
+        String alertInfo = this.sensorInfo.getUniqueCode()+"|"+this.operateGroupId +"|"+this.name;
         annotations.setInfo(alertInfo);
         this.alertInfo = alertInfo;
         this.annotations = annotations;
@@ -221,10 +221,10 @@ public class AlertRole {
 
 
     private String getRoleSummary(){
-        SensorInfo sensor = this.sensorInfo;
+        ProductDevice sensor = this.sensorInfo;
         return this.alertParam.getSummary().replace("${roleName}",this.roleName)
                 .replace("${dataNumber}","{{$values.data_value}}")
-                .replace("${sensorModel}",sensor.getModelName())
+                .replace("${sensorModel}",sensor.getSensorModel().getProductName())
                 .replace("${sensor}",sensor.getName());
     }
 }

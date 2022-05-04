@@ -1,19 +1,19 @@
 package www.bwsensing.com.device.web;
 
+import javax.validation.Valid;
+import io.swagger.annotations.Api;
+import com.alibaba.cola.dto.Response;
+import io.swagger.annotations.ApiOperation;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.PageResponse;
-import com.alibaba.cola.dto.Response;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.device.api.NotificationService;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.device.dto.clientobject.NotificationCO;
 import www.bwsensing.com.device.dto.clientobject.NotificationMsgCO;
 import www.bwsensing.com.device.dto.command.NotificationUpdateCmd;
 import www.bwsensing.com.device.dto.command.query.NotificationQuery;
-import javax.validation.Valid;
 
 /**
  * @author macos-zyj

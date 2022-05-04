@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ProductModelMapper">
+    <resultMap type="ProductModelDO" id="ProductModelResult">
+        <result property="id"    column="id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productKindId"    column="product_kind_id"    />
+        <result property="picture"    column="picture"    />
+        <result property="comment"    column="comment"    />
+        <result property="productDetails"    column="product_details"    />
+        <result property="interactionMode"    column="interaction_mode"    />
+        <result property="version"    column="version"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updater"    column="updater"    />
+        <result property="updateTime"    column="update_time"    />
+        <collection property="industryFields" ofType="Industry" column="id" select="getIndustryFieldsById"/>
+    </resultMap>
+
+    <resultMap id="Industry" type="IndustryFieldDO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="ProductModelVo">
+        select id, product_name, product_kind_id, picture, comment, product_details, interaction_mode,
+               version, creator, create_time, updater, update_time from product_model
+    </sql>
+
+    <select id="queryProductModelBySort" parameterType="ProductModelDO" resultMap="ProductModelResult">
+        <include refid="ProductModelVo"/>
+        <where>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productKindId != null "> and product_kind_id = #{productKindId}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+            <if test="productDetails != null  and productDetails != ''"> and product_details = #{productDetails}</if>
+            <if test="interactionMode != null  and interactionMode != ''"> and interaction_mode = #{interactionMode}</if>
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="updater != null  and updater != ''"> and updater = #{updater}</if>
+        </where>
+    </select>
+
+    <select id="getIndustryFieldsById" resultMap="Industry" parameterType="Integer">
+        select  * from sys_industry_field where id in(select industry_id from product_model_industry where model_id = #{modelId})
+    </select>
+
+    <select id="getProductModelById" parameterType="Integer" resultMap="ProductModelResult">
+        <include refid="ProductModelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="saveProductModel" parameterType="ProductModelDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="productKindId != null">product_kind_id,</if>
+            <if test="picture != null">picture,</if>
+            <if test="comment != null">comment,</if>
+            <if test="productDetails != null">product_details,</if>
+            <if test="interactionMode != null">interaction_mode,</if>
+            <if test="version != null">version,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updater != null">updater,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="productKindId != null">#{productKindId},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="productDetails != null">#{productDetails},</if>
+            <if test="interactionMode != null">#{interactionMode},</if>
+            <if test="version != null">#{version},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updater != null">#{updater},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProductModel" parameterType="ProductModelDO">
+        update product_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="productKindId != null">product_kind_id = #{productKindId},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="productDetails != null">product_details = #{productDetails},</if>
+            <if test="interactionMode != null">interaction_mode = #{interactionMode},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductModelById" parameterType="Integer">
+        delete from product_model where id = #{id}
+    </delete>
+
+    <delete id="deleteProductModelByIds" parameterType="String">
+        delete from product_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="saveProductModelWithIndustry" parameterType="Integer">
+        insert  into product_model_industry(model_id,industry_id) values (#{modelId},#{industryId})
+    </insert>
+
+    <delete id="deleteProductModelWithIndustryByModelId" parameterType="Integer">
+        delete from product_model_industry where model_id =#{modelId}
+    </delete>
+
+    <select id="countModelByName" parameterType="String" resultType="Integer">
+        select  count(*) from product_model where product_name =#{name}
+    </select>
+
+</mapper>

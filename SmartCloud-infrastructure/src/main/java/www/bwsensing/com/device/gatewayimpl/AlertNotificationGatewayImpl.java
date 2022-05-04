@@ -6,14 +6,14 @@ import javax.annotation.Resource;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.device.convertor.AlertRoleConvertor;
 import www.bwsensing.com.device.convertor.NotificationConvertor;
-import www.bwsensing.com.device.convertor.SensorConvertor;
-import www.bwsensing.com.device.convertor.SensorModelConvertor;
+import www.bwsensing.com.device.convertor.ProductDeviceConvertor;
+import www.bwsensing.com.device.convertor.ProductModelConvertor;
 import www.bwsensing.com.device.gatewayimpl.database.*;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertGroupDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertRoleDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorModelDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductModelDO;
 import www.bwsensing.com.domain.device.model.alert.AlertNotification;
 import www.bwsensing.com.domain.device.gateway.AlertNotificationGateway;
 import www.bwsensing.com.common.core.event.DomainEventPublisher;
@@ -34,9 +34,9 @@ import java.util.stream.Collectors;
 @Component
 public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
     @Resource
-    private SensorModelMapper sensorModelMapper;
+    private ProductModelMapper productModelMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
     @Resource
     private AlertRoleMapper alertRoleMapper;
     @Resource
@@ -63,18 +63,18 @@ public class AlertNotificationGatewayImpl implements AlertNotificationGateway {
             throw new BizException("CURRENT_ROLE_DELETED","当前规则已被删除无需录入日志");
         }
         alertNotification.initAlertRoleInfo(AlertRoleConvertor.toDomainObject(alertRoleDo));
-        SensorDO sensorDo = sensorMapper.selectSensorBySn(alertNotification.getSn());
-        alertNotification.initSensorInfo(SensorConvertor.toDomain(sensorDo));
-        SensorModelDO sensorModel = sensorModelMapper.selectModelById(alertNotification.getModelId());
-        alertNotification.initSensorModel(SensorModelConvertor.toDomainObject(sensorModel));
+        ProductDeviceDO productDeviceDo = productDeviceMapper.getProductDetailByUniqueCode(alertNotification.getSn());
+        alertNotification.initSensorInfo(ProductDeviceConvertor.toDomain(productDeviceDo));
+        ProductModelDO sensorModel = productModelMapper.getProductModelById(alertNotification.getModelId());
+        alertNotification.initSensorModel(ProductModelConvertor.toDomainObject(sensorModel));
         OperateGroupDO operateGroup = operateGroupMapper.selectGroupById(alertNotification.getGroupId());
         AlertGroupDO alertGroup = alertGroupMapper.getAlertGroupById(alertNotification.getAlertGroupId());
         alertNotification.setAlertGroupName(alertGroup.getGroupName());
         List<String> pushMethods = Arrays.asList(alertGroup.getPushTypes().split("#"));
         alertNotification.setPushMethods(pushMethods.stream().map(Integer::parseInt).collect(Collectors.toList()));
         alertNotification.initGroupInfo(OperateGroupConvertor.toDomain(operateGroup));
-        if (null != sensorDo.getProjectId()){
-            alertNotification.setProjectName(projectMapper.selectMonitorProjectById(sensorDo.getProjectId()).getName());
+        if (null != productDeviceDo.getProjectId()){
+            alertNotification.setProjectName(projectMapper.selectMonitorProjectById(productDeviceDo.getProjectId()).getName());
         }
         if (notificationMapper.countNotificationByRoleNameAndTime(alertNotification.getRoleName(),alertNotification.getAlertTime())>0){
             return  false;

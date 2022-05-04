@@ -1,7 +1,7 @@
 package www.bwsensing.com.domain.monitor.model;
 
 import lombok.Data;
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 
 /**
  * @author macos-zyj
@@ -21,7 +21,7 @@ public class MonitorPosition {
     /***有效性*/
     private Boolean effective;
     /**绑定的传感器*/
-    private SensorInfo equipment;
+    private ProductDevice equipment;
     /**绑定状态**/
     private PositionStatus bindingStatus;
 

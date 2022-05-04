@@ -6,7 +6,7 @@
 
     <resultMap type="MonitorReceiveDO" id="MonitorReceive">
         <result property="id"    column="id"    />
-        <result property="sn" column="sn"      />
+        <result property="uniqueCode" column="unique_code"      />
         <result property="channelId"    column="channel_id"    />
         <result property="ip"    column="ip"    />
         <result property="receiveTime"    column="receive_time"    />
@@ -17,7 +17,7 @@
     </resultMap>
 
     <sql id="selectMonitorReceiveVo">
-        select id, channel_id, ip,sn, receive_time, receive_size, send_count, receive_message, total_size from sys_monitor_receive_log
+        select id, channel_id, ip,unique_code, receive_time, receive_size, send_count, receive_message, total_size from sys_monitor_receive_log
     </sql>
 
     <select id="selectMonitorReceiveBySort" parameterType="MonitorReceiveDO" resultMap="MonitorReceive">
@@ -25,7 +25,7 @@
         <where>
             <if test="channelId != null  and channelId != ''"> and channel_id = #{channelId}</if>
             <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
-            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="uniqueCode != null  and uniqueCode != ''"> and unique_code = #{uniqueCode}</if>
             <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
             <if test="receiveSize != null "> and receive_size = #{receiveSize}</if>
             <if test="sendCount != null "> and send_count = #{sendCount}</if>
@@ -45,7 +45,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="channelId != null">channel_id,</if>
             <if test="ip != null">ip,</if>
-            <if test="sn != null">sn,</if>
+            <if test="uniqueCode != null">unique_code,</if>
             <if test="receiveTime != null">receive_time,</if>
             <if test="receiveSize != null">receive_size,</if>
             <if test="sendCount != null">send_count,</if>
@@ -55,7 +55,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="channelId != null">#{channelId},</if>
             <if test="ip != null">#{ip},</if>
-            <if test="sn != null">#{sn},</if>
+            <if test="uniqueCode != null">#{uniqueCode},</if>
             <if test="receiveTime != null">#{receiveTime},</if>
             <if test="receiveSize != null">#{receiveSize},</if>
             <if test="sendCount != null">#{sendCount},</if>

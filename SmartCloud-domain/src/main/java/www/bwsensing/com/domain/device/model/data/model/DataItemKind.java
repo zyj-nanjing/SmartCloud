@@ -43,10 +43,9 @@ public enum DataItemKind {
         return type;
     }
 
-    public static DataItemKind getDataItemKind(String type) {
-        int typeKind = Integer.parseInt(type);
+    public static DataItemKind getDataItemKind(Integer type) {
         for (DataItemKind  currentKind : values()){
-            if (currentKind.getType().equals(typeKind)){
+            if (currentKind.getType().equals(type)){
                 return currentKind;
             }
         }

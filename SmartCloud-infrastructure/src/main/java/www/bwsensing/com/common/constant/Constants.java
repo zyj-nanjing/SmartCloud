@@ -58,4 +58,24 @@ public class Constants
   public static final String GET = "GET" ;
 
   public static final String OPTIONS ="OPTIONS";
+
+  /**
+   * 通用成功标识
+   */
+  public static final String SUCCESS = "0";
+
+  /**
+   * 通用失败标识
+   */
+  public static final String FAIL = "1";
+  /**
+   * 定时任务白名单配置（仅允许访问的包名，如其他需要可以自行添加）
+   */
+  public static final String[] JOB_WHITELIST_STR = { "www.bwsensing.com" };
+
+  /**
+   * 定时任务违规的字符
+   */
+  public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
+          "org.springframework", "org.apache", "www.bwsensing.com.utils.file" };
 }

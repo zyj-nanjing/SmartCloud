@@ -14,7 +14,7 @@ public class MonitorReceive {
     /**
      * Sn编码
      */
-    private String sn;
+    private String uniqueCode;
     /**
      * 频道编号
      */

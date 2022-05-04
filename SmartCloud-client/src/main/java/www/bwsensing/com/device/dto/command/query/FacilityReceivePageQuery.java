@@ -11,5 +11,5 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class FacilityReceivePageQuery extends PageQuery {
     @NotBlank(message = "传感器地址不能为空")
-    private String sn;
+    private String uniqueCode;
 }

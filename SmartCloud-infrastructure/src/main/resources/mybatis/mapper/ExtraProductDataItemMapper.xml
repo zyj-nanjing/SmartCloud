@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ExtraProductDataItemMapper">
+
+    <resultMap type="ExtraProductDataItemDO" id="ExtraProductDataItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraDataId"    column="extra_data_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <resultMap type="ExtraProductDataItemDO" id="ExtraDataItemData">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraDataId"    column="extra_data_id"    />
+        <result property="extraData"    column="extra_data"    />
+        <result property="unit"    column="unit"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <sql id="extraProductDataItemVo">
+        select id, model_id, extra_Item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
+    </sql>
+
+    <select id="queryExtraProductDataItemBySort" parameterType="ExtraProductDataItemDO" resultMap="ExtraProductDataItemResult">
+        <include refid="extraProductDataItemVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="extraItemName != null  and extraItemName != ''"> and extra_Item_name like concat('%', #{extraItemName}, '%')</if>
+            <if test="extraDataId != null "> and extra_data_id = #{extraDataId}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="needTransform != null "> and need_transform = #{needTransform}</if>
+            <if test="calculationFormula != null  and calculationFormula != ''"> and calculation_formula = #{calculationFormula}</if>
+            <if test="placeholder != null  and placeholder != ''"> and placeholder = #{placeholder}</if>
+        </where>
+    </select>
+
+    <select id="getExtraProductDataItemById" parameterType="Integer" resultMap="ExtraProductDataItemResult">
+        <include refid="extraProductDataItemVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getExtraDataItemDataByDeviceId" parameterType="Integer" resultMap="ExtraDataItemData">
+        SELECT extra.id, extra.model_id, extra_Item_name, extra_data,extra_data_id, unit, need_transform, calculation_formula, placeholder
+        FROM device_extra_data_item  device_data LEFT JOIN extra_product_data_item extra  ON device_data.extra_item_id = extra.id
+        where device_id =#{deviceId}
+    </select>
+
+    <select id="getExtraDataItemDataByModelId" resultMap="ExtraProductDataItemResult">
+        <include refid="extraProductDataItemVo"/>
+        where model_id = #{modelId}
+    </select>
+
+
+    <select id="getExtraDataItemDataByIds" resultMap="ExtraProductDataItemResult">
+        <include refid="extraProductDataItemVo"/>
+        where id in
+        <foreach item="itemId" index="index" collection="list" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
+    </select>
+
+
+    <insert id="saveExtraProductDataItem" parameterType="ExtraProductDataItemDO" useGeneratedKeys="true" keyProperty="id">
+        insert into extra_product_data_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="extraItemName != null">extra_Item_name,</if>
+            <if test="extraDataId != null">extra_data_id,</if>
+            <if test="unit != null">unit,</if>
+            <if test="needTransform != null">need_transform,</if>
+            <if test="calculationFormula != null">calculation_formula,</if>
+            <if test="placeholder != null">placeholder,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="extraItemName != null">#{extraItemName},</if>
+            <if test="extraDataId != null">#{extraDataId},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="needTransform != null">#{needTransform},</if>
+            <if test="calculationFormula != null">#{calculationFormula},</if>
+            <if test="placeholder != null">#{placeholder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExtraProductDataItem" parameterType="ExtraProductDataItemDO">
+        update extra_product_data_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="extraItemName != null">extra_Item_name = #{extraItemName},</if>
+            <if test="extraDataId != null">extra_data_id = #{extraDataId},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="needTransform != null">need_transform = #{needTransform},</if>
+            <if test="calculationFormula != null">calculation_formula = #{calculationFormula},</if>
+            <if test="placeholder != null">placeholder = #{placeholder},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExtraProductDataItemById" parameterType="Integer">
+        delete from extra_product_data_item where id = #{id}
+    </delete>
+
+    <delete id="deleteExtraProductDataItemByIds" parameterType="String">
+        delete from extra_product_data_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteExtraProductItemDataByDeviceId" parameterType="Integer">
+        delete from device_extra_data_item where device_id =#{deviceId}
+    </delete>
+</mapper>

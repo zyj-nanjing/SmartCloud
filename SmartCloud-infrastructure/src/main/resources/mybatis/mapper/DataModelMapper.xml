@@ -12,7 +12,7 @@
         <result property="dataForm"    column="data_form"    />
         <result property="carrySystem"    column="carry_system"    />
         <result property="splitMethod"    column="split_method"    />
-        <result property="separator"    column="separator"    />
+        <result property="separator"    column="split_separator"    />
         <result property="weight"    column="weight"    />
         <result property="expectDataSize" column="expect_data_size" />
         <result property="baseDataSize"    column="base_data_size"    />
@@ -23,8 +23,9 @@
     <resultMap type="DataModelItemDO" id="DataModelItemResult">
         <result property="id"    column="id"    />
         <result property="modelId"    column="model_id"    />
-        <result property="prototypeId"    column="prototype_id"    />
+        <result property="dataItemId"    column="data_item_id"    />
         <result property="itemKind"    column="item_kind"    />
+        <result property="keyName" column="key_name"/>
         <result property="uniqueCodeSize"    column="unique_code_size"    />
         <result property="dataName"    column="data_name"    />
         <result property="dataFormat" column="data_format"/>
@@ -34,10 +35,11 @@
         <result property="needTransform"    column="need_transform"    />
         <result property="calculationFormula"    column="calculation_formula"    />
         <result property="placeholder"    column="placeholder"    />
-        <association property="protoItem" javaType="MonitorItemsDO">
+        <association property="protoItem" javaType="ProductDataItemDO">
             <result column="p_id" property="id"/>
             <result column="p_item_name" property="itemName"/>
             <result column="p_data_id" property="dataId"/>
+            <result column="p_item_kind" property="itemKind"/>
         </association>
     </resultMap>
 
@@ -54,7 +56,7 @@
             <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
             <if test="carrySystem != null "> and carry_system = #{carrySystem}</if>
             <if test="splitMethod != null  and splitMethod != ''"> and split_method = #{splitMethod}</if>
-            <if test="separator != null  and separator != ''"> and separator = #{separator}</if>
+            <if test="separator != null  and separator != ''"> and split_separator = #{separator}</if>
             <if test="baseDataSize != null "> and base_data_size = #{baseDataSize}</if>
         </where>
     </select>
@@ -65,9 +67,10 @@
     </select>
 
     <select id="queryModelItemByModelId" resultMap="DataModelItemResult">
-        select item.id,m_item.id p_id ,m_item.item_name p_item_name,m_item.data_id p_data_id, model_id, prototype_id, item_kind, unique_code_size, data_name, data_order, data_length,data_format, item.data_type, need_transform,
-               calculation_formula, placeholder from product_data_model_item item left  join monitor_items m_item on
-            item.prototype_id = m_item.id where  item.model_id =#{modelId}
+        select item.id,m_item.id p_id ,m_item.item_name p_item_name,data_item_id,m_item.data_id p_data_id,m_item.item_kind p_item_kind,key_name,item.model_id,
+               data_id, item.item_kind, unique_code_size, data_name, data_order, data_length,data_format, item.data_type,
+               item.need_transform,item.calculation_formula, item.placeholder from product_data_model_item item left
+                   join product_data_item m_item on item.data_item_id = m_item.id where  item.model_id =#{modelId}
     </select>
 
     <insert id="saveDataModel" parameterType="DataModelDO" useGeneratedKeys="true" keyProperty="id">
@@ -78,8 +81,8 @@
             <if test="dataForm != null">data_form,</if>
             <if test="messageType != null">message_type,</if>
             <if test="carrySystem != null">carry_system,</if>
-            <if test="splitMethod != null and splitMethod != ''">split_method,</if>
-            <if test="separator != null">separator,</if>
+            <if test="splitMethod != null ">split_method,</if>
+            <if test="separator != null and separator != ''">split_separator,</if>
             <if test="weight != null">weight,</if>
             <if test="baseDataSize != null">base_data_size,</if>
             <if test="expectDataSize != null">expect_data_size,</if>
@@ -91,8 +94,8 @@
             <if test="dataForm != null">#{dataForm},</if>
             <if test="messageType != null">#{messageType},</if>
             <if test="carrySystem != null">#{carrySystem},</if>
-            <if test="splitMethod != null and splitMethod != ''">#{splitMethod},</if>
-            <if test="separator != null">#{separator},</if>
+            <if test="splitMethod != null ">#{splitMethod},</if>
+            <if test="separator != null and separator != ''">#{separator},</if>
             <if test="weight != null">#{weight},</if>
             <if test="baseDataSize != null">#{baseDataSize},</if>
             <if test="expectDataSize != null">#{expectDataSize},</if>
@@ -108,8 +111,8 @@
             <if test="dataForm != null">data_form = #{dataForm},</if>
             <if test="messageType != null">message_type = #{messageType},</if>
             <if test="carrySystem != null">carry_system = #{carrySystem},</if>
-            <if test="splitMethod != null and splitMethod != ''">split_method = #{splitMethod},</if>
-            <if test="separator != null">separator = #{separator},</if>
+            <if test="splitMethod != null">split_method = #{splitMethod},</if>
+            <if test="separator != null and separator != ''">split_separator = #{separator},</if>
             <if test="weight != null">weight = #{weight},</if>
             <if test="baseDataSize != null">base_data_size = #{baseDataSize},</if>
             <if test="expectDataSize != null">expect_data_size = #{expectDataSize},</if>
@@ -132,7 +135,7 @@
 
     <select id="getDataModelByWebId" parameterType="Integer" resultMap="DataModelResult">
         <include refid="selectDataModelVo"/>
-        where model_id in (select model_id from product_model_web_model_link where model_web_id =#{modelWebId})
+        where model_id in (select model_id from product_data_web_config where id =#{modelWebId})
         order by weight
     </select>
 

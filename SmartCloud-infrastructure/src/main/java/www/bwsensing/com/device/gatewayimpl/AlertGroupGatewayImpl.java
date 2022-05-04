@@ -6,9 +6,8 @@ import javax.annotation.Resource;
 import com.alibaba.cola.exception.Assert;
 import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
-import www.bwsensing.com.common.constant.RoleConstant;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
 import www.bwsensing.com.domain.project.model.ProjectRoleEnum;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.model.token.TokenData;
@@ -40,7 +39,7 @@ public class AlertGroupGatewayImpl implements AlertGroupGateway {
     @Resource
     private MonitorProjectMapper projectMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
     @Resource
     private TokenGateway tokenGateway;
 
@@ -70,7 +69,7 @@ public class AlertGroupGatewayImpl implements AlertGroupGateway {
         if(null == alertGroup){
             throw new BizException("NO_GROUP_FOUND","该告警分组不存在!");
         }
-        SensorDO device = sensorMapper.selectSensorById(alertGroup.getCurrentSensorId());
+        ProductDeviceDO device = productDeviceMapper.getProductDetailById(alertGroup.getCurrentSensorId());
         String projectCode = projectMapper.getProjectRoleByUserId(device.getProjectId(), tokenData.getUserId());
         Assert.notNull(projectCode,"无权进行删除");
         ProjectRoleEnum projectRole = ProjectRoleEnum.getProjectRoleByCode(projectCode);

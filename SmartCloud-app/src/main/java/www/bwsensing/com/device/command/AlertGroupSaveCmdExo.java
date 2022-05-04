@@ -7,11 +7,11 @@ import com.alibaba.cola.exception.BizException;
 import org.springframework.stereotype.Component;
 import static java.util.stream.Collectors.toList;
 import www.bwsensing.com.common.utills.StringUtils;
-import www.bwsensing.com.monitor.convertor.ItemsConvertor;
+import www.bwsensing.com.device.convertor.ProductDataItemConvertor;
 import www.bwsensing.com.domain.device.gateway.AlertGroupGateway;
 import www.bwsensing.com.domain.device.gateway.AlertTemplateGateway;
-import www.bwsensing.com.domain.device.gateway.SensorGateway;
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.gateway.ProductDeviceGateway;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.device.model.alert.AlertGroup;
 import www.bwsensing.com.domain.device.model.alert.AlertParam;
 import www.bwsensing.com.domain.device.model.alert.AlertTemplate;
@@ -22,8 +22,8 @@ import www.bwsensing.com.domain.system.model.user.SystemUser;
 import www.bwsensing.com.domain.system.model.token.TokenData;
 import www.bwsensing.com.device.dto.command.AlertGroupSaveCmd;
 import www.bwsensing.com.device.dto.command.AlertRoleAddCmd;
-import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
-import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDataItemMapper;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDataItemDO;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +39,16 @@ public class AlertGroupSaveCmdExo {
     @Resource
     private AlertGroupGateway alertGroupGateway;
     @Resource
-    private SensorGateway sensorGateway;
+    private ProductDeviceGateway productDeviceGateway;
     @Resource
     private TokenGateway tokenGateway;
     @Resource
     private SystemUserGateway userGateway;
     @Resource
-    private MonitorItemsMapper itemMapper;
+    private ProductDataItemMapper itemMapper;
 
     public Response execute(AlertGroupSaveCmd saveCmd){
-        SensorInfo selectedSensor = sensorGateway.getSensorInfoById(saveCmd.getSensorId());
+        ProductDevice selectedSensor = productDeviceGateway.getDeviceDetailById(saveCmd.getSensorId());
         TokenData tokenData = tokenGateway.getTokenInfo();
         SystemUser currentUser = userGateway.getUserInfoContainRole(tokenData.getUserId());
         AlertGroup saveGroup;
@@ -81,9 +81,9 @@ public class AlertGroupSaveCmdExo {
         Assert.isTrue(StringUtils.isNotEmpty(alertParam.getColor()),"颜色不能为空!");
         Assert.notNull(alertParam.getFormulas(),"预警公式不能为空!");
         Assert.isTrue(alertParam.getFormulas().size()>0,"预警公式不能为空!");
-        MonitorItemsDO itemsDo = itemMapper.selectItemById(alertParam.getParamNo());
+        ProductDataItemDO itemsDo = itemMapper.getProductDataItemById(alertParam.getParamNo());
         Assert.notNull(itemsDo,"预警项不存在!");
-        alertParam.setMonitorItem(ItemsConvertor.toDomain(itemsDo));
+        alertParam.setMonitorItem(ProductDataItemConvertor.toDomain(itemsDo));
         alertParam.create();
         return  alertParam;
     }

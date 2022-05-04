@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.system.model.user.SystemUser;
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 
 /**
  * 告警组 用来做告警规则分组
@@ -20,7 +20,7 @@ public class AlertGroup {
     /**小组编号*/
     private Integer operateGroupId;
     /**当前传感器*/
-    private SensorInfo currentSensor;
+    private ProductDevice currentSensor;
     /**当前模板*/
     private AlertTemplate currentTemplate;
     /**告警规则集合*/
@@ -52,8 +52,8 @@ public class AlertGroup {
      * @param currentTemplate 当前模板
      * @param currentUser 当前用户
      */
-    public AlertGroup(String groupName,SensorInfo currentSensor,
-                      SystemUser currentUser,AlertTemplate currentTemplate) {
+    public AlertGroup(String groupName, ProductDevice currentSensor,
+                      SystemUser currentUser, AlertTemplate currentTemplate) {
         this.groupName = groupName;
         this.currentSensor = currentSensor;
         this.currentUser = currentUser;
@@ -70,8 +70,8 @@ public class AlertGroup {
      * @param currentUser 当前用户
      * @param alertParams 当前添加规则
      */
-    public AlertGroup(String groupName,SensorInfo currentSensor,
-                      SystemUser currentUser,List<AlertParam> alertParams) {
+    public AlertGroup(String groupName, ProductDevice currentSensor,
+                      SystemUser currentUser, List<AlertParam> alertParams) {
         this.groupName = groupName;
         this.currentSensor = currentSensor;
         this.currentUser = currentUser;

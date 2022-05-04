@@ -79,6 +79,7 @@ public class SensorApiDataRsaTest {
 
     @Test
     public void testDataRsa() throws Exception {
+        System.out.println(new String(RSAUtils.decryptByPrivateKey(ENCRYPT_HEX_STRING, TEST_PRIVATE_KEY)));
         Assert.assertEquals(new String(RSAUtils.decryptByPrivateKey(ENCRYPT_HEX_STRING, TEST_PRIVATE_KEY)),EXPECT_DATA_RESULT);
     }
 

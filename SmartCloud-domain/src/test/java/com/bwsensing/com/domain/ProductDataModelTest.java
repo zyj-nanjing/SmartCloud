@@ -1,9 +1,6 @@
 package com.bwsensing.com.domain;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -14,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mockito.internal.util.MockUtil;
 import org.powermock.modules.junit4.PowerMockRunner;
 import www.bwsensing.com.domain.device.model.data.model.*;
-import www.bwsensing.com.domain.monitor.model.MonitorItem;
+import www.bwsensing.com.domain.device.model.ProductDataItem;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
@@ -40,9 +37,9 @@ public class ProductDataModelTest {
 
     public static final ProductDataModel HEX_MODEL = new ProductDataModel(16,2,"");
 
-    public static  List<MonitorItem> noAccProducts = new ArrayList<>();
+    public static  List<ProductDataItem> noAccProducts = new ArrayList<>();
 
-    public static  List<MonitorItem> accProducts = new ArrayList<>();
+    public static  List<ProductDataItem> accProducts = new ArrayList<>();
 
     private static final String ASCII_NO_ACC_EXPECT ="MonitorReceive(sn=100000005, channelId=null, ip=null, receiveTime=null, " +
             "phoneNumber=null, electricity=null, temperature=null, receiveSize=1, sendCount=4, receiveMessage=null, totalSize=null, " +
@@ -74,18 +71,18 @@ public class ProductDataModelTest {
         ASCII_WITH_NO_ACC.setDataForm(DataForm.DOUBLE_LINE_DATA);
         ASCII_WITH_ACC.setDataForm(DataForm.SINGLE_LINE_DATA);
         HEX_MODEL.setDataForm(DataForm.SINGLE_LINE_DATA);
-        noAccProducts.add(new MonitorItem("x_ang"));
-        noAccProducts.add(new MonitorItem("y_ang"));
-        noAccProducts.add(new MonitorItem("temp"));
-        noAccProducts.add(new MonitorItem("elect"));
-        accProducts.add(new MonitorItem("x_ang"));
-        accProducts.add(new MonitorItem("y_ang"));
-        accProducts.add(new MonitorItem("z_ang"));
-        accProducts.add(new MonitorItem("x_acc"));
-        accProducts.add(new MonitorItem("y_acc"));
-        accProducts.add(new MonitorItem("z_acc"));
-        accProducts.add(new MonitorItem("temp"));
-        accProducts.add(new MonitorItem("elect"));
+        noAccProducts.add(new ProductDataItem("x_ang"));
+        noAccProducts.add(new ProductDataItem("y_ang"));
+        noAccProducts.add(new ProductDataItem("temp"));
+        noAccProducts.add(new ProductDataItem("elect"));
+        accProducts.add(new ProductDataItem("x_ang"));
+        accProducts.add(new ProductDataItem("y_ang"));
+        accProducts.add(new ProductDataItem("z_ang"));
+        accProducts.add(new ProductDataItem("x_acc"));
+        accProducts.add(new ProductDataItem("y_acc"));
+        accProducts.add(new ProductDataItem("z_acc"));
+        accProducts.add(new ProductDataItem("temp"));
+        accProducts.add(new ProductDataItem("elect"));
     }
 
     static {

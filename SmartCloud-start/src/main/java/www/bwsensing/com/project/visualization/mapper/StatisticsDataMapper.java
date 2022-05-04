@@ -1,7 +1,7 @@
 package www.bwsensing.com.project.visualization.mapper;
 
 import www.bwsensing.com.project.visualization.domain.StatisticsData;
-import www.bwsensing.com.project.visualization.domain.MonitorQuery;
+import www.bwsensing.com.project.visualization.domain.DeviceDataQuery;
 import www.bwsensing.com.project.visualization.domain.StatisticsQuery;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface StatisticsDataMapper {
      * @param query
      * @return
      */
-    List<StatisticsData> listStatisticsAvgData(MonitorQuery query);
+    List<StatisticsData> listStatisticsAvgData(DeviceDataQuery query);
 
 
     /**
@@ -24,7 +24,7 @@ public interface StatisticsDataMapper {
      * @param query
      * @return
      */
-    List<StatisticsData> listStatisticsSpreadData(MonitorQuery query);
+    List<StatisticsData> listStatisticsSpreadData(DeviceDataQuery query);
 
 
     /**

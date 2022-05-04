@@ -27,11 +27,11 @@ import www.bwsensing.com.device.dto.clientobject.NotificationMemberBindCO;
 import www.bwsensing.com.device.gatewayimpl.database.AlertGroupMapper;
 import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
 import www.bwsensing.com.device.gatewayimpl.database.NotificationMemberMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertGroupDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.NotificationMemberDO;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.ProjectMemberDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class IAlertGroupServiceImpl implements AlertGroupService {
     @Resource
     private MonitorProjectMapper projectMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
     @Resource
     private NotificationMemberMapper notificationMemberMapper;
 
@@ -124,12 +124,12 @@ public class IAlertGroupServiceImpl implements AlertGroupService {
     private Integer getMonitorProject(Integer groupId){
         AlertGroupDO alertGroup = alertGroupMapper.getAlertGroupById(groupId);
         Assert.notNull(alertGroup,"预警分组不存在!");
-        SensorDO sensorDO = sensorMapper.selectSensorById(alertGroup.getCurrentSensorId());
-        return  sensorDO.getProjectId();
+        ProductDeviceDO productDeviceDO = productDeviceMapper.getProductDetailById(alertGroup.getCurrentSensorId());
+        return  productDeviceDO.getProjectId();
     }
 
     private AlertGroupDO initializeQuery(AlertGroupQuery pageQuery){
-        SensorDO sensorInfo = sensorMapper.selectSensorBySn(pageQuery.getCurrentDevice());
+        ProductDeviceDO sensorInfo = productDeviceMapper.getProductDetailByUniqueCode(pageQuery.getCurrentDevice());
         Assert.notNull(sensorInfo,"SENSOR_CODE_NOT_TRUE","设备码不存在!");
         AlertGroupDO query = new AlertGroupDO();
         BeanUtils.copyProperties(pageQuery,query);

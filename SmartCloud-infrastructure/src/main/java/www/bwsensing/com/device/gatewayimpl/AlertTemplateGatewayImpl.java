@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.device.convertor.AlarmTemplateConvertor;
 import www.bwsensing.com.device.convertor.AlertParamConvertor;
-import www.bwsensing.com.monitor.convertor.ItemsConvertor;
-import www.bwsensing.com.device.convertor.SensorModelConvertor;
+import www.bwsensing.com.device.convertor.ProductDataItemConvertor;
+import www.bwsensing.com.device.convertor.ProductModelConvertor;
 import www.bwsensing.com.domain.device.model.alert.AlertTemplate;
 import www.bwsensing.com.domain.device.model.alert.AlertParam;
 import www.bwsensing.com.domain.device.gateway.AlertTemplateGateway;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.device.gatewayimpl.database.AlertTemplateMapper;
 import www.bwsensing.com.device.gatewayimpl.database.AlertParamMapper;
-import www.bwsensing.com.device.gatewayimpl.database.MonitorItemsMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorModelMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDataItemMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductModelMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertTemplateDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.AlertParamDO;
-import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorItemsDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorModelDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDataItemDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductModelDO;
 
 /**
  * @author macos-zyj
@@ -32,9 +32,9 @@ public class AlertTemplateGatewayImpl implements AlertTemplateGateway {
     @Resource
     private AlertParamMapper alertParamMapper;
     @Resource
-    private SensorModelMapper modelMapper;
+    private ProductModelMapper modelMapper;
     @Resource
-    private MonitorItemsMapper itemMapper;
+    private ProductDataItemMapper itemMapper;
     @Resource
     private TokenGateway tokenGateway;
 
@@ -66,11 +66,11 @@ public class AlertTemplateGatewayImpl implements AlertTemplateGateway {
         if(null != templateDo){
             if (templateDo .getGroupId().equals(tokenGateway.getTokenInfo().getGroupId())){
                 AlertTemplate templateDomain = AlarmTemplateConvertor.toDomainObject(templateDo);
-                SensorModelDO modelDo = modelMapper.selectModelById(templateDo.getModelNo());
-                templateDomain.setSensorModel(SensorModelConvertor.toDomainObject(modelDo));
+                ProductModelDO modelDo = modelMapper.getProductModelById(templateDo.getModelNo());
+                templateDomain.setSensorModel(ProductModelConvertor.toDomainObject(modelDo));
                 templateDomain.getAlertParams().forEach(alertParam -> {
-                    MonitorItemsDO itemsDo = itemMapper.selectItemById(alertParam.getParamNo());
-                    alertParam.setMonitorItem(ItemsConvertor.toDomain(itemsDo));
+                    ProductDataItemDO itemsDo = itemMapper.getProductDataItemById(alertParam.getParamNo());
+                    alertParam.setMonitorItem(ProductDataItemConvertor.toDomain(itemsDo));
                 });
                 return templateDomain;
             } else {
@@ -110,13 +110,13 @@ public class AlertTemplateGatewayImpl implements AlertTemplateGateway {
     }
 
     private void validateModel(Integer modelId){
-        if(null == modelMapper.selectModelById(modelId)){
+        if(null == modelMapper.getProductModelById(modelId)){
             throw new BizException("SENSOR_MODEL_NOT_FOUND","产品型号不存在!");
         }
     }
 
     private void validateItem(Integer itemId){
-        if(null == itemMapper.selectItemById(itemId)){
+        if(null == itemMapper.getProductDataItemById(itemId)){
             throw new BizException("MONITOR_ITEM_NOT_FOUND","检测项不存在!");
         }
     }

@@ -4,11 +4,11 @@ import com.alibaba.cola.dto.MultiResponse;
 import org.springframework.stereotype.Component;
 import www.bwsensing.com.project.dto.clientobject.ProjectPositionCO;
 import www.bwsensing.com.project.gatewayimpl.database.MonitorProjectMapper;
-import www.bwsensing.com.device.gatewayimpl.database.SensorMapper;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorPositionDO;
 import www.bwsensing.com.project.gatewayimpl.database.dataobject.MonitorProjectDO;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.MonitorStructureDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.SensorDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ProjectPositionQueryExo {
     @Resource
     private MonitorProjectMapper projectMapper;
     @Resource
-    private SensorMapper sensorMapper;
+    private ProductDeviceMapper productDeviceMapper;
 
     public MultiResponse<ProjectPositionCO> execute(Integer projectId){
         List<ProjectPositionCO> projectPositions = new ArrayList<>(16);
@@ -46,7 +46,7 @@ public class ProjectPositionQueryExo {
         clientObject.setStructureName(structureData.getName());
         clientObject.setStructureKind(structureData.getStructureName());
         clientObject.setStructureVersion(structureData.getCurrentVersion());
-        SensorDO querySensor = sensorMapper.selectSensorByPosition(positionData.getId());
+        ProductDeviceDO querySensor = productDeviceMapper.selectProductsByPosition(positionData.getId());
         if(null != querySensor){
             clientObject.setSensorId(querySensor.getId());
             clientObject.setBindStatus(true);

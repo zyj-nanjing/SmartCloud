@@ -9,7 +9,7 @@
     </resultMap>
 
     <sql id="SELECT_INDUSTRY_FIELD">
-        select  id,name,code,create_time from sys_industry_field
+        select * from sys_industry_field
     </sql>
 
     <select id="selectIndustryById" resultMap="Industry">
@@ -50,12 +50,11 @@
         update  sys_industry_field set name =#{name} where id =#{id}
     </update>
 
-    <select id="getIndustryFieldsByIds" resultMap="Industry">
+    <select id="getIndustryFieldsByIds" resultMap="Industry" >
         <include refid="SELECT_INDUSTRY_FIELD"/>
         where id in
-        <foreach collection="list" item="ids" index="index"
-                 open="(" close=")" separator=",">
-            #{ids}
+        <foreach item="industryId" index="index" collection="list" open="(" separator="," close=")">
+            #{industryId}
         </foreach>
     </select>
 </mapper>

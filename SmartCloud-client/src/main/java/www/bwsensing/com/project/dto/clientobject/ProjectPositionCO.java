@@ -85,4 +85,19 @@ public class ProjectPositionCO {
     public void setStructureKind(String structureKind) {
         this.structureKind = structureKind;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("ProjectPositionCO{");
+        sb.append("id=").append(id);
+        sb.append(", positionName='").append(positionName).append('\'');
+        sb.append(", comment='").append(comment).append('\'');
+        sb.append(", structureKind='").append(structureKind).append('\'');
+        sb.append(", structureName='").append(structureName).append('\'');
+        sb.append(", structureVersion=").append(structureVersion);
+        sb.append(", sensorId=").append(sensorId);
+        sb.append(", bindStatus=").append(bindStatus);
+        sb.append('}');
+        return sb.toString();
+    }
 }

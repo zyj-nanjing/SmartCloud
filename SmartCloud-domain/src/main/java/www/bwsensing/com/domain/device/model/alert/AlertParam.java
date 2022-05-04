@@ -8,7 +8,7 @@ import com.alibaba.cola.exception.BizException;
 import www.bwsensing.com.domain.device.model.alert.formulas.ParamFunction;
 import www.bwsensing.com.domain.device.model.alert.formulas.ParamLogic;
 import www.bwsensing.com.domain.device.model.alert.formulas.ParamOperator;
-import www.bwsensing.com.domain.monitor.model.MonitorItem;
+import www.bwsensing.com.domain.device.model.ProductDataItem;
 
 /**
  * 告警参数
@@ -31,7 +31,7 @@ public class AlertParam {
     /**
      * 检测项
      */
-    private MonitorItem monitorItem;
+    private ProductDataItem monitorItem;
     /**
      * 每组格式为 (max,>,10,&&)  第一位为 函数 可以为 max avg min  第二位为 运算符 可以为 < <= >  >= != == 第三位为具体数据 第四位为 逻辑或按位 运算符  || | && & 注意数组末尾不要加加了校验不会让你过的
      **/

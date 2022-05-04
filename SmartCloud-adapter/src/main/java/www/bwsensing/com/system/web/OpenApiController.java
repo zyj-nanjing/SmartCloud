@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.common.utills.HexUtils;
 import www.bwsensing.com.common.utills.RSAUtils;
-import www.bwsensing.com.device.api.SensorService;
+import www.bwsensing.com.device.api.ProductDeviceService;
 import www.bwsensing.com.common.clientobject.RSAKeyCO;
 import www.bwsensing.com.domain.system.gateway.SystemUserGateway;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
@@ -33,7 +33,7 @@ public class OpenApiController {
     private SystemUserService userService;
 
     @Autowired
-    private SensorService sensorService;
+    private ProductDeviceService productDeviceService;
 
     @Resource
     private TokenGateway tokenGateway;
@@ -50,7 +50,7 @@ public class OpenApiController {
     @ApiOperation("获取最新设备列表以及当前数据")
     @GetMapping("/sensor/current/data")
     public SingleResponse<String> getCurrentSensorData(){
-        return sensorService.getCurrentSensorData();
+        return productDeviceService.getProductCurrentData();
     }
 
 

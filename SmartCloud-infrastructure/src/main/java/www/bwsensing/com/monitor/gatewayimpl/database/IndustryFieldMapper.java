@@ -1,5 +1,6 @@
 package www.bwsensing.com.monitor.gatewayimpl.database;
 
+import org.apache.ibatis.annotations.Param;
 import www.bwsensing.com.monitor.gatewayimpl.database.dataobject.IndustryFieldDO;
 import java.util.List;
 

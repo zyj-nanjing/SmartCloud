@@ -39,7 +39,7 @@ public class DataModelDO {
     /**
      * 分隔方式(枚举)
      */
-    private String splitMethod;
+    private Integer splitMethod;
 
     /**
      * 排序

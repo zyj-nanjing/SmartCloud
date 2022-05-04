@@ -8,7 +8,6 @@ import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataModelItemDO;
 import www.bwsensing.com.domain.device.model.data.model.DataItemKind;
 import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
 import www.bwsensing.com.domain.device.model.data.model.DataType;
-import www.bwsensing.com.monitor.convertor.ItemsConvertor;
 
 /**
  * @author macos-zyj
@@ -25,7 +24,7 @@ public class DataModelItemConvertor {
         }
         domainObject.setDataType(DataType.getDataType(dataObject.getDataType()));
         if (null != dataObject.getProtoItem() ){
-            domainObject.setProtoItem(ItemsConvertor.toDomain(dataObject.getProtoItem() ));
+            domainObject.setProtoItem(ProductDataItemConvertor.toDomain(dataObject.getProtoItem() ));
         }
         return domainObject;
     }
@@ -43,7 +42,7 @@ public class DataModelItemConvertor {
         DataModelItemDO modelItemDo = new DataModelItemDO();
         DATA_OBJECT_COPIER.copy(domainObject,modelItemDo,null);
         if (null  != domainObject.getItemKind()){
-            modelItemDo.setItemKind(domainObject.getItemKind().getType()+"");
+            modelItemDo.setItemKind(domainObject.getItemKind().getType());
         }
         modelItemDo.setDataType(domainObject.getDataType().getType());
         return modelItemDo;

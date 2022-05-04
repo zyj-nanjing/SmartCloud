@@ -28,6 +28,14 @@ public interface DataModelItemMapper
     List<DataModelItemDO> queryDataModelItemBySort(DataModelItemDO productDataModelItem);
 
     /**
+     * 根据数据模型编号获取解析数据项
+     * @param modelId
+     * @return
+     */
+    List<DataModelItemDO> queryDataModelItemByModelId(Integer modelId);
+
+
+    /**
      * 新增接入设备数据模型数据项
      *
      * @param dataModelItem 接入设备数据模型数据项

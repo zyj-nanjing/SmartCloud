@@ -1,7 +1,6 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
 import com.alibaba.cola.exception.BizException;
-
 /**
  * @author macos-zyj
  */

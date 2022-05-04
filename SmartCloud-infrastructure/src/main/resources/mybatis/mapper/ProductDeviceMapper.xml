@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper">
+
+    <resultMap type="ProductDeviceDO" id="ProductDeviceResult">
+        <result property="id"    column="id"    />
+        <result property="uniqueCode"    column="unique_code"    />
+        <result property="name"    column="name"    />
+        <result property="deviceNo"    column="device_no"    />
+        <result property="organizationId"    column="organization_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="positionId"    column="position_id"    />
+        <result property="communicationCode"    column="communication_code"    />
+        <result property="productionTime"    column="production_time"    />
+        <result property="hardwareVersion"    column="hardware_version"    />
+        <result property="softwareVersion"    column="software_version"    />
+        <result property="installTime"    column="install_time"    />
+        <result property="needSituation"    column="need_situation"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creator"    column="creator"    />
+        <collection property="extraProductData" ofType="ExtraDataItemData" column="id" select="getExtraItemDataByDeviceId"/>
+    </resultMap>
+
+    <resultMap type="ExtraProductDataItemDO" id="ExtraDataItemData">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraDataId"    column="extra_data_id"    />
+        <result property="extraData"    column="extra_data"    />
+        <result property="unit"    column="unit"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <sql id="PRODUCT_SELECT">
+        select id, unique_code, name, device_no, organization_id, model_id, position_id, communication_code,
+               production_time, hardware_version, software_version, install_time, need_situation, longitude, latitude, create_time, creator from product_device
+    </sql>
+
+    <insert id="saveProductDevice" parameterType="ProductDeviceDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into product_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uniqueCode != null">unique_code,</if>
+            <if test="name != null">name,</if>
+            <if test="deviceNo != null">device_no,</if>
+            <if test="organizationId != null">organization_id,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="positionId != null">position_id,</if>
+            <if test="communicationCode != null">communication_code,</if>
+            <if test="productionTime != null">production_time,</if>
+            <if test="hardwareVersion != null">hardware_version,</if>
+            <if test="softwareVersion != null">software_version,</if>
+            <if test="installTime != null">install_time,</if>
+            <if test="needSituation != null">need_situation,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="creator != null">creator,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uniqueCode != null">#{uniqueCode},</if>
+            <if test="name != null">#{name},</if>
+            <if test="deviceNo != null">#{deviceNo},</if>
+            <if test="organizationId != null">#{organizationId},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="positionId != null">#{positionId},</if>
+            <if test="communicationCode != null">#{communicationCode},</if>
+            <if test="productionTime != null">#{productionTime},</if>
+            <if test="hardwareVersion != null">#{hardwareVersion},</if>
+            <if test="softwareVersion != null">#{softwareVersion},</if>
+            <if test="installTime != null">#{installTime},</if>
+            <if test="needSituation != null">#{needSituation},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="creator != null">#{creator},</if>
+        </trim>
+    </insert>
+
+
+    <update id="bindProject" parameterType="Integer">
+        update product_device set project_id =#{pid} where id=#{sid}
+    </update>
+
+    <update id="deleteProductBind" parameterType="Integer">
+        update product_device set project_id = null where project_id=#{projectId}
+    </update>
+
+    <update id="updateProductDevice" parameterType="ProductDeviceDO" >
+        update product_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uniqueCode != null">unique_code = #{uniqueCode},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="deviceNo != null">device_no = #{deviceNo},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="positionId != null">position_id = #{positionId},</if>
+            <if test="communicationCode != null">communication_code = #{communicationCode},</if>
+            <if test="productionTime != null">production_time = #{productionTime},</if>
+            <if test="hardwareVersion != null">hardware_version = #{hardwareVersion},</if>
+            <if test="softwareVersion != null">software_version = #{softwareVersion},</if>
+            <if test="installTime != null">install_time = #{installTime},</if>
+            <if test="needSituation != null">need_situation = #{needSituation},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="creator != null">creator = #{creator},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <update id="bindDeviceWithPosition" parameterType="ProductDeviceDO" >
+        update product_device set position_id =#{positionId} where id=#{id}
+    </update>
+    
+    
+    <insert id="saveDeviceExtraData">
+        insert into device_extra_data_item (device_id,extra_item_id,extra_data)
+        values (#{deviceId},#{dataIemId},#{dataValue});
+    </insert>
+
+    <select id="selectProductDeviceBySort" parameterType="ProductDeviceDO" resultMap="ProductDeviceResult">
+        <include refid="PRODUCT_SELECT"/>
+        <where>
+            <if test="uniqueCode != null  and uniqueCode != ''"> and unique_code = #{uniqueCode}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="deviceNo != null  and deviceNo != ''"> and device_no = #{deviceNo}</if>
+            <if test="organizationId != null "> and organization_id = #{organizationId}</if>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="positionId != null "> and position_id = #{positionId}</if>
+            <if test="communicationCode != null  and communicationCode != ''"> and communication_code = #{communicationCode}</if>
+            <if test="productionTime != null "> and production_time = #{productionTime}</if>
+            <if test="hardwareVersion != null "> and hardware_version = #{hardwareVersion}</if>
+            <if test="softwareVersion != null "> and software_version = #{softwareVersion}</if>
+            <if test="installTime != null "> and install_time = #{installTime}</if>
+            <if test="needSituation != null "> and need_situation = #{needSituation}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+        </where>
+    </select>
+
+    <select id="countByPositionId" resultType="int">
+        select  count(*) from product_device where position_id =#{positionId}
+    </select>
+
+
+
+    <select id="selectSensorBindByProject"  resultMap="ProductDeviceResult" parameterType="Integer">
+        SELECT id,name,position_id from product_device where organization_id = #{gid}  and
+                  (position_id is null or position_id=-1 or position_id
+                  in(SELECT id FROM monitor_position WHERE structure_id in(SELECT id FROM monitor_structure where project_id =#{pid})))
+    </select>
+
+    <select id="selectSensorBindByPosition"  resultMap="ProductDeviceResult" parameterType="Integer">
+        SELECT id,name,position_id from product_device where organization_id = #{gid}  and (position_id is null or position_id=-1 or position_id =#{pid})
+    </select>
+
+    <select id="selectSensorByGroupId" resultMap="ProductDeviceResult" parameterType="Integer">
+        <include refid="PRODUCT_SELECT"/>
+        where organization_id =#{groupId}
+    </select>
+
+    <select id="selectSensorByProjectId" resultMap="ProductDeviceResult" parameterType="Integer">
+        <include refid="PRODUCT_SELECT"/>
+        where position_id in(SELECT id FROM monitor_position WHERE structure_id in(SELECT id FROM monitor_structure where project_id =#{projectId}))
+    </select>
+
+    <select id="getProductDetailByUniqueCode" resultMap="ProductDeviceResult"
+            parameterType="String">
+        <include refid="PRODUCT_SELECT"/>
+        where  unique_code = #{uniqueCode}
+    </select>
+
+    <select id="getProductDetailById" resultMap="ProductDeviceResult" parameterType="int">
+        <include refid="PRODUCT_SELECT"/>
+        where id =#{id}
+    </select>
+
+    <select id="selectProductsByPosition" resultMap="ProductDeviceResult">
+        select  * from  product_device where position_id =#{positionId}
+    </select>
+
+    <select id="selectSensorByModelId" resultMap="ProductDeviceResult">
+        select  * from  product_device where model_id =#{modelId}
+    </select>
+
+    <select id="getSensorsByMonitorStructure" resultMap="ProductDeviceResult">
+        select  * from  product_device  where position_id IN (select id from monitor_position where structure_id = #{structureId})
+    </select>
+
+    <delete id="deleteById">
+        delete from product_device where id =#{id}
+    </delete>
+
+    <select id="getExtraItemDataByDeviceId" resultMap="ExtraDataItemData">
+        SELECT data_item.id, model_id, extra_Item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder,extra_data
+        FROM extra_product_data_item data_item LEFT JOIN device_extra_data_item device_item ON data_item.id = device_item.extra_item_id where device_id = #{deviceId}
+    </select>
+
+</mapper>

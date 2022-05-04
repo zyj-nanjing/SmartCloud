@@ -15,7 +15,7 @@ public class FacilityReceiveCO extends DTO {
     /**
      * Sn编码
      */
-    private String sn;
+    private String uniqueCode;
     /**
      * 频道编号
      */
@@ -56,12 +56,12 @@ public class FacilityReceiveCO extends DTO {
         this.id = id;
     }
 
-    public String getSn() {
-        return sn;
+    public String getUniqueCode() {
+        return uniqueCode;
     }
 
-    public void setSn(String sn) {
-        this.sn = sn;
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
     }
 
     public String getChannelId() {

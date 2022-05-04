@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.ProductDataComputationModelMapper">
+
+    <resultMap type="DataComputationModelDO" id="DataComputationModelResult">
+        <result property="id"    column="id"    />
+        <result property="name" column="name"/>
+        <result property="modelId"    column="model_id"    />
+        <result property="dataItemId"    column="data_Item_id"    />
+        <result property="computationKind"    column="computation_kind"    />
+        <result property="formulaName" column="formula_name"/>
+        <result property="computationFormula"    column="computation_formula"    />
+    </resultMap>
+
+    <resultMap id="DataComputationModelDetail" type="DataComputationModelDO">
+        <result property="id"    column="id"    />
+        <result property="name" column="name"/>
+        <result property="modelId"    column="model_id"    />
+        <result property="dataItemId"    column="data_Item_id"    />
+        <result property="computationKind"    column="computation_kind"    />
+        <result property="formulaName" column="formula_name"/>
+        <result property="computationFormula"    column="computation_formula"    />
+        <collection property="productDataItems" ofType="ProductDataItemResult" column="id" select="getProductDataItemByComputationId"/>
+        <collection property="extraProductDataItems" ofType="ExtraProductDataItemResult" column="id" select="getProductExtraDataItemByComputationId"/>
+    </resultMap>
+
+
+    <resultMap type="ProductDataItemDO" id="ProductDataItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="dataId"    column="data_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="decimalSize"    column="decimal_size"    />
+        <result property="itemKind"    column="item_kind"    />
+        <result property="itemAttribute"    column="item_attribute"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+    <resultMap type="ExtraProductDataItemDO" id="ExtraProductDataItemResult">
+        <result property="id"    column="id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraDataId"    column="extra_data_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="needTransform"    column="need_transform"    />
+        <result property="calculationFormula"    column="calculation_formula"    />
+        <result property="placeholder"    column="placeholder"    />
+    </resultMap>
+
+
+    <sql id="DataComputationModelVo">
+        select id, name, model_id, data_Item_id, computation_kind,formula_name, computation_formula from product_data_computation_model
+    </sql>
+
+
+
+    <select id="queryDataComputationModelBySort" parameterType="DataComputationModelDO" resultMap="DataComputationModelResult">
+        <include refid="DataComputationModelVo"/>
+        <where>
+            <if test="modelId != null "> and model_id = #{modelId}</if>
+            <if test="name != null and name !=''"> and name = #{name}</if>
+            <if test="dataItemId != null "> and data_Item_id = #{dataItemId}</if>
+            <if test="computationKind != null  and computationKind != ''"> and computation_kind = #{computationKind}</if>
+            <if test="computationFormula != null  and computationFormula != ''"> and computation_formula = #{computationFormula}</if>
+        </where>
+    </select>
+
+    <select id="getDataComputationModelById" parameterType="Integer" resultMap="DataComputationModelDetail">
+        <include refid="DataComputationModelVo"/>
+        where id = #{id}
+    </select>
+
+
+    <select id="getProductDataItemByComputationId" parameterType="Integer" resultMap="ProductDataItemResult">
+        select id, model_id, item_name, data_id, unit, decimal_size,
+               item_kind, item_attribute, need_transform, calculation_formula, placeholder from product_data_item
+               where id in (select data_item_id  from product_data_computation_item where computation_id =#{computationId})
+    </select>
+
+    <select id="getProductExtraDataItemByComputationId" parameterType="Integer"  resultMap="ExtraProductDataItemResult">
+        select id, model_id, extra_Item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
+                   where id in (select  extra_data_item_id from product_data_computation_extra_item where computation_id =#{computationId} )
+    </select>
+
+
+    <insert id="saveDataComputationWithDataItem" parameterType="Integer" >
+        insert into  product_data_computation_item(computation_id,data_item_id) values (#{computationId},#{dataItemId});
+    </insert>
+
+    <insert id="saveDataComputationWithExtraDataItem" parameterType="Integer" >
+        insert into  product_data_computation_extra_item(computation_id,extra_data_item_id) values (#{computationId},#{extraDataItemId});
+    </insert>
+
+    <delete id="deleteDataComputationWithDataItem" parameterType="Integer">
+        delete  from product_data_computation_item where computation_id =#{computationId}
+    </delete>
+
+    <delete id="deleteDataComputationWithExtraDataItem" parameterType="Integer">
+        delete  from product_data_computation_extra_item where computation_id =#{computationId}
+    </delete>
+
+    <insert id="saveDataComputationModel" parameterType="DataComputationModelDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_data_computation_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="name != null and name !=''">name,</if>
+            <if test="dataItemId != null">data_Item_id,</if>
+            <if test="computationKind != null">computation_kind,</if>
+            <if test="formulaName != null and formulaName != ''">formula_name,</if>
+            <if test="computationFormula != null and computationFormula != ''">computation_formula,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="name != null and name !=''"> #{name},</if>
+            <if test="dataItemId != null">#{dataItemId},</if>
+            <if test="computationKind != null">#{computationKind},</if>
+            <if test="formulaName != null and formulaName != ''">#{formulaName},</if>
+            <if test="computationFormula != null">#{computationFormula},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDataComputationModel" parameterType="DataComputationModelDO">
+        update product_data_computation_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name !=''"> name = #{name}</if>
+            <if test="dataItemId != null">data_Item_id = #{dataItemId},</if>
+            <if test="computationKind != null">computation_kind = #{computationKind},</if>
+            <if test="formulaName != null and formulaName != ''">formula_name=#{formulaName},</if>
+            <if test="computationFormula != null">computation_formula = #{computationFormula},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataComputationModelById" parameterType="Integer">
+        delete from product_data_computation_model where id = #{id}
+    </delete>
+
+    <delete id="deleteDataComputationModelByIds" parameterType="String">
+        delete from product_data_computation_model where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

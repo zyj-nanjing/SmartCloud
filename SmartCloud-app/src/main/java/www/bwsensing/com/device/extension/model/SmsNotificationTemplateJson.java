@@ -1,7 +1,6 @@
 package www.bwsensing.com.device.extension.model;
 
 import lombok.Data;
-import java.util.Date;
 import www.bwsensing.com.common.sms.SmsTemplateJson;
 
 /**

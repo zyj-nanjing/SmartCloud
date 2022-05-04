@@ -4,9 +4,9 @@ import www.bwsensing.com.domain.device.model.data.MonitorReceive;
 import www.bwsensing.com.domain.device.model.data.MonitorData;
 import com.alibaba.cola.exception.BizException;
 import com.alibaba.cola.exception.Assert;
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Data;
@@ -25,6 +25,11 @@ public class ProductDataModel {
     private Integer id;
 
     /**
+     * 产品型号编号
+     */
+    private Integer modelId;
+
+    /**
      * 名称
      */
     private String name;
@@ -37,7 +42,7 @@ public class ProductDataModel {
     /**
      * 消息类型
      */
-    private String messageType;
+    private MessageFormat messageType;
 
     /**
      * 进制
@@ -77,7 +82,7 @@ public class ProductDataModel {
     /**
      * 传感器计算模型
      */
-    private List<DataComputational> dataComputations;
+    private List<DataComputationModel> dataComputations;
 
     /**
      * 对应数据格式的正则
@@ -174,7 +179,6 @@ public class ProductDataModel {
 
 
 
-
     private List<MonitorData> getMonitorDataCollectionWithLine(List<String> receives,List<Timestamp> timestamps,MonitorReceive dataReceive){
         List<MonitorData> dataCollection = new ArrayList<>();
         for(int index = 0; index < receives.size(); index++) {
@@ -185,12 +189,12 @@ public class ProductDataModel {
                 DataModelItem currentItem = dataItems.get(i);
                 switch (currentItem.getItemKind()) {
                     case UNIQUE_SN:
-                        dataReceive.setSn(currentItem.geyUniqueCode(dataSplits.get(i), carrySystem));
+                        dataReceive.setUniqueCode(currentItem.geyUniqueCode(dataSplits.get(i), carrySystem));
                         break;
                     case DATA_INDEX:
                         MonitorData data = new MonitorData();
                         Double result = currentItem.mathCalculation(dataSplits.get(i), carrySystem);
-                        data.setSn(dataReceive.getSn());
+                        data.setUniqueCode(dataReceive.getUniqueCode());
                         data.setDataIdValue(result);
                         data.setDataId(currentItem.getProtoItem().getDataId());
                         data.setTimeStamp(timestamps.get(index));

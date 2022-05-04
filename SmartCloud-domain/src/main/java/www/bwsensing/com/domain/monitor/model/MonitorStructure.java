@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import www.bwsensing.com.domain.device.model.SensorInfo;
+import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.monitor.model.model.MonitorPositionModel;
 import www.bwsensing.com.domain.monitor.model.model.MonitorStructureModel;
 
@@ -48,7 +48,7 @@ public class MonitorStructure {
     /**修改时间*/
     private Date updateTime;
 
-    public void  updateStructureVersion(MonitorStructureModel structureModel,List<SensorInfo> sensorDevices){
+    public void  updateStructureVersion(MonitorStructureModel structureModel,List<ProductDevice> sensorDevices){
         if(!structureModel.getVersion().equals(this.getCurrentVersion())){
             this.modelId = structureModel.getId();
             this.name = structureModel.getName();
@@ -58,7 +58,7 @@ public class MonitorStructure {
         }
     }
 
-    private void updatePosition(List<MonitorPositionModel> positionModels, List<SensorInfo> sensorDevices, int structureId){
+    private void updatePosition(List<MonitorPositionModel> positionModels, List<ProductDevice> sensorDevices, int structureId){
         List<MonitorPosition> editPositions = new ArrayList<>();
         positionModels.forEach(
                 position ->{
