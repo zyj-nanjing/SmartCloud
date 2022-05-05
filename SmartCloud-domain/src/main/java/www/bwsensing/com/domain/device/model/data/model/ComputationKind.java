@@ -1,5 +1,7 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
+import com.alibaba.cola.exception.BizException;
+
 /**
  * 计算形式
  * @author macos-zyj
@@ -35,5 +37,13 @@ public enum ComputationKind {
 
     public String getRemark() {
         return remark;
+    }
+    public static ComputationKind getComputationKind(Integer typeId){
+        for (ComputationKind current:values()){
+            if (current.getType().equals(typeId)) {
+                return current;
+            }
+        }
+        throw new BizException("computation_kind_not_found","分隔方式不存在");
     }
 }

@@ -130,4 +130,10 @@ public interface ProductModelGateway {
      */
     void deleteProductDataComputationModelById(Integer id);
 
+    /**
+     * 根据编号获取对应的计算模型
+     * @param id
+     * @return
+     */
+    DataComputationModel getDataComputationModelById(Integer id);
 }

@@ -141,12 +141,16 @@ public class DataComputationModel {
     }
 
     private void initDataIds() {
+        dataItemMap = new HashMap<>(8);
         if (null == dataIds){
             if (null  == productDataItems) {
                 throw new BizException("DATA_ITEMS_NOT_EXIST","数据项不存在!");
             } else {
                 dataIds = new ArrayList<>();
-                productDataItems.forEach(item -> dataIds.add(item.getDataId()));
+                productDataItems.forEach(item -> {
+                    dataIds.add(item.getDataId());
+                    dataItemMap.put(item.getDataId(),item);
+                });
             }
         }
     }

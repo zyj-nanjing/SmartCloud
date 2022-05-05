@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="jobName != null and jobName != ''">job_name = #{jobName},</if>
  			<if test="jobGroup != null and jobGroup != ''">job_group = #{jobGroup},</if>
  			<if test="invokeTarget != null and invokeTarget != ''">invoke_target = #{invokeTarget},</if>
-			<if test="businessLine != null and invokeTarget != ''">business_line = #{businessLine},</if>
+			<if test="businessLine != null and businessLine != ''">business_line = #{businessLine},</if>
  			<if test="cronExpression != null and cronExpression != ''">cron_expression = #{cronExpression},</if>
  			<if test="misfirePolicy != null and misfirePolicy != ''">misfire_policy = #{misfirePolicy},</if>
  			<if test="concurrent != null and concurrent != ''">concurrent = #{concurrent},</if>

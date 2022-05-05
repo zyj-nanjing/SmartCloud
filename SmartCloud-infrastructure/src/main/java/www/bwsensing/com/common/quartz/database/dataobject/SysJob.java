@@ -1,11 +1,8 @@
 package www.bwsensing.com.common.quartz.database.dataobject;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import www.bwsensing.com.common.constant.ScheduleConstants;
 import www.bwsensing.com.common.quartz.util.CronUtils;
 import www.bwsensing.com.common.utills.StringUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -193,5 +190,26 @@ public class SysJob  implements Serializable
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("SysJob{");
+        sb.append("jobId=").append(jobId);
+        sb.append(", jobName='").append(jobName).append('\'');
+        sb.append(", jobGroup='").append(jobGroup).append('\'');
+        sb.append(", businessLine='").append(businessLine).append('\'');
+        sb.append(", invokeTarget='").append(invokeTarget).append('\'');
+        sb.append(", cronExpression='").append(cronExpression).append('\'');
+        sb.append(", misfirePolicy='").append(misfirePolicy).append('\'');
+        sb.append(", concurrent='").append(concurrent).append('\'');
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", createBy='").append(createBy).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateBy='").append(updateBy).append('\'');
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", remark='").append(remark).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

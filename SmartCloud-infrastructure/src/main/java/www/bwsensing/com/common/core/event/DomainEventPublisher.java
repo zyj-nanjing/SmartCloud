@@ -3,6 +3,7 @@ package www.bwsensing.com.common.core.event;
 import org.apache.rocketmq.client.producer.SendCallback;
 import www.bwsensing.com.event.ClientStreamEventI;
 import www.bwsensing.com.event.DomainEventI;
+
 /**
  * @author macos-zyj
  */

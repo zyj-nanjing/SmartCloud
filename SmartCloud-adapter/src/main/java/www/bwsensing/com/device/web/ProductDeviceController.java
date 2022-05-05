@@ -1,24 +1,22 @@
 package www.bwsensing.com.device.web;
 
 import javax.validation.Valid;
-
 import io.jsonwebtoken.lang.Assert;
 import io.swagger.annotations.Api;
 import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.PageResponse;
+import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import io.swagger.annotations.ApiOperation;
-import com.alibaba.cola.dto.MultiResponse;
-import com.alibaba.cola.dto.PageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import www.bwsensing.com.device.dto.command.*;
 import org.springframework.web.bind.annotation.*;
-import www.bwsensing.com.device.api.ProductDeviceService;
 import www.bwsensing.com.device.dto.clientobject.*;
-import www.bwsensing.com.device.dto.command.ProductSaveCmd;
-import www.bwsensing.com.device.dto.command.ProductUpdateCmd;
-import www.bwsensing.com.device.dto.command.ProjectBindWithProductCmd;
-import www.bwsensing.com.device.dto.command.query.FacilityReceivePageQuery;
+import www.bwsensing.com.device.api.ProductDeviceService;
+import org.springframework.validation.annotation.Validated;
+import www.bwsensing.com.device.api.DeviceComputationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.device.dto.command.query.ProductSortQuery;
+import www.bwsensing.com.device.dto.command.query.FacilityReceivePageQuery;
 
 
 
@@ -34,6 +32,8 @@ import www.bwsensing.com.device.dto.command.query.ProductSortQuery;
 public class ProductDeviceController {
     @Autowired
     private ProductDeviceService productDeviceService;
+    @Autowired
+    private DeviceComputationService deviceComputationService;
 
     @ApiOperation("设备查询(分页/条件查询)")
     @PostMapping("/query/sort")
@@ -108,5 +108,16 @@ public class ProductDeviceController {
         return productDeviceService.getProductDataItemsByUniqueCode(uniqueCode);
     }
 
+    @ApiOperation("添加设备与计算模型关联")
+    @PostMapping("/computation/save")
+    public  Response addDeviceComputation(@Valid @RequestBody DeviceComputationSaveCmd saveCmd){
+        return deviceComputationService.addDeviceComputation(saveCmd);
+    }
+
+    @ApiOperation("修改设备与计算模型关联")
+    @PostMapping("/computation/update")
+    public  Response addDeviceComputation(@Valid @RequestBody DeviceComputationUpdateCmd updateCmd){
+        return deviceComputationService.updateDeviceComputation(updateCmd);
+    }
 
 }

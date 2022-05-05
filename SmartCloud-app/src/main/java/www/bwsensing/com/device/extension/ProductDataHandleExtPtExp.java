@@ -6,6 +6,7 @@ import com.alibaba.cola.extension.Extension;
 import www.bwsensing.com.common.constant.BizScenarioCode;
 import www.bwsensing.com.device.dto.command.FacilityDataCmd;
 import www.bwsensing.com.common.constant.HandlerScenarioCode;
+import www.bwsensing.com.domain.device.model.data.MonitorData;
 import www.bwsensing.com.domain.device.model.data.MonitorReceive;
 import www.bwsensing.com.device.dto.command.ClientMessageHandleCmd;
 import www.bwsensing.com.domain.device.gateway.ProductModelGateway;
@@ -56,7 +57,7 @@ public class ProductDataHandleExtPtExp implements ClientMessageHandleExtPt {
                     dataResult.setReceiveMessage(receivedMessage.toString());
                     log.info("receiveMessage:{}", "\n"+receivedMessage);
                     dataResult.setReceiveTime(new Date());
-                    monitorReceiveGateway.storageMonitorReceive(dataResult);
+                    monitorReceiveGateway.storageMonitorReceive(dataResult,true);
                     break;
                 } catch (Exception ex){
                     ex.printStackTrace();

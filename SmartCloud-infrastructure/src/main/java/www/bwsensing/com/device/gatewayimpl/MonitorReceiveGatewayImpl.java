@@ -8,11 +8,16 @@ import www.bwsensing.com.device.tdengin.MonitorDataMapper;
 import www.bwsensing.com.domain.device.model.data.MonitorData;
 import org.springframework.transaction.annotation.Transactional;
 import www.bwsensing.com.domain.device.model.data.MonitorReceive;
-import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
+import www.bwsensing.com.common.core.event.DomainEventPublisher;
+import www.bwsensing.com.domainevent.DeviceDataComputationEvent;
 import www.bwsensing.com.monitor.convertor.MonitorReceiveConvertor;
 import www.bwsensing.com.domain.monitor.gateway.MonitorReceiveGateway;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDeviceMapper;
+import www.bwsensing.com.domain.device.model.data.model.ComputationKind;
 import www.bwsensing.com.device.gatewayimpl.database.MonitorReceiveMapper;
+import www.bwsensing.com.device.gatewayimpl.database.DeviceComputationMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDeviceDO;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.DeviceComputationDO;
 
 
 /**
@@ -27,13 +32,17 @@ public class MonitorReceiveGatewayImpl implements MonitorReceiveGateway {
     private MonitorReceiveMapper monitorReceiveMapper;
     @Resource
     private ProductDeviceMapper productDeviceMapper;
-
+    @Resource
+    private DeviceComputationMapper deviceComputationMapper;
+    @Resource
+    private DomainEventPublisher eventPublisher;
     /**
+     *
      * @param receive
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public void storageMonitorReceive(MonitorReceive receive) {
+    public void storageMonitorReceive(MonitorReceive receive,Boolean isDirect) {
         if(receive.getDataCollection().size()>0){
             monitorDataMapper.createSuperTable();
             monitorDataMapper.batchMonitorData(receive.getDataCollection());
@@ -41,7 +50,19 @@ public class MonitorReceiveGatewayImpl implements MonitorReceiveGateway {
             log.info("current sn:{} ----  Storage data  success --- data size:{}",receive.getUniqueCode(),receive.getTotalSize());
         }
         monitorReceiveMapper.saveReceive(MonitorReceiveConvertor.toDataObject(receive));
-        updateSensor(receive);
+        ProductDeviceDO dataObject = productDeviceMapper.getProductDetailByUniqueCode(receive.getUniqueCode());
+        if(null != dataObject&& isDirect){
+           List<DeviceComputationDO> devicesComputations = deviceComputationMapper.queryDeviceComputationBySort(new DeviceComputationDO(dataObject.getId()));
+            devicesComputations.forEach(deviceComputationDO -> {
+                if (ComputationKind.SUBMIT_CALCULATION.getType().equals(deviceComputationDO.getComputationKind())){
+                    DeviceDataComputationEvent<MonitorData> dataComputationEvent = new DeviceDataComputationEvent<>();
+                    dataComputationEvent.setDeviceId(dataObject.getId());
+                    dataComputationEvent.setDeviceComputationId(deviceComputationDO.getId());
+                    dataComputationEvent.setDataCollections(receive.getDataCollection());
+                    eventPublisher.publish(dataComputationEvent);
+                }
+            });
+        }
     }
 
     private void batchStorageMonitor(List<MonitorData> dataCollection,String sn){
@@ -50,13 +71,5 @@ public class MonitorReceiveGatewayImpl implements MonitorReceiveGateway {
             monitorDataMapper.createNewDataTable(monitorData);
             monitorDataMapper.insertMonitorData(monitorData);
         }
-    }
-
-    private void updateSensor(MonitorReceive receive) {
-        ProductDeviceDO dataObject = productDeviceMapper.getProductDetailByUniqueCode(receive.getUniqueCode());
-        if(null == dataObject){
-            return;
-        }
-        productDeviceMapper.updateProductDevice(dataObject);
     }
 }

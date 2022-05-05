@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.bwsensing.com.device.gatewayimpl.database.DeviceComputationMapper">
+
+    <resultMap type="DeviceComputationDO" id="DeviceComputationResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="executeId"    column="execute_id"    />
+        <result property="dataComputationId"    column="data_computation_id"    />
+        <result property="computationKind"    column="computation_kind"    />
+        <result property="concurrent"    column="concurrent"    />
+        <result property="cronExpression"    column="cron_expression"    />
+        <result property="status"    column="status"    />
+        <result property="jobId" column="job_id"        />
+    </resultMap>
+
+    <sql id="DeviceComputationVo">
+        select id, device_id, execute_id, data_computation_id, computation_kind, concurrent, cron_expression, status,job_id from device_computation
+    </sql>
+
+    <select id="queryDeviceComputationBySort" parameterType="DeviceComputationDO" resultMap="DeviceComputationResult">
+        <include refid="DeviceComputationVo"/>
+        <where>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="executeId != null  and executeId != ''"> and execute_id = #{executeId}</if>
+            <if test="dataComputationId != null "> and data_computation_id = #{dataComputationId}</if>
+            <if test="computationKind != null "> and computation_kind = #{computationKind}</if>
+            <if test="concurrent != null "> and concurrent = #{concurrent}</if>
+            <if test="cronExpression != null  and cronExpression != ''"> and cron_expression = #{cronExpression}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="getDeviceComputationById" parameterType="Integer" resultMap="DeviceComputationResult">
+        <include refid="DeviceComputationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDeviceComputation" parameterType="DeviceComputationDO" useGeneratedKeys="true" keyProperty="id">
+        insert into device_computation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="executeId != null">execute_id,</if>
+            <if test="dataComputationId != null">data_computation_id,</if>
+            <if test="computationKind != null">computation_kind,</if>
+            <if test="concurrent != null">concurrent,</if>
+            <if test="cronExpression != null">cron_expression,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="executeId != null">#{executeId},</if>
+            <if test="dataComputationId != null">#{dataComputationId},</if>
+            <if test="computationKind != null">#{computationKind},</if>
+            <if test="concurrent != null">#{concurrent},</if>
+            <if test="cronExpression != null">#{cronExpression},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceComputation" parameterType="DeviceComputationDO">
+        update device_computation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="executeId != null">execute_id = #{executeId},</if>
+            <if test="dataComputationId != null">data_computation_id = #{dataComputationId},</if>
+            <if test="computationKind != null">computation_kind = #{computationKind},</if>
+            <if test="concurrent != null">concurrent = #{concurrent},</if>
+            <if test="cronExpression != null">cron_expression = #{cronExpression},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="jobId != null">job_id = #{jobId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceComputationById" parameterType="Integer">
+        delete from device_computation where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceComputationByIds" parameterType="String">
+        delete from device_computation where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

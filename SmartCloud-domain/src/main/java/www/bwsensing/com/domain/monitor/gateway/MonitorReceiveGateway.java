@@ -11,5 +11,5 @@ public interface MonitorReceiveGateway {
      * 存储传感器数据
      * @param receive
      */
-    void storageMonitorReceive(MonitorReceive receive);
+    void storageMonitorReceive(MonitorReceive receive,Boolean isDirect);
 }

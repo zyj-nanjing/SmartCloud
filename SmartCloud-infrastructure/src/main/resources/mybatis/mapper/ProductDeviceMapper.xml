@@ -21,6 +21,26 @@
         <result property="latitude"    column="latitude"    />
         <result property="createTime"    column="create_time"    />
         <result property="creator"    column="creator"    />
+    </resultMap>
+
+    <resultMap type="ProductDeviceDO" id="ProductDeviceDetail">
+        <result property="id"    column="id"    />
+        <result property="uniqueCode"    column="unique_code"    />
+        <result property="name"    column="name"    />
+        <result property="deviceNo"    column="device_no"    />
+        <result property="organizationId"    column="organization_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="positionId"    column="position_id"    />
+        <result property="communicationCode"    column="communication_code"    />
+        <result property="productionTime"    column="production_time"    />
+        <result property="hardwareVersion"    column="hardware_version"    />
+        <result property="softwareVersion"    column="software_version"    />
+        <result property="installTime"    column="install_time"    />
+        <result property="needSituation"    column="need_situation"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creator"    column="creator"    />
         <collection property="extraProductData" ofType="ExtraDataItemData" column="id" select="getExtraItemDataByDeviceId"/>
     </resultMap>
 
@@ -178,7 +198,7 @@
         where  unique_code = #{uniqueCode}
     </select>
 
-    <select id="getProductDetailById" resultMap="ProductDeviceResult" parameterType="int">
+    <select id="getProductDetailById" resultMap="ProductDeviceDetail" parameterType="int">
         <include refid="PRODUCT_SELECT"/>
         where id =#{id}
     </select>

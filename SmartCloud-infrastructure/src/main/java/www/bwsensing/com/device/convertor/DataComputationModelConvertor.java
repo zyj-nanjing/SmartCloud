@@ -35,6 +35,9 @@ public class DataComputationModelConvertor {
     public static DataComputationModel toDomain(DataComputationModelDO dataObject){
         DataComputationModel dataModel = new DataComputationModel();
         MODEL_DOMAIN_COPIER.copy(dataObject,dataModel,null);
+        if (null != dataObject.getProductDataItems()){
+            dataModel.setProductDataItems(ProductDataItemConvertor.toDomainCollection(dataObject.getProductDataItems()));
+        }
         return dataModel;
     }
 }

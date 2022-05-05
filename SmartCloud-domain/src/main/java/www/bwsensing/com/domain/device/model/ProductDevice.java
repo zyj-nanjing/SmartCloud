@@ -80,10 +80,16 @@ public class ProductDevice {
      * 维度
      */
     private Double latitude;
+
     /**
      * 额外产品数据
      */
     private List<ExtraProductDataItem> extraProductData;
+
+    /**
+     * 设备计算模型关联
+     */
+    private List<DeviceComputation> deviceComputations;
 
     private String creator;
 

@@ -1,4 +1,4 @@
-package www.bwsensing.com.common.quartz.config;//package com.ruoyi.quartz.config;
+//package www.bwsensing.com.common.quartz.config;//package com.ruoyi.quartz.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ package www.bwsensing.com.common.quartz.config;//package com.ruoyi.quartz.config
 //
 ///**
 // * 定时任务配置（单机部署建议默认走内存，如需集群需要创建qrtz数据库表/打开类注释）
-// * 
+// *
 // * @author ruoyi
 // */
 //@Configuration
@@ -22,7 +22,7 @@ package www.bwsensing.com.common.quartz.config;//package com.ruoyi.quartz.config
 //
 //        // quartz参数
 //        Properties prop = new Properties();
-//        prop.put("org.quartz.scheduler.instanceName", "RuoyiScheduler");
+//        prop.put("org.quartz.scheduler.instanceName", "CloudScheduler");
 //        prop.put("org.quartz.scheduler.instanceId", "AUTO");
 //        // 线程池配置
 //        prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
@@ -35,14 +35,11 @@ package www.bwsensing.com.common.quartz.config;//package com.ruoyi.quartz.config
 //        prop.put("org.quartz.jobStore.clusterCheckinInterval", "15000");
 //        prop.put("org.quartz.jobStore.maxMisfiresToHandleAtATime", "1");
 //        prop.put("org.quartz.jobStore.txIsolationLevelSerializable", "true");
-//
-//        // sqlserver 启用
-//        // prop.put("org.quartz.jobStore.selectWithLockSQL", "SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?");
 //        prop.put("org.quartz.jobStore.misfireThreshold", "12000");
 //        prop.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
 //        factory.setQuartzProperties(prop);
 //
-//        factory.setSchedulerName("RuoyiScheduler");
+//        factory.setSchedulerName("CloudScheduler");
 //        // 延时启动
 //        factory.setStartupDelay(1);
 //        factory.setApplicationContextSchedulerContextKey("applicationContextKey");

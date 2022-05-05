@@ -351,4 +351,14 @@ public class ProductModelGatewayImpl implements ProductModelGateway {
             dataComputationModelMapper.deleteDataComputationModelById(id);
         }
     }
+
+    @Override
+    public DataComputationModel getDataComputationModelById(Integer id) {
+        DataComputationModelDO dataObject = dataComputationModelMapper.getDataComputationModelById(id);
+        ProductDataItemDO productDataItem = productDataItemMapper.getProductDataItemById(dataObject.getDataItemId());
+        DataComputationModel domainObject = DataComputationModelConvertor.toDomain(dataObject);
+        domainObject.setProductDataItem(ProductDataItemConvertor.toDomain(productDataItem));
+        domainObject.setComputationDataId(productDataItem.getDataId());
+        return domainObject;
+    }
 }

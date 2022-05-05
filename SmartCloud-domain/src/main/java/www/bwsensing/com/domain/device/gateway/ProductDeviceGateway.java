@@ -1,5 +1,6 @@
 package www.bwsensing.com.domain.device.gateway;
 
+import www.bwsensing.com.domain.device.model.DeviceComputation;
 import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.device.model.ProductDataItem;
 
@@ -48,6 +49,18 @@ public interface ProductDeviceGateway {
      * @return
      */
     ProductDevice getDeviceDetailById(Integer sensorId);
+
+    /**
+     * 新增计算模型与设备关联
+     * @param deviceComputation
+     */
+    void addDeviceComputation(DeviceComputation deviceComputation);
+
+    /**
+     * 修改计算模型与设备关联
+     * @param deviceComputation
+     */
+    void updateDeviceComputation(DeviceComputation deviceComputation);
 
     /**
      * 根据设备唯一编码查询关联的对应数据项
