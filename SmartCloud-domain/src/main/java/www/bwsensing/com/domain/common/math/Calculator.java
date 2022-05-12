@@ -1,5 +1,6 @@
 package www.bwsensing.com.domain.common.math;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -34,7 +35,7 @@ public class Calculator {
         return conversion(expression);
     }
 
-    public static double conversion(String expression) {
+    public static Double conversion(String expression) {
         double result = 0;
         Calculator cal = new Calculator();
         try {
@@ -186,19 +187,20 @@ public class Calculator {
      * @return
      */
     private String calculate(String firstValue, String secondValue, char currentOp) {
+        DecimalFormat df = new DecimalFormat("0.00000000");
         String result = "";
         switch (currentOp) {
             case '+':
-                result = String.valueOf(MathHelper.add(firstValue, secondValue));
+                result = df.format(MathHelper.add(firstValue, secondValue));
                 break;
             case '-':
-                result = String.valueOf(MathHelper.sub(firstValue, secondValue));
+                result = df.format(MathHelper.sub(firstValue, secondValue));
                 break;
             case '*':
-                result = String.valueOf(MathHelper.mul(firstValue, secondValue));
+                result = df.format(MathHelper.mul(firstValue, secondValue));
                 break;
             case '/':
-                result = String.valueOf(MathHelper.div(firstValue, secondValue));
+                result = df.format(MathHelper.div(firstValue, secondValue));
                 break;
         }
         return result;

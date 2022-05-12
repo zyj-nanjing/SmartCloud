@@ -1,6 +1,8 @@
 package www.bwsensing.com.device.convertor;
 
 import org.springframework.cglib.beans.BeanCopier;
+import www.bwsensing.com.domain.device.model.ComputationFunctionCode;
+import www.bwsensing.com.domain.device.model.ComputationHandleKind;
 import www.bwsensing.com.domain.device.model.DeviceComputation;
 import www.bwsensing.com.domain.device.model.data.model.ComputationKind;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.DeviceComputationDO;
@@ -22,6 +24,12 @@ public class DeviceComputationConvertor {
         if (null != dataObject.getComputationKind() ){
             domainObject.setComputationKind(ComputationKind.getComputationKind(dataObject.getComputationKind()));
         }
+        if (null != dataObject.getFunctionCode() ){
+            domainObject.setFunctionCode(ComputationFunctionCode.getComputationFunctionCode(dataObject.getFunctionCode()));
+        }
+        if (null != dataObject.getHandleKind() ){
+            domainObject.setHandleKind(ComputationHandleKind.getComputationHandleKind(dataObject.getHandleKind()));
+        }
         return domainObject;
     }
 
@@ -39,6 +47,12 @@ public class DeviceComputationConvertor {
         DATA_OBJECT_COPIER.copy(domainObject,dataObject,null);
         if (null != domainObject.getComputationKind() ){
             dataObject.setComputationKind(domainObject.getComputationKind().getType());
+        }
+        if (null != domainObject.getFunctionCode() ){
+            dataObject.setFunctionCode(domainObject.getFunctionCode().getValue());
+        }
+        if (null != domainObject.getHandleKind() ){
+            dataObject.setHandleKind(domainObject.getHandleKind().getValue());
         }
         return dataObject;
     }

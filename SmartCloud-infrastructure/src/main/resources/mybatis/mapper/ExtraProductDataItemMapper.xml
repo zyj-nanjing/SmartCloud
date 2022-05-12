@@ -7,7 +7,7 @@
     <resultMap type="ExtraProductDataItemDO" id="ExtraProductDataItemResult">
         <result property="id"    column="id"    />
         <result property="modelId"    column="model_id"    />
-        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraItemName"    column="extra_item_name"    />
         <result property="extraDataId"    column="extra_data_id"    />
         <result property="unit"    column="unit"    />
         <result property="needTransform"    column="need_transform"    />
@@ -18,7 +18,7 @@
     <resultMap type="ExtraProductDataItemDO" id="ExtraDataItemData">
         <result property="id"    column="id"    />
         <result property="modelId"    column="model_id"    />
-        <result property="extraItemName"    column="extra_Item_name"    />
+        <result property="extraItemName"    column="extra_item_name"    />
         <result property="extraDataId"    column="extra_data_id"    />
         <result property="extraData"    column="extra_data"    />
         <result property="unit"    column="unit"    />
@@ -28,14 +28,14 @@
     </resultMap>
 
     <sql id="extraProductDataItemVo">
-        select id, model_id, extra_Item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
+        select id, model_id, extra_item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
     </sql>
 
     <select id="queryExtraProductDataItemBySort" parameterType="ExtraProductDataItemDO" resultMap="ExtraProductDataItemResult">
         <include refid="extraProductDataItemVo"/>
         <where>
             <if test="modelId != null "> and model_id = #{modelId}</if>
-            <if test="extraItemName != null  and extraItemName != ''"> and extra_Item_name like concat('%', #{extraItemName}, '%')</if>
+            <if test="extraItemName != null  and extraItemName != ''"> and extra_item_name like concat('%', #{extraItemName}, '%')</if>
             <if test="extraDataId != null "> and extra_data_id = #{extraDataId}</if>
             <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
             <if test="needTransform != null "> and need_transform = #{needTransform}</if>
@@ -50,7 +50,7 @@
     </select>
 
     <select id="getExtraDataItemDataByDeviceId" parameterType="Integer" resultMap="ExtraDataItemData">
-        SELECT extra.id, extra.model_id, extra_Item_name, extra_data,extra_data_id, unit, need_transform, calculation_formula, placeholder
+        SELECT extra.id, extra.model_id, extra_item_name, extra_data,extra_data_id, unit, need_transform, calculation_formula, placeholder
         FROM device_extra_data_item  device_data LEFT JOIN extra_product_data_item extra  ON device_data.extra_item_id = extra.id
         where device_id =#{deviceId}
     </select>
@@ -74,7 +74,7 @@
         insert into extra_product_data_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="modelId != null">model_id,</if>
-            <if test="extraItemName != null">extra_Item_name,</if>
+            <if test="extraItemName != null">extra_item_name,</if>
             <if test="extraDataId != null">extra_data_id,</if>
             <if test="unit != null">unit,</if>
             <if test="needTransform != null">need_transform,</if>
@@ -96,7 +96,7 @@
         update extra_product_data_item
         <trim prefix="SET" suffixOverrides=",">
             <if test="modelId != null">model_id = #{modelId},</if>
-            <if test="extraItemName != null">extra_Item_name = #{extraItemName},</if>
+            <if test="extraItemName != null">extra_item_name = #{extraItemName},</if>
             <if test="extraDataId != null">extra_data_id = #{extraDataId},</if>
             <if test="unit != null">unit = #{unit},</if>
             <if test="needTransform != null">need_transform = #{needTransform},</if>

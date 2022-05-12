@@ -1,6 +1,7 @@
 package www.bwsensing.com.device.gatewayimpl.database;
 
 import org.apache.ibatis.annotations.Param;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataComputationItemDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataComputationModelDO;
 import java.util.List;
 
@@ -44,19 +45,35 @@ public interface ProductDataComputationModelMapper {
      * 保存计算模型与数据项关联
      * @param computationModelId
      * @param dataItemId
+     * @param prefix
      * @return
      */
-    int saveDataComputationWithDataItem(@Param("computationId") Integer computationModelId, @Param("dataItemId")Integer dataItemId);
+    int saveDataComputationWithDataItem(@Param("computationId") Integer computationModelId, @Param("dataItemId")Integer dataItemId,@Param("prefix")String prefix);
 
 
     /**
      * 保存计算模型与产品配置关联
      * @param computationModelId
      * @param extraDataItemId
+     * @param prefix
      * @return
      */
-    int saveDataComputationWithExtraDataItem(@Param("computationId") Integer computationModelId,@Param("extraDataItemId") Integer extraDataItemId);
+    int saveDataComputationWithExtraDataItem(@Param("computationId") Integer computationModelId,@Param("extraDataItemId") Integer extraDataItemId,@Param("prefix")String prefix);
 
+    /**
+     * 根据计算模型编号获取对应的集合
+     * @param computationId
+     * @return
+     */
+    List<DataComputationItemDO> queryDataComputationWithDataItem(Integer computationId);
+
+
+    /**
+     *根据计算模型编号获取对应的集合
+     * @param computationId
+     * @return
+     */
+    List<DataComputationItemDO> queryDataComputationWithExtraDataItem(Integer computationId);
     /**
      * 新增产品数据计算模型
      *

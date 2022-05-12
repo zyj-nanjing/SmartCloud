@@ -15,7 +15,7 @@ public class TimeSeriesDataCO extends DTO {
     /**
      * 数值
      */
-    private Float dataValue;
+    private Double dataValue;
 
     public TimeSeriesDataCO() {
     }
@@ -28,11 +28,11 @@ public class TimeSeriesDataCO extends DTO {
         this.ts = ts;
     }
 
-    public Float getDataValue() {
+    public Double getDataValue() {
         return dataValue;
     }
 
-    public void setDataValue(Float dataValue) {
+    public void setDataValue(Double dataValue) {
         this.dataValue = dataValue;
     }
 }

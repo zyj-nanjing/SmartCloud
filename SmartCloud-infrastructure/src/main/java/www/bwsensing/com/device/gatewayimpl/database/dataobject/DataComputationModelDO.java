@@ -42,6 +42,9 @@ public class DataComputationModelDO {
      */
     private List<ExtraProductDataItemDO> extraProductDataItems;
 
+
+    private List<DataComputationItemDO> dataComputationItems;
+
     /**
      * 计算触发类型
      */

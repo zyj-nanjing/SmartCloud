@@ -5,6 +5,8 @@ import lombok.Data;
 import com.alibaba.cola.exception.Assert;
 import www.bwsensing.com.domain.common.math.Calculator;
 
+import java.text.DecimalFormat;
+
 /**
  * 监测项 单位 数据类型
  * 是否考虑监测项与产品数据解析挂钩
@@ -84,10 +86,11 @@ public class ProductDataItem {
     }
 
     public String getDataCalculation(String dataValue){
+        DecimalFormat df = new DecimalFormat("0.000000");
         if (needTransform){
             Assert.notNull(placeholder, "占位符不能为空!");
             String currentFormula = calculationFormula.replace(placeholder,dataValue);
-            return Calculator.conversion(currentFormula)+"";
+            return df.format(Calculator.conversion(currentFormula));
         }
         return dataValue;
     }

@@ -31,4 +31,5 @@ public class DeviceComputationUpdateCmd extends CommonCommand {
      * 状态
      */
     private Boolean status;
+
 }

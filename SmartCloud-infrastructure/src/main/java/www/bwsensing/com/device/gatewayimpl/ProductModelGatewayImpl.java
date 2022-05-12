@@ -1,5 +1,6 @@
 package www.bwsensing.com.device.gatewayimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import com.alibaba.cola.exception.Assert;
@@ -11,6 +12,7 @@ import www.bwsensing.com.common.constant.RoleConstant;
 import www.bwsensing.com.device.gatewayimpl.database.*;
 import www.bwsensing.com.domain.device.model.ProductModel;
 import www.bwsensing.com.common.utills.ObjectConvertUtils;
+import www.bwsensing.com.domain.device.model.data.model.*;
 import www.bwsensing.com.domain.system.gateway.TokenGateway;
 import www.bwsensing.com.domain.system.model.token.TokenData;
 import www.bwsensing.com.domain.device.model.ProductDataItem;
@@ -19,10 +21,6 @@ import www.bwsensing.com.domain.device.model.DataItemSourceKind;
 import www.bwsensing.com.domain.device.model.ExtraProductDataItem;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.*;
 import www.bwsensing.com.domain.device.gateway.ProductModelGateway;
-import www.bwsensing.com.domain.device.model.data.model.SplitMethod;
-import www.bwsensing.com.domain.device.model.data.model.DataModelItem;
-import www.bwsensing.com.domain.device.model.data.model.ProductDataModel;
-import www.bwsensing.com.domain.device.model.data.model.DataComputationModel;
 
 /**
  * @author macos-zyj
@@ -300,46 +298,48 @@ public class ProductModelGatewayImpl implements ProductModelGateway {
     @Transactional(rollbackFor =RuntimeException.class)
     @Override
     public void addProductDataComputationModel(DataComputationModel dataComputationModel) {
-        Assert.isFalse(dataComputationModel.checkDataComputationIsLegal(),"DATA_COMPUTATION_MODEL_NOT_LEGAL","计算模型配置不合规!");
+        Assert.isFalse(dataComputationModel.checkDataComputationIsNotLegal(),"DATA_COMPUTATION_MODEL_NOT_LEGAL","计算模型配置不合规!");
         ProductDataItemDO dataItem = productDataItemMapper.getProductDataItemById(dataComputationModel.getDataItemId());
+        Assert.notNull(dataItem.getItemKind(),"选中的监测相位类型不能为空!");
         if(!DataItemSourceKind.CALCULATION_DATA.getType().equals(dataItem.getItemKind())){
-            throw new BizException("PRODUCT_DATA_ITEM_NOT_TRUE","请勿正确选择数据检测项类型");
+            throw new BizException("PRODUCT_DATA_ITEM_NOT_TRUE","请正确选择数据检测项类型");
         }
         DataComputationModelDO dataObject = DataComputationModelConvertor.toDataObject(dataComputationModel);
         dataComputationModelMapper.saveDataComputationModel(dataObject);
-        if (null != dataComputationModel.getProductDataItems()){
-            for (ProductDataItem productDataItem : dataComputationModel.getProductDataItems()){
-                dataComputationModelMapper.saveDataComputationWithDataItem(dataObject.getId(),productDataItem.getId());
-            }
-        }
-        if(null != dataComputationModel.getExtraProductDataItems()){
-            for (ExtraProductDataItem extraDataItem : dataComputationModel.getExtraProductDataItems()){
-                dataComputationModelMapper.saveDataComputationWithExtraDataItem(dataObject.getId(),extraDataItem.getId());
-            }
-        }
+        saveDataComputationItem(dataComputationModel, dataObject.getId());
     }
 
     @Transactional(rollbackFor =RuntimeException.class)
     @Override
     public void updateProductDataComputationModel(DataComputationModel dataComputationModel) {
-        DataComputationModelDO dataObject = dataComputationModelMapper.getDataComputationModelById(dataComputationModel.getId());
-        if(null != dataObject){
-            DataComputationModel dataBaseObject = DataComputationModelConvertor.toDomain(dataObject);
+        DataComputationModel dataBaseObject = getDataComputationModelById(dataComputationModel.getId());
+        if(null != dataBaseObject){
             ObjectConvertUtils.copyProperties(dataComputationModel,dataBaseObject);
             dataComputationModelMapper.updateDataComputationModel(DataComputationModelConvertor.toDataObject(dataBaseObject));
         } else {
             throw new BizException("DATA_COMPUTATION_MODEL_NOT_FOUND","该计算模型配置不存在!");
         }
-        if (null != dataComputationModel.getProductDataItems()){
-            dataComputationModelMapper.deleteDataComputationWithDataItem(dataComputationModel.getId());
-            for (ProductDataItem productDataItem : dataComputationModel.getProductDataItems()){
-                dataComputationModelMapper.saveDataComputationWithDataItem(dataObject.getId(),productDataItem.getId());
-            }
-        }
-        if(null != dataComputationModel.getExtraProductDataItems()){
-            dataComputationModelMapper.deleteDataComputationWithExtraDataItem(dataComputationModel.getId());
-            for (ExtraProductDataItem extraDataItem : dataComputationModel.getExtraProductDataItems()){
-                dataComputationModelMapper.saveDataComputationWithExtraDataItem(dataObject.getId(),extraDataItem.getId());
+        dataComputationModelMapper.deleteDataComputationWithDataItem(dataComputationModel.getId());
+        dataComputationModelMapper.deleteDataComputationWithExtraDataItem(dataComputationModel.getId());
+        saveDataComputationItem(dataComputationModel, dataComputationModel.getId());
+    }
+
+    private void saveDataComputationItem(DataComputationModel dataComputationModel, Integer dataComputationId) {
+        if (null != dataComputationModel.getDataComputationItems()){
+            for (DataComputationItem computationItem : dataComputationModel.getDataComputationItems()){
+                if(computationItem.getItemKind()==0){
+                    if (null != extraProductDataItemMapper.getExtraProductDataItemById(computationItem.getCurrentId())){
+                        dataComputationModelMapper.saveDataComputationWithExtraDataItem(dataComputationId,computationItem.getCurrentId(),computationItem.getPrefix());
+                    } else {
+                        throw new BizException("EXTRA_PRODUCT_ITEM_ERROR","当前产品配置项不存在");
+                    }
+                } else {
+                    if (null != productDataItemMapper.getProductDataItemById(computationItem.getCurrentId())){
+                        dataComputationModelMapper.saveDataComputationWithDataItem(dataComputationId,computationItem.getCurrentId(),computationItem.getPrefix());
+                    } else {
+                        throw new BizException("PRODUCT_ITEM_ERROR","当前数据项不存在");
+                    }
+                }
             }
         }
     }
@@ -359,6 +359,24 @@ public class ProductModelGatewayImpl implements ProductModelGateway {
         DataComputationModel domainObject = DataComputationModelConvertor.toDomain(dataObject);
         domainObject.setProductDataItem(ProductDataItemConvertor.toDomain(productDataItem));
         domainObject.setComputationDataId(productDataItem.getDataId());
+        List<DataComputationItem> computationItems = new ArrayList<>();
+        List<DataComputationItemDO>  dataComputationItems = dataComputationModelMapper.queryDataComputationWithDataItem(id);
+        List<DataComputationItemDO>  extraDataComputationItems = dataComputationModelMapper.queryDataComputationWithExtraDataItem(id);
+        dataComputationItems.forEach(dataComputationItem -> {
+            DataComputationItem current = new DataComputationItem();
+            current.setCurrentId(dataComputationItem.getCurrentId());
+            current.setItemKind(1);
+            current.setPrefix(dataComputationItem.getPrefix());
+            computationItems.add(current);
+        });
+        extraDataComputationItems.forEach(dataComputationItem -> {
+            DataComputationItem current = new DataComputationItem();
+            current.setCurrentId(dataComputationItem.getCurrentId());
+            current.setItemKind(0);
+            current.setPrefix(dataComputationItem.getPrefix());
+            computationItems.add(current);
+        });
+        domainObject.setDataComputationItems(computationItems);
         return domainObject;
     }
 }

@@ -5,6 +5,8 @@ import com.alibaba.cola.exception.Assert;
 import org.apache.commons.lang3.StringUtils;
 import www.bwsensing.com.domain.common.math.Calculator;
 
+import java.text.DecimalFormat;
+
 /**
  * @author macos-zyj
  */
@@ -77,10 +79,11 @@ public class ExtraProductDataItem {
     }
 
     public String getDataCalculation(){
+        DecimalFormat df = new DecimalFormat("0.000000");
         if (needTransform&& StringUtils.isNotBlank(extraData)){
             Assert.notNull(placeholder, "占位符不能为空!");
             String currentFormula = calculationFormula.replace(placeholder,extraData);
-            return Calculator.conversion(currentFormula)+"";
+            return df.format(Calculator.conversion(currentFormula));
         }
         return extraData;
     }

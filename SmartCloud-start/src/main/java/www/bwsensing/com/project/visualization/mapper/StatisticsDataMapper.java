@@ -26,7 +26,19 @@ public interface StatisticsDataMapper {
      */
     List<StatisticsData> listStatisticsSpreadData(DeviceDataQuery query);
 
+    /**
+     * 最大值查询
+     * @param query
+     * @return
+     */
+    List<StatisticsData> listStatisticsMaxData(DeviceDataQuery query);
 
+    /**
+     * 最小值查询
+     * @param query
+     * @return
+     */
+    List<StatisticsData> listStatisticsMinData(DeviceDataQuery query);
     /**
      * 数据查询
      * @param statisticsQuery

@@ -13,6 +13,7 @@ import www.bwsensing.com.common.utills.ObjectConvertUtils;
 import www.bwsensing.com.device.convertor.DeviceComputationConvertor;
 import www.bwsensing.com.device.gatewayimpl.database.DeviceComputationMapper;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.DeviceComputationDO;
+import www.bwsensing.com.domain.device.model.ComputationHandleKind;
 import www.bwsensing.com.domain.device.model.DeviceComputation;
 import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.device.model.ProductDataItem;
@@ -120,6 +121,10 @@ public class ProductDeviceGatewayImpl implements ProductDeviceGateway {
         deviceComputationMapper.insertDeviceComputation(dataObject);
         if (ComputationKind.SCHEDULED_CALCULATION.equals(deviceComputation.getComputationKind())){
             createSysJob(deviceComputation, dataObject);
+            Assert.notNull(deviceComputation.getHandleKind(),"处理类型不能为空!");
+            if (ComputationHandleKind.INTERVAL_DATA.equals(deviceComputation.getHandleKind())){
+                Assert.notNull(deviceComputation.getFunctionCode(),"处理函数不能为空!");
+            }
         }
     }
 
@@ -155,17 +160,37 @@ public class ProductDeviceGatewayImpl implements ProductDeviceGateway {
         }
     }
 
+    @Override
+    public void deleteDeviceComputation(Integer id) {
+        DeviceComputationDO dataObject = deviceComputationMapper.getDeviceComputationById(id);
+        if(null != dataObject){
+            deviceComputationMapper.deleteDeviceComputationById(id);
+            if (null != dataObject.getJobId()){
+                SysJob currentJob = sysJobService.selectJobById(Long.valueOf(dataObject.getJobId()));
+                if(null != currentJob){
+                    try {
+                        sysJobService.deleteJob(currentJob);
+                    } catch (SchedulerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     private void createSysJob(DeviceComputation deviceComputation, DeviceComputationDO dataObject) {
         SysJob sysJob = new SysJob();
         sysJob.setJobName(deviceComputation.initScheduledName());
+        deviceComputation.setId(dataObject.getId());
         sysJob.setJobGroup("设备数据计算");
         sysJob.setBusinessLine(BUSINESS_LINE);
+        sysJob.setStatus("0");
         sysJob.setInvokeTarget(deviceComputation.initInvokeTarget());
         sysJob.setCronExpression(deviceComputation.getCronExpression());
         sysJob.setConcurrent(deviceComputation.getConcurrent()?"0":"1");
         try {
             sysJobService.insertJob(sysJob);
-            sysJobService.changeStatus(sysJob);
+            sysJobService.resumeJob(sysJob);
             dataObject.setJobId(sysJob.getJobId().intValue());
             deviceComputationMapper.updateDeviceComputation(dataObject);
         } catch (Exception  ex){

@@ -12,6 +12,7 @@ import javax.script.ScriptEngine;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -20,6 +21,7 @@ import java.util.*;
  */
 @Slf4j
 public class MathCalculatorUtil {
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00000000");
     private static final Set<Character> OPERATE_SET = new HashSet<>(Arrays.asList('+', '-', '*', '/', '%'));
 
     /**
@@ -38,7 +40,6 @@ public class MathCalculatorUtil {
         String reg = "^[-\\+]?[0-9]+(.[0-9]+)?$";
         return str.matches(reg);
     }
-
 
     /**
      * @param mathFormulaScript 数学公式字符串，如：mathFormula = (2*3-45/5+(9)+9%5 +2*(1+2) + Math.sqrt(3))/9.0
@@ -366,7 +367,7 @@ public class MathCalculatorUtil {
         checkArg(v2);
         BigDecimal v1Bd = new BigDecimal(v1);
         BigDecimal v2Bd = new BigDecimal(v2);
-        return v1Bd.add(v2Bd).toString();
+        return v1Bd.add(v2Bd).toPlainString();
     }
 
     /**
@@ -382,7 +383,7 @@ public class MathCalculatorUtil {
         checkArg(v2);
         BigDecimal v1Bd = new BigDecimal(v1);
         BigDecimal v2Bd = new BigDecimal(v2);
-        return v1Bd.subtract(v2Bd).toString();
+        return v1Bd.subtract(v2Bd).toPlainString();
     }
 
     /**
@@ -398,7 +399,7 @@ public class MathCalculatorUtil {
         checkArg(v2);
         BigDecimal v1Bd = new BigDecimal(v1);
         BigDecimal v2Bd = new BigDecimal(v2);
-        return v1Bd.multiply(v2Bd).toString();
+        return v1Bd.multiply(v2Bd).toPlainString();
     }
 
     /**
@@ -415,7 +416,7 @@ public class MathCalculatorUtil {
         checkArg(v2, false);
         BigDecimal v1Bd = new BigDecimal(v1);
         BigDecimal v2Bd = new BigDecimal(v2);
-        return v1Bd.divide(v2Bd, 2, RoundingMode.HALF_UP).toString();
+        return v1Bd.divide(v2Bd, 2, RoundingMode.HALF_UP).toPlainString();
     }
 
     /**
@@ -433,7 +434,7 @@ public class MathCalculatorUtil {
         checkArg(v2, false);
         BigDecimal v1Bd = new BigDecimal(v1);
         BigDecimal v2Bd = new BigDecimal(v2);
-        return v1Bd.remainder(v2Bd).toString();
+        return v1Bd.remainder(v2Bd).toPlainString();
     }
 
 
@@ -469,7 +470,7 @@ public class MathCalculatorUtil {
         // 3, 没有括号直接计算
         String result0 = calculatorSelfMathFormula(mathFormula);
         //结果保留八位小数
-        return new BigDecimal(result0).setScale(8,BigDecimal.ROUND_HALF_UP).toString();
+        return new BigDecimal(result0).setScale(8, RoundingMode.HALF_UP).toPlainString();
     }
 
     /**
@@ -589,7 +590,7 @@ public class MathCalculatorUtil {
             default:
                 throw new RuntimeException("找不到匹配的计算公式！");
         }
-        return String.valueOf(result);
+        return DECIMAL_FORMAT.format(result);
     }
 
 
@@ -663,9 +664,9 @@ public class MathCalculatorUtil {
             } else if(index0 == modIndex) {
                 result0 = mod(v1, v2);
             }
-            String s = left + result0 + right;
             return cac(left + result0 + right);
         }catch (Exception e) {
+            e.printStackTrace();
             log.error("数学计算公式错误"+ e.getMessage());
             throw new RuntimeException("数学计算公式错误！");
         }

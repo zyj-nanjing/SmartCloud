@@ -16,9 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import www.bwsensing.com.device.api.DeviceComputationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.device.dto.command.query.ProductSortQuery;
+import www.bwsensing.com.device.dto.command.query.DeviceComputationPageQuery;
 import www.bwsensing.com.device.dto.command.query.FacilityReceivePageQuery;
-
-
 
 /**
  * 设备信息
@@ -120,4 +119,21 @@ public class ProductDeviceController {
         return deviceComputationService.updateDeviceComputation(updateCmd);
     }
 
+    @ApiOperation("根据ID删除设备与计算模型关联")
+    @GetMapping("/computation/delete/{id}")
+    public Response deleteDeviceComputation(@PathVariable Integer id){
+        return deviceComputationService.deleteDeviceComputation(id);
+    }
+
+    @ApiOperation("设备与计算模型关联分页")
+    @PostMapping("/computation/page/query")
+    public PageResponse<DeviceComputationCO> getDeviceComputationBySort(@Valid @RequestBody DeviceComputationPageQuery pageQuery){
+        return deviceComputationService.getDeviceComputationBySort(pageQuery);
+    }
+
+    @ApiOperation("查看计算模型配置详情")
+    @GetMapping("/computation/detail/{id}")
+    public SingleResponse<DeviceComputationCO> getDeviceComputationById(@PathVariable Integer id){
+        return deviceComputationService.getDeviceComputationById(id);
+    }
 }

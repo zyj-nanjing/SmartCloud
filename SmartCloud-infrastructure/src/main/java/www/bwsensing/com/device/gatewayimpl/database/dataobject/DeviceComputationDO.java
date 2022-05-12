@@ -28,6 +28,16 @@ public class DeviceComputationDO {
     /** cron执行表达式 */
     private String cronExpression;
 
+    /**
+     * 处理类型
+     */
+    private Integer handleKind;
+
+    /**
+     * 时间范围处理函数
+     */
+    private Integer functionCode;
+
     /** 状态 */
     private Boolean status;
 

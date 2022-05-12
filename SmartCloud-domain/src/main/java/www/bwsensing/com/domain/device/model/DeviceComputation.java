@@ -48,6 +48,16 @@ public class DeviceComputation {
     private String cronExpression;
 
     /**
+     * 处理类型
+     */
+    private ComputationHandleKind handleKind;
+
+    /**
+     * 时间范围处理函数
+     */
+    private ComputationFunctionCode functionCode;
+
+    /**
      * 状态
      */
     private Boolean status;
@@ -72,7 +82,7 @@ public class DeviceComputation {
 
     public String initInvokeTarget() {
         return INVOKE_TARGET.replace("#{deviceId}",
-                deviceId+"").replace("#{deviceComputationId}",dataComputationId+"");
+                deviceId+"").replace("#{deviceComputationId}",id+"");
     }
 
     public String initScheduledName() {

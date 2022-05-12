@@ -1,8 +1,9 @@
 package www.bwsensing.com.system.web;
 
+import javax.annotation.Resource;
+import io.swagger.annotations.Api;
 import com.alibaba.cola.dto.Response;
 import com.alibaba.cola.dto.SingleResponse;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import www.bwsensing.com.common.utills.HexUtils;
@@ -17,8 +18,6 @@ import www.bwsensing.com.system.api.SystemUserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.beans.factory.annotation.Autowired;
 import www.bwsensing.com.system.dto.command.query.RsaSignValidQuery;
-
-import javax.annotation.Resource;
 
 /**
  * @author macos-zyj

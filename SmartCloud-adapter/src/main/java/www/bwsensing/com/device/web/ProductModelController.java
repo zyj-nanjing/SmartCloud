@@ -95,6 +95,12 @@ public class ProductModelController {
     }
 
     @ApiOperation("根据编号查询产品检测项列表")
+    @PostMapping("/item/query/sort")
+    public MultiResponse<ProductDataItemCO> getProductDataItemsByModelSort(@Valid @RequestBody ProductDataItemPageQuery pageQuery){
+        return productDataItemService.getProductDataItemsByModelSort(pageQuery);
+    }
+
+    @ApiOperation("根据编号查询产品检测项列表")
     @GetMapping("/item/query/{modelId}")
     public MultiResponse<ProductDataItemCO> getProductDataItemsByModelId(@PathVariable Integer modelId){
         return productDataItemService.getProductDataItemsByModelId(modelId);

@@ -64,7 +64,7 @@ public class DataComputationModelController {
     }
 
 
-    @ApiOperation("查看计算模型配置详情")
+    @ApiOperation("计算模型配置分页查询")
     @PostMapping("/page/query")
     public PageResponse<DataComputationModelCO> getDataComputationModelBySort(@Valid @RequestBody DataComputationModelPageQuery pageQuery){
         return dataComputationModelService.getDataComputationModelBySort(pageQuery);

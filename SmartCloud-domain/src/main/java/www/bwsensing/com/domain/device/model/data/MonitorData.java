@@ -39,4 +39,13 @@ public class MonitorData {
      *时间戳
      */
     private Timestamp timeStamp;
+
+    public MonitorData() {
+    }
+
+    public MonitorData(String dataId, Double dataIdValue, String uniqueCode) {
+        this.dataId = dataId;
+        this.dataIdValue = dataIdValue;
+        this.uniqueCode = uniqueCode;
+    }
 }

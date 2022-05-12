@@ -78,7 +78,7 @@ public class IDeviceStatisticsServiceImpl implements DeviceStatisticsService {
             resultData.setName(param.getItemName());
             resultData.setUnity(param.getUnit());
         }
-        List<Float> dataResult = new ArrayList<>(dataCollection.size());
+        List<Double> dataResult = new ArrayList<>(dataCollection.size());
         dataCollection.forEach(data -> dataResult.add(data.getValue()));
         resultData.setData(dataResult);
         return  resultData;
@@ -165,8 +165,8 @@ public class IDeviceStatisticsServiceImpl implements DeviceStatisticsService {
         }
     }
 
-    private  float getDataValue(Float dataValue,Integer decimalSize){
+    private  Double getDataValue(Double dataValue,Integer decimalSize){
         int divisionValue = ((Double) Math.pow(10, decimalSize)).intValue();
-        return (float)(Math.round(dataValue*divisionValue)*1.0/divisionValue);
+        return (Math.round(dataValue*divisionValue)*1.0/divisionValue);
     }
 }

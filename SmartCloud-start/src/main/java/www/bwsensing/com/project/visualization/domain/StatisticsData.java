@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class StatisticsData implements  Comparable<StatisticsData>{
 
     private Timestamp ts;
-    private Float value;
+    private Double value;
     private String data;
 
     @Override

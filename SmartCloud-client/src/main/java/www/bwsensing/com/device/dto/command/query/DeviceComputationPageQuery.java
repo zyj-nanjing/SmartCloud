@@ -8,13 +8,10 @@ import javax.validation.constraints.NotNull;
  * @author macos-zyj
  */
 @Data
-public class ProductDataItemPageQuery extends PageQuery {
-    @NotNull(message = "产品型号不能为空!")
-    private Integer modelId;
-
+public class DeviceComputationPageQuery extends PageQuery {
     /**
-     * 数据项来源类型
+     * 设备编号
      */
-    private Integer itemKind;
-
+    @NotNull(message = "设备编号不能为空!")
+    private Integer deviceId;
 }

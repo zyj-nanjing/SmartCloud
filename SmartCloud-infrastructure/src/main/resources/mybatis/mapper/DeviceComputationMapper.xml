@@ -12,12 +12,14 @@
         <result property="computationKind"    column="computation_kind"    />
         <result property="concurrent"    column="concurrent"    />
         <result property="cronExpression"    column="cron_expression"    />
+        <result property="handleKind"  column="handle_kind"/>
+        <result property="functionCode"  column="function_code"/>
         <result property="status"    column="status"    />
         <result property="jobId" column="job_id"        />
     </resultMap>
 
     <sql id="DeviceComputationVo">
-        select id, device_id, execute_id, data_computation_id, computation_kind, concurrent, cron_expression, status,job_id from device_computation
+        select id, device_id, execute_id, data_computation_id, computation_kind, concurrent, cron_expression,handle_kind,function_code, status,job_id from device_computation
     </sql>
 
     <select id="queryDeviceComputationBySort" parameterType="DeviceComputationDO" resultMap="DeviceComputationResult">
@@ -47,6 +49,8 @@
             <if test="computationKind != null">computation_kind,</if>
             <if test="concurrent != null">concurrent,</if>
             <if test="cronExpression != null">cron_expression,</if>
+            <if test="handleKind != null">handle_kind,</if>
+            <if test="functionCode != null">function_code,</if>
             <if test="status != null">status,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -56,6 +60,8 @@
             <if test="computationKind != null">#{computationKind},</if>
             <if test="concurrent != null">#{concurrent},</if>
             <if test="cronExpression != null">#{cronExpression},</if>
+            <if test="handleKind != null">#{handleKind},</if>
+            <if test="functionCode != null">#{functionCode},</if>
             <if test="status != null">#{status},</if>
         </trim>
     </insert>

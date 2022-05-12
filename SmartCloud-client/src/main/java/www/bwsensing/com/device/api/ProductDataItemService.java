@@ -21,6 +21,15 @@ public interface ProductDataItemService {
     MultiResponse<ProductDataItemCO> getProductDataItemsByModelId(Integer modelId);
 
     /**
+     * 根据条件查询获取产品监测数据项
+     * @param query
+     * @return
+     */
+    MultiResponse<ProductDataItemCO> getProductDataItemsByModelSort(ProductDataItemPageQuery query);
+
+
+
+    /**
      * 分页查询
      * @param pageQuery
      * @return

@@ -2,33 +2,31 @@ package www.bwsensing.com.device.service;
 
 import javax.annotation.Resource;
 
-import com.alibaba.cola.dto.MultiResponse;
-import com.alibaba.cola.dto.PageResponse;
 import com.alibaba.cola.dto.Response;
-import com.alibaba.cola.catchlog.CatchAndLog;
-import com.alibaba.cola.dto.SingleResponse;
 import com.github.pagehelper.PageInfo;
+import com.alibaba.cola.dto.PageResponse;
+import com.alibaba.cola.dto.MultiResponse;
 import org.springframework.beans.BeanUtils;
+import com.alibaba.cola.dto.SingleResponse;
+import www.bwsensing.com.device.convertor.*;
 import org.springframework.stereotype.Service;
+import com.alibaba.cola.catchlog.CatchAndLog;
 import www.bwsensing.com.common.utills.PageHelperUtils;
 import www.bwsensing.com.device.api.DataComputationModelService;
-import www.bwsensing.com.device.convertor.*;
+import www.bwsensing.com.device.dto.command.DataComputationItemCmd;
 import www.bwsensing.com.device.dto.clientobject.DataComputationModelCO;
-import www.bwsensing.com.device.dto.clientobject.ExtraProductDataItemCO;
 import www.bwsensing.com.device.dto.command.query.DataComputationModelPageQuery;
-import www.bwsensing.com.device.dto.command.query.ProductExtraDataItemPageQuery;
-import www.bwsensing.com.device.gatewayimpl.database.ExtraProductDataItemMapper;
 import www.bwsensing.com.device.gatewayimpl.database.ProductDataComputationModelMapper;
-import www.bwsensing.com.device.gatewayimpl.database.ProductDataItemMapper;
+import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataComputationItemDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.DataComputationModelDO;
-import www.bwsensing.com.device.gatewayimpl.database.dataobject.ExtraProductDataItemDO;
 import www.bwsensing.com.device.gatewayimpl.database.dataobject.ProductDataItemDO;
-import www.bwsensing.com.domain.device.gateway.ProductModelGateway;
 import www.bwsensing.com.device.dto.command.DataComputationModelSaveCmd;
 import www.bwsensing.com.device.dto.command.DataComputationModelUpdateCmd;
-import www.bwsensing.com.domain.device.model.ProductDataItem;
+import www.bwsensing.com.device.gatewayimpl.database.ProductDataItemMapper;
+import www.bwsensing.com.domain.device.model.data.model.DataComputationItem;
 import www.bwsensing.com.domain.device.model.data.model.DataComputationModel;
-
+import www.bwsensing.com.domain.device.gateway.ProductModelGateway;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,41 +41,45 @@ public class IDataComputationModelServiceImpl implements DataComputationModelSer
     @Resource
     private ProductDataItemMapper productDataItemMapper;
     @Resource
-    private ExtraProductDataItemMapper extraProductDataItemMapper;
-    @Resource
     private ProductDataComputationModelMapper dataComputationModelMapper;
 
     @Override
     public Response addDataComputationModel(DataComputationModelSaveCmd saveCmd) {
-        DataComputationModel domainObject = new DataComputationModel();
-        BeanUtils.copyProperties(saveCmd, domainObject);
-        if (null != saveCmd.getProductDataItems()){
-            List<ProductDataItemDO> productDataItems = productDataItemMapper.queryProductDataItemByIds(saveCmd.getProductDataItems());
-            domainObject.setProductDataItems(ProductDataItemConvertor.toDomainCollection(productDataItems));
-        }
-        if (null != saveCmd.getExtraProductDataItems()){
-            List<ExtraProductDataItemDO> extraProductDataItems = extraProductDataItemMapper.getExtraDataItemDataByIds(saveCmd.getExtraProductDataItems());
-                    domainObject.setExtraProductDataItems(ExtraProductDataItemConvertor.toDomainCollection(extraProductDataItems));
+        DataComputationModelDO dataObject = new DataComputationModelDO();
+        BeanUtils.copyProperties(saveCmd, dataObject);
+        DataComputationModel domainObject = DataComputationModelConvertor.toDomain(dataObject);
+        if (null != saveCmd.getDataComputationItems()){
+            List<DataComputationItem> dataComputationItems = getDataComputationItems(saveCmd.getDataComputationItems());
+            domainObject.setDataComputationItems(dataComputationItems);
         }
         productModelGateway.addProductDataComputationModel(domainObject);
         return Response.buildSuccess();
     }
 
+
     @Override
     public Response updateDataComputationModel(DataComputationModelUpdateCmd updateCmd) {
-        DataComputationModel domainObject = new DataComputationModel();
-        BeanUtils.copyProperties(updateCmd, domainObject);
-        if (null != updateCmd.getProductDataItems()){
-            List<ProductDataItemDO> productDataItems = productDataItemMapper.queryProductDataItemByIds(updateCmd.getProductDataItems());
-            domainObject.setProductDataItems(ProductDataItemConvertor.toDomainCollection(productDataItems));
-        }
-        if (null != updateCmd.getExtraProductDataItems()){
-            List<ExtraProductDataItemDO> extraProductDataItems = extraProductDataItemMapper.getExtraDataItemDataByIds(updateCmd.getExtraProductDataItems());
-            domainObject.setExtraProductDataItems(ExtraProductDataItemConvertor.toDomainCollection(extraProductDataItems));
+        DataComputationModelDO dataObject = new DataComputationModelDO();
+        BeanUtils.copyProperties(updateCmd, dataObject);
+        DataComputationModel domainObject = DataComputationModelConvertor.toDomain(dataObject);
+        if (null != updateCmd.getDataComputationItems()){
+            List<DataComputationItem> dataComputationItems = getDataComputationItems(updateCmd.getDataComputationItems());
+            domainObject.setDataComputationItems(dataComputationItems);
         }
         productModelGateway.updateProductDataComputationModel(domainObject);
         return Response.buildSuccess();
     }
+
+    private List<DataComputationItem> getDataComputationItems(List<DataComputationItemCmd> dataItems) {
+        List<DataComputationItem> dataComputationItems = new ArrayList<>();
+        dataItems.forEach(currencyItem -> {
+            DataComputationItem computationItem = new DataComputationItem();
+            BeanUtils.copyProperties(currencyItem,computationItem);
+            dataComputationItems.add(computationItem);
+        });
+        return dataComputationItems;
+    }
+
 
     @Override
     public Response deleteDataComputationModel(Integer id) {
@@ -90,6 +92,18 @@ public class IDataComputationModelServiceImpl implements DataComputationModelSer
         DataComputationModelDO dataObject = dataComputationModelMapper.getDataComputationModelById(id);
         if (null  != dataObject){
             ProductDataItemDO productDataItemDO = productDataItemMapper.getProductDataItemById(dataObject.getDataItemId());
+            List<DataComputationItemDO> computationItems = new ArrayList<>();
+            List<DataComputationItemDO>  dataComputationItems = dataComputationModelMapper.queryDataComputationWithDataItem(id);
+            List<DataComputationItemDO>  extraDataComputationItems = dataComputationModelMapper.queryDataComputationWithExtraDataItem(id);
+            dataComputationItems.forEach(dataComputationItem -> {
+                dataComputationItem.setItemKind(1);
+                computationItems.add(dataComputationItem);
+            });
+            extraDataComputationItems.forEach(dataComputationItem -> {
+                dataComputationItem.setItemKind(0);
+                computationItems.add(dataComputationItem);
+            });
+            dataObject.setDataComputationItems(computationItems);
             DataComputationModelCO clientObject = DataComputationModelCoConvertor.toClientObject(dataObject);
             if (null != productDataItemDO){
                 clientObject.setProductDataItem(ProductDataItemCoConvertor.toClientObject(productDataItemDO));

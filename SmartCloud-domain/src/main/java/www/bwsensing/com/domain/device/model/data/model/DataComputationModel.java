@@ -1,6 +1,8 @@
 package www.bwsensing.com.domain.device.model.data.model;
 
 import lombok.Data;
+
+import java.text.DecimalFormat;
 import java.util.*;
 import java.sql.Timestamp;
 import com.alibaba.cola.exception.Assert;
@@ -71,6 +73,8 @@ public class DataComputationModel {
      */
     private Map<String, ProductDataItem> dataItemMap;
 
+    private List<DataComputationItem> dataComputationItems;
+
     /**
      * 公式名称
      */
@@ -82,24 +86,21 @@ public class DataComputationModel {
     private String computationFormula;
 
 
-    public boolean checkDataComputationIsLegal(){
-        Assert.notEmpty(productDataItems,"PRODUCT_ITEM_NOT_EXIST","数据检测项未选择!");
+    public boolean checkDataComputationIsNotLegal(){
+        Assert.notEmpty(dataComputationItems,"COMPUTATION_ITEM_NOT_EXIST","计算数据项列表不存在!");
         Assert.notNull(computationFormula,"COMPUTATION_FORMULA_NOT_EXIST","计算公式未填写!");
-        initDataIds();
-        String checkFormula ="";
-        for (String dataId : dataIds){
-            checkFormula = computationFormula.replace(getPlaceholder(dataId),"");
+        List<String> prefixCollection = new ArrayList<>();
+        this.dataComputationItems.forEach(item -> prefixCollection.add(item.getPrefix()));
+        String checkFormula = computationFormula;
+        for (String dataId : prefixCollection){
+            checkFormula = checkFormula.replace(getPlaceholder(dataId),"");
         }
-        if(null != extraProductDataItems){
-            for (ExtraProductDataItem dataItem : extraProductDataItems){
-                checkFormula = computationFormula.replace(getPlaceholder(dataItem.getExtraDataId()),"");
-            }
-        }
-        return !checkFormula.contains("{") && !checkFormula.contains("}");
+        return checkFormula.contains("{") || checkFormula.contains("}");
     }
 
 
     public List<MonitorData> computationDataCollection(String uniqueCode,List<MonitorData> dataCollection){
+        DecimalFormat df = new DecimalFormat("0.00000000");
         if(null != productDataItem){
             this.computationDataId = productDataItem.getDataId();
         }
@@ -110,23 +111,34 @@ public class DataComputationModel {
             itemsDataMap.computeIfAbsent(item.getTimeStamp(), k -> new ArrayList<>());
             itemsDataMap.get(item.getTimeStamp()).add(item);
         });
-        for (Timestamp ts : itemsDataMap.keySet()){
-            List<MonitorData> currentCollections = itemsDataMap.get(ts);
-            String currentComputationFormula = computationFormula;
-            for (MonitorData current : currentCollections){
-                if(dataIds.contains(current.getDataId())){
-                    ProductDataItem dataItem = dataItemMap.get(current.getDataId());
-                    currentComputationFormula = currentComputationFormula.
-                            replace(getPlaceholder(current.getDataId()),dataItem.getDataCalculation(current.getDataIdValue()+""));
-                }
-            }
+        String computationFormulaTemp = computationFormula;
+        for (DataComputationItem dataComputationItem : dataComputationItems) {
             if (null != extraProductDataItems){
                 for (ExtraProductDataItem current : extraProductDataItems){
-                    currentComputationFormula = currentComputationFormula.
-                            replace(getPlaceholder(current.getExtraDataId()),current.getDataCalculation());
+                    if(dataComputationItem.getItemKind() == 0 && current.getId().equals(dataComputationItem.getCurrentId())){
+                        computationFormulaTemp = computationFormulaTemp.
+                                replace(getPlaceholder(dataComputationItem.getPrefix()),current.getExtraData());
+                    }
+                }
+            }
+        }
+        for (Timestamp ts : itemsDataMap.keySet()){
+            List<MonitorData> currentCollections = itemsDataMap.get(ts);
+            String currentComputationFormula = computationFormulaTemp;
+            for (MonitorData current : currentCollections){
+                for (DataComputationItem dataComputationItem : dataComputationItems) {
+                    if(dataIds.contains(current.getDataId())){
+                        ProductDataItem dataItem = dataItemMap.get(current.getDataId());
+                        if(dataComputationItem.getItemKind() == 1 && dataItem.getId().equals(dataComputationItem.getCurrentId())){
+                            String dataValue = df.format(current.getDataIdValue());
+                            currentComputationFormula = currentComputationFormula.
+                                    replace(getPlaceholder(dataComputationItem.getPrefix()),dataItem.getDataCalculation(dataValue));
+                        }
+                    }
                 }
             }
             MonitorData data = new MonitorData();
+            System.out.println(currentComputationFormula);
             data.setDataIdValue(Double.parseDouble(MathCalculatorUtil.calculator(currentComputationFormula)));
             data.setUniqueCode(uniqueCode);
             data.setDataId(this.computationDataId);

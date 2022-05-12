@@ -22,14 +22,9 @@ public class DataComputationModelUpdateCmd extends Command {
     private String name;
 
     /**
-     * 监测数据项
-     */
-    private List<Integer> productDataItems;
-
-    /**
      * 额外数据
      */
-    private List<Integer> extraProductDataItems;
+    private List<DataComputationItemCmd> dataComputationItems;
 
     /**
      * 计算公式描述

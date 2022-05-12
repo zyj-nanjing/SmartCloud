@@ -27,11 +27,8 @@ public class DataComputationModelCoConvertor {
     public static DataComputationModelCO toClientObject(DataComputationModelDO dataObject){
         DataComputationModelCO clientObject = new DataComputationModelCO();
         CLIENT_OBJECT_COPIER.copy(dataObject, clientObject,null);
-        if (null != dataObject.getExtraProductDataItems()){
-            clientObject.setExtraProductDataItems(ExtraProductDataItemCoConvertor.toClientCollections(dataObject.getExtraProductDataItems()));
-        }
-        if (null != dataObject.getProductDataItems()){
-            clientObject.setProductDataItems(ProductDataItemCoConvertor.toClientCollection(dataObject.getProductDataItems()));
+        if (null  != dataObject.getDataComputationItems()){
+            clientObject.setComputationItems(DataComputationItemCoConvertor.toClientObjectList(dataObject.getDataComputationItems()));
         }
         return clientObject;
     }

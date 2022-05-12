@@ -8,7 +8,7 @@
         <result property="id"    column="id"    />
         <result property="name" column="name"/>
         <result property="modelId"    column="model_id"    />
-        <result property="dataItemId"    column="data_Item_id"    />
+        <result property="dataItemId"    column="data_item_id"    />
         <result property="computationKind"    column="computation_kind"    />
         <result property="formulaName" column="formula_name"/>
         <result property="computationFormula"    column="computation_formula"    />
@@ -18,7 +18,7 @@
         <result property="id"    column="id"    />
         <result property="name" column="name"/>
         <result property="modelId"    column="model_id"    />
-        <result property="dataItemId"    column="data_Item_id"    />
+        <result property="dataItemId"    column="data_item_id"    />
         <result property="computationKind"    column="computation_kind"    />
         <result property="formulaName" column="formula_name"/>
         <result property="computationFormula"    column="computation_formula"    />
@@ -54,7 +54,7 @@
 
 
     <sql id="DataComputationModelVo">
-        select id, name, model_id, data_Item_id, computation_kind,formula_name, computation_formula from product_data_computation_model
+        select id, name, model_id, data_item_id, computation_kind,formula_name, computation_formula from product_data_computation_model
     </sql>
 
 
@@ -64,7 +64,7 @@
         <where>
             <if test="modelId != null "> and model_id = #{modelId}</if>
             <if test="name != null and name !=''"> and name = #{name}</if>
-            <if test="dataItemId != null "> and data_Item_id = #{dataItemId}</if>
+            <if test="dataItemId != null "> and data_item_id = #{dataItemId}</if>
             <if test="computationKind != null  and computationKind != ''"> and computation_kind = #{computationKind}</if>
             <if test="computationFormula != null  and computationFormula != ''"> and computation_formula = #{computationFormula}</if>
         </where>
@@ -83,18 +83,27 @@
     </select>
 
     <select id="getProductExtraDataItemByComputationId" parameterType="Integer"  resultMap="ExtraProductDataItemResult">
-        select id, model_id, extra_Item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
+        select id, model_id, extra_item_name, extra_data_id, unit, need_transform, calculation_formula, placeholder from extra_product_data_item
                    where id in (select  extra_data_item_id from product_data_computation_extra_item where computation_id =#{computationId} )
     </select>
 
 
-    <insert id="saveDataComputationWithDataItem" parameterType="Integer" >
-        insert into  product_data_computation_item(computation_id,data_item_id) values (#{computationId},#{dataItemId});
+    <insert id="saveDataComputationWithDataItem" >
+        insert into  product_data_computation_item(computation_id,data_item_id,prefix) values (#{computationId},#{dataItemId},#{prefix});
     </insert>
 
-    <insert id="saveDataComputationWithExtraDataItem" parameterType="Integer" >
-        insert into  product_data_computation_extra_item(computation_id,extra_data_item_id) values (#{computationId},#{extraDataItemId});
+    <insert id="saveDataComputationWithExtraDataItem">
+        insert into  product_data_computation_extra_item(computation_id,extra_data_item_id,prefix) values (#{computationId},#{extraDataItemId},#{prefix});
     </insert>
+
+
+    <select id="queryDataComputationWithDataItem" resultType="DataComputationItemDO">
+        select computation_id computationId,data_item_id currentId,prefix prefix from product_data_computation_item  where computation_id =#{computationId}
+    </select>
+
+    <select id="queryDataComputationWithExtraDataItem" resultType="DataComputationItemDO">
+        select computation_id computationId,extra_data_item_id currentId,prefix prefix from product_data_computation_extra_item  where computation_id =#{computationId}
+    </select>
 
     <delete id="deleteDataComputationWithDataItem" parameterType="Integer">
         delete  from product_data_computation_item where computation_id =#{computationId}
@@ -109,7 +118,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="modelId != null">model_id,</if>
             <if test="name != null and name !=''">name,</if>
-            <if test="dataItemId != null">data_Item_id,</if>
+            <if test="dataItemId != null">data_item_id,</if>
             <if test="computationKind != null">computation_kind,</if>
             <if test="formulaName != null and formulaName != ''">formula_name,</if>
             <if test="computationFormula != null and computationFormula != ''">computation_formula,</if>
@@ -127,8 +136,8 @@
     <update id="updateDataComputationModel" parameterType="DataComputationModelDO">
         update product_data_computation_model
         <trim prefix="SET" suffixOverrides=",">
-            <if test="name != null and name !=''"> name = #{name}</if>
-            <if test="dataItemId != null">data_Item_id = #{dataItemId},</if>
+            <if test="name != null and name !=''"> name = #{name},</if>
+            <if test="dataItemId != null">data_item_id = #{dataItemId},</if>
             <if test="computationKind != null">computation_kind = #{computationKind},</if>
             <if test="formulaName != null and formulaName != ''">formula_name=#{formulaName},</if>
             <if test="computationFormula != null">computation_formula = #{computationFormula},</if>

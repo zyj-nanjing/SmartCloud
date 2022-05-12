@@ -38,5 +38,14 @@ public class DeviceComputationSaveCmd extends CommonCommand {
      */
     private String cronExpression;
 
+    /**
+     * 处理类型
+     */
+    private Integer handleKind;
+
+    /**
+     * 时间范围处理函数
+     */
+    private Integer functionCode;
 
 }

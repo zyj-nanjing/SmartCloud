@@ -44,6 +44,15 @@ public class IProductDataItemServiceImpl implements ProductDataItemService {
     }
 
     @Override
+    public MultiResponse<ProductDataItemCO> getProductDataItemsByModelSort(ProductDataItemPageQuery pageQuery) {
+        ProductDataItemDO queryObject = new ProductDataItemDO();
+        queryObject.setModelId(pageQuery.getModelId());
+        queryObject.setItemKind(pageQuery.getItemKind());
+        List<ProductDataItemDO> dataItems = productDataItemMapper.queryProductDataItemBySort(queryObject);
+        return MultiResponse.of(ProductDataItemCoConvertor.toClientCollection(dataItems));
+    }
+
+    @Override
     public PageResponse<ProductDataItemCO> getProductDataItemsByPage(ProductDataItemPageQuery pageQuery) {
         PageHelperUtils<ProductDataItemPageQuery,ProductDataItemDO> pageHelper =
                 PageHelperUtils.<ProductDataItemPageQuery,ProductDataItemDO>builder()

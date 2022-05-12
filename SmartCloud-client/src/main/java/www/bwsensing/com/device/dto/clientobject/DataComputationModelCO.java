@@ -36,17 +36,6 @@ public class DataComputationModelCO extends DTO {
      * 产品数据项
      */
     private ProductDataItemCO productDataItem;
-
-    /**
-     * 监测数据项
-     */
-    private List<ProductDataItemCO> productDataItems;
-
-    /**
-     * 额外数据
-     */
-    private List<ExtraProductDataItemCO> extraProductDataItems;
-
     /**
      * 计算触发类型
      */
@@ -61,6 +50,8 @@ public class DataComputationModelCO extends DTO {
      * 计算公式
      */
     private String computationFormula;
+
+    private List<DataComputationItemCO> computationItems;
 
     public Integer getId() {
         return id;
@@ -110,21 +101,6 @@ public class DataComputationModelCO extends DTO {
         this.productDataItem = productDataItem;
     }
 
-    public List<ProductDataItemCO> getProductDataItems() {
-        return productDataItems;
-    }
-
-    public void setProductDataItems(List<ProductDataItemCO> productDataItems) {
-        this.productDataItems = productDataItems;
-    }
-
-    public List<ExtraProductDataItemCO> getExtraProductDataItems() {
-        return extraProductDataItems;
-    }
-
-    public void setExtraProductDataItems(List<ExtraProductDataItemCO> extraProductDataItems) {
-        this.extraProductDataItems = extraProductDataItems;
-    }
 
     public Integer getComputationKind() {
         return computationKind;
@@ -148,5 +124,13 @@ public class DataComputationModelCO extends DTO {
 
     public void setFormulaName(String formulaName) {
         this.formulaName = formulaName;
+    }
+
+    public List<DataComputationItemCO> getComputationItems() {
+        return computationItems;
+    }
+
+    public void setComputationItems(List<DataComputationItemCO> computationItems) {
+        this.computationItems = computationItems;
     }
 }

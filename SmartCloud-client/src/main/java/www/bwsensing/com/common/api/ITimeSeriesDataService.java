@@ -1,7 +1,7 @@
 package www.bwsensing.com.common.api;
 
-import www.bwsensing.com.common.clientobject.TimeSeriesDataCO;
 import www.bwsensing.com.device.dto.clientobject.ProductDynamicColumnCO;
+import www.bwsensing.com.common.clientobject.TimeSeriesDataCO;
 import java.util.Date;
 import java.util.List;
 

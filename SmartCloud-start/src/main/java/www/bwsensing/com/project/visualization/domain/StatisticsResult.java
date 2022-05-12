@@ -21,7 +21,7 @@ public class StatisticsResult {
     /**
      * 数据
      */
-    private List<Float> data;
+    private List<Double> data;
 
     /**
      * X 轴时间戳

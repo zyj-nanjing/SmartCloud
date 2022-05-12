@@ -1,9 +1,8 @@
 package www.bwsensing.com.domain.device.gateway;
 
 import www.bwsensing.com.domain.device.model.DeviceComputation;
-import www.bwsensing.com.domain.device.model.ProductDevice;
 import www.bwsensing.com.domain.device.model.ProductDataItem;
-
+import www.bwsensing.com.domain.device.model.ProductDevice;
 import java.util.List;
 
 /**
@@ -61,6 +60,12 @@ public interface ProductDeviceGateway {
      * @param deviceComputation
      */
     void updateDeviceComputation(DeviceComputation deviceComputation);
+
+    /**
+     * 删除计算模型与设备关联
+     * @param id
+     */
+    void deleteDeviceComputation(Integer id);
 
     /**
      * 根据设备唯一编码查询关联的对应数据项
